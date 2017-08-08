@@ -11,6 +11,8 @@ net.Receive( "GlorifiedBanking_IsAffordableDepositReceive", function()
 end )
 
 local function OpenWithdrawPanel()
+    local ply = LocalPlayer()
+
     local boxW, boxH = 450, 115
 	local WithdrawFrame = vgui.Create( "DFrame" )
 	WithdrawFrame:SetSize( boxW, boxH )
@@ -54,7 +56,7 @@ local function OpenWithdrawPanel()
                 affordableWithdraw = false
             end
 
-            timer.Simple(0.2, function()
+            timer.Simple( ply:Ping() / 1000 + 0.1, function()
                 if affordableWithdraw and withdrawAmount <= 100000 then
                     net.Start( "GlorifiedBanking_UpdateWithdrawal" )
                     net.WriteInt( withdrawAmount, 32 )
@@ -94,6 +96,8 @@ local function OpenWithdrawPanel()
 end
 
 local function OpenDepositPanel()
+    local ply = LocalPlayer()
+
     local boxW, boxH = 450, 115
 	local DepositFrame = vgui.Create( "DFrame" )
 	DepositFrame:SetSize( boxW, boxH )
@@ -130,9 +134,10 @@ local function OpenDepositPanel()
         local depositAmount = tonumber( depositText:GetText() )
         if isnumber( depositAmount ) then
             net.Start( "GlorifiedBanking_IsAffordableDeposit" )
+            net.WriteInt( depositAmount, 32 )
             net.SendToServer()
 
-            timer.Simple(0.2, function()
+            timer.Simple( ply:Ping() / 1000 + 0.1, function()
                 if affordableDeposit and depositAmount <= 100000 then
                     net.Start( "GlorifiedBanking_UpdateDeposit" )
                     net.WriteInt( depositAmount, 32 )
@@ -196,18 +201,21 @@ local function OpenBankingPanel()
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
-    timer.Simple( 0.5, function()
+    timer.Simple( ply:Ping() / 1000 + 0.1, function()
         Frame:ShowCloseButton( true )
+        surface.SetFont( "DermaDefault" )
+        local atmW, atmH = surface.GetTextSize( "Welcome to the Automated Teller Machine (ATM)!" )
+        local balW, balH = surface.GetTextSize( "Current Balance: $" .. string.Comma( bankBalance ) )
 
-        local DLabel = vgui.Create( "DLabel", Frame )
-		DLabel:SetPos( 150, 25 )
-		DLabel:SetSize(250, 25)
-		DLabel:SetText( "Welcome to the Automated Teller Machine (ATM)!" )
+        local ATMLabel = vgui.Create( "DLabel", Frame )
+		ATMLabel:SetPos( 500 / 2 - atmW / 2, 35 )
+		ATMLabel:SetText( "Welcome to the Automated Teller Machine (ATM)!" )
+        ATMLabel:SizeToContents()
 
-		local DLabel = vgui.Create( "DLabel", Frame )
-		DLabel:SetPos( 185, 30 )
-		DLabel:SetSize(300, 45)
-		DLabel:SetText( "Current Balance: $" .. string.Comma( bankBalance ) )
+		local BalanceLabel = vgui.Create( "DLabel", Frame )
+		BalanceLabel:SetPos( 500 / 2 - balW / 2, 50 )
+		BalanceLabel:SetText( "Current Balance: $" .. string.Comma( bankBalance ) )
+        BalanceLabel:SizeToContents()
 
         local Button = vgui.Create( "DButton", Frame )
         Button:SetText( "Withdraw" )
