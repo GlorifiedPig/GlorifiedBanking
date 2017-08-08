@@ -1,4 +1,4 @@
-glorifiedbanking.config.TOTAL_ATMS = 0
+glorifiedbanking.config.TOTAL_ATMS = glorifiedbanking.config.TOTAL_ATMS or 0
 
 concommand.Add( "atms_save", function( ply )
 	if( ply:IsAdmin() ) then
