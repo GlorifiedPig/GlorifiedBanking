@@ -37,14 +37,14 @@ function plyMeta:CanAffordWalletAmount( amt )
 end
 
 function plyMeta:AddBankBalance( amt )
-  if self:CanAffordWalletAmount( amt ) and amt <= 10000 then
-    self:addMoney( -amt )
-    self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
-  end
+    if self:CanAffordWalletAmount( amt ) and amt <= 100000 then
+        self:addMoney( -amt )
+        self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
+    end
 end
 
 function plyMeta:RemoveBankBalance( amt )
-    if self:CanAffordBankAmount( amt ) and amt <= 10000 then
+    if self:CanAffordBankAmount( amt ) and amt <= 100000 then
         self:addMoney( amt )
         self:SetPData( "GlorifiedBanking_BankBalance", self:GetPData( "GlorifiedBanking_BankBalance" ) - amt )
     end
