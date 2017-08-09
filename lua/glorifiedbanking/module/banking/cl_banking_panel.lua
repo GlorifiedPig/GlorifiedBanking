@@ -50,6 +50,8 @@ local function OpenWithdrawPanel()
         if isnumber( withdrawAmount ) then
             local affordableWithdraw = false
 
+            withdrawAmount = math.abs( tonumber( withdrawText:GetText() ) )
+
             if withdrawAmount <= bankBalance then
                 affordableWithdraw = true
             else
@@ -146,6 +148,8 @@ local function OpenDepositPanel()
 	deposit.DoClick = function()
         local depositAmount = tonumber( depositText:GetText() )
         if isnumber( depositAmount ) then
+            depositAmount = math.abs( tonumber( depositText:GetText() ) )
+
             net.Start( "GlorifiedBanking_IsAffordableDeposit" )
             net.WriteInt( depositAmount, 32 )
             net.SendToServer()
