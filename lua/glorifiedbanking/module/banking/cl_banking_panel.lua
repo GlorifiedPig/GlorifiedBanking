@@ -22,7 +22,7 @@ local function OpenWithdrawPanel()
 	WithdrawFrame:Center()
 	WithdrawFrame:MakePopup()
     WithdrawFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 25, 25, 25, 225 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, Color( 35, 35, 35, 255 ) )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -120,7 +120,7 @@ local function OpenDepositPanel()
 	DepositFrame:Center()
 	DepositFrame:MakePopup()
     DepositFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 25, 25, 25, 225 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, Color( 35, 35, 35, 255 ) )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
