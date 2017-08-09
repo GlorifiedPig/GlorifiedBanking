@@ -44,7 +44,7 @@ local function OpenWithdrawPanel()
     withdraw:SetTextColor( Color( 255, 255, 255 ) )
 	withdraw:SetText("Withdraw")
 	withdraw:SetSize( 80, 20 )
-	withdraw:SetPos( boxW / 2 - 40 / 2 - 22, 75 )
+	withdraw:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
 	withdraw.DoClick = function()
         local withdrawAmount = tonumber( withdrawText:GetText() )
         if isnumber( withdrawAmount ) then
@@ -93,6 +93,19 @@ local function OpenWithdrawPanel()
 	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
+
+    local cancelButton = vgui.Create( "DButton", WithdrawFrame )
+    cancelButton:SetTextColor( Color( 255, 255, 255 ) )
+	cancelButton:SetText("Cancel")
+	cancelButton:SetSize( 80, 20 )
+	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
+	cancelButton.DoClick = function()
+        WithdrawFrame:Close()
+    end
+    cancelButton.Paint = function( self, w, h )
+	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+    end
 end
 
 local function OpenDepositPanel()
@@ -129,7 +142,7 @@ local function OpenDepositPanel()
     deposit:SetTextColor( Color( 255, 255, 255 ) )
 	deposit:SetText("Deposit")
 	deposit:SetSize( 80, 20 )
-	deposit:SetPos( boxW / 2 - 40 / 2 - 22, 75 )
+	deposit:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
 	deposit.DoClick = function()
         local depositAmount = tonumber( depositText:GetText() )
         if isnumber( depositAmount ) then
@@ -171,6 +184,19 @@ local function OpenDepositPanel()
         end
 	end
     deposit.Paint = function( self, w, h )
+	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+    end
+
+    local cancelButton = vgui.Create( "DButton", DepositFrame )
+    cancelButton:SetTextColor( Color( 255, 255, 255 ) )
+	cancelButton:SetText("Cancel")
+	cancelButton:SetSize( 80, 20 )
+	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
+	cancelButton.DoClick = function()
+        DepositFrame:Close()
+    end
+    cancelButton.Paint = function( self, w, h )
 	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
