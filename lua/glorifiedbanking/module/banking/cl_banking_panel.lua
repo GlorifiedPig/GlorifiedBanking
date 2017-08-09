@@ -39,13 +39,7 @@ local function OpenWithdrawPanel()
     withdrawText:SetText( "Amount" )
     withdrawText:SetSize( 100, 20 )
     withdrawText:SetPos( boxW / 2 - 100 / 2, 50 )
-
-	local withdraw = vgui.Create( "DButton", WithdrawFrame )
-    withdraw:SetTextColor( Color( 255, 255, 255 ) )
-	withdraw:SetText("Withdraw")
-	withdraw:SetSize( 80, 20 )
-	withdraw:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
-	withdraw.DoClick = function()
+    local function DoWithdraw()
         local withdrawAmount = tonumber( withdrawText:GetText() )
         if isnumber( withdrawAmount ) then
             local affordableWithdraw = false
@@ -90,6 +84,18 @@ local function OpenWithdrawPanel()
             notification.AddLegacy("Please insert a valid number.", NOTIFY_ERROR, 5)
             surface.PlaySound("buttons/button2.wav")
         end
+    end
+    withdrawText.OnEnter = function()
+        DoWithdraw()
+    end
+
+	local withdraw = vgui.Create( "DButton", WithdrawFrame )
+    withdraw:SetTextColor( Color( 255, 255, 255 ) )
+	withdraw:SetText("Withdraw")
+	withdraw:SetSize( 80, 20 )
+	withdraw:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
+	withdraw.DoClick = function()
+        DoWithdraw()
 	end
     withdraw.Paint = function( self, w, h )
 	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
@@ -139,13 +145,7 @@ local function OpenDepositPanel()
     depositText:SetText( "Amount" )
     depositText:SetSize( 100, 20 )
     depositText:SetPos( boxW / 2 - 100 / 2, 50 )
-
-	local deposit = vgui.Create( "DButton", DepositFrame )
-    deposit:SetTextColor( Color( 255, 255, 255 ) )
-	deposit:SetText("Deposit")
-	deposit:SetSize( 80, 20 )
-	deposit:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
-	deposit.DoClick = function()
+    local function DoDeposit()
         local depositAmount = tonumber( depositText:GetText() )
         if isnumber( depositAmount ) then
             depositAmount = math.abs( tonumber( depositText:GetText() ) )
@@ -186,6 +186,18 @@ local function OpenDepositPanel()
             notification.AddLegacy("Please insert a valid number.", NOTIFY_ERROR, 5)
             surface.PlaySound("buttons/button2.wav")
         end
+    end
+    depositText.OnEnter = function()
+        DoDeposit()
+    end
+
+	local deposit = vgui.Create( "DButton", DepositFrame )
+    deposit:SetTextColor( Color( 255, 255, 255 ) )
+	deposit:SetText("Deposit")
+	deposit:SetSize( 80, 20 )
+	deposit:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
+	deposit.DoClick = function()
+        DoDeposit()
 	end
     deposit.Paint = function( self, w, h )
 	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
