@@ -218,8 +218,113 @@ local function OpenDepositPanel()
     end
 end
 
+-- TO-DO: USE THE FOLLOWING TO ACHIEVE TRANSFER PANEL
+-- https://wiki.garrysmod.com/page/Category:DComboBox
+-- https://facepunch.com/showthread.php?t=1495330
 local function OpenTransferPanel()
-    -- not finished yet
+    local ply = LocalPlayer()
+
+    local boxW, boxH = 450, 115
+	local TransferFrame = vgui.Create( "DFrame" )
+	TransferFrame:SetSize( boxW, boxH )
+	TransferFrame:SetTitle( "Withdraw Cash" )
+	TransferFrame:SetDraggable( false )
+	TransferFrame:ShowCloseButton( false )
+	TransferFrame:Center()
+	TransferFrame:MakePopup()
+    TransferFrame.Paint = function( self, w, h )
+	    draw.RoundedBox( 0, 0, 0, w, h, Color( 35, 35, 35, 255 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+    end
+
+	surface.SetFont( "DermaDefault" )
+	local disbandMessage = "How much would you like to transfer?"
+	local textW, textH = surface.GetTextSize( disbandMessage )
+	local disbandLabel = vgui.Create( "DLabel", TransferFrame )
+	disbandLabel:SetText( disbandMessage )
+	disbandLabel:SetFont( "DermaDefault" )
+	disbandLabel:SizeToContents()
+	disbandLabel:SetPos( boxW / 2 - textW / 2, 30 )
+
+    local transferText = vgui.Create( "DTextEntry", TransferFrame )
+    transferText:SetText( "Amount" )
+    transferText:SetSize( 100, 20 )
+    transferText:SetPos( boxW / 2 - 100 / 2, 50 )
+    local function DoTransfer()
+        local transferAmount = tonumber( transferText:GetText() )
+        if isnumber( transferAmount ) then
+            local affordableTransfer = false
+
+            transferAmount = math.abs( tonumber( transferText:GetText() ) )
+
+            if transferAmount <= bankBalance then
+                affordableTransfer = true
+            else
+                affordableTransfer = false
+            end
+
+            timer.Simple( ply:Ping() / 1000 + 0.1, function()
+                if affordableTransfer and transferAmount <= 100000 then
+                    net.Start( "GlorifiedBanking_UpdateWithdrawal" )
+                    net.WriteInt( transferAmount, 32 )
+                    net.SendToServer()
+                    TransferFrame:Close()
+                    Frame:Close()
+                    notification.AddLegacy("You have successfully transferred $" .. string.Comma( tostring( transferAmount ) ) .. " to ", NOTIFY_GENERIC, 5)
+                    surface.PlaySound("buttons/button14.wav")
+                elseif affordableTransfer and transferAmount > 100000 then
+                    TransferFrame:Close()
+                    Frame:Close()
+                    notification.AddLegacy("You cannot transfer more than $100,000 at a time.", NOTIFY_ERROR, 5)
+                    surface.PlaySound("buttons/button2.wav")
+                elseif !affordableTransfer then
+                    TransferFrame:Close()
+                    Frame:Close()
+                    notification.AddLegacy("You cannot afford that!", NOTIFY_ERROR, 5)
+                    surface.PlaySound("buttons/button2.wav")
+                else
+                    TransferFrame:Close()
+                    Frame:Close()
+                    notification.AddLegacy("An unknown error occured.", NOTIFY_ERROR, 5)
+                    surface.PlaySound("buttons/button2.wav")
+                end
+            end )
+        else
+            TransferFrame:Close()
+            Frame:Close()
+            notification.AddLegacy("Please insert a valid number.", NOTIFY_ERROR, 5)
+            surface.PlaySound("buttons/button2.wav")
+        end
+    end
+    transferText.OnEnter = function()
+        DoTransfer()
+    end
+
+	local transfer = vgui.Create( "DButton", TransferFrame )
+    transfer:SetTextColor( Color( 255, 255, 255 ) )
+	transfer:SetText("Transfer")
+	transfer:SetSize( 80, 20 )
+	transfer:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
+	transfer.DoClick = function()
+        DoTransfer()
+	end
+    transfer.Paint = function( self, w, h )
+	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+    end
+
+    local cancelButton = vgui.Create( "DButton", TransferFrame )
+    cancelButton:SetTextColor( Color( 255, 255, 255 ) )
+	cancelButton:SetText("Cancel")
+	cancelButton:SetSize( 80, 20 )
+	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
+	cancelButton.DoClick = function()
+        TransferFrame:Close()
+    end
+    cancelButton.Paint = function( self, w, h )
+	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+    end
 end
 
 local function OpenBankingPanel()
@@ -296,7 +401,7 @@ local function OpenBankingPanel()
           draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
         end
         TransferButton.DoClick = function()
-          -- do transfer shit
+          OpenTransferPanel()
         end
     end)
 end
