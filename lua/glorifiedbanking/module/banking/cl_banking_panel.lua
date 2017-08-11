@@ -10,6 +10,19 @@ net.Receive( "GlorifiedBanking_IsAffordableDepositReceive", function()
     affordableDeposit = net.ReadBool()
 end )
 
+net.Receive( "GlorifiedBanking_Notification", function()
+    local text = net.ReadString()
+    local errorMessage = net.ReadBool()
+
+    if errorMessage then
+        notification.AddLegacy( text, NOTIFY_ERROR, 5)
+        surface.PlaySound( "buttons/button2.wav" )
+    else
+        notification.AddLegacy( text, NOTIFY_GENERIC, 5)
+        surface.PlaySound( "buttons/button14.wav" )
+    end
+end )
+
 local function OpenWithdrawPanel()
     local ply = LocalPlayer()
 
@@ -218,16 +231,13 @@ local function OpenDepositPanel()
     end
 end
 
--- TO-DO: USE THE FOLLOWING TO ACHIEVE TRANSFER PANEL
--- https://wiki.garrysmod.com/page/Category:DComboBox
--- https://facepunch.com/showthread.php?t=1495330
 local function OpenTransferPanel()
     local ply = LocalPlayer()
 
-    local boxW, boxH = 450, 115
+    local boxW, boxH = 450, 142
 	local TransferFrame = vgui.Create( "DFrame" )
 	TransferFrame:SetSize( boxW, boxH )
-	TransferFrame:SetTitle( "Withdraw Cash" )
+	TransferFrame:SetTitle( "Transfer Cash" )
 	TransferFrame:SetDraggable( false )
 	TransferFrame:ShowCloseButton( false )
 	TransferFrame:Center()
@@ -246,6 +256,21 @@ local function OpenTransferPanel()
 	disbandLabel:SizeToContents()
 	disbandLabel:SetPos( boxW / 2 - textW / 2, 30 )
 
+    local PlayerComboBox = vgui.Create( "DComboBox", TransferFrame )
+    PlayerComboBox:SetSize( 115, 20 )
+    PlayerComboBox:SetPos( boxW / 2 - 115 / 2, 75 )
+    PlayerComboBox:SetValue( "Player List" )
+    for k, v in pairs( player.GetAll() ) do
+        if v == ply then continue end
+		PlayerComboBox:AddChoice( v:Nick(), v:SteamID64() )
+	end
+
+	local selectedNick, selectedID = PlayerComboBox:GetSelected()
+
+    PlayerComboBox.OnSelect = function( panel, index, value )
+        selectedNick, selectedID = PlayerComboBox:GetSelected()
+    end
+
     local transferText = vgui.Create( "DTextEntry", TransferFrame )
     transferText:SetText( "Amount" )
     transferText:SetSize( 100, 20 )
@@ -263,14 +288,26 @@ local function OpenTransferPanel()
                 affordableTransfer = false
             end
 
+            local transferringPlayer = player.GetBySteamID64( selectedID )
+            print( selectedID )
+
+            if isbool( transferringPlayer ) or transferringPlayer == nil then
+                TransferFrame:Close()
+                Frame:Close()
+                notification.AddLegacy("Please select a valid player.", NOTIFY_ERROR, 5)
+                surface.PlaySound("buttons/button2.wav")
+                return
+            end
+
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
                 if affordableTransfer and transferAmount <= 100000 then
-                    net.Start( "GlorifiedBanking_UpdateWithdrawal" )
+                    net.Start( "GlorifiedBanking_UpdateTransfer" )
                     net.WriteInt( transferAmount, 32 )
+                    net.WriteEntity( transferringPlayer )
                     net.SendToServer()
                     TransferFrame:Close()
                     Frame:Close()
-                    notification.AddLegacy("You have successfully transferred $" .. string.Comma( tostring( transferAmount ) ) .. " to ", NOTIFY_GENERIC, 5)
+                    notification.AddLegacy("You have successfully transferred $" .. string.Comma( tostring( transferAmount ) ) .. " to " .. transferringPlayer:Nick(), NOTIFY_GENERIC, 5)
                     surface.PlaySound("buttons/button14.wav")
                 elseif affordableTransfer and transferAmount > 100000 then
                     TransferFrame:Close()
@@ -304,7 +341,7 @@ local function OpenTransferPanel()
     transfer:SetTextColor( Color( 255, 255, 255 ) )
 	transfer:SetText("Transfer")
 	transfer:SetSize( 80, 20 )
-	transfer:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
+	transfer:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 100 )
 	transfer.DoClick = function()
         DoTransfer()
 	end
@@ -317,7 +354,7 @@ local function OpenTransferPanel()
     cancelButton:SetTextColor( Color( 255, 255, 255 ) )
 	cancelButton:SetText("Cancel")
 	cancelButton:SetSize( 80, 20 )
-	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
+	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 100 )
 	cancelButton.DoClick = function()
         TransferFrame:Close()
     end

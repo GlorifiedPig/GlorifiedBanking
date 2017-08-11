@@ -3,12 +3,12 @@ ONLY USE THESE FUNCTIONS ON SERVERSIDE FILES! YOU WILL FUCK EVERYTHING UP IF YOU
 
 util.AddNetworkString( "GlorifiedBanking_UpdateBankBalance" )
 util.AddNetworkString( "GlorifiedBanking_UpdateBankBalanceReceive" )
-util.AddNetworkString( "GlorifiedBanking_IsAffordableWithdraw" )
-util.AddNetworkString( "GlorifiedBanking_IsAffordableWithdrawReceive" )
 util.AddNetworkString( "GlorifiedBanking_UpdateWithdrawal" )
 util.AddNetworkString( "GlorifiedBanking_IsAffordableDeposit" )
 util.AddNetworkString( "GlorifiedBanking_IsAffordableDepositReceive" )
 util.AddNetworkString( "GlorifiedBanking_UpdateDeposit" )
+util.AddNetworkString( "GlorifiedBanking_UpdateTransfer" )
+util.AddNetworkString( "GlorifiedBanking_Notification" )
 
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking_Banking_InitialSpawnCheck", function( ply )
     if ply:GetPData( "GlorifiedBanking_BankBalance" ) == NIL or ply:GetPData( "GlorifiedBanking_BankBalance") == NULL then
@@ -50,8 +50,23 @@ function plyMeta:RemoveBankBalance( amt )
     end
 end
 
-function plyMeta:ForceAddMoneyBank( amt )
-    self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
+function plyMeta:ForceAddBankBalance( amt )
+    if amt <= 100000 then
+        self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
+    end
+end
+
+function plyMeta:ForceRemoveBankBalance( amt )
+    if amt <= 100000 then
+        self:SetPData( "GlorifiedBanking_BankBalance", self:GetPData( "GlorifiedBanking_BankBalance" ) - amt )
+    end
+end
+
+function plyMeta:TransferBankBalance( amt, player2 )
+    if self:CanAffordBankAmount( amt ) and amt <= 100000 then
+        self:ForceRemoveBankBalance( amt )
+        player2:ForceAddBankBalance( amt )
+    end
 end
 
 net.Receive( "GlorifiedBanking_UpdateBankBalance", function( len, ply )
@@ -60,21 +75,6 @@ net.Receive( "GlorifiedBanking_UpdateBankBalance", function( len, ply )
     net.Start( "GlorifiedBanking_UpdateBankBalanceReceive" )
     net.WriteInt( bankBal, 32 )
     net.Send( ply )
-end )
-
-net.Receive( "GlorifiedBanking_IsAffordableWithdraw", function( len, ply )
-    local amount = net.ReadInt( 32 )
-    local canAffordB = ply:CanAffordBankAmount( amount )
-
-    net.Start( "GlorifiedBanking_IsAffordableWithdrawReceive" )
-    net.WriteBool( canAffordB )
-    net.Send( ply )
-end )
-
-net.Receive( "GlorifiedBanking_UpdateWithdrawal", function( len, ply )
-    local amount = net.ReadInt( 32 )
-
-    ply:RemoveBankBalance( amount )
 end )
 
 net.Receive( "GlorifiedBanking_IsAffordableDeposit", function( len, ply )
@@ -90,4 +90,22 @@ net.Receive( "GlorifiedBanking_UpdateDeposit", function( len, ply )
     local amount = net.ReadInt( 32 )
 
     ply:AddBankBalance( tonumber( amount ) )
+end )
+
+net.Receive( "GlorifiedBanking_UpdateWithdrawal", function( len, ply )
+    local amount = net.ReadInt( 32 )
+
+    ply:RemoveBankBalance( amount )
+end )
+
+net.Receive( "GlorifiedBanking_UpdateTransfer", function( len, ply )
+    local amount = net.ReadInt( 32 )
+    local player2 = net.ReadEntity()
+
+    net.Start( "GlorifiedBanking_Notification" )
+    net.WriteString( "You have received $" .. string.Comma( amount ) .. " from " .. ply:Nick()  .. "." )
+    net.WriteBool( false )
+    net.Send( player2 )
+
+    ply:TransferBankBalance( tonumber( amount ), player2 )
 end )
