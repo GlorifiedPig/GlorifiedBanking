@@ -1,14 +1,37 @@
 --[[ VERY IMPORTANT NOTICE:
 ONLY USE THESE FUNCTIONS ON SERVERSIDE FILES! YOU WILL FUCK EVERYTHING UP IF YOU DO THEM ON CLIENTSIDE FILES!  ]]--
 
-util.AddNetworkString( "GlorifiedBanking_UpdateBankBalance" )
-util.AddNetworkString( "GlorifiedBanking_UpdateBankBalanceReceive" )
-util.AddNetworkString( "GlorifiedBanking_UpdateWithdrawal" )
-util.AddNetworkString( "GlorifiedBanking_IsAffordableDeposit" )
-util.AddNetworkString( "GlorifiedBanking_IsAffordableDepositReceive" )
-util.AddNetworkString( "GlorifiedBanking_UpdateDeposit" )
-util.AddNetworkString( "GlorifiedBanking_UpdateTransfer" )
-util.AddNetworkString( "GlorifiedBanking_Notification" )
+local NetStrings = {
+    -- updating bank balance
+    "GlorifiedBanking_UpdateBankBalance",
+    "GlorifiedBanking_UpdateBankBalanceReceive",
+
+    -- update withdrawals
+    "GlorifiedBanking_UpdateWithdrawal",
+
+    -- info from deposit
+    "GlorifiedBanking_IsAffordableDeposit",
+    "GlorifiedBanking_UpdateDeposit",
+
+    -- update a transfer
+    "GlorifiedBanking_UpdateTransfer",
+
+    -- send a notification to the client
+    "GlorifiedBanking_Notification",
+
+    -- administration netstrings
+    "GlorifiedBanking_Admin_AddBankBalance",
+    "GlorifiedBanking_Admin_RemoveBankBalance",
+    "GlorifiedBanking_Admin_GetBankBalance",
+
+    -- all "receive" netstrings
+    "GlorifiedBanking_IsAffordableDepositReceive",
+    "GlorifiedBanking_Admin_GetBankBalanceReceive"
+}
+
+for k, v in pairs( NetStrings ) do
+    util.AddNetworkString( v )
+end
 
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking_Banking_InitialSpawnCheck", function( ply )
     if ply:GetPData( "GlorifiedBanking_BankBalance" ) == NIL or ply:GetPData( "GlorifiedBanking_BankBalance") == NULL then
@@ -51,15 +74,11 @@ function plyMeta:RemoveBankBalance( amt )
 end
 
 function plyMeta:ForceAddBankBalance( amt )
-    if amt <= glorifiedbanking.config.MAX_DEPOSIT then
-        self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
-    end
+    self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
 end
 
 function plyMeta:ForceRemoveBankBalance( amt )
-    if amt <= glorifiedbanking.config.MAX_WITHDRAWAL then
-        self:SetPData( "GlorifiedBanking_BankBalance", self:GetPData( "GlorifiedBanking_BankBalance" ) - amt )
-    end
+    self:SetPData( "GlorifiedBanking_BankBalance", self:GetPData( "GlorifiedBanking_BankBalance" ) - amt )
 end
 
 function plyMeta:TransferBankBalance( amt, player2 )
@@ -108,4 +127,46 @@ net.Receive( "GlorifiedBanking_UpdateTransfer", function( len, ply )
     net.Send( player2 )
 
     ply:TransferBankBalance( tonumber( amount ), player2 )
+end )
+
+net.Receive( "GlorifiedBanking_Admin_AddBankBalance", function( len, ply )
+    local amount = net.ReadInt( 32 )
+    local player2 = net.ReadEntity()
+
+    net.Start( "GlorifiedBanking_Notification" )
+    net.WriteString( "You have given $" .. string.Comma( amount ) .. " to " .. player2:Nick()  .. "." )
+    net.WriteBool( false )
+    net.Send( ply )
+
+    net.Start( "GlorifiedBanking_Notification" )
+    net.WriteString( "You have been given $" .. string.Comma( amount ) .. " from administrator " .. ply:Nick()  .. "." )
+    net.WriteBool( false )
+    net.Send( player2 )
+
+    player2:ForceAddBankBalance( amount )
+end )
+
+net.Receive( "GlorifiedBanking_Admin_RemoveBankBalance", function( len, ply )
+    local amount = net.ReadInt( 32 )
+    local player2 = net.ReadEntity()
+
+    net.Start( "GlorifiedBanking_Notification" )
+    net.WriteString( "You have removed $" .. string.Comma( amount ) .. " from " .. player2:Nick()  .. "'s account." )
+    net.WriteBool( false )
+    net.Send( ply )
+
+    net.Start( "GlorifiedBanking_Notification" )
+    net.WriteString( "$" .. string.Comma( amount ) .. " has been removed from your account by administrator " .. ply:Nick()  .. "." )
+    net.WriteBool( true )
+    net.Send( player2 )
+
+    player2:ForceRemoveBankBalance( amount )
+end )
+
+net.Receive( "GlorifiedBanking_Admin_GetBankBalance", function( len, ply )
+    local player2 = net.ReadEntity()
+
+    net.Start( "GlorifiedBanking_Admin_GetBankBalanceReceive" )
+    net.WriteInt( player2:GetBankBalance(), 32 )
+    net.Send( ply )
 end )

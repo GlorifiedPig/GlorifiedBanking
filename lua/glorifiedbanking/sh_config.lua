@@ -14,7 +14,9 @@ glorifiedbanking.config.DERMA_BACKGROUND_COLOR = Color( 0, 0, 0, 150 ) -- The de
 glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION = Color( 35, 35, 35, 255 ) -- The default colour on the Withdrawal, Deposit and Transfer section.
 glorifiedbanking.config.DERMA_BUTTON_COLOUR = Color( 41, 128, 185, 250 ) -- The default button colours of the ATM menu.
 
--- All the usergroups that are able to use administrative commands.
+glorifiedbanking.config.ADMIN_INHERIT_MINIMUM = "superadmin" -- The minimum rank requirement (inherits from "x") to be able to use administrative commands.
+
+-- All the usergroups that are able to use administrative commands. Group must inherit from 'superadmin'
 glorifiedbanking.config.ADMIN_USERGROUPS = {
     "superadmin",
     "owner"
