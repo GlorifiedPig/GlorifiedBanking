@@ -1,7 +1,8 @@
 
 hook.Add( "glorifiedbanking.playerHasAdminPrivileges", "glorifiedbanking", function( ply )
 
-    print(ply:GetUserGroup())
+    if !ply:IsPlayer() or ply == nil then return end
+    if ply:GetUsergroup() == nil then return end
 
     if !glorifiedbanking.config.ADMIN_USERGROUPS[ ply:GetUserGroup() ] then
         return true
