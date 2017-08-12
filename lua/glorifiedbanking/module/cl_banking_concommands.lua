@@ -146,7 +146,7 @@ if HasAdminAccess then
                     net.Receive( "GlorifiedBanking_Admin_GetBankBalanceReceive", function()
                         local amount = net.ReadUInt( 32 )
 
-                        print( v:Nick() .. "'s bank balance is $" .. string.Comma( amount ) .. "." )
+                        print( v:Nick() .. "'s bank balance is $" .. DarkRP.formatMoney( amount ) .. "." )
                     end )
                 end )
                 
