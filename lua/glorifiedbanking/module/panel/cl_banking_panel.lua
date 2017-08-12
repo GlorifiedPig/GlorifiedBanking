@@ -3,7 +3,7 @@ local bankBalance = 0
 local affordableDeposit = false
 
 net.Receive( "GlorifiedBanking_UpdateBankBalanceReceive", function()
-    bankBalance = net.ReadInt( 32 )
+    bankBalance = net.ReadUInt( 32 )
 end )
 
 net.Receive( "GlorifiedBanking_IsAffordableDepositReceive", function()
@@ -68,7 +68,7 @@ local function OpenWithdrawPanel()
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
                 if affordableWithdraw and withdrawAmount <= glorifiedbanking.config.MAX_WITHDRAWAL then
                     net.Start( "GlorifiedBanking_UpdateWithdrawal" )
-                    net.WriteInt( withdrawAmount, 32 )
+                    net.WriteUInt( withdrawAmount, 32 )
                     net.SendToServer()
                     WithdrawFrame:Close()
                     Frame:Close()
@@ -164,13 +164,13 @@ local function OpenDepositPanel()
             depositAmount = math.abs( tonumber( depositText:GetText() ) )
 
             net.Start( "GlorifiedBanking_IsAffordableDeposit" )
-            net.WriteInt( depositAmount, 32 )
+            net.WriteUInt( depositAmount, 32 )
             net.SendToServer()
 
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
                 if affordableDeposit and depositAmount <= glorifiedbanking.config.MAX_DEPOSIT then
                     net.Start( "GlorifiedBanking_UpdateDeposit" )
-                    net.WriteInt( depositAmount, 32 )
+                    net.WriteUInt( depositAmount, 32 )
                     net.SendToServer()
                     DepositFrame:Close()
                     Frame:Close()
@@ -302,7 +302,7 @@ local function OpenTransferPanel()
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
                 if affordableTransfer and transferAmount <= glorifiedbanking.config.MAX_TRANSFER then
                     net.Start( "GlorifiedBanking_UpdateTransfer" )
-                    net.WriteInt( transferAmount, 32 )
+                    net.WriteUInt( transferAmount, 32 )
                     net.WriteEntity( transferringPlayer )
                     net.SendToServer()
                     TransferFrame:Close()

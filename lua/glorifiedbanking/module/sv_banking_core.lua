@@ -92,12 +92,12 @@ net.Receive( "GlorifiedBanking_UpdateBankBalance", function( len, ply )
     local bankBal = ply:GetBankBalance()
 
     net.Start( "GlorifiedBanking_UpdateBankBalanceReceive" )
-    net.WriteInt( bankBal, 32 )
+    net.WriteUInt( bankBal, 32 )
     net.Send( ply )
 end )
 
 net.Receive( "GlorifiedBanking_IsAffordableDeposit", function( len, ply )
-    local amount = net.ReadInt( 32 )
+    local amount = net.ReadUInt( 32 )
     local canAffordW = ply:CanAffordWalletAmount( amount )
 
     net.Start( "GlorifiedBanking_IsAffordableDepositReceive" )
@@ -106,19 +106,19 @@ net.Receive( "GlorifiedBanking_IsAffordableDeposit", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking_UpdateDeposit", function( len, ply )
-    local amount = net.ReadInt( 32 )
+    local amount = net.ReadUInt( 32 )
 
     ply:AddBankBalance( tonumber( amount ) )
 end )
 
 net.Receive( "GlorifiedBanking_UpdateWithdrawal", function( len, ply )
-    local amount = net.ReadInt( 32 )
+    local amount = net.ReadUInt( 32 )
 
     ply:RemoveBankBalance( amount )
 end )
 
 net.Receive( "GlorifiedBanking_UpdateTransfer", function( len, ply )
-    local amount = net.ReadInt( 32 )
+    local amount = net.ReadUInt( 32 )
     local player2 = net.ReadEntity()
 
     net.Start( "GlorifiedBanking_Notification" )
@@ -130,7 +130,7 @@ net.Receive( "GlorifiedBanking_UpdateTransfer", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking_Admin_AddBankBalance", function( len, ply )
-    local amount = net.ReadInt( 32 )
+    local amount = net.ReadUInt( 32 )
     local player2 = net.ReadEntity()
 
     net.Start( "GlorifiedBanking_Notification" )
@@ -147,7 +147,7 @@ net.Receive( "GlorifiedBanking_Admin_AddBankBalance", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking_Admin_RemoveBankBalance", function( len, ply )
-    local amount = net.ReadInt( 32 )
+    local amount = net.ReadUInt( 32 )
     local player2 = net.ReadEntity()
 
     net.Start( "GlorifiedBanking_Notification" )
@@ -167,6 +167,6 @@ net.Receive( "GlorifiedBanking_Admin_GetBankBalance", function( len, ply )
     local player2 = net.ReadEntity()
 
     net.Start( "GlorifiedBanking_Admin_GetBankBalanceReceive" )
-    net.WriteInt( player2:GetBankBalance(), 32 )
+    net.WriteUInt( player2:GetBankBalance(), 32 )
     net.Send( ply )
 end )

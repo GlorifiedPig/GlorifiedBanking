@@ -53,7 +53,7 @@ if HasAdminAccess then
         for k, v in pairs( player.GetAll() ) do
             if string.find( string.lower( v:Nick() ), nick ) then
                 net.Start( "GlorifiedBanking_Admin_AddBankBalance" )
-                net.WriteInt( amount, 32 )
+                net.WriteUInt( amount, 32 )
                 net.WriteEntity( v )
                 net.SendToServer()
                 
@@ -97,7 +97,7 @@ if HasAdminAccess then
         for k, v in pairs( player.GetAll() ) do
             if string.find( string.lower( v:Nick() ), nick ) then
                 net.Start( "GlorifiedBanking_Admin_RemoveBankBalance" )
-                net.WriteInt( amount, 32 )
+                net.WriteUInt( amount, 32 )
                 net.WriteEntity( v )
                 net.SendToServer()
                 
@@ -144,7 +144,7 @@ if HasAdminAccess then
 
                 timer.Simple( ply:Ping() / 1000 + 0.1, function()
                     net.Receive( "GlorifiedBanking_Admin_GetBankBalanceReceive", function()
-                        local amount = net.ReadInt( 32 )
+                        local amount = net.ReadUInt( 32 )
 
                         print( v:Nick() .. "'s bank balance is $" .. string.Comma( amount ) .. "." )
                     end )
