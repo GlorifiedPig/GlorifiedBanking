@@ -20,6 +20,7 @@ function ENT:Initialize()
 end
  
 function ENT:Use( activator, caller, useType )
+	if !self:IsValid() then return end
 	net.Start( "GlorifiedBanking_ToggleATMPanel" )
 	net.Send( activator )
 end

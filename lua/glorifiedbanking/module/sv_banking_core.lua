@@ -118,8 +118,10 @@ net.Receive( "GlorifiedBanking_UpdateWithdrawal", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking_UpdateTransfer", function( len, ply )
-    local amount = net.ReadUInt( 32 )
+    local amount = tonumber( math.abs( net.ReadInt( 32 ) ) )
     local player2 = net.ReadEntity()
+
+    if !ply:CanAffordBankAmount(amount) then return end
 
     net.Start( "GlorifiedBanking_Notification" )
     net.WriteString( "You have received " .. DarkRP.formatMoney( amount ) .. " from " .. ply:Nick()  .. "." )

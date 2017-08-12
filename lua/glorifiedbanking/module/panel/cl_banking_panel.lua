@@ -302,7 +302,7 @@ local function OpenTransferPanel()
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
                 if affordableTransfer and transferAmount <= glorifiedbanking.config.MAX_TRANSFER then
                     net.Start( "GlorifiedBanking_UpdateTransfer" )
-                    net.WriteUInt( transferAmount, 32 )
+                    net.WriteInt( transferAmount, 32 )
                     net.WriteEntity( transferringPlayer )
                     net.SendToServer()
                     TransferFrame:Close()
