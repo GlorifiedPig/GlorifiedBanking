@@ -35,7 +35,7 @@ local function OpenWithdrawPanel()
 	WithdrawFrame:Center()
 	WithdrawFrame:MakePopup()
     WithdrawFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 35, 35, 35, 255 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -66,7 +66,7 @@ local function OpenWithdrawPanel()
             end
 
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
-                if affordableWithdraw and withdrawAmount <= 100000 then
+                if affordableWithdraw and withdrawAmount <= glorifiedbanking.config.MAX_WITHDRAWAL then
                     net.Start( "GlorifiedBanking_UpdateWithdrawal" )
                     net.WriteInt( withdrawAmount, 32 )
                     net.SendToServer()
@@ -74,10 +74,10 @@ local function OpenWithdrawPanel()
                     Frame:Close()
                     notification.AddLegacy("You have successfully withdrawn $" .. string.Comma( withdrawText:GetText() ), NOTIFY_GENERIC, 5)
                     surface.PlaySound("buttons/button14.wav")
-                elseif affordableWithdraw and withdrawAmount > 100000 then
+                elseif affordableWithdraw and withdrawAmount > glorifiedbanking.config.MAX_WITHDRAWAL then
                     WithdrawFrame:Close()
                     Frame:Close()
-                    notification.AddLegacy("You cannot withdraw more than $100,000 at a time.", NOTIFY_ERROR, 5)
+                    notification.AddLegacy("You cannot withdraw more than $" .. string.Comma( glorifiedbanking.config.MAX_WITHDRAWAL ) .. " at a time.", NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 elseif !affordableWithdraw then
                     WithdrawFrame:Close()
@@ -111,7 +111,7 @@ local function OpenWithdrawPanel()
         DoWithdraw()
 	end
     withdraw.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -124,7 +124,7 @@ local function OpenWithdrawPanel()
         WithdrawFrame:Close()
     end
     cancelButton.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 end
@@ -141,7 +141,7 @@ local function OpenDepositPanel()
 	DepositFrame:Center()
 	DepositFrame:MakePopup()
     DepositFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 35, 35, 35, 255 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -168,7 +168,7 @@ local function OpenDepositPanel()
             net.SendToServer()
 
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
-                if affordableDeposit and depositAmount <= 100000 then
+                if affordableDeposit and depositAmount <= glorifiedbanking.config.MAX_DEPOSIT then
                     net.Start( "GlorifiedBanking_UpdateDeposit" )
                     net.WriteInt( depositAmount, 32 )
                     net.SendToServer()
@@ -176,10 +176,10 @@ local function OpenDepositPanel()
                     Frame:Close()
                     notification.AddLegacy("You have successfully deposited $" .. string.Comma( depositText:GetText() ), NOTIFY_GENERIC, 5)
                     surface.PlaySound("buttons/button14.wav")
-                elseif affordableDeposit and depositAmount > 100000 then
+                elseif affordableDeposit and depositAmount > glorifiedbanking.config.MAX_DEPOSIT then
                     DepositFrame:Close()
                     Frame:Close()
-                    notification.AddLegacy("You cannot deposit more than $100,000 at a time.", NOTIFY_ERROR, 5)
+                    notification.AddLegacy("You cannot deposit more than $" .. string.Comma( glorifiedbanking.config.MAX_DEPOSIT ) .. " at a time.", NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 elseif !affordableDeposit then
                     DepositFrame:Close()
@@ -213,7 +213,7 @@ local function OpenDepositPanel()
         DoDeposit()
 	end
     deposit.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -226,7 +226,7 @@ local function OpenDepositPanel()
         DepositFrame:Close()
     end
     cancelButton.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 end
@@ -243,7 +243,7 @@ local function OpenTransferPanel()
 	TransferFrame:Center()
 	TransferFrame:MakePopup()
     TransferFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 35, 35, 35, 255 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -300,7 +300,7 @@ local function OpenTransferPanel()
             end
 
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
-                if affordableTransfer and transferAmount <= 100000 then
+                if affordableTransfer and transferAmount <= glorifiedbanking.config.MAX_TRANSFER then
                     net.Start( "GlorifiedBanking_UpdateTransfer" )
                     net.WriteInt( transferAmount, 32 )
                     net.WriteEntity( transferringPlayer )
@@ -309,10 +309,10 @@ local function OpenTransferPanel()
                     Frame:Close()
                     notification.AddLegacy("You have successfully transferred $" .. string.Comma( tostring( transferAmount ) ) .. " to " .. transferringPlayer:Nick(), NOTIFY_GENERIC, 5)
                     surface.PlaySound("buttons/button14.wav")
-                elseif affordableTransfer and transferAmount > 100000 then
+                elseif affordableTransfer and transferAmount > glorifiedbanking.config.MAX_TRANSFER then
                     TransferFrame:Close()
                     Frame:Close()
-                    notification.AddLegacy("You cannot transfer more than $100,000 at a time.", NOTIFY_ERROR, 5)
+                    notification.AddLegacy("You cannot transfer more than $" .. string.Comma( glorifiedbanking.config.MAX_TRANSFER ) .. " at a time.", NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 elseif !affordableTransfer then
                     TransferFrame:Close()
@@ -346,7 +346,7 @@ local function OpenTransferPanel()
         DoTransfer()
 	end
     transfer.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -359,7 +359,7 @@ local function OpenTransferPanel()
         TransferFrame:Close()
     end
     cancelButton.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 end
@@ -381,7 +381,7 @@ local function OpenBankingPanel()
 	end
     Frame.Paint = function( self, w, h )
         Derma_DrawBackgroundBlur( self, self.startTime )
-	    draw.RoundedBox( 0, 0, 0, w, h, Color( 0, 0, 0, 150 ) )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
@@ -407,7 +407,7 @@ local function OpenBankingPanel()
         WithdrawButton:SetPos( 25, 80 )
         WithdrawButton:SetSize( 200, 50 )
         WithdrawButton.Paint = function( self, w, h )
-	      draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	      draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
           draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
         end
         WithdrawButton.DoClick = function()
@@ -420,7 +420,7 @@ local function OpenBankingPanel()
         DepositButton:SetPos( 275, 80 )
         DepositButton:SetSize( 200, 50 )
         DepositButton.Paint = function( self, w, h )
-	      draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	      draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
           draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
         end
         DepositButton.DoClick = function()
@@ -434,7 +434,7 @@ local function OpenBankingPanel()
         TransferButton:SetPos( 25, 150 )
         TransferButton:SetSize( 450, 50 )
         TransferButton.Paint = function( self, w, h )
-	      draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) )
+	      draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BUTTON_COLOUR )
           draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
         end
         TransferButton.DoClick = function()

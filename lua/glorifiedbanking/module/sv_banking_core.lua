@@ -37,33 +37,33 @@ function plyMeta:CanAffordWalletAmount( amt )
 end
 
 function plyMeta:AddBankBalance( amt )
-    if self:CanAffordWalletAmount( amt ) and amt <= 100000 then
+    if self:CanAffordWalletAmount( amt ) and amt <= glorifiedbanking.config.MAX_DEPOSIT then
         self:addMoney( -amt )
         self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
     end
 end
 
 function plyMeta:RemoveBankBalance( amt )
-    if self:CanAffordBankAmount( amt ) and amt <= 100000 then
+    if self:CanAffordBankAmount( amt ) and amt <= glorifiedbanking.config.MAX_WITHDRAWAL then
         self:addMoney( amt )
         self:SetPData( "GlorifiedBanking_BankBalance", self:GetPData( "GlorifiedBanking_BankBalance" ) - amt )
     end
 end
 
 function plyMeta:ForceAddBankBalance( amt )
-    if amt <= 100000 then
+    if amt <= glorifiedbanking.config.MAX_DEPOSIT then
         self:SetPData( "GlorifiedBanking_BankBalance", self:GetBankBalance() + amt )
     end
 end
 
 function plyMeta:ForceRemoveBankBalance( amt )
-    if amt <= 100000 then
+    if amt <= glorifiedbanking.config.MAX_WITHDRAWAL then
         self:SetPData( "GlorifiedBanking_BankBalance", self:GetPData( "GlorifiedBanking_BankBalance" ) - amt )
     end
 end
 
 function plyMeta:TransferBankBalance( amt, player2 )
-    if self:CanAffordBankAmount( amt ) and amt <= 100000 then
+    if self:CanAffordBankAmount( amt ) and amt <= glorifiedbanking.config.MAX_TRANSFER then
         self:ForceRemoveBankBalance( amt )
         player2:ForceAddBankBalance( amt )
     end
