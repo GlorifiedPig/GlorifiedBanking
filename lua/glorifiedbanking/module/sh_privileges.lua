@@ -5,5 +5,5 @@ glorifiedbanking.privilege = {
 
 CAMI.RegisterPrivilege {
     Name = glorifiedbanking.privilege.CAMI_CAN_USE_ADMIN_COMMANDS,
-    MinAccess = "superadmin"
+    MinAccess = glorifiedbanking.config.ADMIN_INHERIT_MINIMUM
 }
