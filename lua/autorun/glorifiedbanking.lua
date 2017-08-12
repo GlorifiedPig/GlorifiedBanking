@@ -6,30 +6,55 @@ glorifiedbanking = glorifiedbanking or {
     NICE_NAME = "GlorifiedBanking"
 }
 
-local function findInFolder( currentFolder, ignoreFolder )
-    local files, folders = file.Find( currentFolder .. "*", "LUA" )
 
-    if not ignoreFolder then
-    	for _, File in ipairs( files ) do
-    		if File:find( "sh_" ) then
-    			if SERVER then AddCSLuaFile( currentFolder .. File ) end
-    			include( currentFolder .. File )
-    		end
-    	end
+local version = 1
 
-        for _, File in pairs( files ) do
-    		if SERVER and File:find( "sv_" ) then
-    			include( currentFolder .. File )
-    		elseif File:find( "cl_" ) then
-    			if SERVER then AddCSLuaFile( currentFolder .. File )
-    			else include( currentFolder .. File ) end
-    		end
-    	end
+if not frile or frile.VERSION < version then
+    frile = {
+        VERSION = version,
+
+        STATE_SERVER = 0,
+        STATE_CLIENT = 1,
+        STATE_SHARED = 2
+    }
+
+    function frile.includeFile( filename, state )
+        if state == frile.STATE_SHARED or filename:find( "sh_" ) then
+            if SERVER then AddCSLuaFile( filename ) end
+            include( filename )
+        elseif state == frile.STATE_SERVER or SERVER and filename:find( "sv_" ) then
+            include( filename )
+        elseif state == frile.STATE_CLIENT or filename:find( "cl_" ) then
+            if SERVER then AddCSLuaFile( filename )
+            else include( filename ) end
+        end
     end
 
-    for _, folder in ipairs( folders ) do
-    	findInFolder( currentFolder .. folder .. "/" )
+    function frile.includeFolder( currentFolder, ignoreFilesInFolder, ignoreFoldersInFolder )
+        if file.Exists( currentFolder .. "sh_frile.lua", "LUA" ) then
+            frile.includeFile( currentFolder .. "sh_frile.lua" )
+
+            return
+        end
+
+        local files, folders = file.Find( currentFolder .. "*", "LUA" )
+
+        if not ignoreFilesInFolder then
+            for _, File in ipairs( files ) do
+                frile.includeFile( currentFolder .. File )
+            end
+        end
+
+        if not ignoreFoldersInFolder then
+            for _, folder in ipairs( folders ) do
+                frile.includeFolder( currentFolder .. folder .. "/" )
+            end
+        end
     end
 end
 
-findInFolder( "glorifiedbanking/" )
+-- Do not adjust the load order. You must first load the libraries, than module and then languages.
+frile.includeFolder( "glorifiedbanking/", false, true )
+frile.includeFolder( "glorifiedbanking/libraries/" )
+frile.includeFolder( "glorifiedbanking/module/" )
+frile.includeFolder( "glorifiedbanking/languages/" )

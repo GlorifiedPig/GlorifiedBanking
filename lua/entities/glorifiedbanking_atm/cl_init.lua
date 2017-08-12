@@ -27,7 +27,7 @@ function ENT:Draw()
 	Ang:RotateAroundAxis( Ang:Right(), 270 )
 
 	cam.Start3D2D( Pos + Ang:Up() * 8 + Ang:Forward() * -14.2 + Ang:Right() * -59, Ang, 0.11 )
-		draw.WordBox( 0, 0, 0, "ATM Machine", "RobotoHuge", Color( 55, 55, 55, 155 ), glorifiedbanking.config.ATM_3D2D_COLOUR )
+		draw.WordBox( 0, 0, 0, glorifiedbanking.getPhrase( "atmMachine" ), "RobotoHuge", Color( 55, 55, 55, 155 ), glorifiedbanking.config.ATM_3D2D_COLOUR )
 	cam.End3D2D()
 
 	-- Second 3D2D (Floating Dollar Sign)
