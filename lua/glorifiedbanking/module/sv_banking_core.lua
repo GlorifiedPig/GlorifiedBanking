@@ -124,7 +124,7 @@ net.Receive( "GlorifiedBanking_UpdateTransfer", function( len, ply )
     if !ply:CanAffordBankAmount(amount) then return end
 
     net.Start( "GlorifiedBanking_Notification" )
-    net.WriteString( "You have received " .. DarkRP.formatMoney( amount ) .. " from " .. ply:Nick()  .. "." )
+    net.WriteString( glorifiedbanking.getPhrase("receivedMoney", DarkRP.formatMoney( amount ), ply:Nick()) )
     net.WriteBool( false )
     net.Send( player2 )
 
@@ -136,12 +136,12 @@ net.Receive( "GlorifiedBanking_Admin_AddBankBalance", function( len, ply )
     local player2 = net.ReadEntity()
 
     net.Start( "GlorifiedBanking_Notification" )
-    net.WriteString( "You have given " .. DarkRP.formatMoney( amount ) .. " to " .. player2:Nick()  .. "." )
+    net.WriteString( glorifiedbanking.getPhrase("givenMoney", DarkRP.formatMoney(amount), player2:Nick()))
     net.WriteBool( false )
     net.Send( ply )
 
     net.Start( "GlorifiedBanking_Notification" )
-    net.WriteString( "You have been given " .. DarkRP.formatMoney( amount ) .. " from administrator " .. ply:Nick()  .. "." )
+    net.WriteString( glorifiedbanking.getPhrase("givenFromAdmin", DarkRP.formatMoney(amount), ply:Nick()))
     net.WriteBool( false )
     net.Send( player2 )
 
@@ -153,12 +153,12 @@ net.Receive( "GlorifiedBanking_Admin_RemoveBankBalance", function( len, ply )
     local player2 = net.ReadEntity()
 
     net.Start( "GlorifiedBanking_Notification" )
-    net.WriteString( "You have removed " .. DarkRP.formatMoney( amount ) .. " from " .. player2:Nick()  .. "'s account." )
+    net.WriteString( glorifiedbanking.getPhrase("removedMoney", DarkRP.formatMoney(amount), player2:Nick()))
     net.WriteBool( false )
     net.Send( ply )
 
     net.Start( "GlorifiedBanking_Notification" )
-    net.WriteString( DarkRP.formatMoney( amount ) .. " has been removed from your account by administrator " .. ply:Nick()  .. "." )
+    net.WriteString(glorifiedbanking.getPhrase("removedFromAdmin", DarkRP.formatMoney( amount ), ply:Nick()))
     net.WriteBool( true )
     net.Send( player2 )
 
