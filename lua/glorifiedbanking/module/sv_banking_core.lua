@@ -1,5 +1,6 @@
---[[ VERY IMPORTANT NOTICE:
-ONLY USE THESE FUNCTIONS ON SERVERSIDE FILES! YOU WILL FUCK EVERYTHING UP IF YOU DO THEM ON CLIENTSIDE FILES!  ]]--
+--[[ Important Notice:
+Only use the following functions serverside. If you need to do it clientside, please make sure to use a Net Message with UInts instead
+of regular Ints. Also be sure that it is not exploitable.]]--
 
 local NetStrings = {
     -- updating bank balance
@@ -124,7 +125,7 @@ net.Receive( "GlorifiedBanking_UpdateTransfer", function( len, ply )
     if !ply:CanAffordBankAmount(amount) then return end
 
     net.Start( "GlorifiedBanking_Notification" )
-    net.WriteString( glorifiedbanking.getPhrase("receivedMoney", DarkRP.formatMoney( amount ), ply:Nick()) )
+    net.WriteString( glorifiedbanking.getPhrase( "receivedMoney", DarkRP.formatMoney( amount ), ply:Nick() ) )
     net.WriteBool( false )
     net.Send( player2 )
 
@@ -134,6 +135,8 @@ end )
 net.Receive( "GlorifiedBanking_Admin_AddBankBalance", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local player2 = net.ReadEntity()
+        
+    if !ply:IsAdmin() then return end -- Temporary admin check to fix network exploits
 
     net.Start( "GlorifiedBanking_Notification" )
     net.WriteString( glorifiedbanking.getPhrase("givenMoney", DarkRP.formatMoney(amount), player2:Nick()))
@@ -141,7 +144,7 @@ net.Receive( "GlorifiedBanking_Admin_AddBankBalance", function( len, ply )
     net.Send( ply )
 
     net.Start( "GlorifiedBanking_Notification" )
-    net.WriteString( glorifiedbanking.getPhrase("givenFromAdmin", DarkRP.formatMoney(amount), ply:Nick()))
+    net.WriteString( glorifiedbanking.getPhrase( "givenFromAdmin", DarkRP.formatMoney( amount ), ply:Nick() ) )
     net.WriteBool( false )
     net.Send( player2 )
 
@@ -151,6 +154,8 @@ end )
 net.Receive( "GlorifiedBanking_Admin_RemoveBankBalance", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local player2 = net.ReadEntity()
+        
+    if !ply:IsAdmin() then return end -- Temporary admin check to fix network exploits
 
     net.Start( "GlorifiedBanking_Notification" )
     net.WriteString( glorifiedbanking.getPhrase("removedMoney", DarkRP.formatMoney(amount), player2:Nick()))
@@ -167,6 +172,8 @@ end )
 
 net.Receive( "GlorifiedBanking_Admin_GetBankBalance", function( len, ply )
     local player2 = net.ReadEntity()
+        
+    if !ply:IsAdmin() then return end -- Temporary admin check to fix network exploits
 
     net.Start( "GlorifiedBanking_Admin_GetBankBalanceReceive" )
     net.WriteUInt( player2:GetBankBalance(), 32 )
