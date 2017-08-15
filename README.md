@@ -14,6 +14,6 @@ Work in Progress
 | player :: Player          | The player attempting to use admin commands |
 
 ### Commands
-'atms_save' to save atms
+`atms_save` to save all ATMs on current map
 
-'atms_remove' to remove atms
+`atms_reset` to reset all ATMs on current map
