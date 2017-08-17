@@ -7,6 +7,7 @@ surface.CreateFont( "VerdanaCustom", {
 
 local bankBalance = 0
 local affordableDeposit = false
+local atmEntity
 
 net.Receive( "GlorifiedBanking_UpdateBankBalanceReceive", function()
     bankBalance = net.ReadUInt( 32 )
@@ -719,9 +720,11 @@ local function OpenBankingPanel()
     Frame:MakePopup()
     Frame.Init = function( self )
         self.finishedAnimation = false
+        self.finishedCloseAnimation = false
         self.startTime = SysTime()
     end
     Frame.Think = function( self, w, h )
+        if !atmEntity:IsValid() or ply:GetPos():Distance( atmEntity:GetPos() ) > 100 then if !self.finishedCloseAnimation then Frame:Close() end return end
         if self.finishedAnimation then return end
 
         if Frame.y == ScrH() then
@@ -730,12 +733,16 @@ local function OpenBankingPanel()
         end
     end
     Frame.OnClose = function( self )
+        if self.finishedCloseAnimation then return end
+
         Frame:SetVisible( true )
 
         Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
             Frame:Close()
             Frame:SetVisible( false )
         end )
+
+        self.finishedCloseAnimation = true
     end
     Frame.Paint = function( self, w, h )
         Derma_DrawBackgroundBlur( self, self.startTime )
@@ -909,5 +916,6 @@ local function OpenBankingPanel()
 end
 
 net.Receive( "GlorifiedBanking_ToggleATMPanel", function()
+    atmEntity = net.ReadEntity()
     OpenBankingPanel()
 end )

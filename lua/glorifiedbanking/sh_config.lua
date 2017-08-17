@@ -1,5 +1,5 @@
 
-glorifiedbanking.config.CONFIGURER_CONFIG_ENABLED = true -- If this is enabled, you use the in-game configurer. Changing the configs below will be pointless.
+glorifiedbanking.config.CONFIGURER_CONFIG_ENABLED = true -- [Temporarily Disabled] If this is enabled, you use the in-game configurer. Changing the configs below will be pointless.
 
 glorifiedbanking.config.MAX_WITHDRAWAL = 100000 -- The maximum amount you can withdraw.
 glorifiedbanking.config.MAX_DEPOSIT = 100000 -- The maximum amount you can deposit.
@@ -11,7 +11,7 @@ glorifiedbanking.config.ATM_3D2D_COLOUR_DOLLAR = Color( 0, 255, 0, 255 ) -- The 
 glorifiedbanking.config.ATM_3D2D_ROTATION_SPEED = 0 -- The rotation speed of the floating dollar sign.
 
 glorifiedbanking.config.DERMA_BACKGROUND_COLOR = Color( 0, 0, 0, 150 ) -- The default colour of the background on the Derma menu.
-glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION = Color( 35, 35, 35, 225 ) -- The default colour on the Withdrawal, Deposit and Transfer section.
+glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION = Color( 35, 35, 35, 255 ) -- The default colour on the Withdrawal, Deposit and Transfer section.
 glorifiedbanking.config.DERMA_BUTTON_COLOUR = Color( 155, 155, 155, 25 ) -- The default button colours of the ATM menu. We suggest you keep the alpha value as low as possible.
 
 glorifiedbanking.config.ADMIN_INHERIT_MINIMUM = "superadmin" -- The minimum rank requirement (inherits from "x") to be able to use administrative commands.
