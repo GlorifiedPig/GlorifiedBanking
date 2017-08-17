@@ -1,7 +1,7 @@
 
 surface.CreateFont( "VerdanaCustom", {
     font = "Verdana",
-    size = 13,
+    size = 16,
     weight = 500,
 } )
 
@@ -45,6 +45,21 @@ local function OpenWithdrawPanel()
         self.finishedAnimation = false
     end
     WithdrawFrame.Think = function( self, w, h )
+        if !Frame:IsVisible() then
+            self:Close()
+
+            return
+        end
+
+        if input.IsKeyDown( KEY_ESCAPE ) then
+            if !self.finishedCloseAnimation then
+                self:Close()
+                RunConsoleCommand( "cancelselect" )
+            end
+
+            return
+        end
+
         if self.finishedAnimation then return end
         if WithdrawFrame.y == ScrH() then
             WithdrawFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH() / 2 - boxH / 2, 0.5 )
@@ -183,13 +198,20 @@ local function OpenWithdrawPanel()
 
                 draw.RoundedBox( 0, 0, 0, w, h, c )
             end
-        else
+        elseif self:IsHovered() && !self:IsDown() then
             self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
             self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
             self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
             self.RecentHover = true
+        else
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+               self.RecentHover = true
         end
 
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
@@ -233,13 +255,20 @@ local function OpenWithdrawPanel()
 
                 draw.RoundedBox( 0, 0, 0, w, h, c )
             end
-        else
+        elseif self:IsHovered() && !self:IsDown() then
             self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
             self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
             self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
             self.RecentHover = true
+        else
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+               self.RecentHover = true
         end
 
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
@@ -261,6 +290,21 @@ local function OpenDepositPanel()
         self.finishedAnimation = false
     end
     DepositFrame.Think = function( self, w, h )
+        if !Frame:IsVisible() then
+            self:Close()
+
+            return
+        end
+
+        if input.IsKeyDown( KEY_ESCAPE ) then
+            if !self.finishedCloseAnimation then
+                self:Close()
+                RunConsoleCommand( "cancelselect" )
+            end
+
+            return
+        end
+
         if self.finishedAnimation then return end
         if DepositFrame.y == ScrH() then
             DepositFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH() / 2 - boxH / 2, 0.5 )
@@ -395,13 +439,20 @@ local function OpenDepositPanel()
 
                 draw.RoundedBox( 0, 0, 0, w, h, c )
             end
-        else
+        elseif self:IsHovered() && !self:IsDown() then
             self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
             self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
             self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
             self.RecentHover = true
+        else
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+               self.RecentHover = true
         end
 
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
@@ -445,13 +496,20 @@ local function OpenDepositPanel()
 
                 draw.RoundedBox( 0, 0, 0, w, h, c )
             end
-        else
+        elseif self:IsHovered() && !self:IsDown() then
             self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
             self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
             self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
             self.RecentHover = true
+        else
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+               self.RecentHover = true
         end
 
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
@@ -473,6 +531,21 @@ local function OpenTransferPanel()
         self.finishedAnimation = false
     end
     TransferFrame.Think = function( self, w, h )
+        if !Frame:IsVisible() then
+            self:Close()
+
+            return
+        end
+
+        if input.IsKeyDown( KEY_ESCAPE ) then
+            if !self.finishedCloseAnimation then
+                self:Close()
+                RunConsoleCommand( "cancelselect" )
+            end
+
+            return
+        end
+
         if self.finishedAnimation then return end
         if TransferFrame.y == ScrH() then
             TransferFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH() / 2 - boxH / 2, 0.5 )
@@ -641,13 +714,20 @@ local function OpenTransferPanel()
 
                 draw.RoundedBox( 0, 0, 0, w, h, c )
             end
-        else
+        elseif self:IsHovered() && !self:IsDown() then
             self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
             self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
             self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
             self.RecentHover = true
+        else
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+               self.RecentHover = true
         end
 
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
@@ -691,13 +771,20 @@ local function OpenTransferPanel()
 
                 draw.RoundedBox( 0, 0, 0, w, h, c )
             end
-        else
+        elseif self:IsHovered() && !self:IsDown() then
             self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
             self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
             self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
             self.RecentHover = true
+        else
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+               self.RecentHover = true
         end
 
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
@@ -724,7 +811,23 @@ local function OpenBankingPanel()
         self.startTime = SysTime()
     end
     Frame.Think = function( self, w, h )
-        if !atmEntity:IsValid() or ply:GetPos():Distance( atmEntity:GetPos() ) > 100 then if !self.finishedCloseAnimation then Frame:Close() end return end
+        if !atmEntity:IsValid() or ply:GetPos():Distance( atmEntity:GetPos() ) > 100 or !ply:Alive() then
+            if !self.finishedCloseAnimation then
+                Frame:Close()
+            end
+            
+            return
+        end
+        
+        if input.IsKeyDown( KEY_ESCAPE ) then
+            if !self.finishedCloseAnimation then
+                Frame:Close()
+                RunConsoleCommand( "cancelselect" )
+            end
+
+            return
+        end
+
         if self.finishedAnimation then return end
 
         if Frame.y == ScrH() then
@@ -801,10 +904,17 @@ local function OpenBankingPanel()
 
                     draw.RoundedBox( 0, 0, 0, w, h, c )
                 end
-            else
+            elseif self:IsHovered() && !self:IsDown() then
                 self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
                 self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
+                draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+                self.RecentHover = true
+            else
+                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                 self.RecentHover = true
@@ -849,10 +959,17 @@ local function OpenBankingPanel()
 
                     draw.RoundedBox( 0, 0, 0, w, h, c )
                 end
-            else
+            elseif self:IsHovered() && !self:IsDown() then
                 self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
                 self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
+                draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+                self.RecentHover = true
+            else
+                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                 self.RecentHover = true
@@ -898,10 +1015,17 @@ local function OpenBankingPanel()
 
                     draw.RoundedBox( 0, 0, 0, w, h, c )
                 end
-            else
+            elseif self:IsHovered() && !self:IsDown() then
                 self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, 255 )
                 self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, 255 )
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, 255 )
+                draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
+
+                self.RecentHover = true
+            else
+                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
+                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
+                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                 self.RecentHover = true

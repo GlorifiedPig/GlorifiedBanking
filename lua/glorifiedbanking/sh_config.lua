@@ -12,7 +12,9 @@ glorifiedbanking.config.ATM_3D2D_ROTATION_SPEED = 0 -- The rotation speed of the
 
 glorifiedbanking.config.DERMA_BACKGROUND_COLOR = Color( 0, 0, 0, 150 ) -- The default colour of the background on the Derma menu.
 glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION = Color( 35, 35, 35, 255 ) -- The default colour on the Withdrawal, Deposit and Transfer section.
-glorifiedbanking.config.DERMA_BUTTON_COLOUR = Color( 155, 155, 155, 25 ) -- The default button colours of the ATM menu. We suggest you keep the alpha value as low as possible.
+glorifiedbanking.config.DERMA_BUTTON_COLOUR = Color( 155, 155, 155, 35 ) -- The default button colours of the ATM menu. We suggest you keep the alpha value as low as possible.
+
+glorifiedbanking.config.DERMA_ONCLICK_COLOUR = Color( 55, 55, 255 ) -- The colour that is lerped to when the button is clicked.
 
 glorifiedbanking.config.ADMIN_INHERIT_MINIMUM = "superadmin" -- The minimum rank requirement (inherits from "x") to be able to use administrative commands.
 
