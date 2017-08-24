@@ -2,7 +2,7 @@
 glorifiedBanking = glorifiedBanking or {
     config = {},
 
-    IDENTIFIER = "glorifiedBanking",
+    IDENTIFIER = "glorifiedbanking",
     NICE_NAME = "glorifiedBanking"
 }
 
