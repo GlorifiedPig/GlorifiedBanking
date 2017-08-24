@@ -1,9 +1,9 @@
 
-glorifiedbanking.privilege = {
-    CAMI_CAN_USE_ADMIN_COMMANDS = "glorifiedbanking_hasAdminPrivileges"
+glorifiedBanking.privilege = {
+    CAMI_CAN_USE_ADMIN_COMMANDS = "glorifiedBanking_hasAdminPrivileges"
 }
 
 CAMI.RegisterPrivilege {
-    Name = glorifiedbanking.privilege.CAMI_CAN_USE_ADMIN_COMMANDS,
-    MinAccess = glorifiedbanking.config.ADMIN_INHERIT_MINIMUM
+    Name = glorifiedBanking.privilege.CAMI_CAN_USE_ADMIN_COMMANDS,
+    MinAccess = glorifiedBanking.config.ADMIN_INHERIT_MINIMUM
 }

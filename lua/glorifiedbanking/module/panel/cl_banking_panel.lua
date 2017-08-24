@@ -9,15 +9,15 @@ local bankBalance = 0
 local affordableDeposit = false
 local atmEntity
 
-net.Receive( "GlorifiedBanking_UpdateBankBalanceReceive", function()
+net.Receive( "glorifiedBanking_UpdateBankBalanceReceive", function()
     bankBalance = net.ReadUInt( 32 )
 end )
 
-net.Receive( "GlorifiedBanking_IsAffordableDepositReceive", function()
+net.Receive( "glorifiedBanking_IsAffordableDepositReceive", function()
     affordableDeposit = net.ReadBool()
 end )
 
-net.Receive( "GlorifiedBanking_Notification", function()
+net.Receive( "glorifiedBanking_Notification", function()
     local text = net.ReadString()
     local errorMessage = net.ReadBool()
 
@@ -36,7 +36,7 @@ local function OpenWithdrawPanel()
     local boxW, boxH = 450, 115
 	local WithdrawFrame = vgui.Create( "DFrame" )
 	WithdrawFrame:SetSize( boxW, boxH )
-	WithdrawFrame:SetTitle( glorifiedbanking.getPhrase("withdrawalTitle") )
+	WithdrawFrame:SetTitle( glorifiedBanking.getPhrase("withdrawalTitle") )
 	WithdrawFrame:SetDraggable( false )
 	WithdrawFrame:ShowCloseButton( false )
 	WithdrawFrame:SetPos( ScrW() / 2 - boxW / 2, ScrH() )
@@ -74,12 +74,12 @@ local function OpenWithdrawPanel()
         return false
     end
     WithdrawFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
 	surface.SetFont( "VerdanaCustom" )
-	local disbandMessage = glorifiedbanking.getPhrase("withdrawAmount")
+	local disbandMessage = glorifiedBanking.getPhrase("withdrawAmount")
 	local textW, textH = surface.GetTextSize( disbandMessage )
 	local disbandLabel = vgui.Create( "DLabel", WithdrawFrame )
 	disbandLabel:SetText( disbandMessage )
@@ -89,7 +89,7 @@ local function OpenWithdrawPanel()
 
     local withdrawText = vgui.Create( "DTextEntry", WithdrawFrame )
     withdrawText:SetFont( "VerdanaCustom" )
-    withdrawText:SetText( glorifiedbanking.getPhrase("amount") )
+    withdrawText:SetText( glorifiedBanking.getPhrase("amount") )
     withdrawText:SetSize( 100, 20 )
     withdrawText:SetPos( boxW / 2 - 100 / 2, 50 )
     local function DoWithdraw()
@@ -106,8 +106,8 @@ local function OpenWithdrawPanel()
             end
 
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
-                if affordableWithdraw and withdrawAmount <= glorifiedbanking.config.MAX_WITHDRAWAL then
-                    net.Start( "GlorifiedBanking_UpdateWithdrawal" )
+                if affordableWithdraw and withdrawAmount <= glorifiedBanking.config.MAX_WITHDRAWAL then
+                    net.Start( "glorifiedBanking_UpdateWithdrawal" )
                     net.WriteUInt( withdrawAmount, 32 )
                     net.SendToServer()
                     WithdrawFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -116,16 +116,16 @@ local function OpenWithdrawPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("withdrawSuccess", DarkRP.formatMoney( withdrawAmount )), NOTIFY_GENERIC, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("withdrawSuccess", DarkRP.formatMoney( withdrawAmount )), NOTIFY_GENERIC, 5)
                     surface.PlaySound("buttons/button14.wav")
-                elseif affordableWithdraw and withdrawAmount > glorifiedbanking.config.MAX_WITHDRAWAL then
+                elseif affordableWithdraw and withdrawAmount > glorifiedBanking.config.MAX_WITHDRAWAL then
                     WithdrawFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         WithdrawFrame:Close()
                     end )
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("withdrawCannotMoreThan", DarkRP.formatMoney( glorifiedbanking.config.MAX_WITHDRAWAL )), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("withdrawCannotMoreThan", DarkRP.formatMoney( glorifiedBanking.config.MAX_WITHDRAWAL )), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 elseif !affordableWithdraw then
                     WithdrawFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -134,7 +134,7 @@ local function OpenWithdrawPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("cannotafford"), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("cannotafford"), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 else
                     WithdrawFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -143,7 +143,7 @@ local function OpenWithdrawPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("error"), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("error"), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 end
             end )
@@ -154,7 +154,7 @@ local function OpenWithdrawPanel()
             Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                 Frame:Close()
             end )
-            notification.AddLegacy(glorifiedbanking.getPhrase("validnumber"), NOTIFY_ERROR, 5)
+            notification.AddLegacy(glorifiedBanking.getPhrase("validnumber"), NOTIFY_ERROR, 5)
             surface.PlaySound("buttons/button2.wav")
         end
     end
@@ -165,7 +165,7 @@ local function OpenWithdrawPanel()
 	local withdraw = vgui.Create( "DButton", WithdrawFrame )
     withdraw:SetFont( "VerdanaCustom" )
     withdraw:SetTextColor( Color( 255, 255, 255 ) )
-	withdraw:SetText(glorifiedbanking.getPhrase("withdrawal"))
+	withdraw:SetText(glorifiedBanking.getPhrase("withdrawal"))
 	withdraw:SetSize( 80, 20 )
 	withdraw:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
 	withdraw.DoClick = function()
@@ -173,12 +173,12 @@ local function OpenWithdrawPanel()
 	end
     withdraw.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
     withdraw.Paint = function( self, w, h )
-        local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+        local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
         if !self:IsHovered() then
             if self.RecentHover then
@@ -187,7 +187,7 @@ local function OpenWithdrawPanel()
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                 if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                     self.RecentHover = false
                 end
@@ -206,9 +206,9 @@ local function OpenWithdrawPanel()
 
             self.RecentHover = true
         else
-            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                self.RecentHover = true
@@ -220,7 +220,7 @@ local function OpenWithdrawPanel()
     local cancelButton = vgui.Create( "DButton", WithdrawFrame )
     cancelButton:SetFont( "VerdanaCustom" )
     cancelButton:SetTextColor( Color( 255, 255, 255 ) )
-	cancelButton:SetText(glorifiedbanking.getPhrase("cancel"))
+	cancelButton:SetText(glorifiedBanking.getPhrase("cancel"))
 	cancelButton:SetSize( 80, 20 )
 	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
 	cancelButton.DoClick = function()
@@ -230,12 +230,12 @@ local function OpenWithdrawPanel()
     end
     cancelButton.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
     cancelButton.Paint = function( self, w, h )
-        local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+        local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
         if !self:IsHovered() then
             if self.RecentHover then
@@ -244,7 +244,7 @@ local function OpenWithdrawPanel()
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                 if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                     self.RecentHover = false
                 end
@@ -263,9 +263,9 @@ local function OpenWithdrawPanel()
 
             self.RecentHover = true
         else
-            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                self.RecentHover = true
@@ -281,7 +281,7 @@ local function OpenDepositPanel()
     local boxW, boxH = 450, 115
 	local DepositFrame = vgui.Create( "DFrame" )
 	DepositFrame:SetSize( boxW, boxH )
-	DepositFrame:SetTitle( glorifiedbanking.getPhrase("depositTitle") )
+	DepositFrame:SetTitle( glorifiedBanking.getPhrase("depositTitle") )
 	DepositFrame:SetDraggable( false )
 	DepositFrame:ShowCloseButton( false )
 	DepositFrame:SetPos( ScrW() / 2 - boxW / 2, ScrH() )
@@ -319,12 +319,12 @@ local function OpenDepositPanel()
         return false
     end
     DepositFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
 	surface.SetFont( "VerdanaCustom" )
-	local disbandMessage = glorifiedbanking.getPhrase("depositAmount")
+	local disbandMessage = glorifiedBanking.getPhrase("depositAmount")
 	local textW, textH = surface.GetTextSize( disbandMessage )
 	local disbandLabel = vgui.Create( "DLabel", DepositFrame )
 	disbandLabel:SetText( disbandMessage )
@@ -334,7 +334,7 @@ local function OpenDepositPanel()
 
     local depositText = vgui.Create( "DTextEntry", DepositFrame )
     depositText:SetFont( "VerdanaCustom" )
-    depositText:SetText( glorifiedbanking.getPhrase( "amount" ) )
+    depositText:SetText( glorifiedBanking.getPhrase( "amount" ) )
     depositText:SetSize( 100, 20 )
     depositText:SetPos( boxW / 2 - 100 / 2, 50 )
     local function DoDeposit()
@@ -342,13 +342,13 @@ local function OpenDepositPanel()
         if isnumber( depositAmount ) then
             depositAmount = math.abs( tonumber( depositText:GetText() ) )
 
-            net.Start( "GlorifiedBanking_IsAffordableDeposit" )
+            net.Start( "glorifiedBanking_IsAffordableDeposit" )
             net.WriteUInt( depositAmount, 32 )
             net.SendToServer()
 
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
-                if affordableDeposit and depositAmount <= glorifiedbanking.config.MAX_DEPOSIT then
-                    net.Start( "GlorifiedBanking_UpdateDeposit" )
+                if affordableDeposit and depositAmount <= glorifiedBanking.config.MAX_DEPOSIT then
+                    net.Start( "glorifiedBanking_UpdateDeposit" )
                     net.WriteUInt( depositAmount, 32 )
                     net.SendToServer()
                     DepositFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -357,16 +357,16 @@ local function OpenDepositPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("depositSuccess", DarkRP.formatMoney( depositAmount )), NOTIFY_GENERIC, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("depositSuccess", DarkRP.formatMoney( depositAmount )), NOTIFY_GENERIC, 5)
                     surface.PlaySound("buttons/button14.wav")
-                elseif affordableDeposit and depositAmount > glorifiedbanking.config.MAX_DEPOSIT then
+                elseif affordableDeposit and depositAmount > glorifiedBanking.config.MAX_DEPOSIT then
                     DepositFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         DepositFrame:Close()
                     end )
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("depositCannotMoreThan", DarkRP.formatMoney( glorifiedbanking.config.MAX_DEPOSIT ) ), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("depositCannotMoreThan", DarkRP.formatMoney( glorifiedBanking.config.MAX_DEPOSIT ) ), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 elseif !affordableDeposit then
                     DepositFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -375,7 +375,7 @@ local function OpenDepositPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("cannotafford"), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("cannotafford"), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 else
                     DepositFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -384,7 +384,7 @@ local function OpenDepositPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("error"), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("error"), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 end
             end)
@@ -395,7 +395,7 @@ local function OpenDepositPanel()
             Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                 Frame:Close()
             end )
-            notification.AddLegacy(glorifiedbanking.getPhrase("validnumber"), NOTIFY_ERROR, 5)
+            notification.AddLegacy(glorifiedBanking.getPhrase("validnumber"), NOTIFY_ERROR, 5)
             surface.PlaySound("buttons/button2.wav")
         end
     end
@@ -406,7 +406,7 @@ local function OpenDepositPanel()
 	local deposit = vgui.Create( "DButton", DepositFrame )
     deposit:SetFont( "VerdanaCustom" )
     deposit:SetTextColor( Color( 255, 255, 255 ) )
-	deposit:SetText(glorifiedbanking.getPhrase("deposit"))
+	deposit:SetText(glorifiedBanking.getPhrase("deposit"))
 	deposit:SetSize( 80, 20 )
 	deposit:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
 	deposit.DoClick = function()
@@ -414,12 +414,12 @@ local function OpenDepositPanel()
 	end
     deposit.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
     deposit.Paint = function( self, w, h )
-        local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+        local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
         if !self:IsHovered() then
             if self.RecentHover then
@@ -428,7 +428,7 @@ local function OpenDepositPanel()
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                 if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                     self.RecentHover = false
                 end
@@ -447,9 +447,9 @@ local function OpenDepositPanel()
 
             self.RecentHover = true
         else
-            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                self.RecentHover = true
@@ -461,7 +461,7 @@ local function OpenDepositPanel()
     local cancelButton = vgui.Create( "DButton", DepositFrame )
     cancelButton:SetFont( "VerdanaCustom" )
     cancelButton:SetTextColor( Color( 255, 255, 255 ) )
-	cancelButton:SetText(glorifiedbanking.getPhrase("cancel"))
+	cancelButton:SetText(glorifiedBanking.getPhrase("cancel"))
 	cancelButton:SetSize( 80, 20 )
 	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
 	cancelButton.DoClick = function()
@@ -471,12 +471,12 @@ local function OpenDepositPanel()
     end
     cancelButton.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
     cancelButton.Paint = function( self, w, h )
-        local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+        local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
         if !self:IsHovered() then
             if self.RecentHover then
@@ -485,7 +485,7 @@ local function OpenDepositPanel()
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                 if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                     self.RecentHover = false
                 end
@@ -504,9 +504,9 @@ local function OpenDepositPanel()
 
             self.RecentHover = true
         else
-            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                self.RecentHover = true
@@ -522,7 +522,7 @@ local function OpenTransferPanel()
     local boxW, boxH = 450, 142
 	local TransferFrame = vgui.Create( "DFrame" )
 	TransferFrame:SetSize( boxW, boxH )
-	TransferFrame:SetTitle( glorifiedbanking.getPhrase("transferTitle") )
+	TransferFrame:SetTitle( glorifiedBanking.getPhrase("transferTitle") )
 	TransferFrame:SetDraggable( false )
 	TransferFrame:ShowCloseButton( false )
 	TransferFrame:SetPos( ScrW() / 2 - boxW / 2, ScrH() )
@@ -560,12 +560,12 @@ local function OpenTransferPanel()
         return false
     end
     TransferFrame.Paint = function( self, w, h )
-	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
 	surface.SetFont( "VerdanaCustom" )
-	local disbandMessage = glorifiedbanking.getPhrase("transferAmount")
+	local disbandMessage = glorifiedBanking.getPhrase("transferAmount")
 	local textW, textH = surface.GetTextSize( disbandMessage )
 	local disbandLabel = vgui.Create( "DLabel", TransferFrame )
 	disbandLabel:SetText( disbandMessage )
@@ -577,7 +577,7 @@ local function OpenTransferPanel()
     PlayerComboBox:SetFont( "VerdanaCustom" )
     PlayerComboBox:SetSize( 115, 20 )
     PlayerComboBox:SetPos( boxW / 2 - 115 / 2, 75 )
-    PlayerComboBox:SetValue( glorifiedbanking.getPhrase("playerList") )
+    PlayerComboBox:SetValue( glorifiedBanking.getPhrase("playerList") )
     for k, v in pairs( player.GetAll() ) do
         if v == ply then continue end
 		PlayerComboBox:AddChoice( v:Nick(), v:SteamID64() )
@@ -591,7 +591,7 @@ local function OpenTransferPanel()
 
     local transferText = vgui.Create( "DTextEntry", TransferFrame )
     transferText:SetFont( "VerdanaCustom" )
-    transferText:SetText( glorifiedbanking.getPhrase("amount") )
+    transferText:SetText( glorifiedBanking.getPhrase("amount") )
     transferText:SetSize( 100, 20 )
     transferText:SetPos( boxW / 2 - 100 / 2, 50 )
     local function DoTransfer()
@@ -615,14 +615,14 @@ local function OpenTransferPanel()
                 Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                     Frame:Close()
                 end )
-                notification.AddLegacy(glorifiedbanking.getPhrase("validplayer"), NOTIFY_ERROR, 5)
+                notification.AddLegacy(glorifiedBanking.getPhrase("validplayer"), NOTIFY_ERROR, 5)
                 surface.PlaySound("buttons/button2.wav")
                 return
             end
 
             timer.Simple( ply:Ping() / 1000 + 0.1, function()
-                if affordableTransfer and transferAmount <= glorifiedbanking.config.MAX_TRANSFER then
-                    net.Start( "GlorifiedBanking_UpdateTransfer" )
+                if affordableTransfer and transferAmount <= glorifiedBanking.config.MAX_TRANSFER then
+                    net.Start( "glorifiedBanking_UpdateTransfer" )
                     net.WriteInt( transferAmount, 32 )
                     net.WriteEntity( transferringPlayer )
                     net.SendToServer()
@@ -632,16 +632,16 @@ local function OpenTransferPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("transferSuccess", DarkRP.formatMoney( transferAmount ), transferringPlayer:Nick()), NOTIFY_GENERIC, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("transferSuccess", DarkRP.formatMoney( transferAmount ), transferringPlayer:Nick()), NOTIFY_GENERIC, 5)
                     surface.PlaySound("buttons/button14.wav")
-                elseif affordableTransfer and transferAmount > glorifiedbanking.config.MAX_TRANSFER then
+                elseif affordableTransfer and transferAmount > glorifiedBanking.config.MAX_TRANSFER then
                     TransferFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         TransferFrame:Close()
                     end )
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("transferCannotMoreThan", DarkRP.formatMoney( glorifiedbanking.config.MAX_TRANSFER )), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("transferCannotMoreThan", DarkRP.formatMoney( glorifiedBanking.config.MAX_TRANSFER )), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 elseif !affordableTransfer then
                     TransferFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -650,7 +650,7 @@ local function OpenTransferPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("cannotafford"), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("cannotafford"), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 else
                     TransferFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
@@ -659,7 +659,7 @@ local function OpenTransferPanel()
                     Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                         Frame:Close()
                     end )
-                    notification.AddLegacy(glorifiedbanking.getPhrase("error"), NOTIFY_ERROR, 5)
+                    notification.AddLegacy(glorifiedBanking.getPhrase("error"), NOTIFY_ERROR, 5)
                     surface.PlaySound("buttons/button2.wav")
                 end
             end )
@@ -670,7 +670,7 @@ local function OpenTransferPanel()
             Frame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
                 Frame:Close()
             end )
-            notification.AddLegacy(glorifiedbanking.getPhrase("validnumber"), NOTIFY_ERROR, 5)
+            notification.AddLegacy(glorifiedBanking.getPhrase("validnumber"), NOTIFY_ERROR, 5)
             surface.PlaySound("buttons/button2.wav")
         end
     end
@@ -681,7 +681,7 @@ local function OpenTransferPanel()
 	local transfer = vgui.Create( "DButton", TransferFrame )
     transfer:SetFont( "VerdanaCustom" )
     transfer:SetTextColor( Color( 255, 255, 255 ) )
-	transfer:SetText(glorifiedbanking.getPhrase("transfer"))
+	transfer:SetText(glorifiedBanking.getPhrase("transfer"))
 	transfer:SetSize( 80, 20 )
 	transfer:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 100 )
 	transfer.DoClick = function()
@@ -689,12 +689,12 @@ local function OpenTransferPanel()
 	end
     transfer.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
     transfer.Paint = function( self, w, h )
-        local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+        local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
         if !self:IsHovered() then
             if self.RecentHover then
@@ -703,7 +703,7 @@ local function OpenTransferPanel()
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                 if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                     self.RecentHover = false
                 end
@@ -722,9 +722,9 @@ local function OpenTransferPanel()
 
             self.RecentHover = true
         else
-            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                self.RecentHover = true
@@ -736,7 +736,7 @@ local function OpenTransferPanel()
     local cancelButton = vgui.Create( "DButton", TransferFrame )
     cancelButton:SetFont( "VerdanaCustom" )
     cancelButton:SetTextColor( Color( 255, 255, 255 ) )
-	cancelButton:SetText(glorifiedbanking.getPhrase("cancel"))
+	cancelButton:SetText(glorifiedBanking.getPhrase("cancel"))
 	cancelButton:SetSize( 80, 20 )
 	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 100 )
 	cancelButton.DoClick = function()
@@ -746,12 +746,12 @@ local function OpenTransferPanel()
     end
     cancelButton.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
     cancelButton.Paint = function( self, w, h )
-        local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+        local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
         if !self:IsHovered() then
             if self.RecentHover then
@@ -760,7 +760,7 @@ local function OpenTransferPanel()
                 self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                 if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                     self.RecentHover = false
                 end
@@ -779,9 +779,9 @@ local function OpenTransferPanel()
 
             self.RecentHover = true
         else
-            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+            self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+            self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+            self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
             draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                self.RecentHover = true
@@ -792,14 +792,14 @@ local function OpenTransferPanel()
 end
 
 local function OpenBankingPanel()
-    net.Start( "GlorifiedBanking_UpdateBankBalance" )
+    net.Start( "glorifiedBanking_UpdateBankBalance" )
     net.SendToServer()
 
     local ply = LocalPlayer()
 
     local boxW, boxH = 500, 220
     Frame = vgui.Create( "DFrame" )
-    Frame:SetTitle( glorifiedbanking.getPhrase( "atmText" ) )
+    Frame:SetTitle( glorifiedBanking.getPhrase( "atmText" ) )
     Frame:SetSize( boxW, boxH )
     Frame:SetDeleteOnClose( false )
     Frame:ShowCloseButton( false )
@@ -815,10 +815,10 @@ local function OpenBankingPanel()
             if !self.finishedCloseAnimation then
                 Frame:Close()
             end
-            
+
             return
         end
-        
+
         if input.IsKeyDown( KEY_ESCAPE ) then
             if !self.finishedCloseAnimation then
                 Frame:Close()
@@ -849,42 +849,42 @@ local function OpenBankingPanel()
     end
     Frame.Paint = function( self, w, h )
         Derma_DrawBackgroundBlur( self, self.startTime )
-	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedbanking.config.DERMA_BACKGROUND_COLOR )
+	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
     end
 
     timer.Simple( ply:Ping() / 1000 + 0.1, function()
         Frame:ShowCloseButton( true )
         surface.SetFont( "VerdanaCustom" )
-        local atmW, atmH = surface.GetTextSize( glorifiedbanking.getPhrase( "welcome" ) )
-        local balW, balH = surface.GetTextSize( glorifiedbanking.getPhrase( "curBalance", DarkRP.formatMoney( bankBalance ) ) )
+        local atmW, atmH = surface.GetTextSize( glorifiedBanking.getPhrase( "welcome" ) )
+        local balW, balH = surface.GetTextSize( glorifiedBanking.getPhrase( "curBalance", DarkRP.formatMoney( bankBalance ) ) )
 
         local ATMLabel = vgui.Create( "DLabel", Frame )
         ATMLabel:SetFont( "VerdanaCustom" )
 		ATMLabel:SetPos( 500 / 2 - atmW / 2, 35 )
-		ATMLabel:SetText( glorifiedbanking.getPhrase( "welcome" ) )
+		ATMLabel:SetText( glorifiedBanking.getPhrase( "welcome" ) )
         ATMLabel:SizeToContents()
 
 		local BalanceLabel = vgui.Create( "DLabel", Frame )
         BalanceLabel:SetFont( "VerdanaCustom" )
 		BalanceLabel:SetPos( 500 / 2 - balW / 2, 50 )
-		BalanceLabel:SetText( glorifiedbanking.getPhrase( "curBalance", DarkRP.formatMoney( bankBalance ) ) )
+		BalanceLabel:SetText( glorifiedBanking.getPhrase( "curBalance", DarkRP.formatMoney( bankBalance ) ) )
         BalanceLabel:SizeToContents()
 
         local WithdrawButton = vgui.Create( "DButton", Frame )
         WithdrawButton:SetFont( "VerdanaCustom" )
-        WithdrawButton:SetText( glorifiedbanking.getPhrase("withdrawal") )
+        WithdrawButton:SetText( glorifiedBanking.getPhrase("withdrawal") )
         WithdrawButton:SetTextColor( Color( 255, 255, 255 ) )
         WithdrawButton:SetPos( 25, 80 )
         WithdrawButton:SetSize( 200, 50 )
         WithdrawButton.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
         WithdrawButton.Paint = function( self, w, h )
-            local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+            local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
             if !self:IsHovered() then
                 if self.RecentHover then
@@ -893,7 +893,7 @@ local function OpenBankingPanel()
                     self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                     draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                     if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                         self.RecentHover = false
                     end
@@ -912,9 +912,9 @@ local function OpenBankingPanel()
 
                 self.RecentHover = true
             else
-                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                 self.RecentHover = true
@@ -928,18 +928,18 @@ local function OpenBankingPanel()
 
         local DepositButton = vgui.Create( "DButton", Frame )
         DepositButton:SetFont( "VerdanaCustom" )
-        DepositButton:SetText( glorifiedbanking.getPhrase("deposit") )
+        DepositButton:SetText( glorifiedBanking.getPhrase("deposit") )
         DepositButton:SetTextColor( Color( 255, 255, 255 ) )
         DepositButton:SetPos( 275, 80 )
         DepositButton:SetSize( 200, 50 )
         DepositButton.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
         DepositButton.Paint = function( self, w, h )
-            local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+            local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
             if !self:IsHovered() then
                 if self.RecentHover then
@@ -948,7 +948,7 @@ local function OpenBankingPanel()
                     self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                     draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                     if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                         self.RecentHover = false
                     end
@@ -967,9 +967,9 @@ local function OpenBankingPanel()
 
                 self.RecentHover = true
             else
-                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                 self.RecentHover = true
@@ -984,18 +984,18 @@ local function OpenBankingPanel()
 
         local TransferButton = vgui.Create( "DButton", Frame )
         TransferButton:SetFont( "VerdanaCustom" )
-        TransferButton:SetText( glorifiedbanking.getPhrase("transfer") )
+        TransferButton:SetText( glorifiedBanking.getPhrase("transfer") )
         TransferButton:SetTextColor( Color( 255, 255, 255 ) )
         TransferButton:SetPos( 25, 150 )
         TransferButton:SetSize( 450, 50 )
         TransferButton.Init = function( self )
             self.RecentHover = false
-            self.LerpedButtonValueR = glorifiedbanking.config.DERMA_BUTTON_COLOUR.r
-            self.LerpedButtonValueG = glorifiedbanking.config.DERMA_BUTTON_COLOUR.g
-            self.LerpedButtonValueB = glorifiedbanking.config.DERMA_BUTTON_COLOUR.b
+            self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
+            self.LerpedButtonValueG = glorifiedBanking.config.DERMA_BUTTON_COLOUR.g
+            self.LerpedButtonValueB = glorifiedBanking.config.DERMA_BUTTON_COLOUR.b
         end
         TransferButton.Paint = function( self, w, h )
-            local c = glorifiedbanking.config.DERMA_BUTTON_COLOUR
+            local c = glorifiedBanking.config.DERMA_BUTTON_COLOUR
 
             if !self:IsHovered() then
                 if self.RecentHover then
@@ -1004,7 +1004,7 @@ local function OpenBankingPanel()
                     self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, c.b )
 
                     draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
-                    
+
                     if self.LerpedButtonValueR == c.r and self.LerpedButtonValueG == c.g and self.LerpedButtonValueB == c.b then
                         self.RecentHover = false
                     end
@@ -1023,9 +1023,9 @@ local function OpenBankingPanel()
 
                 self.RecentHover = true
             else
-                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.r )
-                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.g )
-                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedbanking.config.DERMA_ONCLICK_COLOUR.b )
+                self.LerpedButtonValueR = Lerp( FrameTime() * 7, self.LerpedButtonValueR, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.r )
+                self.LerpedButtonValueG = Lerp( FrameTime() * 7, self.LerpedButtonValueG, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.g )
+                self.LerpedButtonValueB = Lerp( FrameTime() * 7, self.LerpedButtonValueB, glorifiedBanking.config.DERMA_ONCLICK_COLOUR.b )
                 draw.RoundedBox( 0, 0, 0, w, h, Color( self.LerpedButtonValueR, self.LerpedButtonValueG, self.LerpedButtonValueB, c.a ) )
 
                 self.RecentHover = true
@@ -1039,7 +1039,7 @@ local function OpenBankingPanel()
     end)
 end
 
-net.Receive( "GlorifiedBanking_ToggleATMPanel", function()
+net.Receive( "glorifiedBanking_ToggleATMPanel", function()
     atmEntity = net.ReadEntity()
     OpenBankingPanel()
 end )

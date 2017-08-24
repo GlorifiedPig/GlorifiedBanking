@@ -1,9 +1,9 @@
 
-glorifiedbanking = glorifiedbanking or {
+glorifiedBanking = glorifiedBanking or {
     config = {},
 
-    IDENTIFIER = "glorifiedbanking",
-    NICE_NAME = "GlorifiedBanking"
+    IDENTIFIER = "glorifiedBanking",
+    NICE_NAME = "glorifiedBanking"
 }
 
 
@@ -54,7 +54,7 @@ if not frile or frile.VERSION < version then
 end
 
 -- Do not adjust the load order. You must first load the libraries, than module and then languages.
-frile.includeFolder( "glorifiedbanking/", false, true )
-frile.includeFolder( "glorifiedbanking/libraries/" )
-frile.includeFolder( "glorifiedbanking/module/" )
-frile.includeFolder( "glorifiedbanking/languages/" )
+frile.includeFolder( "glorifiedBanking/", false, true )
+frile.includeFolder( "glorifiedBanking/libraries/" )
+frile.includeFolder( "glorifiedBanking/module/" )
+frile.includeFolder( "glorifiedBanking/languages/" )

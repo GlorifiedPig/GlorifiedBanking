@@ -1,21 +1,21 @@
-glorifiedbanking.config.TOTAL_ATMS = glorifiedbanking.config.TOTAL_ATMS or 0
+glorifiedBanking.config.TOTAL_ATMS = glorifiedBanking.config.TOTAL_ATMS or 0
 
 local function CheckATMCount()
-	local atmDataFile = "glorifiedbanking/data.txt"
+	local atmDataFile = "glorifiedBanking/data.txt"
 
 	if file.Exists( atmDataFile, "DATA" ) then
 		local atmData = util.JSONToTable( file.Read( atmDataFile, "DATA" ) )
 
-		glorifiedbanking.config.TOTAL_ATMS = atmData.ATMCount
+		glorifiedBanking.config.TOTAL_ATMS = atmData.ATMCount
 	else
 		return
 	end
 end
 
 local function SaveATMData( positive, amount )
-	if not file.IsDir( "glorifiedbanking", "DATA" ) then
-			file.CreateDir( "glorifiedbanking", "DATA" )
-			local atmDataFile = "glorifiedbanking/data.txt"
+	if not file.IsDir( "glorifiedBanking", "DATA" ) then
+			file.CreateDir( "glorifiedBanking", "DATA" )
+			local atmDataFile = "glorifiedBanking/data.txt"
 
 			local data = {
 				ATMCount = amount
@@ -23,7 +23,7 @@ local function SaveATMData( positive, amount )
 
 			file.Write( atmDataFile, util.TableToJSON( data ) )
 		else
-			local atmDataFile = "glorifiedbanking/data.txt"
+			local atmDataFile = "glorifiedBanking/data.txt"
 
 			if file.Exists( atmDataFile, "DATA" ) then
 				local atmData = util.JSONToTable( file.Read( atmDataFile, "DATA" ) )
@@ -43,7 +43,7 @@ local function SaveATMData( positive, amount )
 
 				file.Write( atmDataFile, util.TableToJSON( data ) )
 			else
-				local atmDataFile = "glorifiedbanking/data.txt"
+				local atmDataFile = "glorifiedBanking/data.txt"
 
 				local data = {
 					ATMCount = amount
@@ -59,23 +59,23 @@ end
 concommand.Add( "atms_save", function( ply )
 	local amount = 0
 	if( ply:IsAdmin() ) then
-		if not file.IsDir( "glorifiedbanking", "DATA" ) then
-			file.CreateDir( "glorifiedbanking", "DATA" )
-			file.CreateDir( "glorifiedbanking/atms", "DATA" )
+		if not file.IsDir( "glorifiedBanking", "DATA" ) then
+			file.CreateDir( "glorifiedBanking", "DATA" )
+			file.CreateDir( "glorifiedBanking/atms", "DATA" )
 			CheckATMCount()
-			for k, v in pairs( ents.FindByClass( "glorifiedbanking_atm" ) ) do
-				glorifiedbanking.config.TOTAL_ATMS = glorifiedbanking.config.TOTAL_ATMS + 1
+			for k, v in pairs( ents.FindByClass( "glorifiedBanking_atm" ) ) do
+				glorifiedBanking.config.TOTAL_ATMS = glorifiedBanking.config.TOTAL_ATMS + 1
 				amount = amount + 1
-				
-				local atmDataFile = "glorifiedbanking/atms/atm_" .. glorifiedbanking.config.TOTAL_ATMS .. ".txt"
+
+				local atmDataFile = "glorifiedBanking/atms/atm_" .. glorifiedBanking.config.TOTAL_ATMS .. ".txt"
 
 				if file.Exists( atmDataFile, "DATA" ) then repeat
-					glorifiedbanking.config.TOTAL_ATMS = glorifiedbanking.config.TOTAL_ATMS + 1
-					atmDataFile = "glorifiedbanking/atms/atm_" .. glorifiedbanking.config.TOTAL_ATMS .. ".txt"
+					glorifiedBanking.config.TOTAL_ATMS = glorifiedBanking.config.TOTAL_ATMS + 1
+					atmDataFile = "glorifiedBanking/atms/atm_" .. glorifiedBanking.config.TOTAL_ATMS .. ".txt"
 				until
 					file.Exists( atmDataFile, "DATA" ) == false
 				end
-				
+
 				local data = {
 					Position = v:GetLocalPos(),
 					Angle = v:GetLocalAngles(),
@@ -89,8 +89,8 @@ concommand.Add( "atms_save", function( ply )
 		else
 			local validMap = true
 
-			for k, v in pairs( file.Find( "glorifiedbanking/atms/atm_*.txt", "DATA" ) ) do
-				local atmDataFile = "glorifiedbanking/atms/" .. v
+			for k, v in pairs( file.Find( "glorifiedBanking/atms/atm_*.txt", "DATA" ) ) do
+				local atmDataFile = "glorifiedBanking/atms/" .. v
 
 				local map
 				if file.Exists( atmDataFile, "DATA" ) then
@@ -100,7 +100,7 @@ concommand.Add( "atms_save", function( ply )
 					return
 				end
 
-				if map == game.GetMap() then 
+				if map == game.GetMap() then
 					ply:PrintMessage( HUD_PRINTTALK, "Please use atms_reset before creating a new file!" )
 					validMap = false
 					return
@@ -109,15 +109,15 @@ concommand.Add( "atms_save", function( ply )
 
 			if validMap then
 				CheckATMCount()
-				for k, v in pairs( ents.FindByClass( "glorifiedbanking_atm" ) ) do
-					glorifiedbanking.config.TOTAL_ATMS = glorifiedbanking.config.TOTAL_ATMS + 1
+				for k, v in pairs( ents.FindByClass( "glorifiedBanking_atm" ) ) do
+					glorifiedBanking.config.TOTAL_ATMS = glorifiedBanking.config.TOTAL_ATMS + 1
 					amount = amount + 1
-					
-					local atmDataFile = "glorifiedbanking/atms/atm_" .. glorifiedbanking.config.TOTAL_ATMS .. ".txt"
+
+					local atmDataFile = "glorifiedBanking/atms/atm_" .. glorifiedBanking.config.TOTAL_ATMS .. ".txt"
 
 					if file.Exists( atmDataFile, "DATA" ) then repeat
-						glorifiedbanking.config.TOTAL_ATMS = glorifiedbanking.config.TOTAL_ATMS + 1
-						atmDataFile = "glorifiedbanking/atms/atm_" .. glorifiedbanking.config.TOTAL_ATMS .. ".txt"
+						glorifiedBanking.config.TOTAL_ATMS = glorifiedBanking.config.TOTAL_ATMS + 1
+						atmDataFile = "glorifiedBanking/atms/atm_" .. glorifiedBanking.config.TOTAL_ATMS .. ".txt"
 					until
 						file.Exists( atmDataFile, "DATA" ) == false
 					end
@@ -142,10 +142,10 @@ end )
 concommand.Add( "atms_reset", function( ply )
 	local amount = 0
 	if( ply:IsAdmin() ) then
-		if file.Exists( "glorifiedbanking", "DATA" ) then
+		if file.Exists( "glorifiedBanking", "DATA" ) then
 			CheckATMCount()
-			for k, v in pairs( file.Find( "glorifiedbanking/atms/atm_*.txt", "DATA" ) ) do
-				local atmDataFile = "glorifiedbanking/atms/" .. v
+			for k, v in pairs( file.Find( "glorifiedBanking/atms/atm_*.txt", "DATA" ) ) do
+				local atmDataFile = "glorifiedBanking/atms/" .. v
 
 				local map
 
@@ -158,10 +158,10 @@ concommand.Add( "atms_reset", function( ply )
 
 				if map != game.GetMap() then continue end
 
-				glorifiedbanking.config.TOTAL_ATMS = glorifiedbanking.config.TOTAL_ATMS - 1
+				glorifiedBanking.config.TOTAL_ATMS = glorifiedBanking.config.TOTAL_ATMS - 1
 				amount = amount + 1
 
-				file.Delete( "glorifiedbanking/atms/" .. v )
+				file.Delete( "glorifiedBanking/atms/" .. v )
 			end
 			ply:PrintMessage( HUD_PRINTTALK, "Successfully deleted ATM data files for map '" .. game.GetMap() .. "'. Please reset your server." )
 			SaveATMData( false, amount )
@@ -176,10 +176,10 @@ end )
 local function SpawnATMs()
 	local id = 0
 
-	for k, v in pairs( file.Find( "glorifiedbanking/atms/atm_*.txt", "DATA" ) ) do
+	for k, v in pairs( file.Find( "glorifiedBanking/atms/atm_*.txt", "DATA" ) ) do
 		id = id + 1
 
-		local atmDataFile = "glorifiedbanking/atms/" .. v
+		local atmDataFile = "glorifiedBanking/atms/" .. v
 
 		local pos
 		local ang
@@ -196,11 +196,11 @@ local function SpawnATMs()
 
 		if map != game.GetMap() then continue end
 
-		local ATMEnt = ents.Create( "glorifiedbanking_atm" )
+		local ATMEnt = ents.Create( "glorifiedBanking_atm" )
 
 		ATMEnt:SetPos( Vector( pos ) )
 		ATMEnt:SetAngles( ang )
 		ATMEnt:Spawn()
 	end
 end
-hook.Add( "Initialize", "glorifiedbanking_InitATMs", SpawnATMs )
+hook.Add( "Initialize", "glorifiedBanking_InitATMs", SpawnATMs )

@@ -1,5 +1,5 @@
 
-glorifiedbanking.registerPhrases( "ger", {
+glorifiedBanking.registerPhrases( "ger", {
     -- Non-variable phrases
     atmMachine = "Geldautomat",
     atmText = "Geldautomat",
@@ -29,7 +29,7 @@ glorifiedbanking.registerPhrases( "ger", {
     depositCannotMoreThan = "Du kannst nicht mehr als %s am Stück einzahlen.",
     transferSuccess = "Du hast erfolgreich %s an %s überwiesen.",
     transferCannotMoreThan = "Du kannst nicht mehr als %s am Stück überweisen.",
-    
+
     receivedMoney = "Du hast %s von %s erhalten.",
     givenMoney = "Du hast %s an %s gegeben.",
     givenFromAdmin = "Dir wurde %s vom Administrator %s gegeben.",

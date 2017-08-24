@@ -4,11 +4,11 @@ local HasAdminAccess = false
 local function requestAdminCommand()
     local ply = LocalPlayer()
 
-    local canUseCommand, message = hook.Call( "glorifiedbanking.playerHasAdminPrivileges", nil, ply )
+    local canUseCommand, message = hook.Call( "glorifiedBanking.playerHasAdminPrivileges", nil, ply )
 
     if !canUseCommand then return print( message ) end
 
-    CAMI.PlayerHasAccess( ply, glorifiedbanking.privilege.CAMI_CAN_USE_ADMIN_COMMANDS, function( hasAccess )
+    CAMI.PlayerHasAccess( ply, glorifiedBanking.privilege.CAMI_CAN_USE_ADMIN_COMMANDS, function( hasAccess )
         if hasAccess then
             HasAdminAccess = true
         else
@@ -30,7 +30,7 @@ if HasAdminAccess then
             local nick = v:Nick()
             if string.find( string.lower( nick ), stringargs ) then
                 nick = "\"" .. nick .. "\""
-                nick = "glorifiedbanking_addbalance " .. nick
+                nick = "glorifiedBanking_addbalance " .. nick
 
                 table.insert( tbl, nick )
             end
@@ -39,9 +39,9 @@ if HasAdminAccess then
         return tbl
     end
 
-    concommand.Add( "glorifiedbanking_addbalance", function( ply, cmd, args )
+    concommand.Add( "glorifiedBanking_addbalance", function( ply, cmd, args )
         if args == nil or args[1] == nil or args[2] == nil then
-            print("Usage: glorifiedbanking_addbalance <player> <amount>")
+            print("Usage: glorifiedBanking_addbalance <player> <amount>")
             return
         end
 
@@ -52,11 +52,11 @@ if HasAdminAccess then
 
         for k, v in pairs( player.GetAll() ) do
             if string.find( string.lower( v:Nick() ), nick ) then
-                net.Start( "GlorifiedBanking_Admin_AddBankBalance" )
+                net.Start( "glorifiedBanking_Admin_AddBankBalance" )
                 net.WriteUInt( amount, 32 )
                 net.WriteEntity( v )
                 net.SendToServer()
-                
+
                 return
             end
         end
@@ -74,7 +74,7 @@ if HasAdminAccess then
             local nick = v:Nick()
             if string.find( string.lower( nick ), stringargs ) then
                 nick = "\"" .. nick .. "\""
-                nick = "glorifiedbanking_removebalance " .. nick
+                nick = "glorifiedBanking_removebalance " .. nick
 
                 table.insert( tbl, nick )
             end
@@ -83,9 +83,9 @@ if HasAdminAccess then
         return tbl
     end
 
-    concommand.Add( "glorifiedbanking_removebalance", function( ply, cmd, args )
+    concommand.Add( "glorifiedBanking_removebalance", function( ply, cmd, args )
         if args == nil or args[1] == nil or args[2] == nil then
-            print("Usage: glorifiedbanking_removebalance <player> <amount>")
+            print("Usage: glorifiedBanking_removebalance <player> <amount>")
             return
         end
 
@@ -96,11 +96,11 @@ if HasAdminAccess then
 
         for k, v in pairs( player.GetAll() ) do
             if string.find( string.lower( v:Nick() ), nick ) then
-                net.Start( "GlorifiedBanking_Admin_RemoveBankBalance" )
+                net.Start( "glorifiedBanking_Admin_RemoveBankBalance" )
                 net.WriteUInt( amount, 32 )
                 net.WriteEntity( v )
                 net.SendToServer()
-                
+
                 return
             end
         end
@@ -118,7 +118,7 @@ if HasAdminAccess then
             local nick = v:Nick()
             if string.find( string.lower( nick ), stringargs ) then
                 nick = "\"" .. nick .. "\""
-                nick = "glorifiedbanking_getbalance " .. nick
+                nick = "glorifiedBanking_getbalance " .. nick
 
                 table.insert( tbl, nick )
             end
@@ -127,9 +127,9 @@ if HasAdminAccess then
         return tbl
     end
 
-    concommand.Add( "glorifiedbanking_getbalance", function( ply, cmd, args )
+    concommand.Add( "glorifiedBanking_getbalance", function( ply, cmd, args )
         if args == nil or args[1] == nil then
-            print("Usage: glorifiedbanking_getbalance <player>")
+            print("Usage: glorifiedBanking_getbalance <player>")
             return
         end
 
@@ -138,18 +138,18 @@ if HasAdminAccess then
 
         for k, v in pairs( player.GetAll() ) do
             if string.find( string.lower( v:Nick() ), nick ) then
-                net.Start( "GlorifiedBanking_Admin_GetBankBalance" )
+                net.Start( "glorifiedBanking_Admin_GetBankBalance" )
                 net.WriteEntity( v )
                 net.SendToServer()
 
                 timer.Simple( ply:Ping() / 1000 + 0.1, function()
-                    net.Receive( "GlorifiedBanking_Admin_GetBankBalanceReceive", function()
+                    net.Receive( "glorifiedBanking_Admin_GetBankBalanceReceive", function()
                         local amount = net.ReadUInt( 32 )
 
                         print( v:Nick() .. "'s bank balance is $" .. DarkRP.formatMoney( amount ) .. "." )
                     end )
                 end )
-                
+
                 return
             end
         end

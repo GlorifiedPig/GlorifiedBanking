@@ -1,5 +1,5 @@
 
-glorifiedbanking.registerPhrases( "en", {
+glorifiedBanking.registerPhrases( "en", {
     -- Non-variable phrases
     atmMachine = "ATM Machine",
     atmText = "Automated Teller Machine (ATM)",
@@ -29,7 +29,7 @@ glorifiedbanking.registerPhrases( "en", {
     depositCannotMoreThan = "You cannot deposit more than %s at a time.",
     transferSuccess = "You have successfully transferred %s to %s.",
     transferCannotMoreThan = "You cannot transfer more than %s at a time.",
-    
+
     receivedMoney = "You haved received %s from %s.",
     givenMoney = "You have given %s to %s.",
     givenFromAdmin = "You have been given %s from Administrator %s.",
