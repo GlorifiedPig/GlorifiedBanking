@@ -6,7 +6,6 @@ glorifiedBanking = glorifiedBanking or {
     NICE_NAME = "glorifiedBanking"
 }
 
-
 local version = 1
 
 if not frile or frile.VERSION < version then
@@ -53,7 +52,7 @@ if not frile or frile.VERSION < version then
     end
 end
 
--- Do not adjust the load order. You must first load the libraries, than module and then languages.
+-- Do not adjust the load order. You must first load the libraries, followed by the module and last the languages.
 frile.includeFolder( "glorifiedBanking/", false, true )
 frile.includeFolder( "glorifiedBanking/libraries/" )
 frile.includeFolder( "glorifiedBanking/module/" )
