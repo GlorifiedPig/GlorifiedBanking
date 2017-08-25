@@ -19,3 +19,4 @@ glorifiedBanking.config.DERMA_ONCLICK_COLOUR = Color( 55, 55, 255 ) -- The colou
 glorifiedBanking.config.ADMIN_INHERIT_MINIMUM = "superadmin" -- The minimum rank requirement (inherits from "x") to be able to use administrative commands.
 
 glorifiedBanking.config.CURRENCY_SYMBOL = "$"
+glorifiedBanking.config.DEFAULT_BANK_BALANCE = 1000
