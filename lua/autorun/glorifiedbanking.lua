@@ -53,14 +53,14 @@ if not frile or frile.VERSION < version then
 end
 
 -- Do not adjust the load order. You must first load the libraries, followed by the module and last the languages.
-frile.includeFile( "glorifiedbanking/sh_config.lua" )
+frile.includeFile( "glorifiedbanking/sh_config.lua", frile.REALM_SHARED )
 
-frile.includeFolder( "glorifiedBanking/libraries/" )
-frile.includeFolder( "glorifiedBanking/module/" )
-frile.includeFolder( "glorifiedBanking/languages/" )
+frile.includeFolder( "glorifiedbanking/libraries/" )
+frile.includeFolder( "glorifiedbanking/module/" )
+frile.includeFolder( "glorifiedbanking/languages/" )
 
 if SERVER and not DarkRP then
-    frile.includeFile( "glorifiedbanking/sv_database_config.lua" )
+    frile.includeFile( "glorifiedbanking/sv_database_config.lua", frile.REALM_SERVER )
 
     MySQLite.initialize()
 end

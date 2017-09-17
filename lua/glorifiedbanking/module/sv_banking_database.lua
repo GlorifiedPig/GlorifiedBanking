@@ -28,4 +28,4 @@ function glorifiedBanking.retrievePlayerBalance( player, callback )
             callback( glorifiedBanking.config.DEFAULT_BANK_BALANCE )
         end )
     end )
-end )
+end
