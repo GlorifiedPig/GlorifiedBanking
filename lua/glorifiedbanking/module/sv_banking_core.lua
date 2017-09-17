@@ -30,7 +30,7 @@ local NetStrings = {
     "glorifiedBanking_Admin_GetBankBalanceReceive"
 }
 
-for k, v in pairs( NetStrings ) do
+for k, v in ipairs( NetStrings ) do
     util.AddNetworkString( v )
 end
 
