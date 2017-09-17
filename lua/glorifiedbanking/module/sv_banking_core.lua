@@ -44,13 +44,13 @@ hook.Add( "PlayerInitialSpawn", "glorifiedBanking_Banking_InitialSpawnCheck", fu
     end )
 end )
 
-local plyMeta = FindMetaTable( "Player" )
+local PLAYER = FindMetaTable( "Player" )
 
-function plyMeta:GetBankBalance()
+function PLAYER:GetBankBalance()
     return self.glorifiedBankingBalance or glorifiedBanking.config.DEFAULT_BANK_BALANCE
 end
 
-function plyMeta:CanAffordBankAmount( amt )
+function PLAYER:CanAffordBankAmount( amt )
     local bankAmount = self:GetBankBalance()
 
     if bankAmount >= amt then
@@ -60,39 +60,39 @@ function plyMeta:CanAffordBankAmount( amt )
     end
 end
 
-function plyMeta:CanAffordWalletAmount( amt )
+function PLAYER:CanAffordWalletAmount( amt )
     return self:canAfford( amt )
 end
 
-function plyMeta:SetBankBalance( balance )
+function PLAYER:SetBankBalance( balance )
     glorifiedBanking.storePlayerBalance( self, balance, function()
         self.glorifiedBankingBalance = balance
     end )
 end
 
-function plyMeta:AddBankBalance( amt )
+function PLAYER:AddBankBalance( amt )
     if self:CanAffordWalletAmount( amt ) and amt <= glorifiedBanking.config.MAX_DEPOSIT then
         self:addMoney( -amt )
         self:SetBankBalance( self:GetBankBalance() + amt )
     end
 end
 
-function plyMeta:RemoveBankBalance( amt )
+function PLAYER:RemoveBankBalance( amt )
     if self:CanAffordBankAmount( amt ) and amt <= glorifiedBanking.config.MAX_WITHDRAWAL then
         self:addMoney( amt )
         self:SetBankBalance( self:GetBankBalance() - amt )
     end
 end
 
-function plyMeta:ForceAddBankBalance( amt )
+function PLAYER:ForceAddBankBalance( amt )
     self:SetBankBalance( self:GetBankBalance() + amt )
 end
 
-function plyMeta:ForceRemoveBankBalance( amt )
+function PLAYER:ForceRemoveBankBalance( amt )
     self:SetBankBalance( self:GetBankBalance() - amt )
 end
 
-function plyMeta:TransferBankBalance( amt, player2 )
+function PLAYER:TransferBankBalance( amt, player2 )
     if self:CanAffordBankAmount( amt ) and amt <= glorifiedBanking.config.MAX_TRANSFER then
         self:ForceRemoveBankBalance( amt )
         player2:ForceAddBankBalance( amt )
