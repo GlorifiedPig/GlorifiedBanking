@@ -10,7 +10,7 @@ end )
 
 function glorifiedBanking.storePlayerBalance( player, balance, callback )
     MySQLite.query( string.format(
-        "UPDATE glorifiedbanking_player_balance SET balance = %i WHERE player_id = %i"
+        "UPDATE glorifiedbanking_player_balance SET balance = %i WHERE player_id = %i",
         balance,
         player:AccountID()
     ), callback )

@@ -34,8 +34,8 @@ for k, v in pairs( NetStrings ) do
     util.AddNetworkString( v )
 end
 
-hook.Add( "PlayerInitialSpawn", "glorifiedBanking_Banking_InitialSpawnCheck", function( ply )
-    self.glorifiedBankingBalance = glorifiedBanking.config.DEFAULT_BANK_BALANCE
+hook.Add( "PlayerInitialSpawn", "glorifiedBanking_Banking_InitialSpawnCheck", function( player )
+    player.glorifiedBankingBalance = glorifiedBanking.config.DEFAULT_BANK_BALANCE
 
     glorifiedBanking.retrievePlayerBalance( player, function( balance )
         if IsValid( player ) then
