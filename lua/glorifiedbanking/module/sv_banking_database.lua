@@ -1,5 +1,5 @@
 
-hook.Add( "DatabaseInitialized", glorifiedMap.IDENTIFIER, function()
+hook.Add( "DatabaseInitialized", glorifiedBanking.IDENTIFIER, function()
     MySQLite.query( [[
         CREATE TABLE IF NOT EXISTS glorifiedbanking_player_balance (
             player_id INTEGER NOT NULL PRIMARY KEY,
