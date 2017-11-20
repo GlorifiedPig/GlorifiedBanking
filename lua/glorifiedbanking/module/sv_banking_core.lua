@@ -53,11 +53,7 @@ end
 function PLAYER:CanAffordBankAmount( amt )
     local bankAmount = self:GetBankBalance()
 
-    if bankAmount >= amt then
-        return true
-    else
-        return false
-    end
+    return bankAmount >= amt end
 end
 
 function PLAYER:CanAffordWalletAmount( amt )
