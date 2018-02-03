@@ -2,18 +2,18 @@
 local HasAdminAccess = false
 
 local function requestAdminCommand()
-    local player = LocalPlayer()
+    local ply = LocalPlayer()
 
-    local canRun, message = hook.Call( "glorifiedBanking.playerCanRunCommand", nil, player, command )
+    local canUseCommand, message = hook.Call( "glorifiedBanking.playerHasAdminPrivileges", nil, ply )
 
-    if not canRun then
-        if message then
-            print( glorifiedBanking.IDENTIFIER .. " | you cannot execute the command " .. command )
+    if !canUseCommand then return print( message ) end
+
+    CAMI.PlayerHasAccess( ply, glorifiedBanking.privilege.CAMI_CAN_USE_ADMIN_COMMANDS, function( hasAccess )
+        if hasAccess then
+            HasAdminAccess = true
+        else
+            HasAdminAccess = false
         end
-    end
-
-    CAMI.PlayerHasAccess( player, glorifiedBanking.privilege.CAMI_CAN_USE_ADMIN_COMMANDS, function( hasAccess )
-        HasAdminAccess = hasAccess
     end )
 end
 

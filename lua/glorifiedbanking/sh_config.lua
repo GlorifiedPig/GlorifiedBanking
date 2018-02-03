@@ -1,4 +1,5 @@
 
+-- NORMAL CONFIGURATION --
 glorifiedBanking.config.CONFIGURER_CONFIG_ENABLED = true -- [Temporarily Disabled] If this is enabled, you use the in-game configurer. Changing the configs below will be pointless.
 
 glorifiedBanking.config.MAX_WITHDRAWAL = 100000 -- The maximum amount you can withdraw.
@@ -18,5 +19,17 @@ glorifiedBanking.config.DERMA_ONCLICK_COLOUR = Color( 55, 55, 255 ) -- The colou
 
 glorifiedBanking.config.ADMIN_INHERIT_MINIMUM = "superadmin" -- The minimum rank requirement (inherits from "x") to be able to use administrative commands.
 
-glorifiedBanking.config.CURRENCY_SYMBOL = "$"
-glorifiedBanking.config.DEFAULT_BANK_BALANCE = 1000
+-- All the usergroups that are able to use administrative commands. Group must inherit from 'superadmin'
+glorifiedBanking.config.ADMIN_USERGROUPS = {
+    "superadmin",
+    "owner"
+}
+
+-- MYSQL CONFIGURATION --
+glorifiedBanking.config.MYSQL_ENABLE = true -- Whether or not to enable MySQL. Please be sure you have the libmysql.dll and MySQLOO installed.
+
+glorifiedBanking.config.MYSQL_DATABASE_HOST = "127.0.0.1"
+glorifiedBanking.config.MYSQL_DATABASE_PORT = 3306
+glorifiedBanking.config.MYSQL_DATABASE_NAME = "glorifiedBankingDatabase"
+glorifiedBanking.config.MYSQL_DATABASE_USERNAME = "root"
+glorifiedBanking.config.MYSQL_DATABASE_PASSWORD = ""

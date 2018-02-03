@@ -30,68 +30,152 @@ local NetStrings = {
     "glorifiedBanking_Admin_GetBankBalanceReceive"
 }
 
-for k, v in ipairs( NetStrings ) do
+for k, v in pairs( NetStrings ) do
     util.AddNetworkString( v )
 end
 
-hook.Add( "PlayerInitialSpawn", "glorifiedBanking_Banking_InitialSpawnCheck", function( player )
-    player.glorifiedBankingBalance = glorifiedBanking.config.DEFAULT_BANK_BALANCE
+hook.Add( "PlayerInitialSpawn", "glorifiedBanking_Banking_InitialSpawnCheck", function( ply )
+    if ply:GetPData( "glorifiedBanking_BankBalance" ) == NIL or ply:GetPData( "glorifiedBanking_BankBalance") == NULL then
+        ply:SetPData( "glorifiedBanking_BankBalance", 100 )
+    end
+end)
 
-    glorifiedBanking.retrievePlayerBalance( player, function( balance )
-        if IsValid( player ) then
-            player.glorifiedBankingBalance = balance
-        end
-    end )
-end )
+local plyMeta = FindMetaTable( "Player" )
 
-local PLAYER = FindMetaTable( "Player" )
-
-function PLAYER:GetBankBalance()
-    return self.glorifiedBankingBalance or glorifiedBanking.config.DEFAULT_BANK_BALANCE
+function plyMeta:GetBankBalance()
+    return tonumber( self:GetPData( "glorifiedBanking_BankBalance" ) )
 end
 
-function PLAYER:CanAffordBankAmount( amt )
+function plyMeta:CanAffordBankAmount( amt )
     local bankAmount = self:GetBankBalance()
 
-    return bankAmount >= amt end
+    if bankAmount >= amt then
+        return true
+    else
+        return false
+    end
 end
 
-function PLAYER:CanAffordWalletAmount( amt )
+function plyMeta:CanAffordWalletAmount( amt )
     return self:canAfford( amt )
 end
 
-function PLAYER:SetBankBalance( balance )
-    glorifiedBanking.storePlayerBalance( self, balance, function()
-        self.glorifiedBankingBalance = balance
-    end )
-end
-
-function PLAYER:AddBankBalance( amt )
+function plyMeta:AddBankBalance( amt )
     if self:CanAffordWalletAmount( amt ) and amt <= glorifiedBanking.config.MAX_DEPOSIT then
         self:addMoney( -amt )
-        self:SetBankBalance( self:GetBankBalance() + amt )
+        self:SetPData( "glorifiedBanking_BankBalance", self:GetBankBalance() + amt )
     end
 end
 
-function PLAYER:RemoveBankBalance( amt )
+function plyMeta:RemoveBankBalance( amt )
     if self:CanAffordBankAmount( amt ) and amt <= glorifiedBanking.config.MAX_WITHDRAWAL then
         self:addMoney( amt )
-        self:SetBankBalance( self:GetBankBalance() - amt )
+        self:SetPData( "glorifiedBanking_BankBalance", self:GetPData( "glorifiedBanking_BankBalance" ) - amt )
     end
 end
 
-function PLAYER:ForceAddBankBalance( amt )
-    self:SetBankBalance( self:GetBankBalance() + amt )
+function plyMeta:ForceAddBankBalance( amt )
+    self:SetPData( "glorifiedBanking_BankBalance", self:GetBankBalance() + amt )
 end
 
-function PLAYER:ForceRemoveBankBalance( amt )
-    self:SetBankBalance( self:GetBankBalance() - amt )
+function plyMeta:ForceRemoveBankBalance( amt )
+    self:SetPData( "glorifiedBanking_BankBalance", self:GetPData( "glorifiedBanking_BankBalance" ) - amt )
 end
 
-function PLAYER:TransferBankBalance( amt, player2 )
+function plyMeta:TransferBankBalance( amt, player2 )
     if self:CanAffordBankAmount( amt ) and amt <= glorifiedBanking.config.MAX_TRANSFER then
         self:ForceRemoveBankBalance( amt )
         player2:ForceAddBankBalance( amt )
     end
 end
 
+net.Receive( "glorifiedBanking_UpdateBankBalance", function( len, ply )
+    local bankBal = ply:GetBankBalance()
+
+    net.Start( "glorifiedBanking_UpdateBankBalanceReceive" )
+    net.WriteUInt( bankBal, 32 )
+    net.Send( ply )
+end )
+
+net.Receive( "glorifiedBanking_IsAffordableDeposit", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+    local canAffordW = ply:CanAffordWalletAmount( amount )
+
+    net.Start( "glorifiedBanking_IsAffordableDepositReceive" )
+    net.WriteBool( canAffordW )
+    net.Send( ply )
+end )
+
+net.Receive( "glorifiedBanking_UpdateDeposit", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+
+    ply:AddBankBalance( tonumber( amount ) )
+end )
+
+net.Receive( "glorifiedBanking_UpdateWithdrawal", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+
+    ply:RemoveBankBalance( amount )
+end )
+
+net.Receive( "glorifiedBanking_UpdateTransfer", function( len, ply )
+    local amount = tonumber( math.abs( net.ReadInt( 32 ) ) )
+    local player2 = net.ReadEntity()
+
+    if !ply:CanAffordBankAmount(amount) then return end
+
+    net.Start( "glorifiedBanking_Notification" )
+    net.WriteString( glorifiedBanking.getPhrase( "receivedMoney", DarkRP.formatMoney( amount ), ply:Nick() ) )
+    net.WriteBool( false )
+    net.Send( player2 )
+
+    ply:TransferBankBalance( tonumber( amount ), player2 )
+end )
+
+net.Receive( "glorifiedBanking_Admin_AddBankBalance", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+    local player2 = net.ReadEntity()
+
+    if !ply:IsAdmin() then return end -- Temporary admin check to fix network exploits
+
+    net.Start( "glorifiedBanking_Notification" )
+    net.WriteString( glorifiedBanking.getPhrase("givenMoney", DarkRP.formatMoney(amount), player2:Nick()))
+    net.WriteBool( false )
+    net.Send( ply )
+
+    net.Start( "glorifiedBanking_Notification" )
+    net.WriteString( glorifiedBanking.getPhrase( "givenFromAdmin", DarkRP.formatMoney( amount ), ply:Nick() ) )
+    net.WriteBool( false )
+    net.Send( player2 )
+
+    player2:ForceAddBankBalance( amount )
+end )
+
+net.Receive( "glorifiedBanking_Admin_RemoveBankBalance", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+    local player2 = net.ReadEntity()
+
+    if !ply:IsAdmin() then return end -- Temporary admin check to fix network exploits
+
+    net.Start( "glorifiedBanking_Notification" )
+    net.WriteString( glorifiedBanking.getPhrase("removedMoney", DarkRP.formatMoney(amount), player2:Nick()))
+    net.WriteBool( false )
+    net.Send( ply )
+
+    net.Start( "glorifiedBanking_Notification" )
+    net.WriteString(glorifiedBanking.getPhrase("removedFromAdmin", DarkRP.formatMoney( amount ), ply:Nick()))
+    net.WriteBool( true )
+    net.Send( player2 )
+
+    player2:ForceRemoveBankBalance( amount )
+end )
+
+net.Receive( "glorifiedBanking_Admin_GetBankBalance", function( len, ply )
+    local player2 = net.ReadEntity()
+
+    if !ply:IsAdmin() then return end -- Temporary admin check to fix network exploits
+
+    net.Start( "glorifiedBanking_Admin_GetBankBalanceReceive" )
+    net.WriteUInt( player2:GetBankBalance(), 32 )
+    net.Send( ply )
+end )

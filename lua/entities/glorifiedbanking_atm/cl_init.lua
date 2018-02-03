@@ -17,7 +17,7 @@ surface.CreateFont( "BudgetLabelHuge", {
 
 function ENT:Draw()
     self:DrawModel()
-	
+
 	-- First 3D2D ("ATM Machine" text)
 	local Pos = self:GetPos()
     local Angles = self:GetAngles()
@@ -26,14 +26,10 @@ function ENT:Draw()
 	Ang:RotateAroundAxis( Ang:Forward(), 90 )
 	Ang:RotateAroundAxis( Ang:Right(), 270 )
 
-	cam.Start3D2D( Pos + Ang:Up() * 8 + Ang:Forward() * -14.2 + Ang:Right() * -59, Ang, 0.11 )
-		draw.WordBox( 0, 0, 0, glorifiedBanking.getPhrase( "atmMachine" ), "RobotoHuge", Color( 55, 55, 55, 155 ), glorifiedBanking.config.ATM_3D2D_COLOUR )
-	cam.End3D2D()
-
 	-- Second 3D2D (Floating Dollar Sign)
 	self.lastTime = self.lastTime or 0
 	self.rotate = self.rotate or 270
-	
+
 	self.rotate = self.rotate - ( 50 * ( self.lastTime - SysTime() ) )
 	self.lastTime = SysTime()
 
@@ -48,11 +44,11 @@ function ENT:Draw()
 	Ang3:RotateAroundAxis( Ang3:Forward(), 90 )
 	Ang3:RotateAroundAxis( Ang3:Right(), self.rotate )
 
-	cam.Start3D2D( Pos2 + Ang2:Up() + Ang2:Forward() * -5 + Ang2:Right() * -117, Ang2, 0.17 )
+	cam.Start3D2D( Pos2 + Ang2:Up() + Ang2:Forward() * -5 + Ang2:Right() * -117, Ang2, 0.21 )
 		draw.SimpleText( "$", "BudgetLabelHuge", 0, 0, glorifiedBanking.config.ATM_3D2D_COLOUR_DOLLAR, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
 	cam.End3D2D()
 
-	cam.Start3D2D( Pos2 + Ang3:Up() + Ang3:Forward() * -5 + Ang3:Right() * -117, Ang3, 0.17 )
+	cam.Start3D2D( Pos2 + Ang3:Up() + Ang3:Forward() * -5 + Ang3:Right() * -117, Ang3, 0.21 )
 		draw.SimpleText( "$", "BudgetLabelHuge", 0, 0, glorifiedBanking.config.ATM_3D2D_COLOUR_DOLLAR, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
 	cam.End3D2D()
 end

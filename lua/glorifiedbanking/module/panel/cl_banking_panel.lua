@@ -5,6 +5,13 @@ surface.CreateFont( "VerdanaCustom", {
     weight = 500,
 } )
 
+surface.CreateFont( "VerdanaCustom2", {
+    font = "Verdana",
+    size = 20,
+    bold = true,
+    weight = 500,
+} )
+
 local bankBalance = 0
 local affordableDeposit = false
 local atmEntity
@@ -799,7 +806,7 @@ local function OpenBankingPanel()
 
     local boxW, boxH = 500, 220
     Frame = vgui.Create( "DFrame" )
-    Frame:SetTitle( glorifiedBanking.getPhrase( "atmText" ) )
+    Frame:SetTitle( "" )
     Frame:SetSize( boxW, boxH )
     Frame:SetDeleteOnClose( false )
     Frame:ShowCloseButton( false )
@@ -851,10 +858,24 @@ local function OpenBankingPanel()
         Derma_DrawBackgroundBlur( self, self.startTime )
 	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR )
         draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+
+        draw.RoundedBox( 0, 0, 0, w, 30, Color( 255, 130, 0 ) )
+        draw.OutlinedBox( 0, 0, w, 30, 2, Color( 0, 0, 0 ) )
+
+        draw.SimpleTextOutlined( glorifiedBanking.getPhrase( "atmText" ), "VerdanaCustom2", 6, 4, Color( 200, 200, 200 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color( 0, 0, 0 ) )
     end
 
     timer.Simple( ply:Ping() / 1000 + 0.1, function()
-        Frame:ShowCloseButton( true )
+        local CloseButton = vgui.Create( "DButton", Frame )
+        CloseButton:SetFont( "VerdanaCustom" )
+        CloseButton:SetText( "X" )
+        CloseButton:SetTextColor( Color( 0, 0, 0 ) )
+        CloseButton:SetPos( boxW - 45, 5 )
+        CloseButton:SetSize( 35, 20 )
+        CloseButton.DoClick = function()
+            Frame:Close()
+        end
+
         surface.SetFont( "VerdanaCustom" )
         local atmW, atmH = surface.GetTextSize( glorifiedBanking.getPhrase( "welcome" ) )
         local balW, balH = surface.GetTextSize( glorifiedBanking.getPhrase( "curBalance", DarkRP.formatMoney( bankBalance ) ) )
