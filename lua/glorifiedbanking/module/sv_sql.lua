@@ -32,10 +32,10 @@ function AddPlayerGBD( id )
     local query = GBANKINGDB:query( "INSERT INTO users VALUES('', '" .. id .. "');" )
 
     query.onSuccess = function()
-        print( "[GlorifiedBanking] New player added to SQL database." )
+        print( "[GlorifiedBanking] New player added to SQL database. ID " .. id )
     end
-    query.onError = function()
-        print( "[GlorifiedBanking] Error adding new player to SQL database!" )
+    query.onError = function( db, error )
+        print( "[GlorifiedBanking] Error adding new player to SQL database! Error: " .. error )
     end
 
     query:start()
