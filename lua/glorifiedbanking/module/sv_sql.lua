@@ -27,3 +27,20 @@ local function ValidateGBankingDB()
 end
 
 timer.Create( "VALIDATE_GBANKING_DB", 10, 0, ValidateGBankingDB )
+
+function AddPlayerGBD( id )
+    local query = GBANKINGDB:query( "INSERT INTO users VALUES('', '" .. id .. "');" )
+
+    query.onSuccess = function()
+        print( "[GlorifiedBanking] New player added to SQL database." )
+    end
+    query.onError = function()
+        print( "[GlorifiedBanking] Error adding new player to SQL database!" )
+    end
+
+    query:start()
+end
+
+hook.Add( "PlayerInitialSpawn", "GBanking_DB_PlayerInitialSpawn", function( ply )
+    AddPlayer( ply:SteamID() )
+end )
