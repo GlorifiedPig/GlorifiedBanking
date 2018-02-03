@@ -29,7 +29,7 @@ glorifiedBanking.config.ADMIN_USERGROUPS = {
 glorifiedBanking.config.MYSQL_ENABLE = true -- Whether or not to enable MySQL. Please be sure you have the libmysql.dll and MySQLOO installed.
 
 glorifiedBanking.config.MYSQL_DATABASE_HOST = "127.0.0.1"
-glorifiedBanking.config.MYSQL_DATABASE_PORT = 3306
-glorifiedBanking.config.MYSQL_DATABASE_NAME = "glorifiedBankingDatabase"
 glorifiedBanking.config.MYSQL_DATABASE_USERNAME = "root"
 glorifiedBanking.config.MYSQL_DATABASE_PASSWORD = ""
+glorifiedBanking.config.MYSQL_DATABASE_NAME = "glorifiedBankingDatabase"
+glorifiedBanking.config.MYSQL_DATABASE_PORT = 3306
