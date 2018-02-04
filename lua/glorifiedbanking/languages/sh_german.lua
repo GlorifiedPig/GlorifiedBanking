@@ -4,7 +4,7 @@ glorifiedBanking.registerPhrases( "ger", {
     atmMachine = "Geldautomat",
     atmText = "Geldautomat",
     welcome = "Willkommen beim Geldautomat!",
-    curBalance = "Derzeitiger Kontostand: %s",
+    curBalance = "Derzeitiger Kontostand",
     withdrawal = "Abheben",
     withdrawalTitle = "Geld abheben",
     withdrawAmount = "Wie viel Geld möchtest du abheben?",
