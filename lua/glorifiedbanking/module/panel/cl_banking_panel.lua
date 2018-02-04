@@ -5,6 +5,34 @@ surface.CreateFont( "VerdanaCustom", {
     weight = 500,
 } )
 
+surface.CreateFont( "VerdanaCustom2", {
+    font = "Verdana",
+    size = 20,
+    bold = true,
+    weight = 500,
+} )
+
+surface.CreateFont( "VerdanaCustom3", {
+    font = "Verdana",
+    size = 35,
+    bold = true,
+    weight = 500,
+} )
+
+surface.CreateFont( "VerdanaCustom4", {
+    font = "Verdana",
+    size = 30,
+    bold = true,
+    weight = 500,
+} )
+
+surface.CreateFont( "VerdanaCustomHuge", {
+    font = "Verdana",
+    size = 42,
+    bold = true,
+    weight = 500,
+} )
+
 local bankBalance = 0
 local affordableDeposit = false
 local atmEntity
@@ -75,15 +103,16 @@ local function OpenWithdrawPanel()
     end
     WithdrawFrame.Paint = function( self, w, h )
 	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 
 	surface.SetFont( "VerdanaCustom" )
 	local disbandMessage = glorifiedBanking.getPhrase("withdrawAmount")
 	local textW, textH = surface.GetTextSize( disbandMessage )
 	local disbandLabel = vgui.Create( "DLabel", WithdrawFrame )
-	disbandLabel:SetText( disbandMessage )
-	disbandLabel:SetFont( "VerdanaCustom" )
+    disbandLabel:SetText( disbandMessage )
+    disbandLabel:SetTextColor( Color( 0, 0, 0 ) )
+    disbandLabel:SetFont( "VerdanaCustom" )
 	disbandLabel:SizeToContents()
 	disbandLabel:SetPos( boxW / 2 - textW / 2, 30 )
 
@@ -164,10 +193,10 @@ local function OpenWithdrawPanel()
 
 	local withdraw = vgui.Create( "DButton", WithdrawFrame )
     withdraw:SetFont( "VerdanaCustom" )
-    withdraw:SetTextColor( Color( 255, 255, 255 ) )
+    withdraw:SetTextColor( Color( 0, 0, 0 ) )
 	withdraw:SetText(glorifiedBanking.getPhrase("withdrawal"))
 	withdraw:SetSize( 80, 20 )
-	withdraw:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
+	withdraw:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2 - 5, 75 )
 	withdraw.DoClick = function()
         DoWithdraw()
 	end
@@ -214,15 +243,15 @@ local function OpenWithdrawPanel()
                self.RecentHover = true
         end
 
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 
     local cancelButton = vgui.Create( "DButton", WithdrawFrame )
     cancelButton:SetFont( "VerdanaCustom" )
-    cancelButton:SetTextColor( Color( 255, 255, 255 ) )
+    cancelButton:SetTextColor( Color( 0, 0, 0 ) )
 	cancelButton:SetText(glorifiedBanking.getPhrase("cancel"))
 	cancelButton:SetSize( 80, 20 )
-	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
+	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2 + 5, 75 )
 	cancelButton.DoClick = function()
         WithdrawFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
             WithdrawFrame:Close()
@@ -271,7 +300,7 @@ local function OpenWithdrawPanel()
                self.RecentHover = true
         end
 
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 end
 
@@ -320,14 +349,15 @@ local function OpenDepositPanel()
     end
     DepositFrame.Paint = function( self, w, h )
 	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 
 	surface.SetFont( "VerdanaCustom" )
 	local disbandMessage = glorifiedBanking.getPhrase("depositAmount")
 	local textW, textH = surface.GetTextSize( disbandMessage )
 	local disbandLabel = vgui.Create( "DLabel", DepositFrame )
-	disbandLabel:SetText( disbandMessage )
+    disbandLabel:SetText( disbandMessage )
+    disbandLabel:SetTextColor( Color( 0, 0, 0 ) )
 	disbandLabel:SetFont( "VerdanaCustom" )
 	disbandLabel:SizeToContents()
 	disbandLabel:SetPos( boxW / 2 - textW / 2, 30 )
@@ -405,10 +435,10 @@ local function OpenDepositPanel()
 
 	local deposit = vgui.Create( "DButton", DepositFrame )
     deposit:SetFont( "VerdanaCustom" )
-    deposit:SetTextColor( Color( 255, 255, 255 ) )
+    deposit:SetTextColor( Color( 0, 0, 0 ) )
 	deposit:SetText(glorifiedBanking.getPhrase("deposit"))
 	deposit:SetSize( 80, 20 )
-	deposit:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 75 )
+	deposit:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2 - 5, 75 )
 	deposit.DoClick = function()
         DoDeposit()
 	end
@@ -455,15 +485,15 @@ local function OpenDepositPanel()
                self.RecentHover = true
         end
 
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 
     local cancelButton = vgui.Create( "DButton", DepositFrame )
     cancelButton:SetFont( "VerdanaCustom" )
-    cancelButton:SetTextColor( Color( 255, 255, 255 ) )
+    cancelButton:SetTextColor( Color( 0, 0, 0 ) )
 	cancelButton:SetText(glorifiedBanking.getPhrase("cancel"))
 	cancelButton:SetSize( 80, 20 )
-	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 75 )
+	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2 + 5, 75 )
 	cancelButton.DoClick = function()
         DepositFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
             DepositFrame:Close()
@@ -512,7 +542,7 @@ local function OpenDepositPanel()
                self.RecentHover = true
         end
 
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 end
 
@@ -561,14 +591,15 @@ local function OpenTransferPanel()
     end
     TransferFrame.Paint = function( self, w, h )
 	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 
 	surface.SetFont( "VerdanaCustom" )
 	local disbandMessage = glorifiedBanking.getPhrase("transferAmount")
 	local textW, textH = surface.GetTextSize( disbandMessage )
-	local disbandLabel = vgui.Create( "DLabel", TransferFrame )
-	disbandLabel:SetText( disbandMessage )
+    local disbandLabel = vgui.Create( "DLabel", TransferFrame )
+    disbandLabel:SetText( disbandMessage )
+    disbandLabel:SetTextColor( Color( 0, 0, 0 ) )
 	disbandLabel:SetFont( "VerdanaCustom" )
 	disbandLabel:SizeToContents()
 	disbandLabel:SetPos( boxW / 2 - textW / 2, 30 )
@@ -680,10 +711,10 @@ local function OpenTransferPanel()
 
 	local transfer = vgui.Create( "DButton", TransferFrame )
     transfer:SetFont( "VerdanaCustom" )
-    transfer:SetTextColor( Color( 255, 255, 255 ) )
+    transfer:SetTextColor( Color( 0, 0, 0 ) )
 	transfer:SetText(glorifiedBanking.getPhrase("transfer"))
 	transfer:SetSize( 80, 20 )
-	transfer:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2, 100 )
+	transfer:SetPos( boxW / 2 - 40 / 2 - 22 - 80 / 2 - 5, 100 )
 	transfer.DoClick = function()
         DoTransfer()
 	end
@@ -730,15 +761,15 @@ local function OpenTransferPanel()
                self.RecentHover = true
         end
 
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 
     local cancelButton = vgui.Create( "DButton", TransferFrame )
     cancelButton:SetFont( "VerdanaCustom" )
-    cancelButton:SetTextColor( Color( 255, 255, 255 ) )
+    cancelButton:SetTextColor( Color( 0, 0, 0 ) )
 	cancelButton:SetText(glorifiedBanking.getPhrase("cancel"))
 	cancelButton:SetSize( 80, 20 )
-	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2, 100 )
+	cancelButton:SetPos( boxW / 2 - 40 / 2 - 22 + 80 / 2 + 5, 100 )
 	cancelButton.DoClick = function()
         TransferFrame:MoveTo( ScrW() / 2 - boxW / 2, ScrH(), 0.5, 0, -1, function()
             TransferFrame:Close()
@@ -787,7 +818,7 @@ local function OpenTransferPanel()
                self.RecentHover = true
         end
 
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
     end
 end
 
@@ -797,9 +828,9 @@ local function OpenBankingPanel()
 
     local ply = LocalPlayer()
 
-    local boxW, boxH = 500, 220
+    local boxW, boxH = 350, 450
     Frame = vgui.Create( "DFrame" )
-    Frame:SetTitle( glorifiedBanking.getPhrase( "atmText" ) )
+    Frame:SetTitle( "" )
     Frame:SetSize( boxW, boxH )
     Frame:SetDeleteOnClose( false )
     Frame:ShowCloseButton( false )
@@ -849,33 +880,91 @@ local function OpenBankingPanel()
     end
     Frame.Paint = function( self, w, h )
         Derma_DrawBackgroundBlur( self, self.startTime )
-	    draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR )
-        draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+        draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR )
+        draw.RoundedBox( 0, 0, 0, w, 150, glorifiedBanking.config.DEMA_BACKGROUND_SECONDARY_COLOR )
+
+        draw.RoundedBox( 0, 0, 205, w - 15, 1, Color( 0, 0, 0, 185 ) )
     end
 
     timer.Simple( ply:Ping() / 1000 + 0.1, function()
-        Frame:ShowCloseButton( true )
+        local CloseButton = vgui.Create( "DButton", Frame )
+        CloseButton:SetFont( "VerdanaCustom2" )
+        CloseButton:SetText( "X" )
+        CloseButton:SetTextColor( Color( 0, 0, 0 ) )
+        CloseButton:SetPos( boxW - 45, 5 )
+        CloseButton:SetSize( 35, 20 )
+        CloseButton.Paint = function( self, w, h )
+            draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_CLOSE_BUTTON_COLOR )
+        end
+        CloseButton.DoClick = function()
+            Frame:Close()
+        end
+
         surface.SetFont( "VerdanaCustom" )
-        local atmW, atmH = surface.GetTextSize( glorifiedBanking.getPhrase( "welcome" ) )
-        local balW, balH = surface.GetTextSize( glorifiedBanking.getPhrase( "curBalance", DarkRP.formatMoney( bankBalance ) ) )
+        --local atmW, atmH = surface.GetTextSize( glorifiedBanking.getPhrase( "welcome" ) )
+        if( string.len( LocalPlayer():Nick() ) < 15 ) then
+            surface.SetFont( "VerdanaCustomHuge" )
+        elseif( string.len( LocalPlayer():Nick() ) < 23 ) then
+            surface.SetFont( "VerdanaCustom4" )
+        else
+            surface.SetFont( "VerdanaCustom2" )
+        end
+        local playerNickW, playerNickH = surface.GetTextSize( LocalPlayer():Nick() )
+        surface.SetFont( "VerdanaCustom2" )
+        local balW, balH = surface.GetTextSize( glorifiedBanking.getPhrase( "curBalance" ) )
+        surface.SetFont( "VerdanaCustom3" )
+        local bankBalW, bankBalH = surface.GetTextSize( DarkRP.formatMoney( bankBalance ) )
 
-        local ATMLabel = vgui.Create( "DLabel", Frame )
-        ATMLabel:SetFont( "VerdanaCustom" )
-		ATMLabel:SetPos( 500 / 2 - atmW / 2, 35 )
-		ATMLabel:SetText( glorifiedBanking.getPhrase( "welcome" ) )
-        ATMLabel:SizeToContents()
+		--ATMLabel:SetText( glorifiedBanking.getPhrase( "welcome" ) )
 
-		local BalanceLabel = vgui.Create( "DLabel", Frame )
-        BalanceLabel:SetFont( "VerdanaCustom" )
-		BalanceLabel:SetPos( 500 / 2 - balW / 2, 50 )
-		BalanceLabel:SetText( glorifiedBanking.getPhrase( "curBalance", DarkRP.formatMoney( bankBalance ) ) )
+        local playerNickLabel = vgui.Create( "DLabel", Frame )
+        if( string.len( LocalPlayer():Nick() ) < 15 ) then
+            playerNickLabel:SetFont( "VerdanaCustomHuge" )
+        elseif( string.len( LocalPlayer():Nick() ) < 23 ) then
+            playerNickLabel:SetFont( "VerdanaCustom4" )
+        else
+            playerNickLabel:SetFont( "VerdanaCustom2" )
+        end
+        playerNickLabel:SetTextColor( Color( 255, 255, 255 ) )
+		playerNickLabel:SetPos( boxW / 2 - playerNickW / 2, 50 )
+		playerNickLabel:SetText( LocalPlayer():Nick() )
+        playerNickLabel:SizeToContents()
+
+        local BalancePanel = vgui.Create( "DPanel", Frame )
+        BalancePanel:SetPos( boxW / 2 - 235 / 2, 105 )
+        BalancePanel:SetSize( 235, 65 )
+        BalancePanel.Paint = function( self, w, h )
+            draw.RoundedBox( 0, 0, 0, w, h, glorifiedBanking.config.DERMA_BACKGROUND_COLOR_SUBSECTION )
+            draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
+        end
+
+        local BalanceLabel = vgui.Create( "DLabel", BalancePanel )
+        BalanceLabel:SetFont( "VerdanaCustom2" )
+		BalanceLabel:SetPos( 235 / 2 - balW / 2, 5 )
+        BalanceLabel:SetText( glorifiedBanking.getPhrase( "curBalance" ) )
+        BalanceLabel:SetTextColor( Color( 0, 0, 0 ) )
         BalanceLabel:SizeToContents()
+
+        local BalanceMoneyLabel = vgui.Create( "DLabel", BalancePanel )
+        BalanceMoneyLabel:SetFont( "VerdanaCustom3" )
+		BalanceMoneyLabel:SetPos( 235 / 2 - bankBalW / 2, 25 )
+        BalanceMoneyLabel:SetText( DarkRP.formatMoney( bankBalance ) )
+        BalanceMoneyLabel:SetTextColor( Color( 0, 0, 0 ) )
+        BalanceMoneyLabel:SizeToContents()
+
+        local actionsLabel = vgui.Create( "DLabel", Frame )
+        actionsLabel:SetFont( "VerdanaCustom" )
+        actionsLabel:SetTextColor( Color( 0, 0, 0 ) )
+		actionsLabel:SetPos( 15, 185 )
+		actionsLabel:SetText( "ACTIONS" )
+        actionsLabel:SizeToContents()
 
         local WithdrawButton = vgui.Create( "DButton", Frame )
         WithdrawButton:SetFont( "VerdanaCustom" )
         WithdrawButton:SetText( glorifiedBanking.getPhrase("withdrawal") )
-        WithdrawButton:SetTextColor( Color( 255, 255, 255 ) )
-        WithdrawButton:SetPos( 25, 80 )
+        WithdrawButton:SetTextColor( Color( 0, 0, 0 ) )
+        WithdrawButton:SetPos( boxW / 2 - 200 / 2, 230 )
+        WithdrawButton:SetFont( "VerdanaCustom2" )
         WithdrawButton:SetSize( 200, 50 )
         WithdrawButton.Init = function( self )
             self.RecentHover = false
@@ -920,7 +1009,7 @@ local function OpenBankingPanel()
                 self.RecentHover = true
             end
 
-            draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+            draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
         end
         WithdrawButton.DoClick = function()
           OpenWithdrawPanel()
@@ -929,9 +1018,10 @@ local function OpenBankingPanel()
         local DepositButton = vgui.Create( "DButton", Frame )
         DepositButton:SetFont( "VerdanaCustom" )
         DepositButton:SetText( glorifiedBanking.getPhrase("deposit") )
-        DepositButton:SetTextColor( Color( 255, 255, 255 ) )
-        DepositButton:SetPos( 275, 80 )
+        DepositButton:SetTextColor( Color( 0, 0, 0 ) )
+        DepositButton:SetPos( boxW / 2 - 200 / 2, 295 )
         DepositButton:SetSize( 200, 50 )
+        DepositButton:SetFont( "VerdanaCustom2" )
         DepositButton.Init = function( self )
             self.RecentHover = false
             self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
@@ -975,7 +1065,7 @@ local function OpenBankingPanel()
                 self.RecentHover = true
             end
 
-            draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+            draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
         end
         DepositButton.DoClick = function()
           OpenDepositPanel()
@@ -985,9 +1075,10 @@ local function OpenBankingPanel()
         local TransferButton = vgui.Create( "DButton", Frame )
         TransferButton:SetFont( "VerdanaCustom" )
         TransferButton:SetText( glorifiedBanking.getPhrase("transfer") )
-        TransferButton:SetTextColor( Color( 255, 255, 255 ) )
-        TransferButton:SetPos( 25, 150 )
-        TransferButton:SetSize( 450, 50 )
+        TransferButton:SetTextColor( Color( 0, 0, 0 ) )
+        TransferButton:SetPos( boxW / 2 - 200 / 2, 360 )
+        TransferButton:SetSize( 200, 50 )
+        TransferButton:SetFont( "VerdanaCustom2" )
         TransferButton.Init = function( self )
             self.RecentHover = false
             self.LerpedButtonValueR = glorifiedBanking.config.DERMA_BUTTON_COLOUR.r
@@ -1031,7 +1122,7 @@ local function OpenBankingPanel()
                 self.RecentHover = true
             end
 
-            draw.OutlinedBox( 0, 0, w, h, 2, Color( 0, 0, 0 ) )
+            draw.OutlinedBox( 0, 0, w, h, 2, Color( 55, 55, 55 ) )
         end
         TransferButton.DoClick = function()
             OpenTransferPanel()

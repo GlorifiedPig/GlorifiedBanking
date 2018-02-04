@@ -4,7 +4,7 @@ glorifiedBanking.registerPhrases( "en", {
     atmMachine = "ATM Machine",
     atmText = "Automated Teller Machine (ATM)",
     welcome = "Welcome to the Automated Teller Machine (ATM)",
-    curBalance = "Current Balance: %s",
+    curBalance = "Current Balance",
     withdrawal = "Withdraw",
     withdrawalTitle = "Withdraw Cash",
     withdrawAmount = "How much would you like to withdraw?",

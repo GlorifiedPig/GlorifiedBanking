@@ -6,24 +6,25 @@ glorifiedBanking = glorifiedBanking or {
     NICE_NAME = "glorifiedBanking"
 }
 
-local version = 2
+
+local version = 1
 
 if not frile or frile.VERSION < version then
     frile = {
         VERSION = version,
 
-        REALM_SERVER = 0,
-        REALM_CLIENT = 1,
-        REALM_SHARED = 2
+        STATE_SERVER = 0,
+        STATE_CLIENT = 1,
+        STATE_SHARED = 2
     }
 
     function frile.includeFile( filename, state )
-        if state == frile.REALM_SHARED or filename:find( "sh_" ) then
+        if state == frile.STATE_SHARED or filename:find( "sh_" ) then
             if SERVER then AddCSLuaFile( filename ) end
             include( filename )
-        elseif state == frile.REALM_SERVER or SERVER and filename:find( "sv_" ) then
+        elseif state == frile.STATE_SERVER or SERVER and filename:find( "sv_" ) then
             include( filename )
-        elseif state == frile.REALM_CLIENT or filename:find( "cl_" ) then
+        elseif state == frile.STATE_CLIENT or filename:find( "cl_" ) then
             if SERVER then AddCSLuaFile( filename )
             else include( filename ) end
         end
@@ -52,15 +53,8 @@ if not frile or frile.VERSION < version then
     end
 end
 
--- Do not adjust the load order. You must first load the libraries, followed by the module and last the languages.
-frile.includeFile( "glorifiedbanking/sh_config.lua", frile.REALM_SHARED )
-
-frile.includeFolder( "glorifiedbanking/libraries/" )
-frile.includeFolder( "glorifiedbanking/module/" )
-frile.includeFolder( "glorifiedbanking/languages/" )
-
-if SERVER and not DarkRP then
-    frile.includeFile( "glorifiedbanking/sv_database_config.lua", frile.REALM_SERVER )
-
-    MySQLite.initialize()
-end
+-- Do not adjust the load order. You must first load the libraries, than module and then languages.
+frile.includeFolder( "glorifiedBanking/", false, true )
+frile.includeFolder( "glorifiedBanking/libraries/" )
+frile.includeFolder( "glorifiedBanking/module/" )
+frile.includeFolder( "glorifiedBanking/languages/" )

@@ -7,7 +7,7 @@ include( "shared.lua" )
 util.AddNetworkString( "glorifiedBanking_ToggleATMPanel" )
 
 function ENT:Initialize()
-	self:SetModel( "models/props/de_nuke/equipment1.mdl" )
+	self:SetModel( "models/atm.mdl" )
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
