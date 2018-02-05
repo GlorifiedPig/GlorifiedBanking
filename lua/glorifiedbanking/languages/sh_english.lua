@@ -30,7 +30,7 @@ glorifiedBanking.registerPhrases( "en", {
     transferSuccess = "You have successfully transferred %s to %s.",
     transferCannotMoreThan = "You cannot transfer more than %s at a time.",
 
-    receivedMoney = "You haved received %s from %s.",
+    receivedMoney = "You have received %s from %s.",
     givenMoney = "You have given %s to %s.",
     givenFromAdmin = "You have been given %s from Administrator %s.",
     removedMoney = "You have removed %s from %s's account.",
