@@ -1,60 +1,89 @@
 
-glorifiedBanking = glorifiedBanking or {
-    config = {},
-
-    IDENTIFIER = "glorifiedbanking",
-    NICE_NAME = "glorifiedBanking"
+GlorifiedBanking = GlorifiedBanking or {
+    Config = {},
+    Version = "1.0.0"
 }
 
+print( "[GlorifiedBanking] This server is running version " .. GlorifiedBanking.Version )
 
-local version = 1
+local IsAddon = true -- Set this to 'true' if you're running from an addon, set to 'false' if you're running from a gamemode.
 
-if not frile or frile.VERSION < version then
-    frile = {
-        VERSION = version,
+--[[
+    GlorifiedInclude - A library for including files & folders with ease.
+    © 2020 GlorifiedInclude Developers
+    Please read usage guide @ https://github.com/GlorifiedPig/glorifiedinclude/blob/master/README.md
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+]]--
 
-        STATE_SERVER = 0,
-        STATE_CLIENT = 1,
-        STATE_SHARED = 2
+local giVersion = 1.1
+
+if !GlorifiedInclude or GlorifiedInclude.Version < giVersion then
+
+    GlorifiedInclude = {
+        Version = giVersion,
+        Realm = {
+            Server = 0,
+            Client = 1,
+            Shared = 2
+        }
     }
 
-    function frile.includeFile( filename, state )
-        if state == frile.STATE_SHARED or filename:find( "sh_" ) then
-            if SERVER then AddCSLuaFile( filename ) end
-            include( filename )
-        elseif state == frile.STATE_SERVER or SERVER and filename:find( "sv_" ) then
-            include( filename )
-        elseif state == frile.STATE_CLIENT or filename:find( "cl_" ) then
-            if SERVER then AddCSLuaFile( filename )
-            else include( filename ) end
+    local _include = include
+    local _AddCSLuaFile = AddCSLuaFile
+    local _SERVER = SERVER
+
+    local _GlorifiedInclude_Realm = GlorifiedInclude.Realm
+
+    local includedFiles = {}
+    function GlorifiedInclude.IncludeFile( fileName, realm, forceInclude, calledFromFolder )
+        if IsAddon == false && not calledFromFolder then fileName = GM.FolderName .. "/gamemode/" .. fileName end
+        if not forceInclude and table.HasValue( includedFiles, fileName ) then return end
+        table.insert( includedFiles, fileName )
+
+        if( realm == _GlorifiedInclude_Realm.Shared || fileName:find( "sh_" ) ) then
+            if _SERVER then _AddCSLuaFile( fileName ) end
+            _include( fileName )
+        elseif( realm == _GlorifiedInclude_Realm.Server || ( _SERVER && fileName:find( "sv_" ) ) ) then
+            _include( fileName )
+        elseif( realm == _GlorifiedInclude_Realm.Client || fileName:find( "cl_" ) ) then
+            if _SERVER then _AddCSLuaFile( fileName )
+            else _include( fileName ) end
         end
     end
 
-    function frile.includeFolder( currentFolder, ignoreFilesInFolder, ignoreFoldersInFolder )
-        if file.Exists( currentFolder .. "sh_frile.lua", "LUA" ) then
-            frile.includeFile( currentFolder .. "sh_frile.lua" )
+    function GlorifiedInclude.IncludeFolder( folderName, ignoreFiles, ignoreFolders, forceInclude )
+        if IsAddon == false then folderName = GM.FolderName .. "/gamemode/" .. folderName end
 
-            return
-        end
+        if( string.Right( folderName, 1 ) != "/" ) then folderName = folderName .. "/" end
 
-        local files, folders = file.Find( currentFolder .. "*", "LUA" )
+        local filesInFolder, foldersInFolder = file.Find( folderName .. "*", "LUA" )
 
-        if not ignoreFilesInFolder then
-            for _, File in ipairs( files ) do
-                frile.includeFile( currentFolder .. File )
+        if forceInclude == nil then forceInclude = false end
+
+        if ignoreFiles != true then
+            for k, v in ipairs( filesInFolder ) do
+                GlorifiedInclude.IncludeFile( folderName .. v, nil, forceInclude, true )
             end
         end
 
-        if not ignoreFoldersInFolder then
-            for _, folder in ipairs( folders ) do
-                frile.includeFolder( currentFolder .. folder .. "/" )
+        if ignoreFolders != true then
+            for k, v in ipairs( foldersInFolder ) do
+                GlorifiedInclude.IncludeFolder( folderName .. v .. "/", ignoreFiles, ignoreFolders, forceInclude )
             end
         end
     end
+
 end
 
--- Do not adjust the load order. You must first load the libraries, than module and then languages.
-frile.includeFolder( "glorifiedBanking/", false, true )
-frile.includeFolder( "glorifiedBanking/libraries/" )
-frile.includeFolder( "glorifiedBanking/module/" )
-frile.includeFolder( "glorifiedBanking/languages/" )
+--[[
+    -- Common practice would be to put all your includes here, for example:
+        GlorifiedInclude.IncludeFolder( "modules/" )
+        GlorifiedInclude.IncludeFile( "sh_config.lua" )
+    -- Remember that files load in the order you include them in.
+]]--
+GlorifiedInclude.IncludeFile( "glorifiedbanking/sv_config.lua" )
+GlorifiedInclude.IncludeFolder( "glorifiedbanking/libraries/" )
+GlorifiedInclude.IncludeFolder( "glorifiedbanking/localization/" )
+GlorifiedInclude.IncludeFolder( "glorifiedbanking/modules/" )

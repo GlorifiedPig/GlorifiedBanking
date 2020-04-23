@@ -1,0 +1,2 @@
+
+GlorifiedBanking.Config.Placeholder = ""
