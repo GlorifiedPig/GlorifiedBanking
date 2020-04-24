@@ -9,9 +9,9 @@ surface.CreateFont( "GBRoboto18", {
     weight = 400
 } )
 
-surface.CreateFont( "GBRoboto20", {
+surface.CreateFont( "GBRoboto22", {
     font = "Roboto",
-    size = GBScaleUI( 20 ),
+    size = GBScaleUI( 22 ),
     weight = 300
 } )
 
@@ -23,6 +23,7 @@ surface.CreateFont( "GBRoboto18Bold", {
 } )
 
 function GlorifiedBanking.OpenPanel()
+    local requestedClose = false
     local bankingFrame = TDLib( "DFrame" )
     bankingFrame:ClearPaint()
     bankingFrame:Background( GlorifiedBanking.Config.GRADIENT_ONE )
@@ -34,6 +35,25 @@ function GlorifiedBanking.OpenPanel()
     bankingFrame:Center()
     bankingFrame:MakePopup()
     bankingFrame:FadeIn( 0.75 )
+    bankingFrame:On( "Think", function()
+        if requestedClose then return end
+        if input.IsKeyDown( KEY_ESCAPE ) then
+            bankingFrame:AlphaTo( 1, 0.75 )
+            timer.Simple( 0.75, function()
+                bankingFrame:Close()
+            end )
+            RunConsoleCommand( "cancelselect" )
+            requestedClose = true
+            return
+        end
+    end )
+
+    local paintPanel = TDLib( "DPanel", bankingFrame )
+    paintPanel:SetSize( bankingFrame:GetWide(), bankingFrame:GetTall() )
+    paintPanel:ClearPaint()
+    paintPanel.Paint = function( self, w, h )
+        draw.RoundedBox( 0, 0, 40, w, 1, Color( 255, 255, 255 ) )
+    end
 
     local closeButton = TDLib( "DButton", bankingFrame )
     closeButton:ClearPaint()
@@ -45,12 +65,16 @@ function GlorifiedBanking.OpenPanel()
     closeButton:SetSize( GBScaleUI( 24 ), GBScaleUI( 24 ) )
     closeButton:SetTextColor( Color( 255, 255, 255 ) )
     closeButton:SetPos( bankingFrame:GetWide() - GBScaleUI( 24 ) - 8, 8 )
-    closeButton.DoClick = function()
-        bankingFrame:Close()
-    end
+    closeButton:On( "DoClick", function()
+        bankingFrame:AlphaTo( 1, 0.75 )
+        timer.Simple( 0.75, function()
+            bankingFrame:Close()
+        end )
+        requestedClose = true
+    end )
 
     local titleLabel = TDLib( "DLabel", bankingFrame )
-    titleLabel:SetFont( "GBRoboto20" )
+    titleLabel:SetFont( "GBRoboto22" )
     titleLabel:SetText( GlorifiedBanking.Config.MAIN_PANEL_TITLE )
     titleLabel:SetTextColor( Color( 255, 255, 255 ) )
     titleLabel:SetPos( 10, 10 )
@@ -58,10 +82,10 @@ function GlorifiedBanking.OpenPanel()
 
     local userAvatar = TDLib( "DPanel", bankingFrame )
     userAvatar:CircleAvatar()
-    userAvatar:SetPlayer( LocalPlayer(), 156 )
-    userAvatar:SetSize( 156, 156 )
+    userAvatar:SetPlayer( LocalPlayer(), 128 )
+    userAvatar:SetSize( 128, 128 )
     userAvatar:CenterHorizontal( 0.5 )
-    userAvatar:CenterVertical( 0.2 )
+    userAvatar:CenterVertical( 0.22 )
 end
 
 concommand.Add( "gbpanel", function() GlorifiedBanking.OpenPanel() end )
