@@ -20,8 +20,8 @@ function GlorifiedBanking.SQLQuery( sqlQuery, successFunc )
     if GlorifiedBanking.Config.SQL_TYPE == "mysqloo" and mysqloo then
         local query = GlorifiedBanking.SQLDatabase:query( sqlQuery )
         if successFunc then
-            function query:onSuccess( returnedQuery, data )
-                successFunc( data )
+            function query:onSuccess( queryData )
+                successFunc( queryData )
             end
         end
         function query:onError( error ) GlorifiedBanking.SQLThrowError( error ) end
@@ -31,5 +31,3 @@ function GlorifiedBanking.SQLQuery( sqlQuery, successFunc )
         if successFunc then successFunc( queryData ) end
     end
 end
-
-GlorifiedBanking.SQLQuery( "CREATE TABLE IF NOT EXISTS `gb_players`( `SteamID` VARCHAR(17) NOT NULL, `Balance` BIGINT(64) NOT NULL, PRIMARY KEY( `SteamID` ) )" )

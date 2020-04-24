@@ -86,4 +86,5 @@ end
 GlorifiedInclude.IncludeFile( "glorifiedbanking/sv_config.lua" )
 GlorifiedInclude.IncludeFolder( "glorifiedbanking/libraries/" )
 GlorifiedInclude.IncludeFolder( "glorifiedbanking/localization/" )
+GlorifiedInclude.IncludeFile( "glorifiedbanking/modules/core/sv_glorifiedbanking_playermeta.lua" )
 GlorifiedInclude.IncludeFolder( "glorifiedbanking/modules/" )

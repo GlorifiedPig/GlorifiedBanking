@@ -7,3 +7,4 @@ GlorifiedBanking.Config.SQL_DETAILS = {
     [ "database" ] = "glorifiedbanking",
     [ "port" ] = 3306
 }
+GlorifiedBanking.Config.STARTING_BALANCE = 5000 -- How much money to start with in the player's bank account?
