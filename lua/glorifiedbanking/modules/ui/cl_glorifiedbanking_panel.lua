@@ -55,12 +55,13 @@ function GlorifiedBanking.OpenPanel()
     bankingFrame:On( "Think", function()
         if requestedClose then return end
         if input.IsKeyDown( KEY_ESCAPE ) then
+            requestedClose = true
             bankingFrame:AlphaTo( 1, 0.75 )
             timer.Simple( 0.75, function()
+                if !bankingFrame then return end
                 bankingFrame:Close()
             end )
             RunConsoleCommand( "cancelselect" )
-            requestedClose = true
             return
         end
     end )
@@ -70,7 +71,7 @@ function GlorifiedBanking.OpenPanel()
     paintPanel:ClearPaint()
     paintPanel.Paint = function( self, w, h )
         draw.RoundedBox( 0, 0, 40, w, 1, Color( 200, 200, 200 ) )
-        draw.SimpleText( "ACTIONS", "GBRoboto14", 5, h / 2.24 )
+        draw.SimpleText( i18n.GetPhrase( "gbActions" ), "GBRoboto14", 5, h / 2.24 )
         draw.RoundedBox( 0, 0, h / 2.07, w - 37, 1, Color( 255, 255, 255 ) )
     end
 
@@ -85,11 +86,12 @@ function GlorifiedBanking.OpenPanel()
     closeButton:SetTextColor( Color( 255, 255, 255 ) )
     closeButton:SetPos( bankingFrame:GetWide() - GBScaleUI( 24 ) - 8, 8 )
     closeButton:On( "DoClick", function()
+        requestedClose = true
         bankingFrame:AlphaTo( 1, 0.75 )
         timer.Simple( 0.75, function()
+            if !bankingFrame then return end
             bankingFrame:Close()
         end )
-        requestedClose = true
     end )
 
     local titleLabel = TDLib( "DLabel", bankingFrame )
@@ -119,7 +121,7 @@ function GlorifiedBanking.OpenPanel()
     withdrawButton:Background( Color( 255, 255, 255, 0 ) )
     withdrawButton:Outline( Color( 255, 255, 255 ), 2 )
     withdrawButton:CircleHover( Color( 255, 255, 255, 25 ) )
-    withdrawButton:SetText( "Withdraw" )
+    withdrawButton:SetText( i18n.GetPhrase( "gbWithdraw" ) )
     withdrawButton:SetFont( "GBRoboto48" )
     withdrawButton:SetSize( GBScaleUI( bankingFrame:GetWide() - 72 ), GBScaleUI( 72 ) )
     withdrawButton:SetTextColor( Color( 255, 255, 255 ) )
@@ -131,7 +133,7 @@ function GlorifiedBanking.OpenPanel()
     depositButton:Background( Color( 255, 255, 255, 0 ) )
     depositButton:Outline( Color( 255, 255, 255 ), 2 )
     depositButton:CircleHover( Color( 255, 255, 255, 25 ) )
-    depositButton:SetText( "Deposit" )
+    depositButton:SetText( i18n.GetPhrase( "gbDeposit" ) )
     depositButton:SetFont( "GBRoboto48" )
     depositButton:SetSize( GBScaleUI( bankingFrame:GetWide() - 72 ), GBScaleUI( 72 ) )
     depositButton:SetTextColor( Color( 255, 255, 255 ) )
@@ -143,7 +145,7 @@ function GlorifiedBanking.OpenPanel()
     transferButton:Background( Color( 255, 255, 255, 0 ) )
     transferButton:Outline( Color( 255, 255, 255 ), 2 )
     transferButton:CircleHover( Color( 255, 255, 255, 25 ) )
-    transferButton:SetText( "Transfer" )
+    transferButton:SetText( i18n.GetPhrase( "gbTransfer" ) )
     transferButton:SetFont( "GBRoboto48" )
     transferButton:SetSize( GBScaleUI( bankingFrame:GetWide() - 72 ), GBScaleUI( 72 ) )
     transferButton:SetTextColor( Color( 255, 255, 255 ) )
