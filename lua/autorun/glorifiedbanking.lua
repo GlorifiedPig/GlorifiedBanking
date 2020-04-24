@@ -4,7 +4,7 @@ GlorifiedBanking = GlorifiedBanking or {
     Version = "1.0.0"
 }
 
-print( "[GlorifiedBanking] This server is running version " .. GlorifiedBanking.Version )
+print( "[GlorifiedBanking] This server is running version " .. GlorifiedBanking.Version .. "." )
 
 local IsAddon = true -- Set this to 'true' if you're running from an addon, set to 'false' if you're running from a gamemode.
 

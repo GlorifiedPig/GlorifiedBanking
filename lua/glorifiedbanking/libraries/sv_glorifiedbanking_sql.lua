@@ -1,12 +1,14 @@
 
-if GlorifiedBanking.Config.SQL_TYPE == "mysqloo" and mysqloo then
+if GlorifiedBanking.Config.SQL_TYPE == "mysqloo" then
     require( "mysqloo" )
 
-    local connectionDetails = GlorifiedBanking.Config.SQL_DETAILS
-    GlorifiedBanking.SQLDatabase = mysqloo.connect( connectionDetails[ "host" ], connectionDetails[ "user" ], connectionDetails[ "pass" ], connectionDetails[ "database" ], connectionDetails[ "port" ] )
-    function GlorifiedBanking.SQLDatabase:onConnected() print( "[GlorifiedBanking] MySQL database connected, mysqloo version " .. mysqloo.VERSION ) end
-    function GlorifiedBanking.SQLDatabase:onConnectionFailed( error ) print( "[GlorifiedBanking] MySQL database connection failed:\n" .. error ) end
-    GlorifiedBanking.SQLDatabase:connect()
+    if mysqloo then
+        local connectionDetails = GlorifiedBanking.Config.SQL_DETAILS
+        GlorifiedBanking.SQLDatabase = mysqloo.connect( connectionDetails[ "host" ], connectionDetails[ "user" ], connectionDetails[ "pass" ], connectionDetails[ "database" ], connectionDetails[ "port" ] )
+        function GlorifiedBanking.SQLDatabase:onConnected() print( "[GlorifiedBanking] MySQL database connected, MySQLOO version " .. mysqloo.VERSION .. "." ) end
+        function GlorifiedBanking.SQLDatabase:onConnectionFailed( error ) print( "[GlorifiedBanking] MySQL database connection failed:\n" .. error ) end
+        GlorifiedBanking.SQLDatabase:connect()
+    end
 end
 
 function GlorifiedBanking.SQLThrowError( error )
@@ -26,6 +28,8 @@ function GlorifiedBanking.SQLQuery( sqlQuery, successFunc )
         query:start()
     else
         local queryData = sql.Query( sqlQuery )
-        successFunc( queryData )
+        if successFunc then successFunc( queryData ) end
     end
 end
+
+GlorifiedBanking.SQLQuery( "CREATE TABLE IF NOT EXISTS `gb_players`( `SteamID` VARCHAR(17) NOT NULL, `Balance` BIGINT(64) NOT NULL, PRIMARY KEY( `SteamID` ) )" )
