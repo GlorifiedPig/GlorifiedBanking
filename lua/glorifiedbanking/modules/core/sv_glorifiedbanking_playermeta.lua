@@ -4,7 +4,7 @@ GlorifiedBanking.SQLQuery( "CREATE TABLE IF NOT EXISTS `gb_players`( `SteamID` V
 local startingBalance = GlorifiedBanking.Config.STARTING_BALANCE
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.SQLPlayer.PlayerInitialSpawn", function( ply )
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
-    GlorifiedBanking.SQLQuery( "SELECT FROM `gb_players` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 1", function( queryResult )
+    GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_players` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 1", function( queryResult )
         if queryResult and next( queryResult ) != nil then
             ply.GlorifiedBanking.Balance = queryResult[1]["Balance"]
         else
