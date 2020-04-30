@@ -3,6 +3,7 @@ function GlorifiedBanking.SetPlayerBalance( ply, balance )
     if not balance or not isnumber( balance ) then return end
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
     balance = math.Round( balance )
+    hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- ply, oldBalance, newBalance
     GlorifiedBanking.SQLQuery( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
     ply.GlorifiedBanking.Balance = balance
 end
@@ -28,6 +29,7 @@ function GlorifiedBanking.WithdrawAmount( ply, withdrawAmount )
     if GlorifiedBanking.CanPlayerAfford( ply, withdrawAmount ) then
         ply:addMoney( withdrawAmount )
         GlorifiedBanking.RemovePlayerBalance( ply, withdrawAmount )
+        hook.Run( "GlorifiedBanking.PlayerWithdrawal", ply, withdrawAmount ) -- ply, withdrawAmount
     end
 end
 
@@ -35,6 +37,7 @@ function GlorifiedBanking.DepositAmount( ply, depositAmount )
     if ply:canAfford( depositAmount ) then
         ply:addMoney( -depositAmount )
         GlorifiedBanking.AddPlayerBalance( ply, depositAmount )
+        hook.Run( "GlorifiedBanking.PlayerDeposit", ply, depositAmount ) -- ply, depositAmount
     end
 end
 
@@ -42,6 +45,7 @@ function GlorifiedBanking.TransferAmount( ply, receiver, transferAmount )
     if GlorifiedBanking.CanPlayerAfford( ply, transferAmount ) then
         GlorifiedBanking.RemovePlayerBalance( ply, transferAmount )
         GlorifiedBanking.AddPlayerBalance( receiver, transferAmount )
+        hook.Run( "GlorifiedBanking.PlayerTransfer", ply, receiver, transferAmount ) -- ply, receiver, transferAmount
     end
 end
 

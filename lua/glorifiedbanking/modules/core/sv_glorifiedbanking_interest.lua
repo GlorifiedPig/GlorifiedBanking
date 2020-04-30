@@ -6,8 +6,10 @@ function GlorifiedBanking.GetInterestFromAmount( bal )
 end
 
 function GlorifiedBanking.ApplyPlayerInterest( ply )
-    GlorifiedBanking.AddPlayerBalance( ply, GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) )
-    DarkRP.notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbInterestReceived", DarkRP.formatMoney( GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) ) ) )
+    local interestAmount = GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) )
+    GlorifiedBanking.AddPlayerBalance( ply, interestAmount )
+    DarkRP.notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbInterestReceived", DarkRP.formatMoney( interestAmount ) ) )
+    hook.Run( "GlorifiedBanking.PlayerInterestReceived", ply, interestAmount ) -- ply, interestAmount
 end
 
 hook.Add( "InitPostEntity", "GlorifiedBanking.Interest.InitPostEntity", function()
