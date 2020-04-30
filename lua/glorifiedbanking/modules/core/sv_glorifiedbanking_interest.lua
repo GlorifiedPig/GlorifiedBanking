@@ -7,7 +7,7 @@ end
 
 function GlorifiedBanking.ApplyPlayerInterest( ply )
     GlorifiedBanking.AddPlayerBalance( ply, GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) )
-    DarkRP.notify( ply, NOTIFY_GENERIC, 5, "You received " .. DarkRP.formatMoney( GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) ) .. " in interest." )
+    DarkRP.notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbInterestReceived", DarkRP.formatMoney( GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) ) ) )
 end
 
 hook.Add( "InitPostEntity", "GlorifiedBanking.Interest.InitPostEntity", function()
