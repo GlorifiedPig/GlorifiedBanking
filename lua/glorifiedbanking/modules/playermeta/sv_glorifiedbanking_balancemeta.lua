@@ -66,13 +66,13 @@ function plyMeta:CanAffordBank( affordAmount )
 end
 
 function plyMeta:WithdrawFromBank( withdrawAmount )
-    return GlorifiedBanking.WithdrawAmount( self, withdrawAmount )
+    GlorifiedBanking.WithdrawAmount( self, withdrawAmount )
 end
 
 function plyMeta:DepositToBank( depositAmount )
-    return GlorifiedBanking.DepositAmount( self, depositAmount )
+    GlorifiedBanking.DepositAmount( self, depositAmount )
 end
 
 function plyMeta:TransferBankMoney( receiver, transferAmount )
-    return GlorifiedBanking.TransferAmount( self, receiver, transferAmount )
+    GlorifiedBanking.TransferAmount( self, receiver, transferAmount )
 end
