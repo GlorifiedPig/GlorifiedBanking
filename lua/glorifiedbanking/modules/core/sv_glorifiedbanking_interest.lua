@@ -11,7 +11,7 @@ end
 
 function GlorifiedBanking.ApplyPlayerInterest( ply )
     if istable( ply ) then
-        for k, v in pairs( ply ) do AddInterestBalance( ply ) end
+        for k, v in pairs( ply ) do AddInterestBalance( v ) end
     elseif ply:IsPlayer() then
         AddInterestBalance( ply )
     end
