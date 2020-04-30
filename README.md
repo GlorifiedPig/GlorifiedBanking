@@ -4,6 +4,17 @@
 
 ### Functions
 
+`GlorifiedBanking.GetPlayerBalance( ply )`
+* Gets the player's balance. You can also use `ply:GetBankBalance()`
+
+| Argument                  | Description   |
+| -------------             | ------------- |
+| player :: Player          | The player whose balance you want to get. |
+
+| Returns                  | Description   |
+| -------------             | ------------- |
+| balance :: number          | The balance of the specified player. |
+---
 `GlorifiedBanking.SetPlayerBalance( ply, balance )`
 * Set the player's balance. You can also use `ply:SetBankBalance( balance )`
 
