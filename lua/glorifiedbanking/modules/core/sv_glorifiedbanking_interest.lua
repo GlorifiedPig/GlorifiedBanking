@@ -5,22 +5,15 @@ function GlorifiedBanking.GetInterestFromAmount( bal )
     return ( bal / 100 ) * GlorifiedBanking.Config.INTEREST_PERCENTAGE
 end
 
-local function AddInterestBalance( ply )
-    GlorifiedBanking.AddPlayerBalance( ply, GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) )
-end
-
 function GlorifiedBanking.ApplyPlayerInterest( ply )
-    if istable( ply ) then
-        for k, v in pairs( ply ) do AddInterestBalance( v ) end
-    elseif ply:IsPlayer() then
-        AddInterestBalance( ply )
-    end
-
+    GlorifiedBanking.AddPlayerBalance( ply, GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) )
     DarkRP.notify( ply, NOTIFY_GENERIC, 5, "You received " .. DarkRP.formatMoney( GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ) ) ) .. " in interest." )
 end
 
 hook.Add( "InitPostEntity", "GlorifiedBanking.Interest.InitPostEntity", function()
     timer.Create( "GlorifiedBanking.InterestTimer", GlorifiedBanking.Config.INTEREST_TIMER, 0, function()
-        GlorifiedBanking.ApplyPlayerInterest( player.GetAll() )
+        for k, v in pairs( player.GetAll() ) do
+            GlorifiedBanking.ApplyPlayerInterest( v )
+        end
     end )
 end )
