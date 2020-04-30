@@ -40,3 +40,15 @@ function GlorifiedBanking.LogTransfer( ply, receiver, transferAmount )
         ["TransferAmount"] = transferAmount
     } )
 end
+
+util.AddNetworkString( "GlorifiedBanking.PlayerOpenedLogs" )
+concommand.Add( "glorifiedbanking_logs", function( ply )
+    if ply:IsAdmin() then
+        -- Send each table seperately to compress as much space as possible
+        net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
+        net.WriteString( util.TableToJSON( GlorifiedBanking.Logs.Withdrawals ) )
+        net.WriteString( util.TableToJSON( GlorifiedBanking.Logs.Deposits ) )
+        net.WriteString( util.TableToJSON( GlorifiedBanking.Logs.Transfers ) )
+        net.Send( ply )
+    end
+end )
