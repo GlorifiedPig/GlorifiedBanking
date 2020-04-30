@@ -2,7 +2,7 @@
 if not GlorifiedBanking.Config.INTEREST_ENABLED then return end
 
 function GlorifiedBanking.GetInterestFromAmount( bal )
-    return ( bal / 100 ) * GlorifiedBanking.Config.INTEREST_PERCENTAGE
+    return math.Round( ( bal / 100 ) * GlorifiedBanking.Config.INTEREST_PERCENTAGE )
 end
 
 function GlorifiedBanking.ApplyPlayerInterest( ply )

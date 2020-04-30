@@ -2,7 +2,8 @@
 function GlorifiedBanking.SetPlayerBalance( ply, balance )
     if not balance or not isnumber( balance ) then return end
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
-    GlorifiedBanking.SQLQuery( "UPDATE `players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
+    balance = math.Round( balance )
+    GlorifiedBanking.SQLQuery( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
     ply.GlorifiedBanking.Balance = balance
 end
 
