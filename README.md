@@ -74,4 +74,4 @@
 
 ### Console Commands
 - `glorifiedbanking_admin` - Opens the admin user interface.
-- `glorifiedbanking_sqlviewer` - Opens the admin SQL table viewer for the GlorifiedBanking database.
+- `glorifiedbanking_logs` - Opens the log viewer for admins.
