@@ -6,5 +6,8 @@ i18n.RegisterPhrases( "en", {
     gbActions = "ACTIONS",
     gbInterestReceived = "You received %s in interest.",
     gbSalaryToBank = "Your salary of %s was transferred to your bank.",
-    gbDropMoneyOnDeath = "You paid %s in hospital bills."
+    gbDropMoneyOnDeath = "You paid %s in hospital bills.",
+    gbCashWithdrawn = "You withdrew %s.",
+    gbCashDeposited = "You deposited %s.",
+    gbCashTransferred = "You transferred %s to %s.",
 } )
