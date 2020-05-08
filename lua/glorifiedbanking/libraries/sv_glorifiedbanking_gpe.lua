@@ -51,6 +51,10 @@ function GlorifiedPersistentEnts.LoadEntities()
     end
 end
 
+hook.Add( "PostCleanupMap", GlorifiedPersistentEnts.Identifier .. ".GPE.PostCleanupMap", function()
+    GlorifiedPersistentEnts.LoadEntities()
+end )
+
 hook.Add( "OnPhysgunFreeze", GlorifiedPersistentEnts.Identifier .. ".GPE.OnPhysgunFreeze", function( wep, physObj, ent, ply )
     if table.HasValue( GlorifiedPersistentEnts.EntClasses, ent:GetClass() ) then
         GlorifiedPersistentEnts.SaveEntityInfo( ent )
