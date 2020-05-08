@@ -45,10 +45,10 @@ util.AddNetworkString( "GlorifiedBanking.PlayerOpenedLogs" )
 concommand.Add( "glorifiedbanking_logs", function( ply )
     if ply:IsSuperAdmin() or CAMI.PlayerHasAccess( "glorifiedbanking_openlogs" ) then
         -- Send each table seperately to compress as much space as possible
+        local logsJSON = GlorifiedBanking.Logs
+        logsJSON = tostring( util.TableToJSON( logsJSON ) )
         net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
-        net.WriteString( util.TableToJSON( GlorifiedBanking.Logs.Withdrawals ) )
-        net.WriteString( util.TableToJSON( GlorifiedBanking.Logs.Deposits ) )
-        net.WriteString( util.TableToJSON( GlorifiedBanking.Logs.Transfers ) )
+        net.WriteString( logsJSON )
         net.Send( ply )
     end
 end )

@@ -44,9 +44,7 @@ function GlorifiedBanking.OpenLogPanel( logTbl )
 end
 
 net.Receive( "GlorifiedBanking.PlayerOpenedLogs", function()
-    local logTbl = {}
-    logTbl.Withdrawals = util.JSONToTable( net.ReadString() ) or {}
-    logTbl.Deposits = util.JSONToTable( net.ReadString() ) or {}
-    logTbl.Transfers = util.JSONToTable( net.ReadString() ) or {}
+    local logTbl = net.ReadString()
+    logTbl = util.JSONToTable( logTbl )
     GlorifiedBanking.OpenLogPanel( logTbl )
 end )

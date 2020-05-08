@@ -1,6 +1,6 @@
 
 function GlorifiedBanking.SetPlayerBalance( ply, balance )
-    if not balance or not isnumber( balance ) then return end
+    if not balance or not isnumber( balance ) or balance == nil then return end
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
     balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer
     balance = math.Clamp( balance, 0 ) -- Make sure the balance never goes below 0
@@ -19,7 +19,7 @@ function GlorifiedBanking.AddPlayerBalance( ply, addAmount )
 end
 
 function GlorifiedBanking.RemovePlayerBalance( ply, removeAmount )
-    GlorifiedBanking.SetPlayerBalance( ply, math.Clamp( GlorifiedBanking.GetPlayerBalance( ply ) - addAmount, 0 ) ) -- Make sure we don't remove into a negative number, clamp to 0
+    GlorifiedBanking.SetPlayerBalance( ply, math.Clamp( GlorifiedBanking.GetPlayerBalance( ply ) - removeAmount, 0 ) ) -- Make sure we don't remove into a negative number, clamp to 0
 end
 
 function GlorifiedBanking.CanPlayerAfford( ply, affordAmount )
