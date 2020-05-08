@@ -84,7 +84,7 @@ end
     -- Remember that files load in the order you include them in.
 ]]--
 GlorifiedInclude.IncludeFile( "glorifiedbanking/sv_config.lua" )
-GlorifiedInclude.IncludeFile( "glorifiedbanking/cl_config.lua" )
+GlorifiedInclude.IncludeFile( "glorifiedbanking/sh_config.lua" )
 GlorifiedInclude.IncludeFolder( "glorifiedbanking/libraries/" )
 GlorifiedInclude.IncludeFolder( "glorifiedbanking/localization/" )
 GlorifiedInclude.IncludeFolder( "glorifiedbanking/modules/sql/" )

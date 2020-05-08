@@ -1,14 +1,14 @@
 
 if not GlorifiedBanking.Config.INTEREST_ENABLED then return end
 
-function GlorifiedBanking.GetInterestFromAmount( bal, usergroup )
-    if usergroup and GlorifiedBanking.Config.USERGROUP_SPECIFIC_INTERESTS[usergroup] then
-        return math.Round( ( bal / 100 ) * GlorifiedBanking.Config.USERGROUP_SPECIFIC_INTERESTS[usergroup] )
-    else
-        return math.Round( ( bal / 100 ) * GlorifiedBanking.Config.DEFAULT_INTEREST_PERCENTAGE )
-    end
-end
-
 function GlorifiedBanking.GetPlayerInterestAmount()
-    return GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance(), LocalPlayer():GetUserGroup() )
+    local customFunc = GlorifiedBanking.Config.INTEREST_AMOUNT_CUSTOMFUNC
+    local percentage = GlorifiedBanking.Config.DEFAULT_INTEREST_PERCENTAGE
+    if customFunc then
+        local customFuncReturn = customFunc( LocalPlayer() )
+        if customFuncReturn and customFuncReturn != nil and customFuncReturn != 0 then
+            percentage = customFuncReturn
+        end
+    end
+    return math.Round( ( GlorifiedBanking.GetPlayerBalance() / 100 ) * percentage )
 end
