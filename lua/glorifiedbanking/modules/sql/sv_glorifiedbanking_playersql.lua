@@ -7,9 +7,11 @@ hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.SQLPlayer.PlayerInitialSpawn",
     GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_players` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 1", function( queryResult )
         if queryResult and table.IsEmpty( queryResult ) == false then
             ply.GlorifiedBanking.Balance = queryResult[1]["Balance"]
+            ply:SetNWInt( "GlorifiedBanking.Balance", queryResult[1]["Balance"] )
         else
             GlorifiedBanking.SQLQuery( "INSERT INTO `gb_players`( `SteamID`, `Balance` ) VALUES ( '" .. ply:SteamID() .. "', " .. startingBalance .. " )" )
             ply.GlorifiedBanking.Balance = startingBalance
+            ply:SetNWInt( "GlorifiedBanking.Balance", startingBalance )
         end
     end )
 end )

@@ -10,7 +10,7 @@ function GlorifiedBanking.GetInterestFromAmount( bal, usergroup )
 end
 
 function GlorifiedBanking.GetPlayerInterestAmount( ply )
-    return GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply, ply:GetUserGroup() ) )
+    return GlorifiedBanking.GetInterestFromAmount( GlorifiedBanking.GetPlayerBalance( ply ), ply:GetUserGroup() )
 end
 
 function GlorifiedBanking.ApplyPlayerInterest( ply )

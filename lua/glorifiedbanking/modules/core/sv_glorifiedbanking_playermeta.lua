@@ -11,6 +11,7 @@ function GlorifiedBanking.SetPlayerBalance( ply, balance )
     hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- ply, oldBalance, newBalance
     GlorifiedBanking.SQLQuery( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
     ply.GlorifiedBanking.Balance = balance
+    ply:SetNWInt( "GlorifiedBanking.Balance", balance )
 end
 
 function GlorifiedBanking.GetPlayerBalance( ply )
