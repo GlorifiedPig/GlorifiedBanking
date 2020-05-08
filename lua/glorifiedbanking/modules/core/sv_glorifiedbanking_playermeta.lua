@@ -1,9 +1,13 @@
 
+local function minClamp( num, minimum )
+    return math.max( minimum, num )
+end
+
 function GlorifiedBanking.SetPlayerBalance( ply, balance )
     if not balance or not isnumber( balance ) or balance == nil then return end
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
     balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer
-    balance = math.Clamp( balance, 0 ) -- Make sure the balance never goes below 0
+    balance = minClamp( balance, 0 ) -- Make sure the balance never goes below 0
     hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- ply, oldBalance, newBalance
     GlorifiedBanking.SQLQuery( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
     ply.GlorifiedBanking.Balance = balance
@@ -19,7 +23,7 @@ function GlorifiedBanking.AddPlayerBalance( ply, addAmount )
 end
 
 function GlorifiedBanking.RemovePlayerBalance( ply, removeAmount )
-    GlorifiedBanking.SetPlayerBalance( ply, math.Clamp( GlorifiedBanking.GetPlayerBalance( ply ) - removeAmount, 0 ) ) -- Make sure we don't remove into a negative number, clamp to 0
+    GlorifiedBanking.SetPlayerBalance( ply, minClamp( GlorifiedBanking.GetPlayerBalance( ply ) - removeAmount, 0 ) ) -- Make sure we don't remove into a negative number, clamp to 0
 end
 
 function GlorifiedBanking.CanPlayerAfford( ply, affordAmount )
