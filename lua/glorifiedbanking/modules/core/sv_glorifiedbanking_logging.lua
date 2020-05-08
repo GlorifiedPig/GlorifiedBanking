@@ -44,6 +44,7 @@ end
 util.AddNetworkString( "GlorifiedBanking.PlayerOpenedLogs" )
 concommand.Add( "glorifiedbanking_logs", function( ply )
     if ply:IsSuperAdmin() or CAMI.PlayerHasAccess( "glorifiedbanking_openlogs" ) then
+        -- To the person reading this code: this is going to be changed to work with a colossal table probably when I figure out how to network it more efficiently
         net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
         GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_withdrawals` WHERE ( `Date` > DATE_SUB( now(), INTERVAL 1 WEEK ) )", function( withdrawalQuery )
             net.WriteLargeString( util.TableToJSON( withdrawalQuery ) )
