@@ -41,14 +41,37 @@ function GlorifiedBanking.LogTransfer( ply, receiver, transferAmount )
     } )
 end
 
+local function chunkstring( str, number )
+    local output = {}
+    local strsize = string.len( str )
+    local chunksTaken = 0
+    local chunksToTake = math.ceil( strsize / number )
+    for i = 1, chunksToTake do
+        if chunksTaken == chunksToTake - 1 then
+            table.insert( output, string.sub( str, chunksTaken * number ) )
+        else
+            table.insert( output, string.sub( str, chunksTaken * number, i * number ) )
+        end
+        chunksTaken = chunksTaken + 1
+    end
+    return output
+end
+
 util.AddNetworkString( "GlorifiedBanking.PlayerOpenedLogs" )
 concommand.Add( "glorifiedbanking_logs", function( ply )
     if ply:IsSuperAdmin() or CAMI.PlayerHasAccess( "glorifiedbanking_openlogs" ) then
-        -- Send each table seperately to compress as much space as possible
         local logsJSON = GlorifiedBanking.Logs
         logsJSON = tostring( util.TableToJSON( logsJSON ) )
+
+        -- send 2000 chars of the table at a time to prevent going over the 64kb buffer
+        local chunksToSend = math.ceil( string.len( logsJSON ) / 2000 )
+        local chunksTbl = chunkstring( logsJSON, 2000 )
+
         net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
-        net.WriteString( logsJSON )
+        net.WriteUInt( chunksToSend, 8 ) -- send how many chunks we are supposed to be receiving for an appropriate clientsided for loop
+        for i = 1, chunksToSend do
+            net.WriteData( util.Compress( chunksTbl[i] ), 16008 ) -- 2000 max chars * 8 + 8 for bytecount
+        end
         net.Send( ply )
     end
 end )

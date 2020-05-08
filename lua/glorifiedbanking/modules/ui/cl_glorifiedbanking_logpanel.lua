@@ -44,7 +44,11 @@ function GlorifiedBanking.OpenLogPanel( logTbl )
 end
 
 net.Receive( "GlorifiedBanking.PlayerOpenedLogs", function()
-    local logTbl = net.ReadString()
+    local logTbl = ""
+    local chunksToReceive = net.ReadUInt( 8 )
+    for i = 1, chunksToReceive do
+        logTbl = logTbl .. util.Decompress( net.ReadData( 16008 ) )
+    end
     logTbl = util.JSONToTable( logTbl )
     GlorifiedBanking.OpenLogPanel( logTbl )
 end )
