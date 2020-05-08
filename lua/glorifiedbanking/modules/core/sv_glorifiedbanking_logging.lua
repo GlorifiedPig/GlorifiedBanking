@@ -44,11 +44,16 @@ end
 util.AddNetworkString( "GlorifiedBanking.PlayerOpenedLogs" )
 concommand.Add( "glorifiedbanking_logs", function( ply )
     if ply:IsSuperAdmin() or CAMI.PlayerHasAccess( "glorifiedbanking_openlogs" ) then
-        local logsJSON = GlorifiedBanking.Logs
-        logsJSON = util.TableToJSON( logsJSON )
-
         net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
-        net.WriteLargeString( logsJSON )
-        net.Send( ply )
+        GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_withdrawals` WHERE ( `Date` > DATE_SUB( now(), INTERVAL 1 WEEK ) )", function( withdrawalQuery )
+            net.WriteLargeString( util.TableToJSON( withdrawalQuery ) )
+            GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_deposits` WHERE ( `Date` > DATE_SUB( now(), INTERVAL 1 WEEK ) )", function( depositQuery )
+                net.WriteLargeString( util.TableToJSON( depositQuery ) )
+                GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_transfers` WHERE ( `Date` > DATE_SUB( now(), INTERVAL 1 WEEK ) )", function( transferQuery )
+                    net.WriteLargeString( util.TableToJSON( transferQuery ) )
+                    net.Send( ply )
+                end )
+            end )
+        end )
     end
 end )
