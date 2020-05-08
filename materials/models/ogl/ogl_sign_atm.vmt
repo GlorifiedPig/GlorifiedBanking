@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/ogl/ogl_sign_atm"
+	"$bumpMap" "models/ogl/ogl_sign_atm_nrm"
+	"$surfaceprop" "metal"
+	$phong "1"
+	$phongexponent "20"
+	$phongfresnelranges "[0.15 0.65 1.00]"
+	$phongalbedotint "1"
+	$phongboost "3"
+	$ambientocclusion 1
+}
