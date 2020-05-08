@@ -50,6 +50,42 @@
 | Returns                  | Description   |
 | -------------             | ------------- |
 | canAfford :: boolean          | Whether or not the player can afford the specified amount. |
+---
+`GlorifiedBanking.WithdrawAmount( ply, withdrawAmount )`
+* Withdraws from the player's bank account into their wallet. You can also use `ply:WithdrawFromBank( withdrawAmount )`
+
+| Argument                  | Description   |
+| -------------             | ------------- |
+| player :: Player          | The player whose balance you want to withdraw from. |
+| withdrawAmount :: number          | The amount you want to withdraw. |
+---
+`GlorifiedBanking.DepositAmount( ply, depositAmount )`
+* Deposits from the player's wallet into their bank account. You can also use `ply:DepositToBank( depositAmount )`
+
+| Argument                  | Description   |
+| -------------             | ------------- |
+| player :: Player          | The player whose balance you want to deposit. |
+| withdrawAmount :: number          | The amount you want to deposit. |
+---
+`GlorifiedBanking.TransferAmount( ply, receiver, transferAmount )`
+* Transfers from one player's bank account to another's. You can also use `ply:TransferBankMoney( receiver, transferAmount )`
+
+| Argument                  | Description   |
+| -------------             | ------------- |
+| player :: Player          | The player whose balance you want to transfer. |
+| receiver :: Player          | The player who receives the transfer. |
+| transferAmount :: number          | The amount you want to transfer. |
+---
+`GlorifiedBanking.GetPlayerInterestAmount( ply )`
+* Returns how much the player receives in interest.
+
+| Argument                  | Description   |
+| -------------             | ------------- |
+| player :: Player          | The player whose interest amount you want to check. |
+
+| Returns                  | Description   |
+| -------------             | ------------- |
+| interestAmount :: number          | The amount the player receives in interest. |
 
 ### Hooks
 
@@ -82,6 +118,13 @@
 | player :: Player          | The player who transferred an amount to another player. |
 | receiver :: Player          | The player who received the tranfer. |
 | transferAmount :: number          | The amount that was transferred. |
+---
+`GlorifiedBanking.PlayerInterestReceived( ply, interestAmount )`
+
+| Argument                  | Description   |
+| -------------             | ------------- |
+| player :: Player          | The player who received their interest. |
+| interestAmount :: number          | The amount they received in interest. |
 
 ### Console Commands
 - `glorifiedbanking_admin` - Opens the admin user interface.
