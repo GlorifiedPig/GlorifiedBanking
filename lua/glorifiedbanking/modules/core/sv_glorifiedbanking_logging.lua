@@ -43,7 +43,7 @@ end
 
 util.AddNetworkString( "GlorifiedBanking.PlayerOpenedLogs" )
 concommand.Add( "glorifiedbanking_logs", function( ply )
-    if ply:IsAdmin() then
+    if ply:IsSuperAdmin() or CAMI.PlayerHasAccess( "glorifiedbanking_openlogs" ) then
         -- Send each table seperately to compress as much space as possible
         net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
         net.WriteString( util.TableToJSON( GlorifiedBanking.Logs.Withdrawals ) )
