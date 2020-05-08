@@ -1,3 +1,4 @@
+
 if not GlorifiedBanking.Config.SUPPORT_ZEROS_ADDONS then return end
 
 if zwf and zwf.f and zwf.f.GiveMoney then
