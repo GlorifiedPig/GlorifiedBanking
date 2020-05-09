@@ -1,5 +1,6 @@
-
-i18n.RegisterPhrases( "en", {
+i18n.RegisterPhrases("en", {
+    gbSystemName = "Glorified Banking",
+    gbLoading = "Loading",
     gbWithdraw = "Withdraw",
     gbDeposit = "Deposit",
     gbTransfer = "Transfer",
@@ -9,5 +10,5 @@ i18n.RegisterPhrases( "en", {
     gbDropMoneyOnDeath = "You paid %s in hospital bills.",
     gbCashWithdrawn = "You withdrew %s.",
     gbCashDeposited = "You deposited %s.",
-    gbCashTransferred = "You transferred %s to %s.",
-} )
+    gbCashTransferred = "You transferred %s to %s."
+})

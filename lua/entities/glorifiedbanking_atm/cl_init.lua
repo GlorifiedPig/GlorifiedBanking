@@ -24,6 +24,13 @@ surface.CreateFont("GlorifiedBanking.ATMEntity.Title", {
     antialias = true
 })
 
+surface.CreateFont("GlorifiedBanking.ATMEntity.Loading", {
+    font = "Montserrat",
+    size = 60,
+    weight = 500,
+    antialias = true
+})
+
 function ENT:Think()
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
         self:EmitSound("glorified_banking/attention_beep.mp3", 70, 100, 1, CHAN_AUTO)
@@ -39,8 +46,68 @@ function ENT:DrawTranslucent()
 end
 
 local scrw, scrh = 858, 753
-local screenpos = Vector(1.47, 13.46, 51.16)
-local screenang = Angle(0, 270, 90)
+
+function ENT:DrawScreenBackground()
+    surface.SetDrawColor(theme.Data.backgroundCol)
+    surface.DrawRect(0, 0, scrw, scrh)
+
+    draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.logoBackgroundCol)
+
+    draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+
+    draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.logoBackgroundCol)
+
+    surface.SetDrawColor(theme.Data.innerBoxBackgroundCol)
+    surface.DrawRect(20, 115, scrw-40, scrh-135)
+
+    draw.RoundedBox(2, 20, 115, scrw-40, 3, theme.Data.innerBoxBorderCol)
+    draw.RoundedBox(2, 20, scrh-23, scrw-40, 3, theme.Data.innerBoxBorderCol)
+end
+
+local circleMat = Material("glorified_banking/circle.png", "noclamp smooth")
+
+ENT.LoadingScreenX = 0
+ENT.LoadingScreenH = 220
+
+function ENT:DrawLoadingScreen(shouldShow)
+    shouldShow = self.Lmao
+
+    if shouldShow then
+        self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 20)
+
+        if self.LoadingScreenX > 18 then
+            self.LoadingScreenH = Lerp(FrameTime() * 6, self.LoadingScreenH, scrh-135)
+        end
+    else
+        self.LoadingScreenH = Lerp(FrameTime() * 5, self.LoadingScreenH, 220)
+
+        if self.LoadingScreenH < 225 then
+            self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, -scrw)
+        end
+    end
+
+    local w, h = scrw - 40, self.LoadingScreenH
+    local x, y = self.LoadingScreenX, 310 - self.LoadingScreenH / 2 + 114
+
+    if self.LoadingScreenX < -(scrw - 20) then return end
+
+    surface.SetDrawColor(theme.Data.loadingScreenBackgroundCol)
+    surface.DrawRect(x, y, w, h)
+
+    draw.RoundedBox(2, x, y, w, 3, theme.Data.loadingScreenBorderCol)
+    draw.RoundedBox(2, x, y + h - 3, w, 3, theme.Data.loadingScreenBorderCol)
+
+    local animprog = CurTime() * 2.5
+
+    surface.SetDrawColor(theme.Data.loadingScreenSpinnerCol)
+    surface.SetMaterial(circleMat)
+
+    surface.DrawTexturedRect(x + w / 2 - 80, 370 + math.sin(animprog + 1) * 20, 40, 40)
+    surface.DrawTexturedRect(x + w / 2 - 20, 370 + math.sin(animprog + .5) * 20, 40, 40)
+    surface.DrawTexturedRect(x + w / 2 + 40, 370 + math.sin(animprog) * 20, 40, 40)
+
+    draw.SimpleText(string.upper(i18n.GetPhrase("gbLoading")), "GlorifiedBanking.ATMEntity.Loading", x + w / 2, 470, theme.Data.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+end
 
 ENT.Screens = {
     [1] = {
@@ -49,29 +116,22 @@ ENT.Screens = {
     }
 }
 
+local screenpos = Vector(1.47, 13.46, 51.16)
+local screenang = Angle(0, 270, 90)
+
 local cursorMat = Material("glorified_banking/cursor.png", "noclamp smooth")
 local cursorHoverMat = Material("glorified_banking/cursor_hover.png", "noclamp smooth")
 
-function ENT:DrawLoadingScreen() end
-
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
-
-        surface.SetDrawColor(theme.Data.backgroundCol)
-        surface.DrawRect(0, 0, scrw, scrh)
-
-        draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.logoBackgroundCol)
-
-        draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
-
-        draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.logoBackgroundCol)
+        self:DrawScreenBackground()
 
         local currentScreen = self.Screens[self:GetScreenID()]
         local hasRequiredData = true
 
         if self.ScreenData and currentScreen.requiredData then
-            for k, v in ipairs(self.ScreenData) do
-                if currentScreen.requiredData[k] then continue end
+            for k, v in ipairs(currentScreen.requiredData) do
+                if self.ScreenData[k] then continue end
                 hasRequiredData = false
                 break
             end
@@ -81,9 +141,11 @@ function ENT:DrawScreen()
 
         if hasRequiredData then
             currentScreen.drawFunction(self, self.ScreenData)
-        else
-            self:DrawLoadingScreen()
         end
+
+        local clippingState = DisableClipping(false)
+        self:DrawLoadingScreen(hasRequiredData)
+        DisableClipping(clippingState)
 
         if imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
@@ -135,6 +197,10 @@ function ENT:DrawKeypad()
                         self:PlayGBAnim(GB_ANIM_MONEY_IN)
                     elseif pressedkey == "4" then
                         self:PlayGBAnim(GB_ANIM_MONEY_OUT)
+                    elseif pressedkey == "5" then
+                        self.Lmao = true
+                    elseif pressedkey == "6" then
+                        self.Lmao = false
                     end
 
                     self:EmitSound("glorified_banking/button_press.mp3", 70, 100, 1, CHAN_AUTO)
