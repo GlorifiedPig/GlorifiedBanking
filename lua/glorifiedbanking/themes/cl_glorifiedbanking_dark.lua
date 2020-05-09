@@ -13,7 +13,17 @@ GlorifiedBanking.Themes.Register( "Dark", "Dark", {
         loadingScreenSpinnerCol = Color( 46, 162, 212 ),
     },
     Fonts = {
-        titleFont = "Orbitron",
-        loadingFont = "Montserrat"
+        titleFontData = {
+            font = "Orbitron",
+            size = 40,
+            weight = 1000,
+            antialias = true
+        },
+        loadingFontData = {
+            font = "Montserrat",
+            size = 60,
+            weight = 500,
+            antialias = true
+        }
     }
 } )
