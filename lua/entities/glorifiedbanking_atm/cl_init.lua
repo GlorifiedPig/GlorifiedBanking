@@ -16,7 +16,7 @@ surface.CreateFont("GBDev", {
 })
 
 function ENT:Think()
-    if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.3) then
+    if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
         self:EmitSound("glorified_banking/attention_beep.mp3", 70, 100, 1, CHAN_AUTO)
         self.LastAttentionBeep = CurTime()
     end
@@ -33,17 +33,35 @@ local scrw, scrh = 857, 752
 local screenpos = Vector(1.47, 13.45, 51.14)
 local screenang = Angle(0, 270, 90)
 
+ENT.Screens = {
+    [0] = {
+        requiredData = {},
+        drawFunction = function(ent, screendata) end
+    }
+}
+
+--Idle Screen
+local cursorMat = Material("glorified_banking/cursor.png", "noclamp smooth")
+local cursorHoverMat = Material("glorified_banking/cursor_hover.png", "noclamp smooth")
+
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
-        surface.SetDrawColor(color_black)
+        surface.SetDrawColor(color_white)
         surface.DrawRect(0, 0, scrw, scrh)
-        draw.SimpleText("TEXT", "GBDev", 0, 0, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        imgui.xCursor(0, 0, scrw, scrh)
+        self.Screens[self:GetScreenID()].drawFunction(self)
+
+        if imgui.IsHovering(0, 0, scrw, scrh) then
+            local mx, my = imgui.CursorPos()
+            local pressing = imgui.IsPressing()
+            surface.SetDrawColor(color_white)
+            surface.SetMaterial(pressing and cursorHoverMat or cursorMat)
+            surface.DrawTexturedRect(pressing and mx - 12 or mx, my, 30, 30)
+        end
+
         imgui.End3D2D()
     end
 end
 
-local padw, padh = 253, 426
 local keyw, keyh = 38, 37
 local keyhovercol = Color(0, 0, 0, 100)
 local keypressedcol = Color(0, 0, 0, 200)
@@ -89,7 +107,6 @@ function ENT:DrawKeypad()
             end
         end
 
-        imgui.xCursor(0, 0, padw, padh)
         imgui.End3D2D()
     end
 end
