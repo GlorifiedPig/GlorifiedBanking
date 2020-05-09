@@ -36,6 +36,6 @@ function GlorifiedBanking.Themes.Select( id )
     if registeredThemes[id] then
         cookie.Set( "GlorifiedBanking.Theme", tostring( id ) )
         selectedTheme = tostring( id )
-        hook.Run( "GlorifiedBanking.ThemeChanged", GlorifiedBanking.Themes.GetCurrent() )
+        hook.Run( "GlorifiedBanking.ThemeUpdated", GlorifiedBanking.Themes.GetCurrent() )
     end
 end
