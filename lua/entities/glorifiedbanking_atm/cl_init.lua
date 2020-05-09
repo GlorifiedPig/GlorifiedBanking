@@ -15,8 +15,8 @@ function ENT:DrawTranslucent()
     self:DrawAnimations()
 end
 
-local scrw, scrh = 513, 449
-local screenpos = Vector(1.6, 13.4, 51.1)
+local scrw, scrh = 514, 451
+local screenpos = Vector(1.49, 13.45, 51.14)
 local screenang = Angle(0, 270, 90)
 
 function ENT:DrawScreen()
@@ -50,7 +50,7 @@ function ENT:DrawKeypad()
                         pressedkey = "*"
                     elseif pressedkey == 11 then
                         pressedkey = "0"
-                    elseif pressedkey == 1 then
+                    elseif pressedkey == 12 then
                         pressedkey = "#"
                     end
 
