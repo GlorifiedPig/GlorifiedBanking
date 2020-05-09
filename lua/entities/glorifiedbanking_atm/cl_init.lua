@@ -74,7 +74,7 @@ function ENT:DrawKeypad()
                         self:PlayGBAnim(GB_ANIM_MONEY_OUT)
                     end
 
-                    self:EmitSound("glorified_banking/button_press.mp3", 75, 100, 1, CHAN_AUTO)
+                    self:EmitSound("glorified_banking/button_press.mp3", 70, 100, 1, CHAN_AUTO)
                     print("pressed: " .. pressedkey)
                 end
 
@@ -91,9 +91,7 @@ local moneyinpos = Vector(-7, 4.5, 19.37)
 local moneyoutpos = Vector(-10, 4.5, 19.37)
 local moneyang = Angle(0, 270, 0)
 
-function ENT:PlayGBAnim(type)
-    self.AnimState = type
-
+function ENT:PlayGBAnim(type, skipsound)
     if type == GB_ANIM_CARD_IN then
         self.CardPos = 60
     end
@@ -108,6 +106,17 @@ function ENT:PlayGBAnim(type)
         if type == GB_ANIM_MONEY_IN then
             self.MoneyPos:Set(moneyoutpos)
         else
+            if not skipsound then
+                self:EmitSound("glorified_banking/money_out.mp3", 70, 100, 1, CHAN_AUTO)
+
+                timer.Simple(5.9, function()
+                    if not IsValid(self) then return end
+                    self:PlayGBAnim(GB_ANIM_MONEY_OUT, true)
+                end)
+
+                return
+            end
+
             self.MoneyPos:Set(moneyinpos)
         end
 
@@ -125,6 +134,8 @@ function ENT:PlayGBAnim(type)
             end)
         end
     end
+
+    self.AnimState = type
 end
 
 function ENT:OnRemove()
