@@ -1,0 +1,1 @@
+GlorifiedBanking.Themes.Register("Dark", "Dark", {})
