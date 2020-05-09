@@ -15,6 +15,13 @@ surface.CreateFont("GBDev", {
     antialias = true
 })
 
+function ENT:Think()
+    if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.3) then
+        self:EmitSound("glorified_banking/attention_beep.mp3", 70, 100, 1, CHAN_AUTO)
+        self.LastAttentionBeep = CurTime()
+    end
+end
+
 function ENT:DrawTranslucent()
     self:DrawModel()
     self:DrawScreen()
@@ -112,6 +119,10 @@ function ENT:PlayGBAnim(type, skipsound)
                 timer.Simple(5.9, function()
                     if not IsValid(self) then return end
                     self:PlayGBAnim(GB_ANIM_MONEY_OUT, true)
+
+                    timer.Simple(1, function()
+                        self.RequiresAttention = true
+                    end)
                 end)
 
                 return
