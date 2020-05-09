@@ -13,10 +13,10 @@ hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdat
     theme = newTheme
 end)
 
-surface.CreateFont("GBDev", {
-    font = "Arial",
-    size = 255,
-    weight = 500,
+surface.CreateFont("GlorifiedBanking.ATMEntity.Title", {
+    font = "Orbitron",
+    size = 40,
+    weight = 1000,
     antialias = true
 })
 
@@ -34,14 +34,14 @@ function ENT:DrawTranslucent()
     self:DrawAnimations()
 end
 
-local scrw, scrh = 857, 752
-local screenpos = Vector(1.47, 13.45, 51.14)
+local scrw, scrh = 858, 753
+local screenpos = Vector(1.47, 13.46, 51.16)
 local screenang = Angle(0, 270, 90)
 
 ENT.Screens = {
     [1] = {
         requiredData = {},
-        drawFunction = function(ent, screendata) end
+        drawFunction = function(self, data) end
     }
 }
 
@@ -53,8 +53,11 @@ end
 
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
-        surface.SetDrawColor(theme.Data.backgroundColor)
+        surface.SetDrawColor(theme.Data.backgroundCol)
         surface.DrawRect(0, 0, scrw, scrh)
+        draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.logoBackgroundCol)
+        draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+        draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.logoBackgroundCol)
         local currentScreen = self.Screens[self:GetScreenID()]
         local hasRequiredData = true
 
@@ -69,7 +72,7 @@ function ENT:DrawScreen()
         end
 
         if hasRequiredData then
-            currentScreen.drawFunction(self)
+            currentScreen.drawFunction(self, self.ScreenData)
         else
             self:DrawLoadingScreen()
         end
