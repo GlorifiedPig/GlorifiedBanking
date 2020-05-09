@@ -120,7 +120,7 @@ function ENT:PlayGBAnim(type, skipsound)
                     if not IsValid(self) then return end
                     self:PlayGBAnim(GB_ANIM_MONEY_OUT, true)
 
-                    timer.Simple(1, function()
+                    timer.Simple(1.2, function()
                         self.RequiresAttention = true
                     end)
                 end)
