@@ -18,28 +18,30 @@ end
 
 net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
-    if isnumber( amount ) == false then return end
-    if ply:IsBot() or not player:IsPlayer() then return end
-    if not ply:Alive() then return end
-    if not ply:IsFullyAuthenticated() then return end
-    if not ply:IsConnected() then return end
-    if ply:IsTimingOut() then return end
-    if DistanceToClosestATM( ply ) >= 500 then return end
-    if amount <= 0 then return end
-    if GlorifiedBanking.CanPlayerAfford( ply, amount ) != true then return end
+    if isnumber( amount ) == false
+    or ply:IsBot()
+    or not ply:IsPlayer()
+    or not ply:Alive()
+    or not ply:IsFullyAuthenticated()
+    or not ply:IsConnected()
+    or ply:IsTimingOut()
+    or DistanceToClosestATM( ply ) >= 500
+    or amount <= 0
+    or GlorifiedBanking.CanPlayerAfford( ply, amount ) != true then return end
     GlorifiedBanking.WithdrawAmount( ply, amount )
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
-    if isnumber( amount ) == false then return end
-    if ply:IsBot() or not player:IsPlayer() then return end
-    if not ply:Alive() then return end
-    if not ply:IsFullyAuthenticated() then return end
-    if not ply:IsConnected() then return end
-    if ply:IsTimingOut() then return end
-    if DistanceToClosestATM( ply ) >= 500 then return end
-    if amount <= 0 then return end
-    if ply:canAfford( amount ) != true then return end
+    if isnumber( amount ) == false
+    or ply:IsBot()
+    or not ply:IsPlayer()
+    or not ply:Alive()
+    or not ply:IsFullyAuthenticated()
+    or not ply:IsConnected()
+    or ply:IsTimingOut()
+    or DistanceToClosestATM( ply ) >= 500
+    or amount <= 0
+    or ply:canAfford( amount ) != true then return end
     GlorifiedBanking.DepositAmount( ply, amount )
 end )
