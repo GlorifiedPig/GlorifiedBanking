@@ -13,17 +13,18 @@ GlorifiedBanking.Themes.Register( "Dark", "Dark", {
         loadingScreenSpinnerCol = Color( 46, 162, 212 ),
     },
     Fonts = {
-        titleFontData = {
+        ["ATMEntity.Title"] = {
             font = "Orbitron",
             size = 40,
             weight = 1000,
             antialias = true
         },
-        loadingFontData = {
+        ["ATMEntity.Loading"] = {
             font = "Montserrat",
             size = 60,
             weight = 500,
             antialias = true
         }
-    }
+    },
+    Materials = { }
 } )

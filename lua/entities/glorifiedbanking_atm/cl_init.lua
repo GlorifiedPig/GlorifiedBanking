@@ -13,29 +13,8 @@ local GB_ANIM_CARD_IN = 3
 local GB_ANIM_CARD_OUT = 4
 
 local theme = GlorifiedBanking.Themes.GetCurrent()
-
-local function updateFonts()
-    local titleFontData = theme.Data.Fonts.titleFontData or {
-        font = "Orbitron",
-        size = 40,
-        weight = 1000,
-        antialias = true
-    }
-    surface.CreateFont("GlorifiedBanking.ATMEntity.Title", titleFontData)
-
-    local loadingFontData = theme.Data.Fonts.loadingFontData or {
-        font = "Montserrat",
-        size = 60,
-        weight = 500,
-        antialias = true
-    }
-    surface.CreateFont("GlorifiedBanking.ATMEntity.Loading", loadingFontData)
-end
-updateFonts()
-
 hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdated", function(newTheme)
     theme = newTheme
-    updateFonts()
 end)
 
 function ENT:Think()

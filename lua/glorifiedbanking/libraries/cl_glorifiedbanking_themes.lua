@@ -1,7 +1,9 @@
 
 GlorifiedBanking.Themes = {}
+
 local registeredThemes = {}
-local selectedTheme = cookie.GetString( "GlorifiedBanking.Theme", "Dark" )
+local selectedTheme
+
 
 function GlorifiedBanking.Themes.Register( id, name, data )
     if not registeredThemes[id] then
@@ -32,10 +34,24 @@ function GlorifiedBanking.Themes.GetByName( name )
     return returnedTheme
 end
 
+function GlorifiedBanking.Themes.GenerateFonts()
+    for k, v in pairs( GlorifiedBanking.Themes.GetCurrent().Data.Fonts ) do
+        surface.CreateFont( "GlorifiedBanking." .. k, v )
+    end
+end
+
 function GlorifiedBanking.Themes.Select( id )
     if registeredThemes[id] then
+        GlorifiedBanking.Themes.GenerateFonts()
+
         cookie.Set( "GlorifiedBanking.Theme", tostring( id ) )
         selectedTheme = tostring( id )
         hook.Run( "GlorifiedBanking.ThemeUpdated", GlorifiedBanking.Themes.GetCurrent() )
     end
 end
+
+hook.Add( "OnScreenSizeChanged", "GlorifiedBanking.Themes.OnScreenSizeChanged", function()
+    GlorifiedBanking.Themes.GenerateFonts()
+end )
+
+GlorifiedBanking.Themes.Select( cookie.GetString( "GlorifiedBanking.Theme", "Dark" ) )
