@@ -25,6 +25,7 @@ net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     or not ply:IsFullyAuthenticated()
     or not ply:IsConnected()
     or ply:IsTimingOut()
+    or DistanceToClosestATM( ply ) == nil
     or DistanceToClosestATM( ply ) >= 500
     or amount <= 0
     or GlorifiedBanking.CanPlayerAfford( ply, amount ) != true then return end
@@ -40,6 +41,7 @@ net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     or not ply:IsFullyAuthenticated()
     or not ply:IsConnected()
     or ply:IsTimingOut()
+    or DistanceToClosestATM( ply ) == nil
     or DistanceToClosestATM( ply ) >= 500
     or amount <= 0
     or ply:canAfford( amount ) != true then return end
