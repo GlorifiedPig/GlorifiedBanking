@@ -3,17 +3,21 @@ local function minClamp( num, minimum )
     return math.max( minimum, num )
 end
 
-function GlorifiedBanking.SetPlayerBalance( ply, balance )
+local function ValidateChecks( ply, balance )
     -- A few validation checks just in case anything slips through.
-    if not balance
+    return GlorifiedBanking.LockdownEnabled
+    or not balance
     or balance == nil
+    or balance < 0
     or not ply:IsValid()
     or ply:IsBot()
     or not ply:IsFullyAuthenticated()
-    or not ply:IsConnected() then return end
+    or not ply:IsConnected()
+end
 
+function GlorifiedBanking.SetPlayerBalance( ply, balance )
+    if not ValidateChecks( ply, balance ) then return end -- Always validate before doing important functions to keep things secure.
     balance = tonumber( balance ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
-
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
     balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer, we don't want floats slipping through.
     balance = minClamp( balance, 0 ) -- Make sure the balance never goes below zero.
@@ -29,11 +33,13 @@ function GlorifiedBanking.GetPlayerBalance( ply )
 end
 
 function GlorifiedBanking.AddPlayerBalance( ply, addAmount )
+    if not ValidateChecks( ply, addAmount ) then return end -- Always validate before doing important functions to keep things secure.
     addAmount = tonumber( addAmount ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
     GlorifiedBanking.SetPlayerBalance( ply, GlorifiedBanking.GetPlayerBalance( ply ) + addAmount )
 end
 
 function GlorifiedBanking.RemovePlayerBalance( ply, removeAmount )
+    if not ValidateChecks( ply, removeAmount ) then return end -- Always validate before doing important functions to keep things secure.
     removeAmount = tonumber( removeAmount ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
     removeAmount = minClamp( removeAmount, 0 ) -- Make sure we don't remove into a negative number as that would cause major consequences, always clamp to zero.
     GlorifiedBanking.SetPlayerBalance( ply, GlorifiedBanking.GetPlayerBalance( ply ) - removeAmount, 0 )
@@ -44,6 +50,7 @@ function GlorifiedBanking.CanPlayerAfford( ply, affordAmount )
 end
 
 function GlorifiedBanking.WithdrawAmount( ply, withdrawAmount )
+    if not ValidateChecks( ply, withdrawAmount ) then return end -- Always validate before doing important functions to keep things secure.
     if GlorifiedBanking.CanPlayerAfford( ply, withdrawAmount ) then
         ply:addMoney( withdrawAmount )
         GlorifiedBanking.RemovePlayerBalance( ply, withdrawAmount )
@@ -53,6 +60,7 @@ function GlorifiedBanking.WithdrawAmount( ply, withdrawAmount )
 end
 
 function GlorifiedBanking.DepositAmount( ply, depositAmount )
+    if not ValidateChecks( ply, depositAmount ) then return end -- Always validate before doing important functions to keep things secure.
     if ply:canAfford( depositAmount ) then
         ply:addMoney( -depositAmount )
         GlorifiedBanking.AddPlayerBalance( ply, depositAmount )
@@ -62,7 +70,7 @@ function GlorifiedBanking.DepositAmount( ply, depositAmount )
 end
 
 function GlorifiedBanking.TransferAmount( ply, receiver, transferAmount )
-    if transferAmount < 0 then return end -- Immediately break this function if the transfer amount is below zero as that could cause serious consequences if it slips through everything by chance.
+    if not ValidateChecks( ply, transferAmount ) then return end -- Always validate before doing important functions to keep things secure.
     if GlorifiedBanking.CanPlayerAfford( ply, transferAmount ) then
         GlorifiedBanking.RemovePlayerBalance( ply, transferAmount )
         GlorifiedBanking.AddPlayerBalance( receiver, transferAmount )
