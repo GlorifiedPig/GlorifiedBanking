@@ -5,15 +5,14 @@ end
 
 function GlorifiedBanking.SetPlayerBalance( ply, balance )
     -- A few validation checks just in case anything slips through.
-    if not balance or balance == nil then return end
-
-    balance = tonumber( balance ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
-
-    if balance < 0
+    if not balance
+    or balance == nil
     or not ply:IsValid()
     or ply:IsBot()
     or not ply:IsFullyAuthenticated()
     or not ply:IsConnected() then return end
+
+    balance = tonumber( balance ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
 
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
     balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer, we don't want floats slipping through.
