@@ -25,6 +25,18 @@
     end
 --[[ End Interest Settings ]]--
 
+--[[ Permissions Settings ]]--
+    GlorifiedBanking.Config.PERMISSION_DEFAULTS = {
+        ["glorifiedbanking_openlogs"] = {
+            minAccess = "admin",
+            usergroups = {
+                "admin", "superadmin"
+            },
+            description = "Determines whether or not the player can open the GlorifiedBanking logs panel."
+        }
+    }
+--[[ End Permissions Settings ]]--
+
 --[[ UI Config ]]--
     GlorifiedBanking.Config.GRADIENT_ONE = Color( 142, 45, 226 )
     GlorifiedBanking.Config.GRADIENT_TWO = Color( 100, 24, 224 )

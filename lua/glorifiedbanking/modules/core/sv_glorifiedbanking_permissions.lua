@@ -19,4 +19,5 @@ function GlorifiedBanking.RegisterPermission( permission, minAccess, usergroups,
     GlorifiedBanking.Permissions[permission] = permissionTable
 end
 
-GlorifiedBanking.RegisterPermission( "glorifiedbanking_openlogs", "admin", { "admin", "superadmin" }, "Determines whether or not the player can open the GlorifiedBanking logs panel." )
+local logsPermDefaults = GlorifiedBanking.Config.PERMISSION_DEFAULTS["glorifiedbanking_openlogs"]
+GlorifiedBanking.RegisterPermission( "glorifiedbanking_openlogs", logsPermDefaults["minAccess"], logsPermDefaults["usergroups"], logsPermDefaults["description"] )
