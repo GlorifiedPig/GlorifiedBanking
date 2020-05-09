@@ -8,5 +8,13 @@
 	$phongfresnelranges "[0.15 0.65 1.00]"
 	$phongalbedotint "1"
 	$phongboost "3"
+	$staticprop 1
 	$ambientocclusion 1
+	$ambientboost 900
+	$constantdirectionallight 1
+	"$nocull" 1
+	"$model" 1
+	$rimlight               1
+		$rimlightexponent      25
+		$rimlightboost         2
 }

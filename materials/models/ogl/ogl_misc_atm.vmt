@@ -2,9 +2,9 @@
 {
 	"$basetexture" "models/ogl/ogl_misc_atm"
 	"$bumpMap" "models/ogl/ogl_misc_atm_nrm"
-	"$surfaceprop" "metal"
-	$phong "1"
-	$phongexponent "20"
+	"$surfaceprop" "plastic"
+	$phong "0.5"
+	$phongexponent "100"
 	$phongfresnelranges "[0.15 0.65 1.00]"
 	$phongalbedotint "1"
 	$phongboost "3"
