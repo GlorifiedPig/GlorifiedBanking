@@ -19,6 +19,7 @@ end
 net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     if isnumber( amount ) == false
+    or not ply:IsValid()
     or ply:IsBot()
     or not ply:IsPlayer()
     or not ply:Alive()
@@ -35,6 +36,7 @@ end )
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     if isnumber( amount ) == false
+    or not ply:IsValid()
     or ply:IsBot()
     or not ply:IsPlayer()
     or not ply:Alive()
