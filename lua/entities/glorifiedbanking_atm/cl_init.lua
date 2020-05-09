@@ -1,14 +1,18 @@
+
 include("shared.lua")
+
 local imgui = GlorifiedBanking.imgui
 imgui.DisableDeveloperMode = true
+
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
+
 local GB_ANIM_IDLE = 0
 local GB_ANIM_MONEY_IN = 1
 local GB_ANIM_MONEY_OUT = 2
 local GB_ANIM_CARD_IN = 3
 local GB_ANIM_CARD_OUT = 4
-local theme = GlorifiedBanking.Themes.GetCurrent()
 
+local theme = GlorifiedBanking.Themes.GetCurrent()
 hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdated", function(newTheme)
     theme = newTheme
 end)
@@ -48,20 +52,24 @@ ENT.Screens = {
 local cursorMat = Material("glorified_banking/cursor.png", "noclamp smooth")
 local cursorHoverMat = Material("glorified_banking/cursor_hover.png", "noclamp smooth")
 
-function ENT:DrawLoadingScreen()
-end
+function ENT:DrawLoadingScreen() end
 
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
+
         surface.SetDrawColor(theme.Data.backgroundCol)
         surface.DrawRect(0, 0, scrw, scrh)
+
         draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.logoBackgroundCol)
+
         draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+
         draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.logoBackgroundCol)
+
         local currentScreen = self.Screens[self:GetScreenID()]
         local hasRequiredData = true
 
-        if self.ScreenData then
+        if self.ScreenData and currentScreen.requiredData then
             for k, v in ipairs(self.ScreenData) do
                 if currentScreen.requiredData[k] then continue end
                 hasRequiredData = false
@@ -80,6 +88,7 @@ function ENT:DrawScreen()
         if imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
             local pressing = imgui.IsPressing()
+
             surface.SetDrawColor(color_white)
             surface.SetMaterial(pressing and cursorHoverMat or cursorMat)
             surface.DrawTexturedRect(pressing and mx - 12 or mx, my, 30, 30)
@@ -100,7 +109,9 @@ function ENT:DrawKeypad()
         for i = 1, 3 do
             for j = 1, 4 do
                 local keyx, keyy = 183 - ((j - 1) * 51.25), 54 + ((i - 1) * 49.5)
+
                 if not imgui.IsHovering(keyx, keyy, keyw, keyh) then continue end
+
                 local col = imgui.IsPressing() and keypressedcol or keyhovercol
 
                 if imgui.IsPressed() then
@@ -208,9 +219,9 @@ function ENT:DrawAnimations()
 
     if self.AnimState == GB_ANIM_CARD_IN or self.AnimState == GB_ANIM_CARD_OUT then
         cam.Start3D2D(self:LocalToWorld(cardpos), self:LocalToWorldAngles(cardang), 0.07)
-        surface.SetDrawColor(color_white)
-        surface.SetMaterial(cardmat)
-        surface.DrawTexturedRect(self.CardPos, 0, 70, 40)
+            surface.SetDrawColor(color_white)
+            surface.SetMaterial(cardmat)
+            surface.DrawTexturedRect(self.CardPos, 0, 70, 40)
         cam.End3D2D()
 
         if self.AnimState == GB_ANIM_CARD_IN then
