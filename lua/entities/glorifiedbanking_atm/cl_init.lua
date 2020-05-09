@@ -50,8 +50,6 @@ function ENT:DrawScreenBackground()
     draw.RoundedBox(2, 20, scrh-23, scrw-40, 3, theme.Data.Colors.innerBoxBorderCol)
 end
 
-local circleMat = Material("glorified_banking/circle.png", "noclamp smooth")
-
 ENT.LoadingScreenX = 0
 ENT.LoadingScreenH = 220
 
@@ -86,7 +84,7 @@ function ENT:DrawLoadingScreen(shouldShow)
     local animprog = CurTime() * 2.5
 
     surface.SetDrawColor(theme.Data.Colors.loadingScreenSpinnerCol)
-    surface.SetMaterial(circleMat)
+    surface.SetMaterial(theme.Data.Materials.circle)
 
     surface.DrawTexturedRect(x + w / 2 - 80, 370 + math.sin(animprog + 1) * 20, 40, 40)
     surface.DrawTexturedRect(x + w / 2 - 20, 370 + math.sin(animprog + .5) * 20, 40, 40)
@@ -104,9 +102,6 @@ ENT.Screens = {
 
 local screenpos = Vector(1.47, 13.46, 51.16)
 local screenang = Angle(0, 270, 90)
-
-local cursorMat = Material("glorified_banking/cursor.png", "noclamp smooth")
-local cursorHoverMat = Material("glorified_banking/cursor_hover.png", "noclamp smooth")
 
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
@@ -138,7 +133,7 @@ function ENT:DrawScreen()
             local pressing = imgui.IsPressing()
 
             surface.SetDrawColor(color_white)
-            surface.SetMaterial(pressing and cursorHoverMat or cursorMat)
+            surface.SetMaterial(pressing and theme.Data.Materials.cursorHover or theme.Data.Materials.cursor)
             surface.DrawTexturedRect(pressing and mx - 12 or mx, my, 30, 30)
         end
 
@@ -264,7 +259,6 @@ end
 
 local cardpos = Vector(-4, -10.45, 19.81)
 local cardang = Angle(0, 180, 0)
-local cardmat = Material("shitcardlol.png")
 
 function ENT:DrawAnimations()
     if self.AnimState == GB_ANIM_IDLE then return end
@@ -272,7 +266,7 @@ function ENT:DrawAnimations()
     if self.AnimState == GB_ANIM_CARD_IN or self.AnimState == GB_ANIM_CARD_OUT then
         cam.Start3D2D(self:LocalToWorld(cardpos), self:LocalToWorldAngles(cardang), 0.07)
             surface.SetDrawColor(color_white)
-            surface.SetMaterial(cardmat)
+            surface.SetMaterial(theme.Data.Materials.bankCard)
             surface.DrawTexturedRect(self.CardPos, 0, 70, 40)
         cam.End3D2D()
 
