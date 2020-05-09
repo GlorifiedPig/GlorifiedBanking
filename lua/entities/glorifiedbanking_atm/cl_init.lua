@@ -13,23 +13,30 @@ local GB_ANIM_CARD_IN = 3
 local GB_ANIM_CARD_OUT = 4
 
 local theme = GlorifiedBanking.Themes.GetCurrent()
+
+local function updateFonts()
+    local titleFont = theme.Data.Fonts.titleFont or "Orbitron"
+    surface.CreateFont("GlorifiedBanking.ATMEntity.Title", {
+        font = titleFont,
+        size = 40,
+        weight = 1000,
+        antialias = true
+    })
+
+    local loadingFont = theme.Data.Fonts.loadingFont or "Montserrat"
+    surface.CreateFont("GlorifiedBanking.ATMEntity.Loading", {
+        font = loadingFont,
+        size = 60,
+        weight = 500,
+        antialias = true
+    })
+end
+updateFonts()
+
 hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdated", function(newTheme)
     theme = newTheme
+    updateFonts()
 end)
-
-surface.CreateFont("GlorifiedBanking.ATMEntity.Title", {
-    font = "Orbitron",
-    size = 40,
-    weight = 1000,
-    antialias = true
-})
-
-surface.CreateFont("GlorifiedBanking.ATMEntity.Loading", {
-    font = "Montserrat",
-    size = 60,
-    weight = 500,
-    antialias = true
-})
 
 function ENT:Think()
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
@@ -48,20 +55,20 @@ end
 local scrw, scrh = 858, 753
 
 function ENT:DrawScreenBackground()
-    surface.SetDrawColor(theme.Data.backgroundCol)
+    surface.SetDrawColor(theme.Data.Colors.backgroundCol)
     surface.DrawRect(0, 0, scrw, scrh)
 
-    draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.logoBackgroundCol)
+    draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.Colors.logoBackgroundCol)
 
-    draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+    draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.Colors.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 
-    draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.logoBackgroundCol)
+    draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.Colors.logoBackgroundCol)
 
-    surface.SetDrawColor(theme.Data.innerBoxBackgroundCol)
+    surface.SetDrawColor(theme.Data.Colors.innerBoxBackgroundCol)
     surface.DrawRect(20, 115, scrw-40, scrh-135)
 
-    draw.RoundedBox(2, 20, 115, scrw-40, 3, theme.Data.innerBoxBorderCol)
-    draw.RoundedBox(2, 20, scrh-23, scrw-40, 3, theme.Data.innerBoxBorderCol)
+    draw.RoundedBox(2, 20, 115, scrw-40, 3, theme.Data.Colors.innerBoxBorderCol)
+    draw.RoundedBox(2, 20, scrh-23, scrw-40, 3, theme.Data.Colors.innerBoxBorderCol)
 end
 
 local circleMat = Material("glorified_banking/circle.png", "noclamp smooth")
@@ -91,22 +98,22 @@ function ENT:DrawLoadingScreen(shouldShow)
 
     if self.LoadingScreenX < -(scrw - 20) then return end
 
-    surface.SetDrawColor(theme.Data.loadingScreenBackgroundCol)
+    surface.SetDrawColor(theme.Data.Colors.loadingScreenBackgroundCol)
     surface.DrawRect(x, y, w, h)
 
-    draw.RoundedBox(2, x, y, w, 3, theme.Data.loadingScreenBorderCol)
-    draw.RoundedBox(2, x, y + h - 3, w, 3, theme.Data.loadingScreenBorderCol)
+    draw.RoundedBox(2, x, y, w, 3, theme.Data.Colors.loadingScreenBorderCol)
+    draw.RoundedBox(2, x, y + h - 3, w, 3, theme.Data.Colors.loadingScreenBorderCol)
 
     local animprog = CurTime() * 2.5
 
-    surface.SetDrawColor(theme.Data.loadingScreenSpinnerCol)
+    surface.SetDrawColor(theme.Data.Colors.loadingScreenSpinnerCol)
     surface.SetMaterial(circleMat)
 
     surface.DrawTexturedRect(x + w / 2 - 80, 370 + math.sin(animprog + 1) * 20, 40, 40)
     surface.DrawTexturedRect(x + w / 2 - 20, 370 + math.sin(animprog + .5) * 20, 40, 40)
     surface.DrawTexturedRect(x + w / 2 + 40, 370 + math.sin(animprog) * 20, 40, 40)
 
-    draw.SimpleText(string.upper(i18n.GetPhrase("gbLoading")), "GlorifiedBanking.ATMEntity.Loading", x + w / 2, 470, theme.Data.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(string.upper(i18n.GetPhrase("gbLoading")), "GlorifiedBanking.ATMEntity.Loading", x + w / 2, 470, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 ENT.Screens = {
