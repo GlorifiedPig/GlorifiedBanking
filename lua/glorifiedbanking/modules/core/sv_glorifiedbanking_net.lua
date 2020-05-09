@@ -6,6 +6,7 @@ local function DistanceToClosestATM( ply )
     local plyPos = ply:GetPos()
     local closestDistance
     for k, v in pairs( ents.FindByClass( "glorifiedbanking_atm" ) ) do
+        if not v:IsValid() then continue end
         local atmPos = v:GetPos()
         local distance = plyPos:Distance( atmPos )
         if closestDistance == nil or distance <= closestDistance then
