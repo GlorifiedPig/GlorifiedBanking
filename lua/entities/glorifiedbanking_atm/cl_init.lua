@@ -74,6 +74,7 @@ function ENT:DrawKeypad()
                         self:PlayGBAnim(GB_ANIM_MONEY_OUT)
                     end
 
+                    self:EmitSound("glorified_banking/button_press.mp3", 75, 100, 1, CHAN_AUTO)
                     print("pressed: " .. pressedkey)
                 end
 
