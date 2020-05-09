@@ -18,18 +18,20 @@ end
 
 net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
+    if isnumber( amount ) == false then return end
     if ply:IsBot() or not player:IsPlayer() then return end
     if DistanceToClosestATM( ply ) >= 500 then return end
-    if amount < 0 then return end
+    if amount <= 0 then return end
     if GlorifiedBanking.CanPlayerAfford( ply, amount ) != true then return end
     GlorifiedBanking.WithdrawAmount( ply, amount )
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
+    if isnumber( amount ) == false then return end
     if ply:IsBot() or not player:IsPlayer() then return end
     if DistanceToClosestATM( ply ) >= 500 then return end
-    if amount < 0 then return end
+    if amount <= 0 then return end
     if ply:canAfford( amount ) != true then return end
     GlorifiedBanking.DepositAmount( ply, amount )
 end )
