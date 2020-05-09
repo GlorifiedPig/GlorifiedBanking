@@ -7,6 +7,11 @@ local GB_ANIM_MONEY_IN = 1
 local GB_ANIM_MONEY_OUT = 2
 local GB_ANIM_CARD_IN = 3
 local GB_ANIM_CARD_OUT = 4
+local theme = GlorifiedBanking.Themes.GetCurrent()
+
+hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdated", function(newTheme)
+    theme = newTheme
+end)
 
 surface.CreateFont("GBDev", {
     font = "Arial",
@@ -34,21 +39,40 @@ local screenpos = Vector(1.47, 13.45, 51.14)
 local screenang = Angle(0, 270, 90)
 
 ENT.Screens = {
-    [0] = {
+    [1] = {
         requiredData = {},
         drawFunction = function(ent, screendata) end
     }
 }
 
---Idle Screen
 local cursorMat = Material("glorified_banking/cursor.png", "noclamp smooth")
 local cursorHoverMat = Material("glorified_banking/cursor_hover.png", "noclamp smooth")
 
+function ENT:DrawLoadingScreen()
+end
+
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
-        surface.SetDrawColor(color_white)
+        surface.SetDrawColor(theme.Data.backgroundColor)
         surface.DrawRect(0, 0, scrw, scrh)
-        self.Screens[self:GetScreenID()].drawFunction(self)
+        local currentScreen = self.Screens[self:GetScreenID()]
+        local hasRequiredData = true
+
+        if self.ScreenData then
+            for k, v in ipairs(self.ScreenData) do
+                if currentScreen.requiredData[k] then continue end
+                hasRequiredData = false
+                break
+            end
+        else
+            hasRequiredData = false
+        end
+
+        if hasRequiredData then
+            currentScreen.drawFunction(self)
+        else
+            self:DrawLoadingScreen()
+        end
 
         if imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
