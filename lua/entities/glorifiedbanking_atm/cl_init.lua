@@ -23,7 +23,7 @@ function ENT:DrawTranslucent()
 end
 
 local scrw, scrh = 857, 752
-local screenpos = Vector(1.49, 13.45, 51.14)
+local screenpos = Vector(1.47, 13.45, 51.14)
 local screenang = Angle(0, 270, 90)
 
 function ENT:DrawScreen()
