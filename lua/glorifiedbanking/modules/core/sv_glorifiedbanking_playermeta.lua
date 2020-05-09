@@ -5,14 +5,14 @@ end
 
 local function ValidateChecks( ply, balance )
     -- A few validation checks just in case anything slips through.
-    return GlorifiedBanking.LockdownEnabled
+    return not ( GlorifiedBanking.LockdownEnabled
     or not balance
     or balance == nil
     or balance < 0
     or not ply:IsValid()
     or ply:IsBot()
     or not ply:IsFullyAuthenticated()
-    or not ply:IsConnected()
+    or not ply:IsConnected() )
 end
 
 function GlorifiedBanking.SetPlayerBalance( ply, balance )
