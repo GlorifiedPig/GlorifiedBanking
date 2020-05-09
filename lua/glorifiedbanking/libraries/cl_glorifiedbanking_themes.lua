@@ -53,11 +53,11 @@ function GlorifiedBanking.Themes.Select( id )
 end
 
 hook.Add( "InitPostEntity", "GlorifiedBanking.Themes.InitPostEntity", function()
-    local tempMat = Material("nil")
+    local tempMat = Material( "nil" )
 
-    for j, u in pairs(registeredThemes) do
-        for k, v in pairs(u.Data.Materials) do
-            if not isstring(v) then continue end
+    for j, u in pairs( registeredThemes ) do
+        for k, v in pairs( u.Data.Materials ) do
+            if not isstring( v ) then continue end
 
             if file.Exists( folderName .. "/" .. v .. ".png", "DATA" ) then
                 v = Material( "../data/" .. folderName .. "/" .. v .. ".png", "noclamp smooth" )
