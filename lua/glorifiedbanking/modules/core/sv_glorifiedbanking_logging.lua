@@ -44,10 +44,12 @@ end
 util.AddNetworkString( "GlorifiedBanking.PlayerOpenedLogs" )
 concommand.Add( "glorifiedbanking_logs", function( ply )
     if ply:IsSuperAdmin() or CAMI.PlayerHasAccess( "glorifiedbanking_openlogs" ) then
-        -- To the person reading this code: this is going to be changed to work with a colossal table probably when I figure out how to network it more efficiently
-        GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_withdrawals` WHERE ( `Date` > DATE_SUB( now(), INTERVAL 1 WEEK ) )", function( withdrawalQuery )
-            GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_deposits` WHERE ( `Date` > DATE_SUB( now(), INTERVAL 1 WEEK ) )", function( depositQuery )
-                GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_transfers` WHERE ( `Date` > DATE_SUB( now(), INTERVAL 1 WEEK ) )", function( transferQuery )
+        --[[ To the person reading this code: this is going to be changed to work with a colossal table probably when I figure out how to network larger numbers more efficiently
+        Each of the limits are set to 250 so it adds up to a maximum of 750, which will be worst case scenario 80 characters each, which means
+        that the buffer size physically cannot be more than 60kb as that's 80 * 750 ]]--
+        GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_withdrawals` LIMIT 250", function( withdrawalQuery )
+            GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_deposits` LIMIT 250", function( depositQuery )
+                GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_transfers` LIMIT 250", function( transferQuery )
                     net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
                     net.WriteLargeString( util.TableToJSON( withdrawalQuery ) )
                     net.WriteLargeString( util.TableToJSON( depositQuery ) )
