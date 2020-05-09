@@ -3,8 +3,8 @@ local function minClamp( num, minimum )
     return math.max( minimum, num )
 end
 
+-- A few validation checks just in case anything slips through.
 local function ValidateChecks( ply, balance )
-    -- A few validation checks just in case anything slips through.
     return not ( GlorifiedBanking.LockdownEnabled
     or not balance
     or balance == nil
