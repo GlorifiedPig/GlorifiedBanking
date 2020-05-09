@@ -11,7 +11,7 @@ function GlorifiedBanking.Themes.Register( id, name, data )
     end
 
     registeredThemes[id].DisplayName = name
-    registeredThemes[id].Data = data
+    registeredThemes[id].Data = table.Merge( GlorifiedBanking.Themes.Get( defaultTheme ).Data, data )
 end
 
 function GlorifiedBanking.Themes.Get( id )
