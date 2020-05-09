@@ -4,8 +4,6 @@ include("shared.lua")
 local imgui = GlorifiedBanking.imgui
 imgui.DisableDeveloperMode = true
 
-ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
-
 local GB_ANIM_IDLE = 0
 local GB_ANIM_MONEY_IN = 1
 local GB_ANIM_MONEY_OUT = 2
@@ -17,17 +15,37 @@ hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdat
     theme = newTheme
 end)
 
+ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
+
 function ENT:Think()
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
         self:EmitSound("glorified_banking/attention_beep.mp3", 70, 100, 1, CHAN_AUTO)
         self.LastAttentionBeep = CurTime()
     end
+
+    local currentScreen = self.Screens[self:GetScreenID()]
+    local gotRequiredData = true
+
+    if self.ScreenData and currentScreen.requiredData then
+        for k, v in ipairs(currentScreen.requiredData) do
+            if self.ScreenData[k] then continue end
+            gotRequiredData = false
+            break
+        end
+    else
+        gotRequiredData = false
+    end
+
+    self.ShouldDrawCurrentScreen = gotRequiredData
 end
 
 function ENT:DrawTranslucent()
     self:DrawModel()
+
     self:DrawScreen()
     self:DrawKeypad()
+    //TODO: Draw sign
+
     self:DrawAnimations()
 end
 
@@ -107,21 +125,9 @@ function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
         self:DrawScreenBackground()
 
-        local currentScreen = self.Screens[self:GetScreenID()]
-        local hasRequiredData = true
-
-        if self.ScreenData and currentScreen.requiredData then
-            for k, v in ipairs(currentScreen.requiredData) do
-                if self.ScreenData[k] then continue end
-                hasRequiredData = false
-                break
-            end
-        else
-            hasRequiredData = false
-        end
-
-        if hasRequiredData then
-            currentScreen.drawFunction(self, self.ScreenData)
+        local hovering = false
+        if self.ShouldDrawCurrentScreen then
+            hovering = self.Screens[self:GetScreenID()].drawFunction(self, self.ScreenData)
         end
 
         local clippingState = DisableClipping(false)
@@ -130,11 +136,10 @@ function ENT:DrawScreen()
 
         if imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
-            local pressing = imgui.IsPressing()
 
             surface.SetDrawColor(color_white)
-            surface.SetMaterial(pressing and theme.Data.Materials.cursorHover or theme.Data.Materials.cursor)
-            surface.DrawTexturedRect(pressing and mx - 12 or mx, my, 30, 30)
+            surface.SetMaterial(hovering and theme.Data.Materials.cursorHover or theme.Data.Materials.cursor)
+            surface.DrawTexturedRect(hovering and mx - 12 or mx, my, 30, 30)
         end
 
         imgui.End3D2D()
@@ -142,8 +147,7 @@ function ENT:DrawScreen()
 end
 
 local keyw, keyh = 38, 37
-local keyhovercol = Color(0, 0, 0, 100)
-local keypressedcol = Color(0, 0, 0, 200)
+
 local padpos = Vector(-7.33, 6.94, 24.04)
 local padang = Angle(-28.6, 0, 0)
 
@@ -155,7 +159,7 @@ function ENT:DrawKeypad()
 
                 if not imgui.IsHovering(keyx, keyy, keyw, keyh) then continue end
 
-                local col = imgui.IsPressing() and keypressedcol or keyhovercol
+                local col = imgui.IsPressing() and theme.Data.Colors.keyHoverCol or theme.Data.Colors.keyPressedCol
 
                 if imgui.IsPressed() then
                     local pressedkey = i + (j - 1) * 3
@@ -216,7 +220,7 @@ function ENT:PlayGBAnim(type, skipsound)
             self.MoneyPos:Set(moneyoutpos)
         else
             if not skipsound then
-                self:EmitSound("glorified_banking/money_out.mp3", 70, 100, 1, CHAN_AUTO)
+                self:EmitSound("glorified_banking/money_out.mp3", 70, 100, 1, CHAN_AUTO) //TODO: Use sound script
 
                 timer.Simple(5.9, function()
                     if not IsValid(self) then return end
@@ -252,6 +256,8 @@ function ENT:PlayGBAnim(type, skipsound)
 end
 
 function ENT:OnRemove()
+    //TODO: Stop money out/in sound on remove
+
     if IsValid(self.MoneyModel) then
         self.MoneyModel:Remove()
     end
@@ -284,7 +290,6 @@ function ENT:DrawAnimations()
     if self.AnimState == GB_ANIM_MONEY_IN or self.AnimState == GB_ANIM_MONEY_OUT then
         if not IsValid(self.MoneyModel) then
             self:PlayGBAnim(self.AnimState)
-
             return
         end
 

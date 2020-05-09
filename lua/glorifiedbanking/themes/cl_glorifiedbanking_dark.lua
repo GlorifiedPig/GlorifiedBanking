@@ -10,7 +10,9 @@ GlorifiedBanking.Themes.Register( "Dark", "Dark", {
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
         loadingScreenBorderCol = Color( 46, 162, 212 ),
         loadingScreenTextCol = Color( 255, 255, 255 ),
-        loadingScreenSpinnerCol = Color( 46, 162, 212 )
+        loadingScreenSpinnerCol = Color( 46, 162, 212 ),
+        keyHoverCol = Color(0, 0, 0, 100),
+        keyPressedCol = Color(0, 0, 0, 200)
     },
     Fonts = {
         ["ATMEntity.Title"] = {
