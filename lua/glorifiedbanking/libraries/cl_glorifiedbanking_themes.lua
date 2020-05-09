@@ -3,6 +3,7 @@ GlorifiedBanking.Themes = {}
 
 local registeredThemes = {}
 local defaultTheme = "Dark"
+local folderName = "glorifiedbanking"
 local selectedTheme
 
 function GlorifiedBanking.Themes.Register( id, name, data )
@@ -46,9 +47,31 @@ function GlorifiedBanking.Themes.Select( id )
 
         cookie.Set( "GlorifiedBanking.Theme", tostring( id ) )
         selectedTheme = tostring( id )
+
         hook.Run( "GlorifiedBanking.ThemeUpdated", GlorifiedBanking.Themes.GetCurrent() )
     end
 end
+
+hook.Add( "InitPostEntity", "GlorifiedBanking.Themes.InitPostEntity", function()
+    local tempMat = Material("nil")
+
+    for j, u in pairs(registeredThemes) do
+        for k, v in pairs(u.Data.Materials) do
+            if not isstring(v) then continue end
+
+            if file.Exists( folderName .. "/" .. v .. ".png", "DATA" ) then
+                v = Material( "../data/" .. folderName .. "/" .. v .. ".png", "noclamp smooth" )
+                continue
+            end
+
+            v = tempMat
+            http.Fetch( "https://i.imgur.com/" .. v .. ".png", function( body )
+                file.Write( folderName .. "/" .. v .. ".png", body )
+                v = Material( "../data/" .. folderName .. "/" .. v .. ".png", "noclamp smooth" )
+            end)
+        end
+    end
+end )
 
 hook.Add( "OnScreenSizeChanged", "GlorifiedBanking.Themes.OnScreenSizeChanged", function()
     GlorifiedBanking.Themes.GenerateFonts()
