@@ -10,7 +10,7 @@ GlorifiedBanking.Themes.Register( "Dark", "Dark", {
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
         loadingScreenBorderCol = Color( 46, 162, 212 ),
         loadingScreenTextCol = Color( 255, 255, 255 ),
-        loadingScreenSpinnerCol = Color( 46, 162, 212 ),
+        loadingScreenSpinnerCol = Color( 46, 162, 212 )
     },
     Fonts = {
         ["ATMEntity.Title"] = {
@@ -26,5 +26,11 @@ GlorifiedBanking.Themes.Register( "Dark", "Dark", {
             antialias = true
         }
     },
-    Materials = { }
+    Materials = {
+        circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
+        cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
+        cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
+        bankCard = Material( "shitcardlol.png", "noclamp smooth" ),
+        somethingFromImgur = "imgurIDHere"
+    }
 } )
