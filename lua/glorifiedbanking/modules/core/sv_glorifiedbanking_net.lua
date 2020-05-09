@@ -1,4 +1,10 @@
 
+--[[
+    This file contains a lot of validation and authentication checks.
+    Some of them may seem unnecessary, but it's never worth taking chances with an addon based purely around the server's economy.
+    Extra validation checks are held on the actual player meta functions in the sv_glorifiedbanking_playermeta.lua file.
+]]--
+
 util.AddNetworkString( "GlorifiedBanking.WithdrawalRequested" )
 util.AddNetworkString( "GlorifiedBanking.DepositRequested" )
 

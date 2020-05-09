@@ -4,27 +4,39 @@ local function minClamp( num, minimum )
 end
 
 function GlorifiedBanking.SetPlayerBalance( ply, balance )
-    if not balance or not isnumber( balance ) or balance == nil then return end
-    if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
-    balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer
-    balance = minClamp( balance, 0 ) -- Make sure the balance never goes below 0
-    hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- ply, oldBalance, newBalance
-    GlorifiedBanking.SQLQuery( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
-    ply.GlorifiedBanking.Balance = balance
-    ply:SetNWInt( "GlorifiedBanking.Balance", balance )
+    -- A few validation checks just in case anything slips through.
+    if not balance
+    or balance == nil
+    or not ply:IsValid()
+    or ply:IsBot()
+    or not ply:IsFullyAuthenticated()
+    or not ply:IsConnected() then return end
+
+    balance = tonumber( balance ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
+
+    if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
+    balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer, we don't want floats slipping through.
+    balance = minClamp( balance, 0 ) -- Make sure the balance never goes below zero.
+    hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- Args are ply, oldBalance and then newBalance. Documented in the markdown file.
+    GlorifiedBanking.SQLQuery( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" ) -- Update the player's SQL data.
+    ply.GlorifiedBanking.Balance = balance -- Cache the balance for easier usage elsewhere without the need to call another SQL query.
+    ply:SetNWInt( "GlorifiedBanking.Balance", balance ) -- Set the networked balance so we don't have to include it in the net messages later.
 end
 
 function GlorifiedBanking.GetPlayerBalance( ply )
-    if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
-    return ply.GlorifiedBanking.Balance or 0
+    if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
+    return ply.GlorifiedBanking.Balance or 0 -- Be sure to return zero if the "Balance" variable is nil.
 end
 
 function GlorifiedBanking.AddPlayerBalance( ply, addAmount )
+    addAmount = tonumber( addAmount ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
     GlorifiedBanking.SetPlayerBalance( ply, GlorifiedBanking.GetPlayerBalance( ply ) + addAmount )
 end
 
 function GlorifiedBanking.RemovePlayerBalance( ply, removeAmount )
-    GlorifiedBanking.SetPlayerBalance( ply, minClamp( GlorifiedBanking.GetPlayerBalance( ply ) - removeAmount, 0 ) ) -- Make sure we don't remove into a negative number, clamp to 0
+    removeAmount = tonumber( removeAmount ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
+    removeAmount = minClamp( removeAmount, 0 ) -- Make sure we don't remove into a negative number as that would cause major consequences, always clamp to zero.
+    GlorifiedBanking.SetPlayerBalance( ply, GlorifiedBanking.GetPlayerBalance( ply ) - removeAmount, 0 )
 end
 
 function GlorifiedBanking.CanPlayerAfford( ply, affordAmount )
@@ -36,7 +48,7 @@ function GlorifiedBanking.WithdrawAmount( ply, withdrawAmount )
         ply:addMoney( withdrawAmount )
         GlorifiedBanking.RemovePlayerBalance( ply, withdrawAmount )
         GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
-        hook.Run( "GlorifiedBanking.PlayerWithdrawal", ply, withdrawAmount ) -- ply, withdrawAmount
+        hook.Run( "GlorifiedBanking.PlayerWithdrawal", ply, withdrawAmount ) -- Calls upon withdrawal with the args ( ply, withdrawAmount ).
     end
 end
 
@@ -45,19 +57,21 @@ function GlorifiedBanking.DepositAmount( ply, depositAmount )
         ply:addMoney( -depositAmount )
         GlorifiedBanking.AddPlayerBalance( ply, depositAmount )
         GlorifiedBanking.LogDeposit( ply, depositAmount )
-        hook.Run( "GlorifiedBanking.PlayerDeposit", ply, depositAmount ) -- ply, depositAmount
+        hook.Run( "GlorifiedBanking.PlayerDeposit", ply, depositAmount ) -- Calls upon deposit with the args ( ply, depositAmount ).
     end
 end
 
 function GlorifiedBanking.TransferAmount( ply, receiver, transferAmount )
+    if transferAmount < 0 then return end -- Immediately break this function if the transfer amount is below zero as that could cause serious consequences if it slips through everything by chance.
     if GlorifiedBanking.CanPlayerAfford( ply, transferAmount ) then
         GlorifiedBanking.RemovePlayerBalance( ply, transferAmount )
         GlorifiedBanking.AddPlayerBalance( receiver, transferAmount )
         GlorifiedBanking.LogTransfer( ply, receiver, transferAmount )
-        hook.Run( "GlorifiedBanking.PlayerTransfer", ply, receiver, transferAmount ) -- ply, receiver, transferAmount
+        hook.Run( "GlorifiedBanking.PlayerTransfer", ply, receiver, transferAmount ) -- Calls upon transfer with the args ( ply, receiver, transferAmount ).
     end
 end
 
+-- Below are just meta functions in case people prefer using ply:GetBankBalance() over GlorifiedBanking.GetBankBalance( ply ).
 local plyMeta = FindMetaTable( "Player" )
 function plyMeta:SetBankBalance( balance )
     GlorifiedBanking.SetPlayerBalance( self, balance )

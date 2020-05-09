@@ -1,6 +1,7 @@
 
 if not GlorifiedBanking.Config.INTEREST_ENABLED then return end
 
+-- Make this a function in the GlorifiedBanking table so it can be easily accessed for display purposes, for example.
 function GlorifiedBanking.GetPlayerInterestAmount( ply )
     local customFunc = GlorifiedBanking.Config.INTEREST_AMOUNT_CUSTOMFUNC
     local percentage = GlorifiedBanking.Config.DEFAULT_INTEREST_PERCENTAGE
@@ -14,12 +15,12 @@ function GlorifiedBanking.GetPlayerInterestAmount( ply )
 end
 
 function GlorifiedBanking.ApplyPlayerInterest( ply )
-    local interestAmount = GlorifiedBanking.GetPlayerInterestAmount( ply )
-    if interestAmount == 0 then return end
-    interestAmount = math.Clamp( interestAmount, 0, GlorifiedBanking.Config.INTEREST_MAX )
-    GlorifiedBanking.AddPlayerBalance( ply, interestAmount )
-    DarkRP.notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbInterestReceived", DarkRP.formatMoney( interestAmount ) ) )
-    hook.Run( "GlorifiedBanking.PlayerInterestReceived", ply, interestAmount ) -- ply, interestAmount
+    local interestAmount = GlorifiedBanking.GetPlayerInterestAmount( ply ) -- Fetch the player's interest amount from the above function.
+    if interestAmount <= 0 or not ply:IsValid() or not ply:IsPlayer() or ply:IsBot() then return end -- A few validation checks.
+    interestAmount = math.Clamp( interestAmount, 0, GlorifiedBanking.Config.INTEREST_MAX ) -- Clamp to make sure it doesn't go below zero and doesn't go above the maximum interest amount.
+    GlorifiedBanking.AddPlayerBalance( ply, interestAmount ) -- Add the actual interest amount to the player's balance.
+    DarkRP.notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbInterestReceived", DarkRP.formatMoney( interestAmount ) ) ) -- Notify the player that they have received their interest.
+    hook.Run( "GlorifiedBanking.PlayerInterestReceived", ply, interestAmount ) -- Calls upon interest received with the args ( ply, interestAmount ).
 end
 
 hook.Add( "InitPostEntity", "GlorifiedBanking.Interest.InitPostEntity", function()
