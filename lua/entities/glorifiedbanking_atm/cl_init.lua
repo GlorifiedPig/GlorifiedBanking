@@ -8,6 +8,13 @@ local GB_ANIM_MONEY_OUT = 2
 local GB_ANIM_CARD_IN = 3
 local GB_ANIM_CARD_OUT = 4
 
+surface.CreateFont("GBDev", {
+    font = "Arial",
+    size = 255,
+    weight = 500,
+    antialias = true
+})
+
 function ENT:DrawTranslucent()
     self:DrawModel()
     self:DrawScreen()
@@ -15,14 +22,15 @@ function ENT:DrawTranslucent()
     self:DrawAnimations()
 end
 
-local scrw, scrh = 514, 451
+local scrw, scrh = 857, 752
 local screenpos = Vector(1.49, 13.45, 51.14)
 local screenang = Angle(0, 270, 90)
 
 function ENT:DrawScreen()
-    if imgui.Entity3D2D(self, screenpos, screenang, 0.05, 150, 120) then
-        surface.SetDrawColor(color_white)
+    if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
+        surface.SetDrawColor(color_black)
         surface.DrawRect(0, 0, scrw, scrh)
+        draw.SimpleText("TEXT", "GBDev", 0, 0, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         imgui.xCursor(0, 0, scrw, scrh)
         imgui.End3D2D()
     end
