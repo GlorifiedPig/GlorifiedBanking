@@ -2,8 +2,8 @@
 GlorifiedBanking.Themes = {}
 
 local registeredThemes = {}
+local defaultTheme = "Dark"
 local selectedTheme
-
 
 function GlorifiedBanking.Themes.Register( id, name, data )
     if not registeredThemes[id] then
@@ -15,7 +15,7 @@ function GlorifiedBanking.Themes.Register( id, name, data )
 end
 
 function GlorifiedBanking.Themes.Get( id )
-    return registeredThemes[id] or registeredThemes["Dark"] or false
+    return registeredThemes[id] or registeredThemes[defaultTheme] or false
 end
 
 function GlorifiedBanking.Themes.GetCurrent()
@@ -27,7 +27,7 @@ function GlorifiedBanking.Themes.GetAll()
 end
 
 function GlorifiedBanking.Themes.GetByName( name )
-    local returnedTheme = registeredThemes["Dark"]
+    local returnedTheme = registeredThemes[defaultTheme]
     for k, v in pairs( registeredThemes ) do
         if v.DisplayName == name then returnedTheme = v break end
     end
@@ -54,4 +54,4 @@ hook.Add( "OnScreenSizeChanged", "GlorifiedBanking.Themes.OnScreenSizeChanged", 
     GlorifiedBanking.Themes.GenerateFonts()
 end )
 
-GlorifiedBanking.Themes.Select( cookie.GetString( "GlorifiedBanking.Theme", "Dark" ) )
+GlorifiedBanking.Themes.Select( cookie.GetString( "GlorifiedBanking.Theme", defaultTheme ) )
