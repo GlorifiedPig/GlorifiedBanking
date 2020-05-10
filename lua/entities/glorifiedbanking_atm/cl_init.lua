@@ -165,7 +165,34 @@ function ENT:PressKey(key)
     print("pressed: " .. key)
 end
 
-local padw, padh = 253, 426
+local buttons = {
+    [KEY_PAD_0] = "0",
+    [KEY_PAD_1] = "1",
+    [KEY_PAD_2] = "2",
+    [KEY_PAD_3] = "3",
+    [KEY_PAD_4] = "4",
+    [KEY_PAD_5] = "5",
+    [KEY_PAD_6] = "6",
+    [KEY_PAD_7] = "7",
+    [KEY_PAD_8] = "8",
+    [KEY_PAD_9] = "9",
+    [KEY_PAD_MULTIPLY] = "*",
+    [KEY_PAD_DIVIDE] = "#"
+}
+
+hook.Add("PlayerButtonDown", "GlorifiedBanking.ATMEntity.PlayerButtonDown", function(ply, btn)
+    if ply != LocalPlayer() then return end
+    if not buttons[btn] then return end
+
+    local tr = ply:GetEyeTraceNoCursor()
+    if not tr.Hit then return end
+    if tr.Entity:GetClass() != "glorifiedbanking_atm" then return end
+
+    if not tr.Entity.IsHoveringKeypad then return end
+    tr.Entity:PressKey(buttons[btn])
+end)
+
+local padw, padh = 253, 426 //TODO: Get actual pad area, width is probably correct
 local keyw, keyh = 38, 37
 
 local padpos = Vector(-7.33, 6.94, 24.04)
