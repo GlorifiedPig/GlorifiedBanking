@@ -57,9 +57,13 @@ function ENT:DrawScreenBackground()
 
     draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.Colors.logoBackgroundCol)
 
+    surface.SetDrawColor(theme.Data.Colors.logoCol)
+    surface.SetMaterial(theme.Data.Materials.logoSmall)
+    surface.DrawTexturedRect(15, 15, 60, 60)
+
     draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.Colors.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 
-    draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.Colors.logoBackgroundCol)
+    draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.Colors.titleBarCol)
 
     surface.SetDrawColor(theme.Data.Colors.innerBoxBackgroundCol)
     surface.DrawRect(20, 115, scrw-40, scrh-135)

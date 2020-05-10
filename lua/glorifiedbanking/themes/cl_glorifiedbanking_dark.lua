@@ -2,6 +2,7 @@
 GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
     Colors = {
         backgroundCol = Color( 69, 69, 69 ),
+        logoCol = Color( 255, 255, 255 ),
         logoBackgroundCol = Color( 46, 162, 212 ),
         titleTextCol = Color( 255, 255, 255 ),
         titleBarCol = Color( 37, 161, 214 ),
@@ -29,6 +30,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         }
     },
     Materials = {
+        logoSmall = Material( "glorified_banking/logo_small.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
