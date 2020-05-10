@@ -307,6 +307,7 @@ function ENT:PlayGBAnim(type, skipsound)
         end
 
         self.MoneyModel:SetPos(self:LocalToWorld(self.MoneyPos))
+        self.MoneyModel:SetAngles(self:LocalToWorldAngles(moneyang))
     else
         if IsValid(self.MoneyModel) then
             timer.Simple(0, function()
