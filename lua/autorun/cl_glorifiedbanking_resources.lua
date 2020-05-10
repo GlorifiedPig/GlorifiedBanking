@@ -2,7 +2,7 @@
 resource.AddFile("resource/fonts/glorified_banking/montserratregular.ttf")
 resource.AddFile("resource/fonts/glorified_banking/orbitronregular.ttf")
 
-local soundLevel = 55
+local soundLevel = 58
 
 sound.Add({
 	name = "GlorifiedBanking.Beep_Normal",
