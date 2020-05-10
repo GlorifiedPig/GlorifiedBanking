@@ -1,5 +1,5 @@
 
-GlorifiedBanking.Themes.Register( "Dark", "Dark", {
+GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
     Colors = {
         backgroundCol = Color( 69, 69, 69 ),
         logoBackgroundCol = Color( 46, 162, 212 ),
