@@ -146,6 +146,25 @@ function ENT:DrawScreen()
     end
 end
 
+function ENT:PressKey(key)
+    if key == "1" then
+        self:PlayGBAnim(GB_ANIM_CARD_IN)
+    elseif key == "2" then
+        self:PlayGBAnim(GB_ANIM_CARD_OUT)
+    elseif key == "3" then
+        self:PlayGBAnim(GB_ANIM_MONEY_IN)
+    elseif key == "4" then
+        self:PlayGBAnim(GB_ANIM_MONEY_OUT)
+    elseif key == "5" then
+        self.Lmao = true
+    elseif key == "6" then
+        self.Lmao = false
+    end
+
+    self:EmitSound("GlorifiedBanking.Beep_Normal")
+    print("pressed: " .. key)
+end
+
 local padw, padh = 253, 426
 local keyw, keyh = 38, 37
 
@@ -158,7 +177,6 @@ function ENT:DrawKeypad()
             self.IsHoveringKeypad = true
         else
             self.IsHoveringKeypad = false
-            
             imgui.End3D2D()
             return
         end
@@ -169,11 +187,10 @@ function ENT:DrawKeypad()
 
                 if not imgui.IsHovering(keyx, keyy, keyw, keyh) then continue end
 
-                local col = imgui.IsPressing() and theme.Data.Colors.keyPressedCol or theme.Data.Colors.keyHoverCol
+                draw.RoundedBox(4, keyx, keyy, keyw, keyh, imgui.IsPressing() and theme.Data.Colors.keyPressedCol or theme.Data.Colors.keyHoverCol)
 
                 if imgui.IsPressed() then
                     local pressedkey = i + (j - 1) * 3
-
                     if pressedkey == 10 then
                         pressedkey = "*"
                     elseif pressedkey == 11 then
@@ -182,27 +199,8 @@ function ENT:DrawKeypad()
                         pressedkey = "#"
                     end
 
-                    pressedkey = tostring(pressedkey)
-
-                    if pressedkey == "1" then
-                        self:PlayGBAnim(GB_ANIM_CARD_IN)
-                    elseif pressedkey == "2" then
-                        self:PlayGBAnim(GB_ANIM_CARD_OUT)
-                    elseif pressedkey == "3" then
-                        self:PlayGBAnim(GB_ANIM_MONEY_IN)
-                    elseif pressedkey == "4" then
-                        self:PlayGBAnim(GB_ANIM_MONEY_OUT)
-                    elseif pressedkey == "5" then
-                        self.Lmao = true
-                    elseif pressedkey == "6" then
-                        self.Lmao = false
-                    end
-
-                    self:EmitSound("GlorifiedBanking.Beep_Normal")
-                    print("pressed: " .. pressedkey)
+                    self:PressKey(tostring(pressedkey))
                 end
-
-                draw.RoundedBox(4, keyx, keyy, keyw, keyh, col)
             end
         end
 
