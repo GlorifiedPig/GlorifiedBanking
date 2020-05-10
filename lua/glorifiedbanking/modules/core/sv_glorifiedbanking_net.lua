@@ -7,6 +7,7 @@
 
 util.AddNetworkString( "GlorifiedBanking.WithdrawalRequested" )
 util.AddNetworkString( "GlorifiedBanking.DepositRequested" )
+util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
 
 local function DistanceToClosestATM( ply )
     local plyPos = ply:GetPos()
@@ -22,36 +23,40 @@ local function DistanceToClosestATM( ply )
     return closestDistance
 end
 
-net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
-    local amount = net.ReadUInt( 32 )
-    if isnumber( amount ) == false
+local function ValidationChecks( ply, balance )
+    return not ( GlorifiedBanking.LockdownEnabled
+    or not balance
+    or balance == nil
+    or balance < 0
     or not ply:IsValid()
     or ply:IsBot()
-    or not ply:IsPlayer()
-    or not ply:Alive()
     or not ply:IsFullyAuthenticated()
     or not ply:IsConnected()
-    or ply:IsTimingOut()
-    or DistanceToClosestATM( ply ) == nil
-    or DistanceToClosestATM( ply ) >= 500
-    or amount <= 0
-    or GlorifiedBanking.CanPlayerAfford( ply, amount ) != true then return end
+    or DistanceToClosestATM( ply ) >= 500 )
+end
+
+net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+    if ValidationChecks( ply, amount ) then return end
     GlorifiedBanking.WithdrawAmount( ply, amount )
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
-    if isnumber( amount ) == false
-    or not ply:IsValid()
-    or ply:IsBot()
-    or not ply:IsPlayer()
-    or not ply:Alive()
-    or not ply:IsFullyAuthenticated()
-    or not ply:IsConnected()
-    or ply:IsTimingOut()
-    or DistanceToClosestATM( ply ) == nil
-    or DistanceToClosestATM( ply ) >= 500
-    or amount <= 0
-    or ply:canAfford( amount ) != true then return end
+    if ValidationChecks( ply, amount ) then return end
     GlorifiedBanking.DepositAmount( ply, amount )
 end )
+
+function GlorifiedBanking.SendTransactionData( ply )
+    GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_withdrawals` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 50", function( withdrawalQuery )
+        GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_deposits` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 50", function( depositQuery )
+            GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_transfers` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 20", function( transferQuery )
+                net.Start( "GlorifiedBanking.SendTransactionData" )
+                net.WriteLargeString( util.TableToJSON( withdrawalQuery ) )
+                net.WriteLargeString( util.TableToJSON( depositQuery ) )
+                net.WriteLargeString( util.TableToJSON( transferQuery ) )
+                net.Send( ply )
+            end )
+        end )
+    end )
+end
