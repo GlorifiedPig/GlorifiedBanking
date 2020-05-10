@@ -19,7 +19,7 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:Think()
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
-        self:EmitSound("glorified_banking/beep_attention.mp3", soundLevel, 100, 1, CHAN_AUTO)
+        self:EmitSound("GlorifiedBanking.Beep_Attention")
         self.LastAttentionBeep = CurTime()
     end
 
@@ -188,7 +188,7 @@ function ENT:DrawKeypad()
                         self.Lmao = false
                     end
 
-                    //self:EmitSound("glorified_banking/beep_normal.mp3", soundLevel, 100, 1, CHAN_AUTO) //TODO: Use sound script
+                    //self:EmitSound("GlorifiedBanking.Beep_Normal")
                     print("pressed: " .. pressedkey)
                 end
 
@@ -207,12 +207,12 @@ local moneyang = Angle(0, 270, 0)
 function ENT:PlayGBAnim(type, skipsound)
     if type == GB_ANIM_CARD_IN then
         self.CardPos = 60
-        self:EmitSound("glorified_banking/card_insert.mp3", soundLevel, 100, 1, CHAN_AUTO) //TODO: Use sound script
+        self:EmitSound("GlorifiedBanking.Card_Insert")
     end
 
     if type == GB_ANIM_CARD_OUT then
         self.CardPos = 0
-        self:EmitSound("glorified_banking/card_remove.mp3", soundLevel, 100, 1, CHAN_AUTO) //TODO: Use sound script
+        self:EmitSound("GlorifiedBanking.Card_Remove")
     end
 
     if type == GB_ANIM_MONEY_IN or type == GB_ANIM_MONEY_OUT then
@@ -222,20 +222,27 @@ function ENT:PlayGBAnim(type, skipsound)
             self.MoneyPos:Set(moneyoutpos)
 
             if not skipsound then
-                self:EmitSound("glorified_banking/money_in_start.mp3", soundLevel, 100, 1, CHAN_AUTO) //TODO: Use sound script
+                self:EmitSound("GlorifiedBanking.Money_In_Start")
 
-                timer.Simple(3, function()
+                timer.Simple(3.4, function()
                     if not IsValid(self) then return end
-                    self:PlayGBAnim(GB_ANIM_MONEY_IN, true)
 
                     self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
+
+                    timer.Simple(4, function() //For now we'll pretend the user takes 4 seconds to put in the money
+                        if not IsValid(self) then return end
+
+                        self:EmitSound("GlorifiedBanking.Money_In_Finish")
+
+                        self:PlayGBAnim(GB_ANIM_MONEY_IN, true)
+                    end)
                 end)
 
                 return
             end
         else
             if not skipsound then
-                self:EmitSound("glorified_banking/money_out.mp3", soundLevel, 100, 1, CHAN_AUTO) //TODO: Use sound script
+                self:EmitSound("GlorifiedBanking.Money_Out")
 
                 timer.Simple(5.9, function()
                     if not IsValid(self) then return end
