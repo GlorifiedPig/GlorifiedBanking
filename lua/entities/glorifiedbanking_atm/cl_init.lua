@@ -146,6 +146,7 @@ function ENT:DrawScreen()
     end
 end
 
+local padw, padh = 253, 426
 local keyw, keyh = 38, 37
 
 local padpos = Vector(-7.33, 6.94, 24.04)
@@ -159,7 +160,7 @@ function ENT:DrawKeypad()
 
                 if not imgui.IsHovering(keyx, keyy, keyw, keyh) then continue end
 
-                local col = imgui.IsPressing() and theme.Data.Colors.keyHoverCol or theme.Data.Colors.keyPressedCol
+                local col = imgui.IsPressing() and theme.Data.Colors.keyPressedCol or theme.Data.Colors.keyHoverCol
 
                 if imgui.IsPressed() then
                     local pressedkey = i + (j - 1) * 3
