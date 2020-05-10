@@ -192,7 +192,7 @@ hook.Add("PlayerButtonDown", "GlorifiedBanking.ATMEntity.PlayerButtonDown", func
     tr.Entity:PressKey(buttons[btn])
 end)
 
-local padw, padh = 253, 426 //TODO: Get actual pad area, width is probably correct
+local padw, padh = 253, 204
 local keyw, keyh = 38, 37
 
 local padpos = Vector(-7.33, 6.94, 24.04)
