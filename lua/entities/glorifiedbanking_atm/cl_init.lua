@@ -188,7 +188,7 @@ function ENT:DrawKeypad()
                         self.Lmao = false
                     end
 
-                    //self:EmitSound("GlorifiedBanking.Beep_Normal")
+                    self:EmitSound("GlorifiedBanking.Beep_Normal")
                     print("pressed: " .. pressedkey)
                 end
 
@@ -227,11 +227,12 @@ function ENT:PlayGBAnim(type, skipsound)
                 timer.Simple(3.4, function()
                     if not IsValid(self) then return end
 
-                    self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
+                    local id = self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
 
                     timer.Simple(4, function() //For now we'll pretend the user takes 4 seconds to put in the money
                         if not IsValid(self) then return end
 
+                        self:StopLoopingSound(id)
                         self:EmitSound("GlorifiedBanking.Money_In_Finish")
 
                         self:PlayGBAnim(GB_ANIM_MONEY_IN, true)
@@ -250,6 +251,11 @@ function ENT:PlayGBAnim(type, skipsound)
 
                     timer.Simple(1.2, function()
                         self.RequiresAttention = true
+
+                        timer.Simple(10, function() //For now we'll pretend the user takes 10 seconds to take the money
+                            self.RequiresAttention = false
+                            self.AnimState = GB_ANIM_IDLE
+                        end)
                     end)
                 end)
 
@@ -319,7 +325,7 @@ function ENT:DrawAnimations()
         self.MoneyModel:SetPos(self:LocalToWorld(self.MoneyPos))
 
         if self.AnimState == GB_ANIM_MONEY_IN then
-            self.MoneyPos[1] = self.MoneyPos[1] + FrameTime() * 4
+            self.MoneyPos[1] = self.MoneyPos[1] + FrameTime()
         else
             self.MoneyPos[1] = math.max(self.MoneyPos[1] - FrameTime() * 10, moneyoutpos[1])
         end
