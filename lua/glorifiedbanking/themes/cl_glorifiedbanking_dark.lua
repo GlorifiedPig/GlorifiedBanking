@@ -32,7 +32,6 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
-        bankCard = Material( "shitcardlol.png", "noclamp smooth" ),
-        somethingFromImgur = "imgurIDHere"
+        bankCard = Material( "shitcardlol.png", "noclamp smooth" )
     }
 } )
