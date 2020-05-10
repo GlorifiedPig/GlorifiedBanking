@@ -20,4 +20,4 @@ function GlorifiedBanking.RegisterPermission( permission, minAccess, usergroups,
 end
 
 local logsPermDefaults = GlorifiedBanking.Config.PERMISSION_DEFAULTS["glorifiedbanking_openlogs"]
-GlorifiedBanking.RegisterPermission( "glorifiedbanking_openlogs", logsPermDefaults["minAccess"], logsPermDefaults["usergroups"], logsPermDefaults["description"] )
+GlorifiedBanking.RegisterPermission( "glorifiedbanking_openlogs", logsPermDefaults.minAccess, logsPermDefaults.usergroups, logsPermDefaults.description )

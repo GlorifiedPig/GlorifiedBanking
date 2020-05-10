@@ -2,8 +2,6 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 
-AddCSLuaFile("imgui/imgui.lua")
-
 include("shared.lua")
 
 function ENT:Initialize()
