@@ -38,23 +38,27 @@ if not GlorifiedInclude or GlorifiedInclude.Version < giVersion then
         end
 
         if not forceInclude and table.HasValue(includedFiles, fileName) then return end
-        table.insert(includedFiles, fileName)
 
         if (realm == _GlorifiedInclude_Realm.Shared or fileName:find("sh_")) then
+            print( "[GlorifiedBanking] Loading shared file " .. fileName )
             if _SERVER then
                 _AddCSLuaFile(fileName)
             end
 
             _include(fileName)
         elseif (realm == _GlorifiedInclude_Realm.Server or (_SERVER and fileName:find("sv_"))) then
+            print( "[GlorifiedBanking] Loading serversided file " .. fileName )
             _include(fileName)
         elseif (realm == _GlorifiedInclude_Realm.Client or fileName:find("cl_")) then
+            print( "[GlorifiedBanking] Loading clientsided file " .. fileName )
             if _SERVER then
                 _AddCSLuaFile(fileName)
             else
                 _include(fileName)
             end
         end
+
+        table.insert(includedFiles, fileName)
     end
 
     function GlorifiedInclude.IncludeFolder(folderName, ignoreFiles, ignoreFolders, forceInclude)
@@ -91,13 +95,16 @@ end
         GlorifiedInclude.IncludeFolder( "modules/" )
         GlorifiedInclude.IncludeFile( "sh_config.lua" )
     -- Remember that files load in the order you include them in.
-]]
---
-GlorifiedInclude.IncludeFile("glorifiedbanking/sv_config.lua")
-GlorifiedInclude.IncludeFile("glorifiedbanking/sh_config.lua")
-GlorifiedInclude.IncludeFolder("glorifiedbanking/libraries/")
-GlorifiedInclude.IncludeFolder("glorifiedbanking/localization/")
-GlorifiedInclude.IncludeFolder("glorifiedbanking/modules/sql/")
-GlorifiedInclude.IncludeFolder("glorifiedbanking/modules/")
-GlorifiedInclude.IncludeFile("glorifiedbanking/themes/cl_glorifiedbanking_dark.lua")
-GlorifiedInclude.IncludeFolder("glorifiedbanking/themes/")
+]]--
+
+local function IncludeGBFiles()
+    GlorifiedInclude.IncludeFile( "glorifiedbanking/sv_config.lua" )
+    GlorifiedInclude.IncludeFile( "glorifiedbanking/sh_config.lua" )
+    GlorifiedInclude.IncludeFolder( "glorifiedbanking/libraries/" )
+    GlorifiedInclude.IncludeFolder( "glorifiedbanking/localization/" )
+    GlorifiedInclude.IncludeFolder( "glorifiedbanking/modules/sql/" )
+    GlorifiedInclude.IncludeFolder( "glorifiedbanking/modules/" )
+    GlorifiedInclude.IncludeFile( "glorifiedbanking/themes/cl_glorifiedbanking_dark.lua" )
+    GlorifiedInclude.IncludeFolder( "glorifiedbanking/themes/" )
+end
+hook.Add( "DarkRPFinishedLoading", "GlorifiedBanking.AutoIncluder.DarkRPFinishedLoading", IncludeGBFiles )
