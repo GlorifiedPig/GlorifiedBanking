@@ -29,6 +29,27 @@ function GlorifiedBanking.CreateNewBackupFile()
     end )
 end
 
+function GlorifiedBanking.ReadBackupFile( fileTime )
+    local readFile = file.Read( GlorifiedBanking.Config.BACKUPS_FOLDER_NAME .. "/gb_backup_" .. fileTime .. ".txt" )
+    if readFile then
+        readFile = util.Decompress( readFile )
+        readFile = util.JSONToTable( readFile )
+    end
+    return readFile
+end
+
+function GlorifiedBanking.LoadBackupFile( fileTime )
+    local readFile = GlorifiedBanking.ReadBackupFile( fileTime )
+    if readFile then
+        GlorifiedBanking.SQLQuery( "DELETE FROM `gb_players`", function()
+            for k, v in pairs( readFile ) do
+                GlorifiedBanking.SQLQuery( "INSERT INTO `gb_players`( `SteamID`, `Balance` ) VALUES ( '" .. v["SteamID"] .. "', " .. v["Balance"] .. " ) ")
+            end
+            print( "[GlorifiedBanking] Loaded backup number " .. fileTime .. "." )
+        end )
+    end
+end
+
 hook.Add( "InitPostEntity", "GlorifiedBanking.Backups.InitPostEntity", function()
     timer.Create( "GlorifiedBanking.BackupEnsureTimer", 60, 0, function()
         -- Multiply by 3600 so that we can convert hours to seconds.

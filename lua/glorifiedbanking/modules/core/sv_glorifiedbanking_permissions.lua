@@ -14,8 +14,8 @@ function GlorifiedBanking.RegisterPermission( permission, minAccess, usergroups,
     }
 
     if CAMI then CAMI.RegisterPrivilege( permissionTable ) end
-    permissionTable[Name] = nil
-    permissionTable[Usergroups] = usergroups
+    permissionTable.Name = nil
+    permissionTable.Usergroups = usergroups
     GlorifiedBanking.Permissions[permission] = permissionTable
 end
 
