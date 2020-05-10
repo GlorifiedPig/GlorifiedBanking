@@ -26,13 +26,10 @@
 --[[ End Interest Settings ]]--
 
 --[[ Permissions Settings ]]--
-    GlorifiedBanking.Config.PERMISSION_DEFAULTS = {
+    GlorifiedBanking.Config.CAMI_PERMISSION_DEFAULTS = {
         ["glorifiedbanking_openlogs"] = {
-            minAccess = "admin",
-            usergroups = {
-                "admin", "superadmin"
-            },
-            description = "Determines whether or not the player can open the GlorifiedBanking logs panel."
+            MinAccess = "admin",
+            Description = "Determines whether or not the player can open the GlorifiedBanking logs panel."
         }
     }
 --[[ End Permissions Settings ]]--
