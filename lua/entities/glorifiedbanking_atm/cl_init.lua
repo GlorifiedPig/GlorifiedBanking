@@ -154,6 +154,15 @@ local padang = Angle(-28.6, 0, 0)
 
 function ENT:DrawKeypad()
     if imgui.Entity3D2D(self, padpos, padang, 0.03, 150, 120) then
+        if imgui.IsHovering(0, 0, padw, padh) then
+            self.IsHoveringKeypad = true
+        else
+            self.IsHoveringKeypad = false
+            
+            imgui.End3D2D()
+            return
+        end
+
         for i = 1, 3 do
             for j = 1, 4 do
                 local keyx, keyy = 183 - ((j - 1) * 51.25), 54 + ((i - 1) * 49.5)
