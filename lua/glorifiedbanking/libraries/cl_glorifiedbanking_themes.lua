@@ -3,7 +3,6 @@ GlorifiedBanking.Themes = {}
 
 local registeredThemes = {}
 local defaultTheme = "Dark"
-local folderName = "glorifiedbanking"
 local selectedTheme
 
 function GlorifiedBanking.Themes.Register( id, name, data )
@@ -56,4 +55,6 @@ hook.Add( "OnScreenSizeChanged", "GlorifiedBanking.Themes.OnScreenSizeChanged", 
     GlorifiedBanking.Themes.GenerateFonts()
 end )
 
-GlorifiedBanking.Themes.Select( cookie.GetString( "GlorifiedBanking.Theme", defaultTheme ) )
+hook.Add("InitPostEntity", "GlorifiedBanking.Themes.InitPostEntity", function()
+    GlorifiedBanking.Themes.Select( cookie.GetString( "GlorifiedBanking.Theme", defaultTheme ) )
+end )
