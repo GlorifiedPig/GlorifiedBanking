@@ -7,16 +7,17 @@ function GlorifiedBanking.HasPermission( ply, permission, callbackFunc )
 end
 
 function GlorifiedBanking.RegisterPermission( permission, minAccess, usergroups, description )
-    local permissionTable = {
+    CAMI.RegisterPrivilege( {
         Name = permission,
         MinAccess = minAccess,
         Description = description
-    }
+    } )
 
-    if CAMI then CAMI.RegisterPrivilege( permissionTable ) end
-    permissionTable.Name = nil
-    permissionTable.Usergroups = usergroups
-    GlorifiedBanking.Permissions[permission] = permissionTable
+    GlorifiedBanking.Permissions[permission] = {
+        MinAccess = minAccess,
+        Usergroups = usergroups,
+        Description = description
+    }
 end
 
 local logsPermDefaults = GlorifiedBanking.Config.PERMISSION_DEFAULTS["glorifiedbanking_openlogs"]
