@@ -9,8 +9,10 @@ ENT.AdminOnly = true
 
 function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "ScreenID")
+    self:NetworkVar("Entity", 0, "CurrentUser")
 
     if SERVER then
         self:SetScreenID(1)
+        self:SetCurrentUser(player.GetAll()[1]) --Temporairily set the current user to the first player on the server
     end
 end
