@@ -52,6 +52,8 @@ function ENT:DrawTranslucent()
 end
 
 local scrw, scrh = 858, 753
+local windoww, windowh = scrw-40, scrh-135
+local windowx, windowy = 20, 115
 
 function ENT:DrawScreenBackground(showExit, backPage)
     local hovering = false
@@ -93,10 +95,10 @@ function ENT:DrawScreenBackground(showExit, backPage)
     draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.Colors.titleBarCol)
 
     surface.SetDrawColor(theme.Data.Colors.innerBoxBackgroundCol)
-    surface.DrawRect(20, 115, scrw-40, scrh-135)
+    surface.DrawRect(windowx, windowy, windoww, windowh)
 
-    draw.RoundedBox(2, 20, 115, scrw-40, 3, theme.Data.Colors.innerBoxBorderCol)
-    draw.RoundedBox(2, 20, scrh-23, scrw-40, 3, theme.Data.Colors.innerBoxBorderCol)
+    draw.RoundedBox(2, windowx, windowy, windoww, 3, theme.Data.Colors.innerBoxBorderCol)
+    draw.RoundedBox(2, windowx, scrh-23, windoww, 3, theme.Data.Colors.innerBoxBorderCol)
 
     return hovering
 end
@@ -144,14 +146,23 @@ function ENT:DrawLoadingScreen(shouldShow)
 end
 
 ENT.Screens = {
-    [1] = { 
+    [1] = { --Idle screen
         drawFunction = function(self, data)
-            draw.RoundedBox(6, 190, 360, 480, 120, theme.Data.Colors.idleScreenMessageBackgroundCol)
+            local windowcenterw = windoww * .5
+            local msgw, msgh = windoww * .6, windowh * .2
+            draw.RoundedBox(6, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
 
-            draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", 430, 380, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
-            draw.RoundedBox(2, 250, 418, 360, 3, theme.Data.Colors.idleScreenSeperatorCol)
-            draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", 430, 420, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+            local linew, lineh = msgw * .8, 3
+            local liney = windowy + windowh * .5 - 2
+            draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", windowx + windowcenterw, liney - 40, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+
+            draw.RoundedBox(2,  windowx + (windoww-linew) * .5, liney, linew, lineh, theme.Data.Colors.idleScreenSeperatorCol)
+
+            draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", windowx + windowcenterw, liney + 4, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
         end
+    },
+    [2] = { --Lockdown screen
+
     }
 }
 
