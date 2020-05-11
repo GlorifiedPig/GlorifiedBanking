@@ -5,6 +5,13 @@ i18n.RegisterPhrases("en", {
     gbToContinue = "TO CONTINUE",
     gbAtmDisabled = "THIS ATM HAS BEEN TEMPORAIRILY DISABLED\nSORRY FOR ANY INCONVENIENCE",
     gbBackShortly = "OUR SYSTEMS WILL BE BACK ONLINE SHORTLY",
+    gbWelcomeBack = "WELCOME BACK, %s!",
+    gbMenuWithdraw = "WITHDRAW",
+    gbMenuDeposit = "DEPOSIT",
+    gbMenuTransfer = "TRANSFER",
+    gbMenuTransactions = "TRANSACTIONS",
+    gbMenuSettings = "SETTINGS",
+
     gbDarkTheme = "Dark",
     gbWithdraw = "Withdraw",
     gbDeposit = "Deposit",

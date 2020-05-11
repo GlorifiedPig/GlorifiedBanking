@@ -25,7 +25,7 @@ function ENT:Think()
 
     local currentScreen = self.Screens[self:GetScreenID()]
 
-    if currentScreen.loggedIn and !self:GetCurrentUser() then
+    if currentScreen.loggedIn and not self:GetCurrentUser() then
         self.ShouldDrawCurrentScreen = false
         return
     end
@@ -150,58 +150,124 @@ function ENT:DrawLoadingScreen(shouldShow)
     draw.SimpleText(i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", x + w / 2, 470, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
-ENT.Screens = {
-    [1] = { --Idle screen
-        drawFunction = function(self, data)
-            local centerx = windowx + windoww * .5
-            local msgw, msgh = windoww * .6, windowh * .2
-            draw.RoundedBox(6, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
+ENT.Screens = {}
+ENT.Screens[1] = { --Idle screen
+    drawFunction = function(self, data)
+        local centerx = windowx + windoww * .5
+        local msgw, msgh = windoww * .6, windowh * .2
+        draw.RoundedBox(6, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
 
-            local linew, lineh = msgw * .8, 3
-            local liney = windowy + windowh * .5 - 2
-            draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 40, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+        local linew, lineh = msgw * .8, 3
+        local liney = windowy + windowh * .5 - 2
+        draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 40, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
 
-            draw.RoundedBox(2,  windowx + (windoww-linew) * .5, liney, linew, lineh, theme.Data.Colors.idleScreenSeperatorCol)
+        draw.RoundedBox(2,  windowx + (windoww-linew) * .5, liney, linew, lineh, theme.Data.Colors.idleScreenSeperatorCol)
 
-            draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 4, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+        draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 4, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+    end
+}
+ENT.Screens[2] = { --Lockdown screen
+    drawFunction = function(self, data)
+        local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+
+        local msgw, msgh = windoww * .9, 70
+        draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + 35, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
+        draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + 35, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+        draw.DrawText(i18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+
+        msgh = 35
+        draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
+        draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+
+        local iconsize = 18
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.LockdownSmall")
+        local contenty = windowy + windowh - 63
+        local contentw = iconsize + 6 + surface.GetTextSize(i18n.GetPhrase("gbBackShortly"))
+
+        surface.SetDrawColor(theme.Data.Colors.lockdownWarningIconCol)
+        surface.SetMaterial(theme.Data.Materials.warning)
+        surface.DrawTexturedRect(centerx - contentw * .5, contenty + 3, iconsize, iconsize)
+
+        draw.SimpleText(i18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_RIGHT)
+
+        iconsize = 260
+        surface.SetDrawColor(theme.Data.Colors.lockdownIconCol)
+        surface.SetMaterial(theme.Data.Materials.lockdown)
+        surface.DrawTexturedRect(centerx - iconsize * .5, centery - iconsize * .5, iconsize, iconsize)
+    end
+}
+
+local menuButtons = {
+    {
+        name = i18n.GetPhrase("gbMenuWithdraw"),
+        pressFunc = function(self, data)
         end
     },
-    [2] = { --Lockdown screen
-        drawFunction = function(self, data)
-            local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
-
-            local msgw, msgh = windoww * .9, 70
-            draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + 35, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
-            draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + 35, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
-            draw.DrawText(i18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
-
-            msgh = 35
-            draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
-            draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
-
-            local iconsize = 18
-
-            surface.SetFont("GlorifiedBanking.ATMEntity.LockdownSmall")
-            local contenty = windowy + windowh - 63
-            local contentw = iconsize + 6 + surface.GetTextSize(i18n.GetPhrase("gbBackShortly"))
-
-            surface.SetDrawColor(theme.Data.Colors.lockdownWarningIconCol)
-            surface.SetMaterial(theme.Data.Materials.warning)
-            surface.DrawTexturedRect(centerx - contentw * .5, contenty + 3, iconsize, iconsize)
-
-            draw.SimpleText(i18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_RIGHT)
-
-            iconsize = 260
-            surface.SetDrawColor(theme.Data.Colors.lockdownIconCol)
-            surface.SetMaterial(theme.Data.Materials.lockdown)
-            surface.DrawTexturedRect(centerx - iconsize * .5, centery - iconsize * .5, iconsize, iconsize)
+    {
+        name = i18n.GetPhrase("gbMenuDeposit"),
+        pressFunc = function(self, data)
         end
     },
-    [3] = { --Main Menu
-        loggedIn = true,
-        drawFunction = function(self, data)
+    {
+        name = i18n.GetPhrase("gbMenuTransfer"),
+        pressFunc = function(self, data)
+        end
+    },
+    {
+        name = i18n.GetPhrase("gbMenuTransactions"),
+        pressFunc = function(self, data)
+        end
+    },
+    {
+        name = i18n.GetPhrase("gbMenuSettings"),
+        pressFunc = function(self, data)
         end
     }
+}
+
+ENT.Screens[3] = { --Main Menu
+    loggedIn = true,
+    drawFunction = function(self, data)
+        local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.WelcomeBack")
+        local contenty = windowy + 63
+        local iconsize = 22
+        local text = i18n.GetPhrase("gbWelcomeBack", string.upper(self:GetCurrentUser():Name()))
+        local contentw = iconsize + 6 + surface.GetTextSize(text)
+
+        surface.SetDrawColor(theme.Data.Colors.menuUserIconCol)
+        surface.SetMaterial(theme.Data.Materials.user)
+        surface.DrawTexturedRect(centerx - contentw * .5, contenty + 4, iconsize, iconsize)
+
+        draw.SimpleText(text, "GlorifiedBanking.ATMEntity.WelcomeBack", centerx + contentw * .5, contenty, theme.Data.Colors.menuUserTextCol, TEXT_ALIGN_RIGHT)
+
+        contentw = contentw + 15
+        draw.RoundedBox(2, windowx + (windoww-contentw) * .5, contenty + 30, contentw, 4, theme.Data.Colors.menuUserUnderlineCol)
+
+        local hovering = false
+
+        local btnw, btnh = windoww * .9, 70
+        local btnspacing = 20
+        local btnx, btny = windowx + (windoww-btnw) * .5, windowy + (windowh - ((#menuButtons * btnh) + #menuButtons - 1 * btnspacing)) * .5
+
+        for k,v in ipairs(menuButtons) do
+            if imgui.IsHovering(btnx, btny, btnw, btnh) then
+                hovering = true
+                draw.RoundedBoxEx(8, btnx, btny, btnw, btnh, theme.Data.Colors.menuButtonHoverCol, true, true)
+                draw.RoundedBox(2, btnx, btny + btnh - 3, btnw, 3, theme.Data.Colors.menuButtonUnderlineCol)
+            else
+                draw.RoundedBox(8, btnx, btny, btnw, btnh, theme.Data.Colors.menuButtonBackgroundCol)
+            end
+
+            draw.SimpleText(v.name, "GlorifiedBanking.ATMEntity.MenuButton", btnx + btnw * .5, btny + btnh * .5, theme.Data.Colors.menuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+            btny = btny + btnh + btnspacing
+        end
+
+        return hovering
+    end
 }
 
 local screenpos = Vector(1.47, 13.46, 51.16)
@@ -214,7 +280,7 @@ function ENT:DrawScreen()
         local hovering = self:DrawScreenBackground(currentScreen.loggedIn, currentScreen.previousPage)
 
         if self.ShouldDrawCurrentScreen then
-            hovering = hovering or currentScreen.drawFunction(self, self.ScreenData)
+            hovering = currentScreen.drawFunction(self, self.ScreenData) or hovering
         end
 
         local clippingState = DisableClipping(false)
