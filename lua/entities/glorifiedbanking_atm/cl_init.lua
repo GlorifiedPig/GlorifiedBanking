@@ -46,7 +46,7 @@ function ENT:DrawTranslucent()
 
     self:DrawScreen()
     self:DrawKeypad()
-    //TODO: Draw sign
+    --TODO: Draw sign
 
     self:DrawAnimations()
 end
@@ -132,11 +132,10 @@ function ENT:DrawLoadingScreen(shouldShow)
     draw.RoundedBox(2, x, y, w, 3, theme.Data.Colors.loadingScreenBorderCol)
     draw.RoundedBox(2, x, y + h - 3, w, 3, theme.Data.Colors.loadingScreenBorderCol)
 
-    local animprog = CurTime() * 2.5
-
     surface.SetDrawColor(theme.Data.Colors.loadingScreenSpinnerCol)
     surface.SetMaterial(theme.Data.Materials.circle)
 
+    local animprog = CurTime() * 2.5
     surface.DrawTexturedRect(x + w / 2 - 80, 370 + math.sin(animprog + 1) * 20, 40, 40)
     surface.DrawTexturedRect(x + w / 2 - 20, 370 + math.sin(animprog + .5) * 20, 40, 40)
     surface.DrawTexturedRect(x + w / 2 + 40, 370 + math.sin(animprog) * 20, 40, 40)
@@ -145,7 +144,7 @@ function ENT:DrawLoadingScreen(shouldShow)
 end
 
 ENT.Screens = {
-    [1] = {
+    [1] = { 
         drawFunction = function(self, data)
             draw.RoundedBox(6, 190, 360, 480, 120, theme.Data.Colors.idleScreenMessageBackgroundCol)
 
@@ -303,7 +302,7 @@ function ENT:PlayGBAnim(type, skipsound)
 
                     local id = self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
 
-                    timer.Simple(4, function() //For now we'll pretend the user takes 4 seconds to put in the money
+                    timer.Simple(4, function() --For now we'll pretend the user takes 4 seconds to put in the money
                         if not IsValid(self) then return end
 
                         self:StopLoopingSound(id)
@@ -326,7 +325,7 @@ function ENT:PlayGBAnim(type, skipsound)
                     timer.Simple(1.2, function()
                         self.RequiresAttention = true
 
-                        timer.Simple(10, function() //For now we'll pretend the user takes 10 seconds to take the money
+                        timer.Simple(10, function() --For now we'll pretend the user takes 10 seconds to take the money
                             self.RequiresAttention = false
                             self.AnimState = GB_ANIM_IDLE
                         end)
@@ -359,7 +358,7 @@ function ENT:PlayGBAnim(type, skipsound)
 end
 
 function ENT:OnRemove()
-    //TODO: Stop money out/in sound on remove
+    --TODO: Stop money out/in sound on remove
 
     if IsValid(self.MoneyModel) then
         self.MoneyModel:Remove()
