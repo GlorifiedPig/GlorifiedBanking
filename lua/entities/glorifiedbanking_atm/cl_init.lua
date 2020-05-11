@@ -25,6 +25,11 @@ function ENT:Think()
 
     local currentScreen = self.Screens[self:GetScreenID()]
 
+    if self.Lmao then
+        self.ShouldDrawCurrentScreen = false
+        return
+    end
+
     if currentScreen.loggedIn and not self:GetCurrentUser() then
         self.ShouldDrawCurrentScreen = false
         return
@@ -112,8 +117,6 @@ ENT.LoadingScreenX = -scrw
 ENT.LoadingScreenH = 220
 
 function ENT:DrawLoadingScreen(shouldShow)
-    shouldShow = self.Lmao
-
     if shouldShow then
         self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 20)
 
@@ -229,10 +232,10 @@ local menuButtons = {
 ENT.Screens[3] = { --Main Menu
     loggedIn = true,
     drawFunction = function(self, data)
-        local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+        local centerx = windowx + windoww * .5, windowy + windowh * .5
 
         surface.SetFont("GlorifiedBanking.ATMEntity.WelcomeBack")
-        local contenty = windowy + 63
+        local contenty = windowy + 50
         local iconsize = 22
         local text = i18n.GetPhrase("gbWelcomeBack", string.upper(self:GetCurrentUser():Name()))
         local contentw = iconsize + 6 + surface.GetTextSize(text)
@@ -250,7 +253,7 @@ ENT.Screens[3] = { --Main Menu
 
         local btnw, btnh = windoww * .9, 70
         local btnspacing = 20
-        local btnx, btny = windowx + (windoww-btnw) * .5, windowy + (windowh - ((#menuButtons * btnh) + #menuButtons - 1 * btnspacing)) * .5
+        local btnx, btny = windowx + (windoww-btnw) * .5, 40 + windowy + (windowh - ((#menuButtons * btnh) + #menuButtons * btnspacing)) * .5
 
         for k,v in ipairs(menuButtons) do
             if imgui.IsHovering(btnx, btny, btnw, btnh) then
@@ -284,7 +287,7 @@ function ENT:DrawScreen()
         end
 
         local clippingState = DisableClipping(false)
-        self:DrawLoadingScreen(hasRequiredData)
+        self:DrawLoadingScreen(not self.ShouldDrawCurrentScreen)
         DisableClipping(clippingState)
 
         if imgui.IsHovering(0, 0, scrw, scrh) then
