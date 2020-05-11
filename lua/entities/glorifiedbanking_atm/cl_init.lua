@@ -24,21 +24,26 @@ function ENT:Think()
     end
 
     local currentScreen = self.Screens[self:GetScreenID()]
-    local gotRequiredData = true
+
+    if currentScreen.loggedIn and !self:GetCurrentUser() then
+        self.ShouldDrawCurrentScreen = false
+        return
+    end
 
     if currentScreen.requiredData then
         if self.ScreenData then
             for k, v in ipairs(currentScreen.requiredData) do
                 if self.ScreenData[k] then continue end
-                gotRequiredData = false
-                break
+                self.ShouldDrawCurrentScreen = false
+                return
             end
         else
-            gotRequiredData = false
+            self.ShouldDrawCurrentScreen = false
+            return
         end
     end
 
-    self.ShouldDrawCurrentScreen = gotRequiredData
+    self.ShouldDrawCurrentScreen = true
 end
 
 function ENT:DrawTranslucent()
@@ -190,6 +195,11 @@ ENT.Screens = {
             surface.SetDrawColor(theme.Data.Colors.lockdownIconCol)
             surface.SetMaterial(theme.Data.Materials.lockdown)
             surface.DrawTexturedRect(centerx - iconsize * .5, centery - iconsize * .5, iconsize, iconsize)
+        end
+    },
+    [3] = { --Main Menu
+        loggedIn = true,
+        drawFunction = function(self, data)
         end
     }
 }
