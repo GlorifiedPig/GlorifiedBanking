@@ -1,6 +1,8 @@
 i18n.RegisterPhrases("en", {
     gbSystemName = "Glorified Banking",
-    gbLoading = "Loading",
+    gbLoading = "LOADING",
+    gbEnterCard = "ENTER YOUR CARD",
+    gbToContinue = "TO CONTINUE",
     gbDarkTheme = "Dark",
     gbWithdraw = "Withdraw",
     gbDeposit = "Deposit",

@@ -23,7 +23,9 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         innerBoxBorderCol = Color( 255, 255, 255 ),
 
 
-        idleScreenMessageCol = Color( 69, 69, 69 ),
+        idleScreenMessageBackgroundCol = Color( 69, 69, 69 ),
+        idleScreenSeperatorCol = Color( 255, 255, 255 ),
+        idleScreenTextCol = Color( 255, 255, 255 ),
 
 
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
@@ -47,6 +49,18 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             size = 60,
             weight = 500,
             antialias = true
+        },
+        ["ATMEntity.EnterCard"] = {
+            font = "Montserrat",
+            size = 36,
+            weight = 600,
+            antialias = true
+        },
+        ["ATMEntity.EnterCardSmall"] = {
+            font = "Montserrat",
+            size = 32,
+            weight = 600,
+            antialias = true
         }
     },
     Materials = {
@@ -59,3 +73,5 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         bankCard = Material( "shitcardlol.png", "noclamp smooth" )
     }
 } )
+
+GlorifiedBanking.Themes.GenerateFonts() //Regenerate fonts on theme save for fast development, remove on release

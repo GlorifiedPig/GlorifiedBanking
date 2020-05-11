@@ -26,14 +26,16 @@ function ENT:Think()
     local currentScreen = self.Screens[self:GetScreenID()]
     local gotRequiredData = true
 
-    if self.ScreenData and currentScreen.requiredData then
-        for k, v in ipairs(currentScreen.requiredData) do
-            if self.ScreenData[k] then continue end
+    if currentScreen.requiredData then
+        if self.ScreenData then
+            for k, v in ipairs(currentScreen.requiredData) do
+                if self.ScreenData[k] then continue end
+                gotRequiredData = false
+                break
+            end
+        else
             gotRequiredData = false
-            break
         end
-    else
-        gotRequiredData = false
     end
 
     self.ShouldDrawCurrentScreen = gotRequiredData
@@ -139,13 +141,18 @@ function ENT:DrawLoadingScreen(shouldShow)
     surface.DrawTexturedRect(x + w / 2 - 20, 370 + math.sin(animprog + .5) * 20, 40, 40)
     surface.DrawTexturedRect(x + w / 2 + 40, 370 + math.sin(animprog) * 20, 40, 40)
 
-    draw.SimpleText(string.upper(i18n.GetPhrase("gbLoading")), "GlorifiedBanking.ATMEntity.Loading", x + w / 2, 470, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", x + w / 2, 470, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 ENT.Screens = {
     [1] = {
-        requiredData = {},
-        drawFunction = function(self, data) end
+        drawFunction = function(self, data)
+            draw.RoundedBox(6, 190, 360, 480, 120, theme.Data.Colors.idleScreenMessageBackgroundCol)
+
+            draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", 430, 380, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+            draw.RoundedBox(2, 250, 418, 360, 3, theme.Data.Colors.idleScreenSeperatorCol)
+            draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", 430, 420, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+        end
     }
 }
 
