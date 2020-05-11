@@ -3,6 +3,8 @@ i18n.RegisterPhrases("en", {
     gbLoading = "LOADING",
     gbEnterCard = "ENTER YOUR CARD",
     gbToContinue = "TO CONTINUE",
+    gbAtmDisabled = "THIS ATM HAS BEEN TEMPORAIRILY DISABLED\nSORRY FOR ANY INCONVENIENCE",
+    gbBackShortly = "OUR SYSTEMS WILL BE BACK ONLINE SHORTLY",
     gbDarkTheme = "Dark",
     gbWithdraw = "Withdraw",
     gbDeposit = "Deposit",

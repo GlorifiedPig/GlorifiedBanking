@@ -28,6 +28,13 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         idleScreenTextCol = Color( 255, 255, 255 ),
 
 
+        lockdownIconCol = Color( 200, 62, 67 ),
+        lockdownMessageLineCol = Color( 46, 162, 212 ),
+        lockdownMessageBackgroundCol = Color( 69, 69, 69 ),
+        lockdownWarningIconCol = Color( 255, 255, 255 ),
+        lockdownTextCol = Color( 255, 255, 255 ),
+
+
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
         loadingScreenBorderCol = Color( 46, 162, 212 ),
         loadingScreenTextCol = Color( 255, 255, 255 ),
@@ -61,12 +68,26 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             size = 32,
             weight = 600,
             antialias = true
+        },
+        ["ATMEntity.Lockdown"] = {
+            font = "Montserrat",
+            size = 26,
+            weight = 500,
+            antialias = true
+        },
+        ["ATMEntity.LockdownSmall"] = {
+            font = "Montserrat",
+            size = 22,
+            weight = 500,
+            antialias = true
         }
     },
     Materials = {
         logoSmall = Material( "glorified_banking/logo_small.png", "noclamp smooth" ),
         back = Material( "glorified_banking/back.png", "noclamp smooth" ),
         exit = Material( "glorified_banking/exit.png", "noclamp smooth" ),
+        lockdown = Material( "glorified_banking/lockdown.png", "noclamp smooth" ),
+        warning = Material( "glorified_banking/warning.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),

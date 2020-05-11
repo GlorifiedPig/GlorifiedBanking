@@ -163,9 +163,33 @@ ENT.Screens = {
     },
     [2] = { --Lockdown screen
         drawFunction = function(self, data)
-            local centerx, centery = windoww * .5, windoww * .5
-            surface.SetDrawColor(theme.Data.Colors.loadingScreenSpinnerCol)
-            surface.SetMaterial(theme.Data.Materials.circle)
+            local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+
+            local msgw, msgh = windoww * .9, 70
+            draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + 35, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
+            draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + 35, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+            draw.DrawText(i18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+
+            msgh = 35
+            draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
+            draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+
+            local iconsize = 18
+
+            surface.SetFont("GlorifiedBanking.ATMEntity.LockdownSmall")
+            local contenty = windowy + windowh - 63
+            local contentw = iconsize + 6 + surface.GetTextSize(i18n.GetPhrase("gbBackShortly"))
+
+            surface.SetDrawColor(theme.Data.Colors.lockdownWarningIconCol)
+            surface.SetMaterial(theme.Data.Materials.warning)
+            surface.DrawTexturedRect(centerx - contentw * .5, contenty + 3, iconsize, iconsize)
+
+            draw.SimpleText(i18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_RIGHT)
+
+            iconsize = 260
+            surface.SetDrawColor(theme.Data.Colors.lockdownIconCol)
+            surface.SetMaterial(theme.Data.Materials.lockdown)
+            surface.DrawTexturedRect(centerx - iconsize * .5, centery - iconsize * .5, iconsize, iconsize)
         end
     }
 }
@@ -215,7 +239,6 @@ function ENT:PressKey(key)
     end
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
-    print("pressed: " .. key)
 end
 
 local buttons = {
