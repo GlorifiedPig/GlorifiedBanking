@@ -51,7 +51,7 @@ end
 
 local scrw, scrh = 858, 753
 
-function ENT:DrawScreenBackground()
+function ENT:DrawScreenBackground(showExit, backPage)
     local hovering = false
 
     surface.SetDrawColor(theme.Data.Colors.backgroundCol)
@@ -62,25 +62,29 @@ function ENT:DrawScreenBackground()
     surface.SetMaterial(theme.Data.Materials.logoSmall)
     surface.DrawTexturedRect(15, 15, 60, 60)
 
-    if (imgui.IsHovering(scrw-160, 10, 70, 70)) then
-        hovering = true
-        draw.RoundedBox(8, scrw-160, 10, 70, 70, theme.Data.Colors.backBackgroundHoverCol)
-    else
-        draw.RoundedBox(8, scrw-160, 10, 70, 70, theme.Data.Colors.backBackgroundCol)
+    if backPage and backPage > 0 then
+        if (imgui.IsHovering(scrw-160, 10, 70, 70)) then
+            hovering = true
+            draw.RoundedBox(8, scrw-160, 10, 70, 70, theme.Data.Colors.backBackgroundHoverCol)
+        else
+            draw.RoundedBox(8, scrw-160, 10, 70, 70, theme.Data.Colors.backBackgroundCol)
+        end
+        surface.SetDrawColor(theme.Data.Colors.backCol)
+        surface.SetMaterial(theme.Data.Materials.back)
+        surface.DrawTexturedRect(scrw-150, 20, 50, 50)
     end
-    surface.SetDrawColor(theme.Data.Colors.backCol)
-    surface.SetMaterial(theme.Data.Materials.back)
-    surface.DrawTexturedRect(scrw-150, 20, 50, 50)
 
-    if (imgui.IsHovering(scrw-80, 10, 70, 70)) then
-        hovering = true
-        draw.RoundedBox(8, scrw-80, 10, 70, 70, theme.Data.Colors.exitBackgroundHoverCol)
-    else
-        draw.RoundedBox(8, scrw-80, 10, 70, 70, theme.Data.Colors.exitBackgroundCol)
+    if showExit then
+        if (imgui.IsHovering(scrw-80, 10, 70, 70)) then
+            hovering = true
+            draw.RoundedBox(8, scrw-80, 10, 70, 70, theme.Data.Colors.exitBackgroundHoverCol)
+        else
+            draw.RoundedBox(8, scrw-80, 10, 70, 70, theme.Data.Colors.exitBackgroundCol)
+        end
+        surface.SetDrawColor(theme.Data.Colors.exitCol)
+        surface.SetMaterial(theme.Data.Materials.exit)
+        surface.DrawTexturedRect(scrw-70, 20, 50, 50)
     end
-    surface.SetDrawColor(theme.Data.Colors.exitCol)
-    surface.SetMaterial(theme.Data.Materials.exit)
-    surface.DrawTexturedRect(scrw-70, 20, 50, 50)
 
     draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.Colors.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 
@@ -150,10 +154,12 @@ local screenang = Angle(0, 270, 90)
 
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
-        local hovering = self:DrawScreenBackground()
+        local currentScreen = self.Screens[self:GetScreenID()]
+
+        local hovering = self:DrawScreenBackground(currentScreen.loggedIn, currentScreen.previousPage)
 
         if self.ShouldDrawCurrentScreen then
-            hovering = hovering or self.Screens[self:GetScreenID()].drawFunction(self, self.ScreenData)
+            hovering = hovering or currentScreen.drawFunction(self, self.ScreenData)
         end
 
         local clippingState = DisableClipping(false)
