@@ -11,6 +11,6 @@ function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "ScreenID")
 
     if SERVER then
-        self:SetScreenID(0)
+        self:SetScreenID(1)
     end
 end
