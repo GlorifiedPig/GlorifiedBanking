@@ -148,22 +148,24 @@ end
 ENT.Screens = {
     [1] = { --Idle screen
         drawFunction = function(self, data)
-            local centerw = windoww * .5
+            local centerx = windowx + windoww * .5
             local msgw, msgh = windoww * .6, windowh * .2
             draw.RoundedBox(6, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
 
             local linew, lineh = msgw * .8, 3
             local liney = windowy + windowh * .5 - 2
-            draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", windowx + centerw, liney - 40, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+            draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 40, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
 
             draw.RoundedBox(2,  windowx + (windoww-linew) * .5, liney, linew, lineh, theme.Data.Colors.idleScreenSeperatorCol)
 
-            draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", windowx + centerw, liney + 4, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+            draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 4, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
         end
     },
     [2] = { --Lockdown screen
         drawFunction = function(self, data)
-
+            local centerx, centery = windoww * .5, windoww * .5
+            surface.SetDrawColor(theme.Data.Colors.loadingScreenSpinnerCol)
+            surface.SetMaterial(theme.Data.Materials.circle)
         end
     }
 }
