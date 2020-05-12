@@ -20,7 +20,7 @@ end
 
 function GlorifiedBanking.CreateNewBackupFile()
     EnsureBackupDirectories()
-    GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_players`", function( queryResult )
+    GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players`", function( queryResult )
         if not queryResult then return end
         cookie.Set( "GlorifiedBanking.LastBackup", os.time() )
         GlorifiedBanking.LastBackup = os.time()
@@ -41,9 +41,9 @@ end
 function GlorifiedBanking.LoadBackupFile( fileTime )
     local readFile = GlorifiedBanking.ReadBackupFile( fileTime )
     if readFile then
-        GlorifiedBanking.SQLQuery( "DELETE FROM `gb_players`", function()
+        GlorifiedBanking.SQL.Query( "DELETE FROM `gb_players`", function()
             for k, v in pairs( readFile ) do
-                GlorifiedBanking.SQLQuery( "INSERT INTO `gb_players`( `SteamID`, `Balance` ) VALUES ( '" .. v["SteamID"] .. "', " .. v["Balance"] .. " ) ")
+                GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance` ) VALUES ( '" .. v["SteamID"] .. "', " .. v["Balance"] .. " ) ")
             end
             print( "[GlorifiedBanking] Loaded backup number " .. fileTime .. "." )
         end )

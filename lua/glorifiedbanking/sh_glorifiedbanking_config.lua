@@ -15,7 +15,7 @@
     GlorifiedBanking.Config.INTEREST_ENABLED = true -- Should interest be enabled or not?
     GlorifiedBanking.Config.INTEREST_TIMER = 20 -- How often should the player receive interest?
     GlorifiedBanking.Config.INTEREST_MAX = 50000 -- What's the maximum amount a player can receive in interest?
-    GlorifiedBanking.Config.DEFAULT_INTEREST_PERCENTAGE = 0.1 -- What % should the player get for interest per x seconds?
+    GlorifiedBanking.Config.DEFAULT_INTEREST_PERCENTAGE = 0.1 -- What % should the player get for interest per x seconds? Set to 0 to disable interest for normal players.
     GlorifiedBanking.Config.INTEREST_AMOUNT_CUSTOMFUNC = function( ply ) -- Special function to return different interest for certain players.
         local specialGroups = {
             ["donator"] = 0.2,
@@ -27,17 +27,17 @@
 
 --[[ Permissions Settings ]]--
     GlorifiedBanking.Config.CAMI_PERMISSION_DEFAULTS = {
-        ["glorifiedbanking_openlogs"] = {
+        ["glorifiedbanking_openadminpanel"] = {
             MinAccess = "admin",
-            Description = "Determines whether or not the player can open the GlorifiedBanking logs panel."
+            Description = "Determines whether or not the player can open the GlorifiedBanking admin panel."
+        },
+        ["glorifiedbanking_togglelockdown"] = {
+            MinAccess = "admin",
+            Description = "Permission for which usergroups are able to enable/disable lockdown mode."
+        },
+        ["glorifiedbanking_restorebackup"] = {
+            MinAccess = "superadmin",
+            Description = "Permission for which usergroups are able to restore to a previous backup."
         }
     }
 --[[ End Permissions Settings ]]--
-
---[[ UI Config ]]--
-    GlorifiedBanking.Config.GRADIENT_ONE = Color( 142, 45, 226 )
-    GlorifiedBanking.Config.GRADIENT_TWO = Color( 100, 24, 224 )
-    GlorifiedBanking.Config.TEXT_COLOR = Color( 255, 255, 255 )
-    GlorifiedBanking.Config.HOVER_COLOR = Color( 255, 255, 255, 25 )
-    GlorifiedBanking.Config.MAIN_PANEL_TITLE = "GlorifiedBanking"
---[[ End UI Config ]]--

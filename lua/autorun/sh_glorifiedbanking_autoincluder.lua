@@ -5,7 +5,6 @@ GlorifiedBanking = GlorifiedBanking or {
 }
 
 print( "[GlorifiedBanking] This server is running version " .. GlorifiedBanking.Version .. "." )
-
 local IsAddon = true -- Set this to 'true' if you're running from an addon, set to 'false' if you're running from a gamemode.
 
 --[[
@@ -41,8 +40,8 @@ if not GlorifiedInclude or GlorifiedInclude.Version < giVersion then
     local includedFiles = {}
     function GlorifiedInclude.IncludeFile( fileName, realm, forceInclude, calledFromFolder, printName )
         if IsAddon == false and not calledFromFolder then fileName = GM.FolderName .. "/gamemode/" .. fileName end
-        if not forceInclude and table.HasValue( includedFiles, fileName ) then return end
-        table.insert( includedFiles, fileName )
+        if not forceInclude and includedFiles[fileName] then return end
+        includedFiles[fileName] = true
 
         if realm == _GlorifiedInclude_Realm.Shared or fileName:find( "sh_" ) then
             if _SERVER then _AddCSLuaFile( fileName ) end
@@ -94,12 +93,12 @@ end
         GlorifiedInclude.IncludeFile( "sh_config.lua" )
     -- Remember that files load in the order you include them in.
 ]]--
+local function gbIncludeFile( fileName ) GlorifiedInclude.IncludeFile( fileName, nil, nil, nil, "GlorifiedBanking" ) end
+local function gbIncludeFolder( folderName ) GlorifiedInclude.IncludeFolder( folderName, nil, nil, nil, "GlorifiedBanking" ) end
+gbIncludeFile( "glorifiedbanking/sh_glorifiedbanking_compatibility.lua" )
 local function IncludeGBFiles()
-    local function gbIncludeFile( fileName ) GlorifiedInclude.IncludeFile( fileName, nil, nil, nil, "GlorifiedBanking" ) end
-    local function gbIncludeFolder( folderName ) GlorifiedInclude.IncludeFolder( folderName, nil, nil, nil, "GlorifiedBanking" ) end
-
-    gbIncludeFile( "glorifiedbanking/sv_config.lua" )
-    gbIncludeFile( "glorifiedbanking/sh_config.lua")
+    gbIncludeFile( "glorifiedbanking/sv_glorifiedbanking_config.lua" )
+    gbIncludeFile( "glorifiedbanking/sh_glorifiedbanking_config.lua")
     gbIncludeFolder( "glorifiedbanking/libraries/" )
     gbIncludeFolder( "glorifiedbanking/localization/" )
     gbIncludeFolder( "glorifiedbanking/modules/sql/" )
@@ -108,4 +107,4 @@ local function IncludeGBFiles()
     gbIncludeFolder( "glorifiedbanking/themes/" )
 end
 
-hook.Add( "DarkRPFinishedLoading", "GlorifiedBanking.AutoIncluder.DarkRPFinishedLoading", IncludeGBFiles )
+hook.Add( GlorifiedBanking.HookRunName, "GlorifiedBanking.AutoIncluder.IncludeGBFiles", IncludeGBFiles )
