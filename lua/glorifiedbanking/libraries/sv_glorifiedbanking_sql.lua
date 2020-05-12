@@ -11,6 +11,14 @@ if GlorifiedBanking.Config.SQL_TYPE == "mysqloo" then
     end
 end
 
+function GlorifiedBanking.SQLEscapeString( string )
+    if GlorifiedBanking.SQLDatabase then
+        return GlorifiedBanking.SQLDatabase:escape( string )
+    else
+        return sql.SQLStr( string )
+    end
+end
+
 function GlorifiedBanking.SQLThrowError( error )
     print( "[GlorifiedBanking] An error occurred while trying to perform an SQL query:\n" .. error .. "\n" )
     -- To-do: Make a table with all errors stored.
