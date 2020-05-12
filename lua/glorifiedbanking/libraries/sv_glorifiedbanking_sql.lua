@@ -20,9 +20,10 @@ function GlorifiedBanking.SQL.EscapeString( string )
     end
 end
 
+GlorifiedBanking.SQL.CachedErrors = {}
 function GlorifiedBanking.SQL.ThrowError( error )
     print( "[GlorifiedBanking] An error occurred while trying to perform an SQL query:\n" .. error .. "\n" )
-    -- To-do: Make a table with all errors stored.
+    table.insert( GlorifiedBanking.SQL.CachedErrors, error )
 end
 
 function GlorifiedBanking.SQL.Query( sqlQuery, successFunc )
@@ -40,3 +41,9 @@ function GlorifiedBanking.SQL.Query( sqlQuery, successFunc )
         if successFunc then successFunc( queryData ) end
     end
 end
+
+concommand.Add( "glorifiedbanking_printsqlerrors", function( ply )
+    if ply == NULL then
+        PrintTable( GlorifiedBanking.SQL.CachedErrors )
+    end
+end )
