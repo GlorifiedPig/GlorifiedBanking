@@ -7,6 +7,10 @@ ENT.Author = "Tom.bat"
 ENT.Spawnable = true
 ENT.AdminOnly = true
 
+ENT.WithdrawalFee = 0
+ENT.DepositFee = 0
+ENT.TransferFee = 0
+
 function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "ScreenID")
     self:NetworkVar("Entity", 0, "CurrentUser")
