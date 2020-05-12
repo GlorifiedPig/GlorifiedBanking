@@ -1,18 +1,16 @@
 
-if !SERVER then return end
-
 local GlorifiedPersistentEnts = {
     TableName = "GlorifiedBanking",
-    Identifier = "GlorifiedBanking", -- NO SPACES!
+    Identifier = "glorifiedbanking", -- No spaces. For usage in concommands.
     EntClasses = {
-        "glorifiedbanking_atm"
+        ["glorifiedbanking_atm"] = true
     }
 }
 
 sql.Query( "CREATE TABLE IF NOT EXISTS `" .. GlorifiedPersistentEnts.TableName .. "` ( `Class` VARCHAR(48) NOT NULL , `Map` VARCHAR(64) NOT NULL , `PosInfo` JSON NOT NULL )" )
 
 function GlorifiedPersistentEnts.SaveEntityInfo( ent )
-    if table.HasValue( GlorifiedPersistentEnts.EntClasses, ent:GetClass() ) == false then return end
+    if not GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then return end
     local posInfoJSON = {
         Pos = ent:GetPos(),
         Angles = ent:GetAngles()
@@ -28,7 +26,7 @@ function GlorifiedPersistentEnts.SaveEntityInfo( ent )
 end
 
 function GlorifiedPersistentEnts.RemoveEntityFromDB( ent )
-    if table.HasValue( GlorifiedPersistentEnts.EntClasses, ent:GetClass() ) == false then return end
+    if not GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then return end
     if ent.EntID != nil then
         sql.Query( "DELETE FROM `" .. GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. ent.EntID )
     end
@@ -36,7 +34,7 @@ end
 
 function GlorifiedPersistentEnts.LoadEntities()
     local queryResults = sql.Query( "SELECT * FROM `" .. GlorifiedPersistentEnts.TableName .. "`" )
-    if queryResults == nil || istable( queryResults ) == false then return end
+    if queryResults == nil or not istable( queryResults ) then return end
     for k, v in pairs( queryResults ) do
         if v["Map"] != game.GetMap() then continue end
         local gpeEntityInfo = util.JSONToTable( v["PosInfo"] )
@@ -56,27 +54,34 @@ hook.Add( "PostCleanupMap", GlorifiedPersistentEnts.Identifier .. ".GPE.PostClea
 end )
 
 hook.Add( "OnPhysgunFreeze", GlorifiedPersistentEnts.Identifier .. ".GPE.OnPhysgunFreeze", function( wep, physObj, ent, ply )
-    if table.HasValue( GlorifiedPersistentEnts.EntClasses, ent:GetClass() ) then
+    if GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then
         GlorifiedPersistentEnts.SaveEntityInfo( ent )
     end
 end )
 
 hook.Add( "PhysgunDrop", GlorifiedPersistentEnts.Identifier .. ".GPE.PhysgunDrop", function( ply, ent )
-    if table.HasValue( GlorifiedPersistentEnts.EntClasses, ent:GetClass() ) then
+    if GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then
         GlorifiedPersistentEnts.SaveEntityInfo( ent )
     end
 end )
 
 hook.Add( "OnEntityCreated", GlorifiedPersistentEnts.Identifier .. ".GPE.OnEntityCreated", function( ent )
-    if table.HasValue( GlorifiedPersistentEnts.EntClasses, ent:GetClass() ) then
+    if GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then
         timer.Simple( 0, function() GlorifiedPersistentEnts.SaveEntityInfo( ent ) end )
+    end
+end )
+
+hook.Add( "EntityRemoved", GlorifiedPersistentEnts.Identifier .. ".GPE.EntityRemoved", function( ent )
+    if GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then
+        print( "[GlorifiedPersistentEnts] Deleted Entity ID " .. ent.EntID .. " from table `" .. GlorifiedPersistentEnts.TableName .. "`" )
+        sql.Query( "DELETE FROM `" .. GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. ent.EntID )
     end
 end )
 
 hook.Add( "InitPostEntity", GlorifiedPersistentEnts.Identifier .. ".GPE.InitPostEntity", GlorifiedPersistentEnts.LoadEntities )
 
 concommand.Add( GlorifiedPersistentEnts.Identifier .. "removeents", function( ply )
-    if ply == nil || ply:IsSuperAdmin() then
+    if ply == NULL or ply:IsSuperAdmin() then
         print( "[GlorifiedPersistentEnts] Cleared table `" .. GlorifiedPersistentEnts.TableName .. "`" )
         sql.Query( "DELETE FROM `" .. GlorifiedPersistentEnts.TableName .. "`")
         for k, v in pairs( GlorifiedPersistentEnts.EntClasses ) do
@@ -88,9 +93,9 @@ concommand.Add( GlorifiedPersistentEnts.Identifier .. "removeents", function( pl
 end )
 
 concommand.Add( GlorifiedPersistentEnts.Identifier .. "removeent", function( ply )
-    if ply == nil || ply:IsSuperAdmin() then
+    if ply:IsSuperAdmin() then
         local lookingAtEnt = ply:GetEyeTrace().Entity
-        if lookingAtEnt:IsValid() && table.HasValue( GlorifiedPersistentEnts.EntClasses, lookingAtEnt:GetClass() ) then
+        if lookingAtEnt:IsValid() and GlorifiedPersistentEnts.EntClasses[lookingAtEnt:GetClass()] then
             print( "[GlorifiedPersistentEnts] Deleted Entity ID " .. lookingAtEnt.EntID .. " from table `" .. GlorifiedPersistentEnts.TableName .. "`" )
             sql.Query( "DELETE FROM `" .. GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. lookingAtEnt.EntID )
             SafeRemoveEntity( lookingAtEnt )
