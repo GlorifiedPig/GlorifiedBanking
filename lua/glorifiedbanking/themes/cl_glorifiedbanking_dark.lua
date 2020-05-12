@@ -101,6 +101,18 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             size = 56,
             weight = 600,
             antialias = true
+        },
+        ["ATMEntity.WithdrawHint"] = {
+            font = "Montserrat",
+            size = 40,
+            weight = 600,
+            antialias = true
+        },
+        ["ATMEntity.WithdrawFee"] = {
+            font = "Montserrat",
+            size = 34,
+            weight = 500,
+            antialias = true
         }
     },
     Materials = {

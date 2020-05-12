@@ -133,6 +133,26 @@ function ENT:DrawLoadingScreen(shouldShow)
 
     if self.LoadingScreenX < -(scrw - 40) then return end
 
+    render.ClearStencil()
+    render.SetStencilEnable(true)
+    render.SetStencilCompareFunction(STENCIL_ALWAYS)
+    render.SetStencilPassOperation(STENCIL_REPLACE)
+    render.SetStencilFailOperation(STENCIL_KEEP)
+    render.SetStencilZFailOperation(STENCIL_KEEP)
+
+    render.SetStencilWriteMask(1)
+    render.SetStencilTestMask(1)
+    render.SetStencilReferenceValue(1)
+
+    render.OverrideColorWriteEnable(true, false)
+
+    surface.SetDrawColor(color_white)
+    surface.DrawRect(0, 0, scrw, scrh)
+
+    render.OverrideColorWriteEnable(false, false)
+
+    render.SetStencilCompareFunction(STENCIL_EQUAL)
+
     local centery = windowy + windowh / 2
     local y = centery - self.LoadingScreenH / 2
 
@@ -151,6 +171,8 @@ function ENT:DrawLoadingScreen(shouldShow)
     surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 + 40, centery - 60 + math.sin(animprog) * 20, 40, 40)
 
     draw.SimpleText(i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    render.SetStencilEnable(false)
 end
 
 ENT.Screens = {}
@@ -276,8 +298,7 @@ ENT.Screens[3] = { --Main Menu
 ENT.Screens[4] = { --Withdrawal screen
     loggedIn = true,
     previousPage = 3,
-    drawFunction = function(self, data)
-    end
+    drawFunction = function(self, data)    end
 }
 
 local screenpos = Vector(1.47, 13.46, 51.16)
@@ -293,9 +314,7 @@ function ENT:DrawScreen()
             hovering = currentScreen.drawFunction(self, self.ScreenData) or hovering
         end
 
-        DisableClipping(false)
         self:DrawLoadingScreen(not self.ShouldDrawCurrentScreen)
-        DisableClipping(true)
 
         if imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
