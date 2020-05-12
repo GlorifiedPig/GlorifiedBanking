@@ -11,5 +11,6 @@ function GlorifiedBanking.RegisterPermission( permission, minAccess, description
     } )
 end
 
-local logsPermDefaults = GlorifiedBanking.Config.CAMI_PERMISSION_DEFAULTS["glorifiedbanking_openlogs"]
-GlorifiedBanking.RegisterPermission( "glorifiedbanking_openlogs", logsPermDefaults.MinAccess, logsPermDefaults.Description )
+for k, v in pairs( GlorifiedBanking.Config.CAMI_PERMISSION_DEFAULTS ) do
+    GlorifiedBanking.RegisterPermission( k, v.MinAccess, v.Description )
+end

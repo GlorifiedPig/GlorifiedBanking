@@ -27,9 +27,17 @@
 
 --[[ Permissions Settings ]]--
     GlorifiedBanking.Config.CAMI_PERMISSION_DEFAULTS = {
-        ["glorifiedbanking_openlogs"] = {
+        ["glorifiedbanking_openadminpanel"] = {
             MinAccess = "admin",
-            Description = "Determines whether or not the player can open the GlorifiedBanking logs panel."
+            Description = "Determines whether or not the player can open the GlorifiedBanking admin panel."
+        },
+        ["glorifiedbanking_togglelockdown"] = {
+            MinAccess = "admin",
+            Description = "Permission for which usergroups are able to enable/disable lockdown mode."
+        },
+        ["glorifiedbanking_restorebackup"] = {
+            MinAccess = "superadmin",
+            Description = "Permission for which usergroups are able to restore to a previous backup."
         }
     }
 --[[ End Permissions Settings ]]--
