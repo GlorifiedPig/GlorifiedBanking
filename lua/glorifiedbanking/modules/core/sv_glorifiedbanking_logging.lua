@@ -1,7 +1,7 @@
 
-GlorifiedBanking.SQLQuery( "CREATE TABLE IF NOT EXISTS `gb_withdrawals` ( `Date` TIMESTAMP NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `WithdrawAmount` BIGINT(64) NOT NULL )" )
-GlorifiedBanking.SQLQuery( "CREATE TABLE IF NOT EXISTS `gb_deposits` ( `Date` TIMESTAMP NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `DepositAmount` BIGINT(64) NOT NULL )" )
-GlorifiedBanking.SQLQuery( "CREATE TABLE IF NOT EXISTS `gb_transfers` ( `Date` TIMESTAMP NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `ReceiverSteamID` VARCHAR(32) NOT NULL , `TransferAmount` BIGINT(64) NOT NULL )" )
+GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_withdrawals` ( `Date` TIMESTAMP NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `WithdrawAmount` BIGINT(64) NOT NULL )" )
+GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_deposits` ( `Date` TIMESTAMP NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `DepositAmount` BIGINT(64) NOT NULL )" )
+GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_transfers` ( `Date` TIMESTAMP NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `ReceiverSteamID` VARCHAR(32) NOT NULL , `TransferAmount` BIGINT(64) NOT NULL )" )
 
 GlorifiedBanking.Logs = GlorifiedBanking.Logs or {
     Withdrawals = {},
@@ -9,12 +9,12 @@ GlorifiedBanking.Logs = GlorifiedBanking.Logs or {
     Transfers = {}
 }
 
-GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_withdrawals`", function( queryResult ) GlorifiedBanking.Logs.Withdrawals = queryResult end )
-GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_deposits`", function( queryResult ) GlorifiedBanking.Logs.Deposits = queryResult end )
-GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_transfers`", function( queryResult ) GlorifiedBanking.Logs.Transfers = queryResult end )
+GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_withdrawals`", function( queryResult ) GlorifiedBanking.Logs.Withdrawals = queryResult end )
+GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_deposits`", function( queryResult ) GlorifiedBanking.Logs.Deposits = queryResult end )
+GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_transfers`", function( queryResult ) GlorifiedBanking.Logs.Transfers = queryResult end )
 
 function GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
-    GlorifiedBanking.SQLQuery( "INSERT INTO `gb_withdrawals`( `Date`, `SteamID`, `WithdrawAmount` ) VALUES ( '" .. os.time() .. "', '" .. ply:SteamID() .. "', " .. withdrawAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_withdrawals`( `Date`, `SteamID`, `WithdrawAmount` ) VALUES ( '" .. os.time() .. "', '" .. ply:SteamID() .. "', " .. withdrawAmount .. " )" )
     table.insert( GlorifiedBanking.Logs.Withdrawals, {
         ["Date"] = os.time(),
         ["SteamID"] = ply:SteamID(),
@@ -23,7 +23,7 @@ function GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
 end
 
 function GlorifiedBanking.LogDeposit( ply, depositAmount )
-    GlorifiedBanking.SQLQuery( "INSERT INTO `gb_deposits`( `Date`, `SteamID`, `DepositAmount` ) VALUES ( '" .. os.time() .. "', '" .. ply:SteamID() .. "', " .. depositAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_deposits`( `Date`, `SteamID`, `DepositAmount` ) VALUES ( '" .. os.time() .. "', '" .. ply:SteamID() .. "', " .. depositAmount .. " )" )
     table.insert( GlorifiedBanking.Logs.Deposits, {
         ["Date"] = os.time(),
         ["SteamID"] = ply:SteamID(),
@@ -32,7 +32,7 @@ function GlorifiedBanking.LogDeposit( ply, depositAmount )
 end
 
 function GlorifiedBanking.LogTransfer( ply, receiver, transferAmount )
-    GlorifiedBanking.SQLQuery( "INSERT INTO `gb_deposits`( `Date`, `SteamID`, `ReceiverSteamID`, `TransferAmount` ) VALUES ( '" .. os.time() .. "', '" .. ply:SteamID() .. "', '" .. receiver:SteamID() .. "', " .. transferAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_deposits`( `Date`, `SteamID`, `ReceiverSteamID`, `TransferAmount` ) VALUES ( '" .. os.time() .. "', '" .. ply:SteamID() .. "', '" .. receiver:SteamID() .. "', " .. transferAmount .. " )" )
     table.insert( GlorifiedBanking.Logs.Transfers, {
         ["Date"] = os.time(),
         ["SteamID"] = ply:SteamID(),
@@ -47,9 +47,9 @@ concommand.Add( "glorifiedbanking_logs", function( ply )
         --[[ To the person reading this code: this is going to be changed to work with a colossal table probably when I figure out how to network larger numbers more efficiently
         Each of the limits are set to 250 so it adds up to a maximum of 750, which will be worst case scenario 80 characters each, which means
         that the buffer size physically cannot be more than 60kb as that's 80 * 750 ]]--
-        GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_withdrawals` LIMIT 250", function( withdrawalQuery )
-            GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_deposits` LIMIT 250", function( depositQuery )
-                GlorifiedBanking.SQLQuery( "SELECT * FROM `gb_transfers` LIMIT 250", function( transferQuery )
+        GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_withdrawals` LIMIT 250", function( withdrawalQuery )
+            GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_deposits` LIMIT 250", function( depositQuery )
+                GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_transfers` LIMIT 250", function( transferQuery )
                     net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
                     net.WriteLargeString( util.TableToJSON( withdrawalQuery ) )
                     net.WriteLargeString( util.TableToJSON( depositQuery ) )

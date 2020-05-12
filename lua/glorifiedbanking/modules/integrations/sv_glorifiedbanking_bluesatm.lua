@@ -1,7 +1,7 @@
 
 function GlorifiedBanking.ImportSteamIDFromBluesATM( steamid, balance )
     if steamid == "BOT" then return end
-    GlorifiedBanking.SQLQuery( "REPLACE INTO `gb_players`( `SteamID`, `Balance` ) VALUES ( '" .. steamid .. "', " .. balance .. " ) LIMIT 1 ", function()
+    GlorifiedBanking.SQL.Query( "REPLACE INTO `gb_players`( `SteamID`, `Balance` ) VALUES ( '" .. steamid .. "', " .. balance .. " ) LIMIT 1 ", function()
         local ply = player.GetBySteamID( steamid )
 
         if ply and ply:IsPlayer() then
