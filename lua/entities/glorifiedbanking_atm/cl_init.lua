@@ -303,7 +303,7 @@ ENT.Screens[4] = { --Withdrawal screen
         local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
 
         local msgw, msgh = windoww * .95, 60
-        local msgy = centery - 200
+        local msgy = centery - 203
         draw.RoundedBoxEx(8, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
         draw.RoundedBox(2, windowx + (windoww-msgw) * .5, msgy, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
         draw.SimpleText(i18n.GetPhrase("gbWithdrawAmount"), "GlorifiedBanking.ATMEntity.TransactionHint", centerx, msgy + 10, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_CENTER)
@@ -368,9 +368,8 @@ ENT.Screens[4] = { --Withdrawal screen
         msgw, msgh = windoww * .93, 60
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
 
-        local money = 0
-
-        draw.SimpleText(money > 0 and GlorifiedBanking.FormatMoney(1000) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        //TODO: fix keypad buffer math error (probably tonumber then reuse var)
+        draw.SimpleText(tonumber(self.KeyPadBuffer) > 0 and GlorifiedBanking.FormatMoney(self.KeyPadBuffer) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         return hovering
     end
@@ -384,7 +383,7 @@ ENT.Screens[5] = { --Deposit screen
         local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
 
         local msgw, msgh = windoww * .95, 60
-        local msgy = centery - 200
+        local msgy = centery - 203
         draw.RoundedBoxEx(8, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
         draw.RoundedBox(2, windowx + (windoww-msgw) * .5, msgy, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
         draw.SimpleText(i18n.GetPhrase("gbDepositAmount"), "GlorifiedBanking.ATMEntity.TransactionHint", centerx, msgy + 10, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_CENTER)
@@ -449,9 +448,8 @@ ENT.Screens[5] = { --Deposit screen
         msgw, msgh = windoww * .93, 60
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
 
-        local money = 0
-
-        draw.SimpleText(money > 0 and GlorifiedBanking.FormatMoney(1000) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        //TODO: fix keypad buffer math error (probably tonumber then reuse var)
+        draw.SimpleText(tonumber(self.KeyPadBuffer) > 0 and GlorifiedBanking.FormatMoney(self.KeyPadBuffer) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         return hovering
     end
@@ -484,6 +482,10 @@ function ENT:DrawScreen()
     end
 end
 
+//TODO: Screen change manager
+
+ENT.KeyPadBuffer = ""
+
 function ENT:PressKey(key)
     self:EmitSound("GlorifiedBanking.Key_Press")
 
@@ -500,6 +502,10 @@ function ENT:PressKey(key)
     elseif key == "6" then
         self.Lmao = false
     end
+
+
+    //TODO: Implement * and # keys instead of appending them
+    self.KeyPadBuffer = self.KeyPadBuffer .. key
 end
 
 local buttons = {
