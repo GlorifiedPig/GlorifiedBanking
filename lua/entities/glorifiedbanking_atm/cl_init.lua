@@ -118,7 +118,7 @@ ENT.LoadingScreenH = 300
 
 function ENT:DrawLoadingScreen(shouldShow)
     if shouldShow then
-        self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 31)
+        self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 30)
 
         if self.LoadingScreenX > 18 then
             self.LoadingScreenH = Lerp(FrameTime() * 6, self.LoadingScreenH, windowh)
@@ -198,7 +198,7 @@ ENT.Screens[2] = { --Lockdown screen
         local msgw, msgh = windoww * .95, 100
         draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + 35, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
         draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + 35, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
-        draw.DrawText(i18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+        draw.DrawText(i18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.lockdownTextCol, TEXT_ALIGN_CENTER)
 
         msgh = 50
         draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + windowh - 80, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
@@ -214,7 +214,7 @@ ENT.Screens[2] = { --Lockdown screen
         surface.SetMaterial(theme.Data.Materials.warning)
         surface.DrawTexturedRect(centerx - contentw * .5, contenty + 5, iconsize, iconsize)
 
-        draw.SimpleText(i18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_RIGHT)
+        draw.SimpleText(i18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.lockdownTextCol, TEXT_ALIGN_RIGHT)
 
         iconsize = 400
         surface.SetDrawColor(theme.Data.Colors.lockdownIconCol)
@@ -298,7 +298,163 @@ ENT.Screens[3] = { --Main Menu
 ENT.Screens[4] = { --Withdrawal screen
     loggedIn = true,
     previousPage = 3,
-    drawFunction = function(self, data)    end
+    takesKeyInput = true,
+    drawFunction = function(self, data)
+        local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+
+        local msgw, msgh = windoww * .95, 60
+        local msgy = centery - 200
+        draw.RoundedBoxEx(8, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
+        draw.RoundedBox(2, windowx + (windoww-msgw) * .5, msgy, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+        draw.SimpleText(i18n.GetPhrase("gbWithdrawAmount"), "GlorifiedBanking.ATMEntity.TransactionHint", centerx, msgy + 10, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_CENTER)
+
+        msgh = 46
+        msgy = centery + 160
+        draw.RoundedBoxEx(8, centerx - msgw * .5, msgy - 7, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
+        draw.RoundedBox(2, centerx - msgw * .5, msgy - 7, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+
+        local iconsize = 25
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.TransactionFee")
+        local text = self.WithdrawalFee > 0 and i18n.GetPhrase("gbWithdrawalHasFee", self.WithdrawalFee) or i18n.GetPhrase("gbWithdrawalFree")
+        local contentw = iconsize + 10 + surface.GetTextSize(text)
+
+        surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
+        surface.SetMaterial(theme.Data.Materials.warning)
+        surface.DrawTexturedRect(centerx - contentw * .5, msgy + 5, iconsize, iconsize)
+
+        draw.SimpleText(text, "GlorifiedBanking.ATMEntity.TransactionFee", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+        msgy = windowy + windowh - 40
+        iconsize = 20
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.TransactionDisclaimer")
+        text = i18n.GetPhrase("gbWithdrawalDisclaimer")
+        contentw = iconsize + 6 + surface.GetTextSize(text)
+
+        surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
+        surface.SetMaterial(theme.Data.Materials.warning)
+        surface.DrawTexturedRect(centerx - contentw * .5, msgy + 4, iconsize, iconsize)
+
+        draw.SimpleText(text, "GlorifiedBanking.ATMEntity.TransactionDisclaimer", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+        msgy, msgh = centery + 35, 110
+        draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionButtonOutlineCol)
+
+        msgw, msgh = windoww * .93, 90
+        local hovering = false
+
+        if imgui.IsHovering(centerx - msgw * .5, msgy, msgw, msgh) then
+            hovering = true
+            draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonHoverCol)
+        else
+            draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonBackgroundCol)
+        end
+
+        iconsize = 38
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.TransactionButton")
+        text = i18n.GetPhrase("gbMenuWithdraw")
+        contentw = iconsize + 15 + surface.GetTextSize(text)
+
+        msgy = msgy + 14
+        surface.SetDrawColor(theme.Data.Colors.transactionIconCol)
+        surface.SetMaterial(theme.Data.Materials.transaction)
+        surface.DrawTexturedRect(centerx - contentw * .5, msgy + 12, iconsize, iconsize)
+        draw.SimpleText(text, "GlorifiedBanking.ATMEntity.TransactionButton", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+        msgw, msgh, msgy =  windoww * .95, 80, centery - 115
+        draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionEntryOutlineCol)
+        msgw, msgh = windoww * .93, 60
+        draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
+
+        local money = 0
+
+        draw.SimpleText(money > 0 and GlorifiedBanking.FormatMoney(1000) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+        return hovering
+    end
+}
+
+ENT.Screens[5] = { --Deposit screen
+    loggedIn = true,
+    previousPage = 3,
+    takesKeyInput = true,
+    drawFunction = function(self, data)
+        local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+
+        local msgw, msgh = windoww * .95, 60
+        local msgy = centery - 200
+        draw.RoundedBoxEx(8, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
+        draw.RoundedBox(2, windowx + (windoww-msgw) * .5, msgy, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+        draw.SimpleText(i18n.GetPhrase("gbDepositAmount"), "GlorifiedBanking.ATMEntity.TransactionHint", centerx, msgy + 10, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_CENTER)
+
+        msgh = 46
+        msgy = centery + 160
+        draw.RoundedBoxEx(8, centerx - msgw * .5, msgy - 7, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
+        draw.RoundedBox(2, centerx - msgw * .5, msgy - 7, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+
+        local iconsize = 25
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.TransactionFee")
+        local text = self.DepositFee > 0 and i18n.GetPhrase("gbDepositHasFee", self.DepositFee) or i18n.GetPhrase("gbDepositFree")
+        local contentw = iconsize + 10 + surface.GetTextSize(text)
+
+        surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
+        surface.SetMaterial(theme.Data.Materials.warning)
+        surface.DrawTexturedRect(centerx - contentw * .5, msgy + 5, iconsize, iconsize)
+
+        draw.SimpleText(text, "GlorifiedBanking.ATMEntity.TransactionFee", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+        msgy = windowy + windowh - 40
+        iconsize = 20
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.TransactionDisclaimer")
+        text = i18n.GetPhrase("gbDepositDisclaimer")
+        contentw = iconsize + 6 + surface.GetTextSize(text)
+
+        surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
+        surface.SetMaterial(theme.Data.Materials.warning)
+        surface.DrawTexturedRect(centerx - contentw * .5, msgy + 4, iconsize, iconsize)
+
+        draw.SimpleText(text, "GlorifiedBanking.ATMEntity.TransactionDisclaimer", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+        msgy, msgh = centery + 35, 110
+        draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionButtonOutlineCol)
+
+        msgw, msgh = windoww * .93, 90
+        local hovering = false
+
+        if imgui.IsHovering(centerx - msgw * .5, msgy, msgw, msgh) then
+            hovering = true
+            draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonHoverCol)
+        else
+            draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonBackgroundCol)
+        end
+
+        iconsize = 38
+
+        surface.SetFont("GlorifiedBanking.ATMEntity.TransactionButton")
+        text = i18n.GetPhrase("gbMenuDeposit")
+        contentw = iconsize + 15 + surface.GetTextSize(text)
+
+        msgy = msgy + 14
+        surface.SetDrawColor(theme.Data.Colors.transactionIconCol)
+        surface.SetMaterial(theme.Data.Materials.transaction)
+        surface.DrawTexturedRect(centerx - contentw * .5, msgy + 12, iconsize, iconsize)
+        draw.SimpleText(text, "GlorifiedBanking.ATMEntity.TransactionButton", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+        msgw, msgy, msgh =  windoww * .95, centery - 115, 80
+        draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionEntryOutlineCol)
+        msgw, msgh = windoww * .93, 60
+        draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
+
+        local money = 0
+
+        draw.SimpleText(money > 0 and GlorifiedBanking.FormatMoney(1000) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+        return hovering
+    end
 }
 
 local screenpos = Vector(1.47, 13.46, 51.16)

@@ -44,6 +44,20 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         menuButtonUnderlineCol = Color( 37, 160, 213 ),
 
 
+        transactionMessageLineCol = Color( 46, 162, 212 ),
+        transactionMessageBackgroundCol = Color( 69, 69, 69 ),
+        transactionWarningIconCol = Color( 255, 255, 255 ),
+        transactionIconCol = Color( 255, 255, 255 ),
+        transactionTextCol = Color( 255, 255, 255 ),
+        transactionButtonBackgroundCol = Color( 54, 202, 118 ),
+        transactionButtonHoverCol = Color( 47, 127, 82 ),
+        transactionButtonOutlineCol = Color( 65, 65, 65 ),
+        transactionEntryTextCol = Color( 142, 142, 142 ),
+        transactionEntryTextPopulatedCol = Color( 255, 255, 255 ),
+        transactionEntryBackgroundCol = Color( 93, 93, 93 ),
+        transactionEntryOutlineCol = Color( 65, 65, 65 ),
+
+
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
         loadingScreenBorderCol = Color( 46, 162, 212 ),
         loadingScreenTextCol = Color( 255, 255, 255 ),
@@ -102,16 +116,34 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 600,
             antialias = true
         },
-        ["ATMEntity.WithdrawHint"] = {
+        ["ATMEntity.TransactionHint"] = {
             font = "Montserrat",
             size = 40,
             weight = 600,
             antialias = true
         },
-        ["ATMEntity.WithdrawFee"] = {
+        ["ATMEntity.TransactionFee"] = {
             font = "Montserrat",
             size = 34,
             weight = 500,
+            antialias = true
+        },
+        ["ATMEntity.TransactionDisclaimer"] = {
+            font = "Montserrat",
+            size = 26,
+            weight = 700,
+            antialias = true
+        },
+        ["ATMEntity.TransactionButton"] = {
+            font = "Montserrat",
+            size = 56,
+            weight = 700,
+            antialias = true
+        },
+        ["ATMEntity.TransactionEntry"] = {
+            font = "Montserrat",
+            size = 52,
+            weight = 600,
             antialias = true
         }
     },
@@ -121,6 +153,8 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         exit = Material( "glorified_banking/exit.png", "noclamp smooth" ),
         lockdown = Material( "glorified_banking/lockdown.png", "noclamp smooth" ),
         warning = Material( "glorified_banking/warning.png", "noclamp smooth" ),
+        transfer = Material( "glorified_banking/transfer.png", "noclamp smooth" ),
+        transaction = Material( "glorified_banking/transaction.png", "noclamp smooth" ),
         user = Material( "glorified_banking/user.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
