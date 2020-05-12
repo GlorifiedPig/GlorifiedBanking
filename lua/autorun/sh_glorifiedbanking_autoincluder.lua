@@ -93,12 +93,12 @@ end
         GlorifiedInclude.IncludeFile( "sh_config.lua" )
     -- Remember that files load in the order you include them in.
 ]]--
+local function gbIncludeFile( fileName ) GlorifiedInclude.IncludeFile( fileName, nil, nil, nil, "GlorifiedBanking" ) end
+local function gbIncludeFolder( folderName ) GlorifiedInclude.IncludeFolder( folderName, nil, nil, nil, "GlorifiedBanking" ) end
+gbIncludeFile( "glorifiedbanking/sh_glorifiedbanking_compatibility.lua" )
 local function IncludeGBFiles()
-    local function gbIncludeFile( fileName ) GlorifiedInclude.IncludeFile( fileName, nil, nil, nil, "GlorifiedBanking" ) end
-    local function gbIncludeFolder( folderName ) GlorifiedInclude.IncludeFolder( folderName, nil, nil, nil, "GlorifiedBanking" ) end
-
-    gbIncludeFile( "glorifiedbanking/sv_config.lua" )
-    gbIncludeFile( "glorifiedbanking/sh_config.lua")
+    gbIncludeFile( "glorifiedbanking/sv_glorifiedbanking_config.lua" )
+    gbIncludeFile( "glorifiedbanking/sh_glorifiedbanking_config.lua")
     gbIncludeFolder( "glorifiedbanking/libraries/" )
     gbIncludeFolder( "glorifiedbanking/localization/" )
     gbIncludeFolder( "glorifiedbanking/modules/sql/" )
@@ -107,4 +107,4 @@ local function IncludeGBFiles()
     gbIncludeFolder( "glorifiedbanking/themes/" )
 end
 
-hook.Add( "DarkRPFinishedLoading", "GlorifiedBanking.AutoIncluder.DarkRPFinishedLoading", IncludeGBFiles )
+hook.Add( GlorifiedBanking.HookRunName, "GlorifiedBanking.AutoIncluder.IncludeGBFiles", IncludeGBFiles )

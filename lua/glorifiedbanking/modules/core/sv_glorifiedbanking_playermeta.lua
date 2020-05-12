@@ -52,7 +52,7 @@ end
 function GlorifiedBanking.WithdrawAmount( ply, withdrawAmount )
     if not ValidationChecks( ply, withdrawAmount ) then return end -- Always validate before doing important functions to keep things secure.
     if GlorifiedBanking.CanPlayerAfford( ply, withdrawAmount ) then
-        ply:addMoney( withdrawAmount )
+        GlorifiedBanking.AddCash( ply, withdrawAmount )
         GlorifiedBanking.RemovePlayerBalance( ply, withdrawAmount )
         GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
         hook.Run( "GlorifiedBanking.PlayerWithdrawal", ply, withdrawAmount ) -- Calls upon withdrawal with the args ( ply, withdrawAmount ).
@@ -61,8 +61,8 @@ end
 
 function GlorifiedBanking.DepositAmount( ply, depositAmount )
     if not ValidationChecks( ply, depositAmount ) then return end -- Always validate before doing important functions to keep things secure.
-    if ply:canAfford( depositAmount ) then
-        ply:addMoney( -depositAmount )
+    if GlorifiedBanking.CanAfford( ply, depositAmount ) then
+        GlorifiedBanking.RemoveCash( ply, depositAmount )
         GlorifiedBanking.AddPlayerBalance( ply, depositAmount )
         GlorifiedBanking.LogDeposit( ply, depositAmount )
         hook.Run( "GlorifiedBanking.PlayerDeposit", ply, depositAmount ) -- Calls upon deposit with the args ( ply, depositAmount ).
