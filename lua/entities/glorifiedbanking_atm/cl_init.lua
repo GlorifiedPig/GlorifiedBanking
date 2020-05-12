@@ -61,9 +61,9 @@ function ENT:DrawTranslucent()
     self:DrawAnimations()
 end
 
-local scrw, scrh = 858, 753
-local windoww, windowh = scrw-40, scrh-135
-local windowx, windowy = 20, 115
+local scrw, scrh = 1286, 1129
+local windoww, windowh = scrw-60, scrh-188
+local windowx, windowy = 30, 158
 
 function ENT:DrawScreenBackground(showExit, backPage)
     local hovering = false
@@ -71,86 +71,86 @@ function ENT:DrawScreenBackground(showExit, backPage)
     surface.SetDrawColor(theme.Data.Colors.backgroundCol)
     surface.DrawRect(0, 0, scrw, scrh)
 
-    draw.RoundedBox(8, 10, 10, 70, 70, theme.Data.Colors.logoBackgroundCol)
+    draw.RoundedBox(8, 10, 10, 100, 100, theme.Data.Colors.logoBackgroundCol)
     surface.SetDrawColor(theme.Data.Colors.logoCol)
     surface.SetMaterial(theme.Data.Materials.logoSmall)
-    surface.DrawTexturedRect(15, 15, 60, 60)
+    surface.DrawTexturedRect(15, 15, 90, 90)
 
     if backPage and backPage > 0 then
-        if (imgui.IsHovering(scrw-160, 10, 70, 70)) then
+        if (imgui.IsHovering(scrw-220, 10, 100, 100)) then
             hovering = true
-            draw.RoundedBox(8, scrw-160, 10, 70, 70, theme.Data.Colors.backBackgroundHoverCol)
+            draw.RoundedBox(8, scrw-220, 10, 100, 100, theme.Data.Colors.backBackgroundHoverCol)
         else
-            draw.RoundedBox(8, scrw-160, 10, 70, 70, theme.Data.Colors.backBackgroundCol)
+            draw.RoundedBox(8, scrw-220, 10, 100, 100, theme.Data.Colors.backBackgroundCol)
         end
         surface.SetDrawColor(theme.Data.Colors.backCol)
         surface.SetMaterial(theme.Data.Materials.back)
-        surface.DrawTexturedRect(scrw-150, 20, 50, 50)
+        surface.DrawTexturedRect(scrw-205, 25, 70, 70)
     end
 
     if showExit then
-        if (imgui.IsHovering(scrw-80, 10, 70, 70)) then
+        if (imgui.IsHovering(scrw-110, 10, 100, 100)) then
             hovering = true
-            draw.RoundedBox(8, scrw-80, 10, 70, 70, theme.Data.Colors.exitBackgroundHoverCol)
+            draw.RoundedBox(8, scrw-110, 10, 100, 100, theme.Data.Colors.exitBackgroundHoverCol)
         else
-            draw.RoundedBox(8, scrw-80, 10, 70, 70, theme.Data.Colors.exitBackgroundCol)
+            draw.RoundedBox(8, scrw-110, 10, 100, 100, theme.Data.Colors.exitBackgroundCol)
         end
         surface.SetDrawColor(theme.Data.Colors.exitCol)
         surface.SetMaterial(theme.Data.Materials.exit)
-        surface.DrawTexturedRect(scrw-70, 20, 50, 50)
+        surface.DrawTexturedRect(scrw-95, 25, 70, 70)
     end
 
-    draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 90, 80, theme.Data.Colors.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+    draw.SimpleText(string.upper(i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 125, 110, theme.Data.Colors.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 
-    draw.RoundedBox(6, 0, 85, scrw, 10, theme.Data.Colors.titleBarCol)
+    draw.RoundedBox(6, 0, 120, scrw, 10, theme.Data.Colors.titleBarCol)
 
     surface.SetDrawColor(theme.Data.Colors.innerBoxBackgroundCol)
     surface.DrawRect(windowx, windowy, windoww, windowh)
 
-    draw.RoundedBox(2, windowx, windowy, windoww, 3, theme.Data.Colors.innerBoxBorderCol)
-    draw.RoundedBox(2, windowx, scrh-23, windoww, 3, theme.Data.Colors.innerBoxBorderCol)
+    draw.RoundedBox(2, windowx, windowy, windoww, 4, theme.Data.Colors.innerBoxBorderCol)
+    draw.RoundedBox(2, windowx, windowy + windowh - 4, windoww, 4, theme.Data.Colors.innerBoxBorderCol)
 
     return hovering
 end
 
 ENT.LoadingScreenX = -scrw
-ENT.LoadingScreenH = 220
+ENT.LoadingScreenH = 300
 
 function ENT:DrawLoadingScreen(shouldShow)
     if shouldShow then
-        self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 20)
+        self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 31)
 
         if self.LoadingScreenX > 18 then
-            self.LoadingScreenH = Lerp(FrameTime() * 6, self.LoadingScreenH, scrh-135)
+            self.LoadingScreenH = Lerp(FrameTime() * 6, self.LoadingScreenH, windowh)
         end
     else
-        self.LoadingScreenH = Lerp(FrameTime() * 5, self.LoadingScreenH, 220)
+        self.LoadingScreenH = Lerp(FrameTime() * 5, self.LoadingScreenH, 300)
 
-        if self.LoadingScreenH < 225 then
+        if self.LoadingScreenH < 320 then
             self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, -scrw)
         end
     end
 
-    local w, h = scrw - 40, self.LoadingScreenH
-    local x, y = self.LoadingScreenX, 310 - self.LoadingScreenH / 2 + 114
+    if self.LoadingScreenX < -(scrw - 40) then return end
 
-    if self.LoadingScreenX < -(scrw - 20) then return end
+    local centery = windowy + windowh / 2
+    local y = centery - self.LoadingScreenH / 2
 
     surface.SetDrawColor(theme.Data.Colors.loadingScreenBackgroundCol)
-    surface.DrawRect(x, y, w, h)
+    surface.DrawRect(self.LoadingScreenX, y, windoww, self.LoadingScreenH)
 
-    draw.RoundedBox(2, x, y, w, 3, theme.Data.Colors.loadingScreenBorderCol)
-    draw.RoundedBox(2, x, y + h - 3, w, 3, theme.Data.Colors.loadingScreenBorderCol)
+    draw.RoundedBox(2, self.LoadingScreenX, y, windoww, 4, theme.Data.Colors.loadingScreenBorderCol)
+    draw.RoundedBox(2, self.LoadingScreenX, y + self.LoadingScreenH - 4, windoww, 4, theme.Data.Colors.loadingScreenBorderCol)
 
     surface.SetDrawColor(theme.Data.Colors.loadingScreenSpinnerCol)
     surface.SetMaterial(theme.Data.Materials.circle)
 
     local animprog = CurTime() * 2.5
-    surface.DrawTexturedRect(x + w / 2 - 80, 370 + math.sin(animprog + 1) * 20, 40, 40)
-    surface.DrawTexturedRect(x + w / 2 - 20, 370 + math.sin(animprog + .5) * 20, 40, 40)
-    surface.DrawTexturedRect(x + w / 2 + 40, 370 + math.sin(animprog) * 20, 40, 40)
+    surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 - 80, centery - 60 + math.sin(animprog + 1) * 20, 40, 40)
+    surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 - 20, centery - 60 + math.sin(animprog + .5) * 20, 40, 40)
+    surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 + 40, centery - 60 + math.sin(animprog) * 20, 40, 40)
 
-    draw.SimpleText(i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", x + w / 2, 470, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 ENT.Screens = {}
@@ -158,43 +158,43 @@ ENT.Screens[1] = { --Idle screen
     drawFunction = function(self, data)
         local centerx = windowx + windoww * .5
         local msgw, msgh = windoww * .6, windowh * .2
-        draw.RoundedBox(6, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
+        draw.RoundedBox(12, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
 
-        local linew, lineh = msgw * .8, 3
+        local linew, lineh = msgw * .8, 4
         local liney = windowy + windowh * .5 - 2
-        draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 40, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+        draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 55, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
 
         draw.RoundedBox(2,  windowx + (windoww-linew) * .5, liney, linew, lineh, theme.Data.Colors.idleScreenSeperatorCol)
 
-        draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 4, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+        draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 8, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
     end
 }
 ENT.Screens[2] = { --Lockdown screen
     drawFunction = function(self, data)
         local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
 
-        local msgw, msgh = windoww * .9, 70
+        local msgw, msgh = windoww * .95, 100
         draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + 35, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
         draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + 35, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
         draw.DrawText(i18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
 
-        msgh = 35
-        draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
-        draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + windowh - 70, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+        msgh = 50
+        draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + windowh - 80, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
+        draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + windowh - 80, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
 
-        local iconsize = 18
+        local iconsize = 30
 
         surface.SetFont("GlorifiedBanking.ATMEntity.LockdownSmall")
-        local contenty = windowy + windowh - 63
-        local contentw = iconsize + 6 + surface.GetTextSize(i18n.GetPhrase("gbBackShortly"))
+        local contenty = windowy + windowh - 73
+        local contentw = iconsize + 10 + surface.GetTextSize(i18n.GetPhrase("gbBackShortly"))
 
         surface.SetDrawColor(theme.Data.Colors.lockdownWarningIconCol)
         surface.SetMaterial(theme.Data.Materials.warning)
-        surface.DrawTexturedRect(centerx - contentw * .5, contenty + 3, iconsize, iconsize)
+        surface.DrawTexturedRect(centerx - contentw * .5, contenty + 5, iconsize, iconsize)
 
         draw.SimpleText(i18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_RIGHT)
 
-        iconsize = 260
+        iconsize = 400
         surface.SetDrawColor(theme.Data.Colors.lockdownIconCol)
         surface.SetMaterial(theme.Data.Materials.lockdown)
         surface.DrawTexturedRect(centerx - iconsize * .5, centery - iconsize * .5, iconsize, iconsize)
@@ -235,31 +235,31 @@ ENT.Screens[3] = { --Main Menu
         local centerx = windowx + windoww * .5, windowy + windowh * .5
 
         surface.SetFont("GlorifiedBanking.ATMEntity.WelcomeBack")
-        local contenty = windowy + 50
-        local iconsize = 22
+        local contenty = windowy + 100
+        local iconsize = 32
         local text = i18n.GetPhrase("gbWelcomeBack", string.upper(self:GetCurrentUser():Name()))
         local contentw = iconsize + 6 + surface.GetTextSize(text)
 
         surface.SetDrawColor(theme.Data.Colors.menuUserIconCol)
         surface.SetMaterial(theme.Data.Materials.user)
-        surface.DrawTexturedRect(centerx - contentw * .5, contenty + 4, iconsize, iconsize)
+        surface.DrawTexturedRect(centerx - contentw * .5, contenty + 5, iconsize, iconsize)
 
         draw.SimpleText(text, "GlorifiedBanking.ATMEntity.WelcomeBack", centerx + contentw * .5, contenty, theme.Data.Colors.menuUserTextCol, TEXT_ALIGN_RIGHT)
 
         contentw = contentw + 15
-        draw.RoundedBox(2, windowx + (windoww-contentw) * .5, contenty + 30, contentw, 4, theme.Data.Colors.menuUserUnderlineCol)
+        draw.RoundedBox(2, windowx + (windoww-contentw) * .5, contenty + 42, contentw, 4, theme.Data.Colors.menuUserUnderlineCol)
 
         local hovering = false
 
-        local btnw, btnh = windoww * .9, 70
-        local btnspacing = 20
+        local btnw, btnh = windoww * .95, 100
+        local btnspacing = 30
         local btnx, btny = windowx + (windoww-btnw) * .5, 40 + windowy + (windowh - ((#menuButtons * btnh) + #menuButtons * btnspacing)) * .5
 
         for k,v in ipairs(menuButtons) do
             if imgui.IsHovering(btnx, btny, btnw, btnh) then
                 hovering = true
                 draw.RoundedBoxEx(8, btnx, btny, btnw, btnh, theme.Data.Colors.menuButtonHoverCol, true, true)
-                draw.RoundedBox(2, btnx, btny + btnh - 3, btnw, 3, theme.Data.Colors.menuButtonUnderlineCol)
+                draw.RoundedBox(2, btnx, btny + btnh - 4, btnw, 4, theme.Data.Colors.menuButtonUnderlineCol)
             else
                 draw.RoundedBox(8, btnx, btny, btnw, btnh, theme.Data.Colors.menuButtonBackgroundCol)
             end
@@ -273,11 +273,18 @@ ENT.Screens[3] = { --Main Menu
     end
 }
 
+ENT.Screens[4] = { --Withdrawal screen
+    loggedIn = true,
+    previousPage = 3,
+    drawFunction = function(self, data)
+    end
+}
+
 local screenpos = Vector(1.47, 13.46, 51.16)
 local screenang = Angle(0, 270, 90)
 
 function ENT:DrawScreen()
-    if imgui.Entity3D2D(self, screenpos, screenang, 0.03, 250, 200) then
+    if imgui.Entity3D2D(self, screenpos, screenang, 0.02, 250, 200) then
         local currentScreen = self.Screens[self:GetScreenID()]
 
         local hovering = self:DrawScreenBackground(currentScreen.loggedIn, currentScreen.previousPage)
@@ -286,16 +293,16 @@ function ENT:DrawScreen()
             hovering = currentScreen.drawFunction(self, self.ScreenData) or hovering
         end
 
-        local clippingState = DisableClipping(false)
+        DisableClipping(false)
         self:DrawLoadingScreen(not self.ShouldDrawCurrentScreen)
-        DisableClipping(clippingState)
+        DisableClipping(true)
 
         if imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
 
             surface.SetDrawColor(color_white)
             surface.SetMaterial(hovering and theme.Data.Materials.cursorHover or theme.Data.Materials.cursor)
-            surface.DrawTexturedRect(hovering and mx - 12 or mx, my, 30, 30)
+            surface.DrawTexturedRect(hovering and mx - 12 or mx, my, 45, 45)
         end
 
         imgui.End3D2D()

@@ -56,49 +56,49 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
     Fonts = {
         ["ATMEntity.Title"] = {
             font = "Orbitron",
-            size = 40,
+            size = 54,
             weight = 1000,
             antialias = true
         },
         ["ATMEntity.Loading"] = {
             font = "Montserrat",
-            size = 60,
+            size = 70,
             weight = 500,
             antialias = true
         },
         ["ATMEntity.EnterCard"] = {
             font = "Montserrat",
-            size = 36,
-            weight = 600,
+            size = 50,
+            weight = 700,
             antialias = true
         },
         ["ATMEntity.EnterCardSmall"] = {
             font = "Montserrat",
-            size = 32,
-            weight = 600,
+            size = 40,
+            weight = 700,
             antialias = true
         },
         ["ATMEntity.Lockdown"] = {
             font = "Montserrat",
-            size = 26,
-            weight = 500,
+            size = 40,
+            weight = 600,
             antialias = true
         },
         ["ATMEntity.LockdownSmall"] = {
             font = "Montserrat",
-            size = 22,
+            size = 36,
             weight = 500,
             antialias = true
         },
         ["ATMEntity.WelcomeBack"] = {
             font = "Montserrat",
-            size = 30,
+            size = 44,
             weight = 600,
             antialias = true
         },
         ["ATMEntity.MenuButton"] = {
             font = "Montserrat",
-            size = 42,
+            size = 56,
             weight = 600,
             antialias = true
         }
