@@ -22,7 +22,7 @@ function GlorifiedBanking.SetPlayerBalance( ply, balance )
     balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer, we don't want floats slipping through.
     balance = minClamp( balance, 0 ) -- Make sure the balance never goes below zero.
     hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- Args are ply, oldBalance and then newBalance. Documented in the markdown file.
-    GlorifiedBanking.SQLQuery( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" ) -- Update the player's SQL data.
+    GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" ) -- Update the player's SQL data.
     ply.GlorifiedBanking.Balance = balance -- Cache the balance for easier usage elsewhere without the need to call another SQL query.
     ply:SetNWInt( "GlorifiedBanking.Balance", balance ) -- Set the networked balance so we don't have to include it in the net messages later.
 end

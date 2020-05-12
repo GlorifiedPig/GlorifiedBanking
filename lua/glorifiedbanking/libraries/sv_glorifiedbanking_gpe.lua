@@ -1,7 +1,7 @@
 
 local GlorifiedPersistentEnts = {
     TableName = "GlorifiedBanking",
-    Identifier = "glorifiedbanking", -- No spaces. For usage in concommands.
+    Identifier = "glorifiedbanking_", -- No spaces. For usage in concommands.
     EntClasses = {
         ["glorifiedbanking_atm"] = true
     }
