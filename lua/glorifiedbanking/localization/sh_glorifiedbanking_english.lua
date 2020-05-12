@@ -11,12 +11,7 @@ i18n.RegisterPhrases("en", {
     gbMenuTransfer = "TRANSFER",
     gbMenuTransactions = "TRANSACTIONS",
     gbMenuSettings = "SETTINGS",
-
     gbDarkTheme = "Dark",
-    gbWithdraw = "Withdraw",
-    gbDeposit = "Deposit",
-    gbTransfer = "Transfer",
-    gbActions = "ACTIONS",
     gbInterestReceived = "You received %s in interest.",
     gbSalaryToBank = "Your salary of %s was transferred to your bank.",
     gbDropMoneyOnDeath = "You paid %s in hospital bills.",
