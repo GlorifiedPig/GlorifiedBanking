@@ -303,6 +303,8 @@ function ENT:DrawScreen()
 end
 
 function ENT:PressKey(key)
+    self:EmitSound("GlorifiedBanking.Key_Press")
+
     if key == "1" then
         self:PlayGBAnim(GB_ANIM_CARD_IN)
     elseif key == "2" then
@@ -316,8 +318,6 @@ function ENT:PressKey(key)
     elseif key == "6" then
         self.Lmao = false
     end
-
-    self:EmitSound("GlorifiedBanking.Beep_Normal")
 end
 
 local buttons = {

@@ -5,6 +5,15 @@ resource.AddFile("resource/fonts/glorified_banking/orbitronregular.ttf")
 local soundLevel = 58
 
 sound.Add({
+	name = "GlorifiedBanking.Key_Press",
+	channel = CHAN_AUTO,
+	volume = 1.0,
+	level = soundLevel,
+	pitch = 100,
+	sound = "glorified_banking/key_press.mp3"
+})
+
+sound.Add({
 	name = "GlorifiedBanking.Beep_Normal",
 	channel = CHAN_AUTO,
 	volume = 1.0,
