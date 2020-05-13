@@ -51,6 +51,14 @@ function ENT:Think()
     self.ShouldDrawCurrentScreen = true
 end
 
+function ENT:InsertCard()
+    if self:GetCurrentUser() != NULL then
+        notification.AddLegacy(i18n.GetPhrase("gbCardAtmInUse"), NOTIFY_ERROR, 5)
+        return
+    end
+
+end
+
 ENT.OldScreenID = 0
 ENT.OldScreenData = {}
 
