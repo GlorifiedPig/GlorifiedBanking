@@ -12,7 +12,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
 
         backCol = Color( 255, 255, 255 ),
         backBackgroundCol = Color( 93, 93, 93 ),
-        backBackgroundHoverCol = Color( 61, 61, 61 ),
+        backBackgroundHoverCol = Color( 71, 71, 71 ),
 
         exitCol = Color( 255, 255, 255 ),
         exitBackgroundCol = Color( 208, 80, 84 ),
