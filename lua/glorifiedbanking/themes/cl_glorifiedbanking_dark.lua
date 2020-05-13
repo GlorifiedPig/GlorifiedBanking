@@ -6,14 +6,11 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
 
         titleTextCol = Color( 255, 255, 255 ),
         titleBarCol = Color( 37, 161, 214 ),
-
         logoCol = Color( 255, 255, 255 ),
         logoBackgroundCol = Color( 46, 162, 212 ),
-
         backCol = Color( 255, 255, 255 ),
         backBackgroundCol = Color( 93, 93, 93 ),
         backBackgroundHoverCol = Color( 71, 71, 71 ),
-
         exitCol = Color( 255, 255, 255 ),
         exitBackgroundCol = Color( 208, 80, 84 ),
         exitBackgroundHoverCol = Color( 171, 64, 67 ),
@@ -26,7 +23,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         idleScreenMessageBackgroundCol = Color( 69, 69, 69 ),
         idleScreenSeperatorCol = Color( 255, 255, 255 ),
         idleScreenTextCol = Color( 255, 255, 255 ),
-        idleScreenSlideshowCol = Color( 255, 255, 255 ),
+        idleScreenSlideshowCol = Color( 150, 150, 150 ),
 
 
         lockdownIconCol = Color( 200, 62, 67 ),
@@ -175,8 +172,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         idleSlideshow = {
             [1] = Material( "glorified_banking/slideshow/slide1.png", "noclamp smooth" ),
             [2] = Material( "glorified_banking/slideshow/slide2.png", "noclamp smooth" ),
-            [3] = Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" ),
-            [4] = Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" )
+            [3] = Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" )
         }
     }
 } )
