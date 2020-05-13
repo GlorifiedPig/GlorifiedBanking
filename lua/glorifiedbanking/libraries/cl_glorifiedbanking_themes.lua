@@ -36,6 +36,10 @@ end
 
 function GlorifiedBanking.Themes.GenerateFonts()
     for k, v in pairs( GlorifiedBanking.Themes.GetCurrent().Data.Fonts ) do
+        if isfunction(v.size) then
+            v.size = v.size()
+        end
+
         surface.CreateFont( "GlorifiedBanking." .. k, v )
     end
 end
