@@ -26,6 +26,11 @@ SWEP.WorldModel = ""
 
 function SWEP:Initialize()
     self:SetHoldType("normal")
+
+    if SERVER then return end
+    local ply = self:GetOwner()
+    self.CardDisplayName = ply:Name()
+    self.CardDisplayID = ""
 end
 
 function SWEP:Deploy()
@@ -52,7 +57,7 @@ SWEP.DrawCrosshair = false
 SWEP.BounceWeaponIcon = false
 
 local theme = GlorifiedBanking.Themes.GetCurrent()
-hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.Card.ThemeUpdated", function(newTheme)
+hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.CardSWEP.ThemeUpdated", function(newTheme)
     theme = newTheme
 end)
 
@@ -63,10 +68,21 @@ function SWEP:DrawHUDBackground()
     local scale = scrh / 1080
     local pad = scale * 30
     local cardw, cardh = scale * 420, scale * 240
+    local cardx = scrw - pad - cardw
 
     surface.SetDrawColor(color_white)
     surface.SetMaterial(theme.Data.Materials.bankCard)
-    surface.DrawTexturedRect(scrw - pad - cardw, scrh - pad - cardh, cardw, cardh)
+    surface.DrawTexturedRect(cardx, scrh - pad - cardh, cardw, cardh)
+
+    local id = ply:SteamID64():sub(-16)
+
+    for i = 1, 12, 4 do
+        id = id:sub(i) .. " " .. id:sub(i, 16)
+    end
+
+    local textx = cardx + cardw * .035
+    draw.SimpleText(id, "GlorifiedBanking.CardSWEP.Info", textx, scrh - pad - cardh * .27, theme.Data.Colors.cardNumberTextCol)
+    draw.SimpleText(self.CardDisplayName, "GlorifiedBanking.CardSWEP.Info", textx, scrh - pad - cardh * .15, theme.Data.Colors.cardNameTextCol)
 end
 
 function SWEP:PrimaryAttack()
