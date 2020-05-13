@@ -4,13 +4,6 @@
     GlorifiedBanking.Config.SUPPORT_BLOGS = false -- Set this to true if you'd like to log withdrawals, deposits and transfers via bLogs.
 --[[ End Addon Integrations ]]--
 
---[[ Other Options ]]--
-    GlorifiedBanking.Config.SALARY_TO_BANK = true -- Should the player's salary get transferred to his bank account?
-    GlorifiedBanking.Config.STARTING_BALANCE = 5000 -- How much money to start with in the player's bank account?
-    GlorifiedBanking.Config.DROP_MONEY_ON_DEATH = false -- Whether or not money should be dropped on death.
-    GlorifiedBanking.Config.DROP_MONEY_ON_DEATH_AMOUNT = 500 -- If the above is set to true, how much should the player drop on death?
---[[ End Other Options ]]--
-
 --[[ Interest Settings ]]--
     GlorifiedBanking.Config.INTEREST_ENABLED = true -- Should interest be enabled or not?
     GlorifiedBanking.Config.INTEREST_TIMER = 20 -- How often should the player receive interest?
@@ -24,20 +17,3 @@
         if specialGroups[ply:GetUserGroup()] then return specialGroups[ply:GetUserGroup()] end
     end
 --[[ End Interest Settings ]]--
-
---[[ Permissions Settings ]]--
-    GlorifiedBanking.Config.CAMI_PERMISSION_DEFAULTS = {
-        ["glorifiedbanking_openadminpanel"] = {
-            MinAccess = "admin",
-            Description = "Determines whether or not the player can open the GlorifiedBanking admin panel."
-        },
-        ["glorifiedbanking_togglelockdown"] = {
-            MinAccess = "admin",
-            Description = "Permission for which usergroups are able to enable/disable lockdown mode."
-        },
-        ["glorifiedbanking_restorebackup"] = {
-            MinAccess = "superadmin",
-            Description = "Permission for which usergroups are able to restore to a previous backup."
-        }
-    }
---[[ End Permissions Settings ]]--

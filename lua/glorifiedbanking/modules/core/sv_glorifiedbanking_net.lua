@@ -9,21 +9,8 @@ util.AddNetworkString( "GlorifiedBanking.WithdrawalRequested" )
 util.AddNetworkString( "GlorifiedBanking.DepositRequested" )
 util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
 
-local function DistanceToClosestATM( ply )
-    local plyPos = ply:GetPos()
-    local closestDistance
-    for k, v in pairs( ents.FindByClass( "glorifiedbanking_atm" ) ) do
-        if not v:IsValid() then continue end
-        local atmPos = v:GetPos()
-        local distance = plyPos:Distance( atmPos )
-        if closestDistance == nil or distance <= closestDistance then
-            closestDistance = distance
-        end
-    end
-    return closestDistance
-end
-
-local function ValidationChecks( ply, balance )
+local function ValidationChecks( ply, balance, atmEntity )
+    local maxDistance = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
     return not ( GlorifiedBanking.LockdownEnabled
     or not balance
     or balance == nil
@@ -32,18 +19,20 @@ local function ValidationChecks( ply, balance )
     or ply:IsBot()
     or not ply:IsFullyAuthenticated()
     or not ply:IsConnected()
-    or DistanceToClosestATM( ply ) >= 500 )
+    or atmEntity:GetPos():DistToSqr( ply:GetPos() ) >= maxDistance * maxDistance )
 end
 
 net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
-    if ValidationChecks( ply, amount ) then return end
+    local atmEntity = net.ReadEntity()
+    if ValidationChecks( ply, amount, atmEntity ) then return end
     GlorifiedBanking.WithdrawAmount( ply, amount )
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
-    if ValidationChecks( ply, amount ) then return end
+    local atmEntity = net.ReadEntity()
+    if ValidationChecks( ply, amount, atmEntity ) then return end
     GlorifiedBanking.DepositAmount( ply, amount )
 end )
 
