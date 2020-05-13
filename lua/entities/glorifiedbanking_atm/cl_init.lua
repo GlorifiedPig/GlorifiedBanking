@@ -268,9 +268,6 @@ ENT.Screens[1] = { --Idle screen
             self.IdleScreenOldSlideAlpha = self.IdleScreenOldSlideAlpha - FrameTime() * 80
         end
 
-        --print(self.IdleScreenSlideScale)
-        --print(self.IdleScreenOldSlideAlpha)
-
         render.SetStencilEnable(false)
 
         local msgw, msgh = windoww * .6, windowh * .2
