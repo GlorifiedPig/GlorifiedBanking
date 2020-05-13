@@ -368,8 +368,8 @@ ENT.Screens[4] = { --Withdrawal screen
         msgw, msgh = windoww * .93, 60
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
 
-        //TODO: fix keypad buffer math error (probably tonumber then reuse var)
-        draw.SimpleText(tonumber(self.KeyPadBuffer) > 0 and GlorifiedBanking.FormatMoney(self.KeyPadBuffer) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        local amount = #self.KeyPadBuffer > 0 and tonumber(self.KeyPadBuffer) or 0
+        draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         return hovering
     end
@@ -448,8 +448,8 @@ ENT.Screens[5] = { --Deposit screen
         msgw, msgh = windoww * .93, 60
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
 
-        //TODO: fix keypad buffer math error (probably tonumber then reuse var)
-        draw.SimpleText(tonumber(self.KeyPadBuffer) > 0 and GlorifiedBanking.FormatMoney(self.KeyPadBuffer) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2, money > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        local amount = #self.KeyPadBuffer > 0 and tonumber(self.KeyPadBuffer) or 0
+        draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         return hovering
     end
@@ -482,7 +482,7 @@ function ENT:DrawScreen()
     end
 end
 
-//TODO: Screen change manager
+--TODO: Screen change manager
 
 ENT.KeyPadBuffer = ""
 
@@ -503,8 +503,14 @@ function ENT:PressKey(key)
         self.Lmao = false
     end
 
+    if key == "*" then return end
+    if key == "#" then
+        self.KeyPadBuffer = ""
+        return
+    end
+    if not self.Screens[self:GetScreenID()].takesKeyInput then return end
+    if #self.KeyPadBuffer > 13 then return end
 
-    //TODO: Implement * and # keys instead of appending them
     self.KeyPadBuffer = self.KeyPadBuffer .. key
 end
 
