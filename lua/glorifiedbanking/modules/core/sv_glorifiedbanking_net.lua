@@ -21,7 +21,7 @@ end
 
 local function ATMDistanceChecks( ply, atmEntity )
     local maxDistance = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
-    return atmEntity:GetPos():DistToSqr( ply:GetPos() ) >= maxDistance * maxDistance
+    return atmEntity:GetPos():DistToSqr( ply:GetPos() ) <= maxDistance * maxDistance
 end
 
 local function ValidationChecks( ply, balance, atmEntity )
