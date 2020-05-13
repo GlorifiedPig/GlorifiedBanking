@@ -3,7 +3,7 @@ i18n.RegisterPhrases("en", {
     gbLoading = "LOADING",
     gbEnterCard = "ENTER YOUR CARD",
     gbToContinue = "TO CONTINUE",
-    gbAtmDisabled = "THIS ATM HAS BEEN TEMPORAIRILY DISABLED\nSORRY FOR ANY INCONVENIENCE",
+    gbAtmDisabled = "THIS ATM HAS BEEN TEMPORARILY DISABLED\nSORRY FOR ANY INCONVENIENCE",
     gbBackShortly = "OUR SYSTEMS WILL BE BACK ONLINE SHORTLY",
     gbWelcomeBack = "WELCOME BACK, %s!",
     gbMenuWithdraw = "WITHDRAW",
