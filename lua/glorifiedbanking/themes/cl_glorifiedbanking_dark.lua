@@ -173,10 +173,10 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         bankCard = Material( "glorified_banking/bank_card.png", "noclamp smooth" ),
 
         idleSlideshow = {
-            Material( "glorified_banking/slideshow/slide1.png", "noclamp smooth" ),
-            Material( "glorified_banking/slideshow/slide2.png", "noclamp smooth" ),
-            Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" ),
-            Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" ),
+            [1] = Material( "glorified_banking/slideshow/slide1.png", "noclamp smooth" ),
+            [2] = Material( "glorified_banking/slideshow/slide2.png", "noclamp smooth" ),
+            [3] = Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" ),
+            [4] = Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" )
         }
     }
 } )
