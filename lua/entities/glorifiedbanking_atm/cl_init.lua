@@ -252,9 +252,9 @@ ENT.Screens[1] = { --Idle screen
         self.IdleScreenSlideScale = self.IdleScreenSlideScale + FrameTime() * .01
 
         if self.IdleScreenSlideScale > 1.15 then
+            self.IdleScreenOldSlideID = self.IdleScreenSlideID
             self.IdleScreenSlideID = self.IdleScreenSlideID == #theme.Data.Materials.idleSlideshow and 1 or self.IdleScreenSlideID + 1
             self.IdleScreenSlideScale = 1
-            self.IdleScreenOldSlideID = self.IdleScreenSlideID == 1 and #theme.Data.Materials.idleSlideshow or self.IdleScreenSlideID - 1
             self.IdleScreenOldSlideAlpha = 255
         end
 
