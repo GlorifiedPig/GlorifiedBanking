@@ -22,7 +22,6 @@ SWEP.AutoSwitchTo = true
 SWEP.AutoSwitchFrom = false
 
 SWEP.UseHands = true
-SWEP.ViewModel = ""
 SWEP.WorldModel = ""
 
 function SWEP:Initialize()
@@ -35,13 +34,12 @@ function SWEP:Deploy()
     return true
 end
 
+function SWEP:SecondaryAttack() end
+
 if SERVER then
     function SWEP:PrimaryAttack()
         if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
     end
-end
-
-function SWEP:SecondaryAttack()
 end
 
 if SERVER then return end
@@ -92,4 +90,8 @@ function SWEP:PrimaryAttack()
     end
 
     tr.Entity:InsertCard()
+end
+
+function SWEP:PreDrawViewModel()
+    return true
 end
