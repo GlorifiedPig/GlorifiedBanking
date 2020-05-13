@@ -241,8 +241,6 @@ ENT.Screens[1] = { --Idle screen
 
         render.SetStencilCompareFunction(STENCIL_EQUAL)
 
-        print(theme.Data.Materials.idleSlideshow[self.IdleScreenSlideID])
-
         surface.SetDrawColor(theme.Data.Colors.idleScreenSlideshowCol)
         surface.SetMaterial(theme.Data.Materials.idleSlideshow[self.IdleScreenSlideID])
 
