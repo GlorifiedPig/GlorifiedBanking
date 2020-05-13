@@ -64,6 +64,10 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         loadingScreenSpinnerCol = Color( 46, 162, 212 ),
 
 
+        cardNumberTextCol = Color( 255, 255, 255 ),
+        cardNameTextCol = Color( 255, 255, 255 ),
+
+
         keyHoverCol = Color(0, 0, 0, 100),
         keyPressedCol = Color(0, 0, 0, 200)
     },
@@ -145,6 +149,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             size = 52,
             weight = 600,
             antialias = true
+        },
+        ["CardSWEP.Info"] = {
+            font = "Courier New",
+            size = function() return ScrH() * .02 end,
+            weight = 700,
+            antialias = true
         }
     },
     Materials = {
@@ -159,7 +169,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
-        bankCard = Material( "shitcardlol.png", "noclamp smooth" )
+        bankCard = Material( "glorified_banking/bank_card.png", "noclamp smooth" )
     }
 } )
 
