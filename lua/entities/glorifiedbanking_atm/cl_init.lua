@@ -56,7 +56,7 @@ ENT.OldScreenData = {}
 
 function ENT:OnScreenChange(name, old, new)
     self.OldScreenID = old
-    self.OldScreenData = self.ScreenData
+    self.OldScreenData = table.Copy(self.ScreenData)
 
     timer.Simple(2, function()
         self.OldScreenID = 0
@@ -481,7 +481,7 @@ function ENT:DrawScreen()
 
         local hovering = self:DrawScreenBackground(currentScreen.loggedIn, currentScreen.previousPage)
 
-        if self.ShouldDrawCurrentScreen then
+        if self.ShouldDrawCurrentScreen and self.OldScreenID == 0 then
             hovering = currentScreen.drawFunction(self, self.ScreenData) or hovering
         end
 
