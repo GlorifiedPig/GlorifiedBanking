@@ -18,5 +18,7 @@ function ENT:SetupDataTables()
     if SERVER then
         self:SetScreenID(5)
         self:SetCurrentUser(player.GetAll()[1]) --Temporairily set the current user to the first player on the server
+    else
+        self:NetworkVarNotify("ScreenID", self.OnScreenChange)
     end
 end

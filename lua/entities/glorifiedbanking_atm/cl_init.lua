@@ -51,6 +51,19 @@ function ENT:Think()
     self.ShouldDrawCurrentScreen = true
 end
 
+ENT.OldScreenID = 0
+ENT.OldScreenData = {}
+
+function ENT:OnScreenChange(name, old, new)
+    self.OldScreenID = old
+    self.OldScreenData = self.ScreenData
+
+    timer.Simple(2, function()
+        self.OldScreenID = 0
+        self.OldScreenData = {}
+    end)
+end
+
 function ENT:DrawTranslucent()
     self:DrawModel()
 
@@ -116,8 +129,8 @@ end
 ENT.LoadingScreenX = -scrw
 ENT.LoadingScreenH = 300
 
-function ENT:DrawLoadingScreen(shouldShow)
-    if shouldShow then
+function ENT:DrawLoadingScreen()
+    if not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
         self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 30)
 
         if self.LoadingScreenX > 18 then
@@ -132,6 +145,10 @@ function ENT:DrawLoadingScreen(shouldShow)
     end
 
     if self.LoadingScreenX < -(scrw - 40) then return end
+
+    if self.OldScreenID > 0 then
+        self.Screens[self.OldScreenID].drawFunction(self, self.OldScreenData)
+    end
 
     render.ClearStencil()
     render.SetStencilEnable(true)
@@ -468,7 +485,7 @@ function ENT:DrawScreen()
             hovering = currentScreen.drawFunction(self, self.ScreenData) or hovering
         end
 
-        self:DrawLoadingScreen(not self.ShouldDrawCurrentScreen)
+        self:DrawLoadingScreen()
 
         if imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
@@ -481,8 +498,6 @@ function ENT:DrawScreen()
         imgui.End3D2D()
     end
 end
-
---TODO: Screen change manager
 
 ENT.KeyPadBuffer = ""
 
