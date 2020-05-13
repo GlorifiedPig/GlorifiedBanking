@@ -163,4 +163,4 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
     }
 } )
 
-GlorifiedBanking.Themes.GenerateFonts() //Regenerate fonts on theme save for fast development, remove on release
+GlorifiedBanking.Themes.GenerateFonts() --Regenerate fonts on theme save for fast development, remove on release
