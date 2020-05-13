@@ -77,7 +77,8 @@ function SWEP:PrimaryAttack()
     local tr = ply:GetEyeTraceNoCursor()
     if not tr.Hit then return end
 
-    if tr.HitPos:DistToSqr(ply:GetPos()) > 10000 then
+    local maxDist = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
+    if tr.HitPos:DistToSqr(ply:GetPos()) > maxDist * maxDist then
         notification.AddLegacy(i18n.GetPhrase("gbCardTooFarAway"), NOTIFY_ERROR, 3)
         return
     end

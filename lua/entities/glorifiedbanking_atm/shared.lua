@@ -16,7 +16,7 @@ function ENT:SetupDataTables()
     self:NetworkVar("Entity", 0, "CurrentUser")
 
     if SERVER then
-        self:SetScreenID(5)
+        self:SetScreenID(1)
         self:SetCurrentUser(NULL)
     else
         self:NetworkVarNotify("ScreenID", self.OnScreenChange)

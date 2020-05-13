@@ -57,6 +57,9 @@ function ENT:InsertCard()
         return
     end
 
+    net.Start("GlorifiedBanking.CardInserted")
+     net.WriteEntity(self)
+    net.SendToServer()
 end
 
 ENT.OldScreenID = 0
@@ -611,6 +614,10 @@ end
 local moneyinpos = Vector(-7, 4.5, 19.37)
 local moneyoutpos = Vector(-10, 4.5, 19.37)
 local moneyang = Angle(0, 270, 0)
+
+net.Receive("GlorifiedBanking.SendAnimation", function()
+    net.ReadEntity():PlayGBAnim(net.ReadUInt(3))
+end)
 
 function ENT:PlayGBAnim(type, skipsound)
     if type == GB_ANIM_CARD_IN then
