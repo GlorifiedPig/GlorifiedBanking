@@ -101,10 +101,10 @@ local function IncludeGBFiles()
     gbIncludeFile( "glorifiedbanking/sh_glorifiedbanking_config.lua")
     gbIncludeFolder( "glorifiedbanking/libraries/" )
     gbIncludeFolder( "glorifiedbanking/localization/" )
-    gbIncludeFolder( "glorifiedbanking/modules/sql/" )
-    gbIncludeFolder( "glorifiedbanking/modules/" )
     gbIncludeFile( "glorifiedbanking/themes/cl_glorifiedbanking_dark.lua" )
     gbIncludeFolder( "glorifiedbanking/themes/" )
+    gbIncludeFolder( "glorifiedbanking/modules/sql/" )
+    gbIncludeFolder( "glorifiedbanking/modules/" )
 end
 
 hook.Add( GlorifiedBanking.HookRunName, "GlorifiedBanking.AutoIncluder.IncludeGBFiles", IncludeGBFiles )
