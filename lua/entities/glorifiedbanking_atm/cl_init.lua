@@ -214,8 +214,7 @@ end
 ENT.IdleScreenSlideID = 1
 ENT.IdleScreenSlideScale = 1
 ENT.IdleScreenOldSlideAlpha = 0
-
-PrintTable(theme.Data.Materials.idleSlideshow)
+ENT.IdleScreenOldSlideID = 1
 
 ENT.Screens = {}
 ENT.Screens[1] = { --Idle screen
@@ -250,22 +249,23 @@ ENT.Screens[1] = { --Idle screen
         local slidew, slideh = windoww * self.IdleScreenSlideScale, windowh * self.IdleScreenSlideScale
         surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
 
-        self.IdleScreenSlideScale = self.IdleScreenSlideScale + FrameTime() * .1
+        self.IdleScreenSlideScale = self.IdleScreenSlideScale + FrameTime() * .01
 
-        if self.IdleScreenSlideScale > 1.2 then
+        if self.IdleScreenSlideScale > 1.15 then
             self.IdleScreenSlideID = self.IdleScreenSlideID == #theme.Data.Materials.idleSlideshow and 1 or self.IdleScreenSlideID + 1
             self.IdleScreenSlideScale = 1
+            self.IdleScreenOldSlideID = self.IdleScreenSlideID == 1 and #theme.Data.Materials.idleSlideshow or self.IdleScreenSlideID - 1
             self.IdleScreenOldSlideAlpha = 255
         end
 
         if self.IdleScreenOldSlideAlpha > 0 then
             surface.SetDrawColor(ColorAlpha(theme.Data.Colors.idleScreenSlideshowCol, self.IdleScreenOldSlideAlpha))
-            surface.SetMaterial(theme.Data.Materials.idleSlideshow[self.IdleScreenSlideID == 1 and #theme.Data.Materials.idleSlideshow or self.IdleScreenSlideID - 1])
+            surface.SetMaterial(theme.Data.Materials.idleSlideshow[self.IdleScreenOldSlideID])
 
-            slidew, slideh = windoww * 1.2, windowh * 1.2
+            slidew, slideh = windoww * 1.15, windowh * 1.15
             surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
 
-            self.IdleScreenOldSlideAlpha = self.IdleScreenOldSlideAlpha - FrameTime() * 10
+            self.IdleScreenOldSlideAlpha = self.IdleScreenOldSlideAlpha - FrameTime() * 80
         end
 
         --print(self.IdleScreenSlideScale)
