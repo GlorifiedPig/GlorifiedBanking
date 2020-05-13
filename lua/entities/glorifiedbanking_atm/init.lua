@@ -57,15 +57,13 @@ function ENT:Logout()
 
     timer.Simple(1.5, function()
         local ply = self:GetCurrentUser()
-        if IsValid(ply) then
-            ply:Give("glorifiedbanking_card")
-        end
+        if IsValid(ply) then ply:Give("glorifiedbanking_card") end
 
         self:SetCurrentUser(NULL)
 
         net.Start("GlorifiedBanking.SendAnimation")
-        net.WriteEntity(self)
-        net.WriteUInt(GB_ANIM_IDLE, 3)
+         net.WriteEntity(self)
+         net.WriteUInt(GB_ANIM_IDLE, 3)
         net.SendPVS(self:GetPos())
     end)
 end

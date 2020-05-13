@@ -211,10 +211,68 @@ function ENT:DrawLoadingScreen()
     render.SetStencilEnable(false)
 end
 
+ENT.IdleScreenSlideID = 1
+ENT.IdleScreenSlideScale = 1
+ENT.IdleScreenOldSlideAlpha = 0
+
+PrintTable(theme.Data.Materials.idleSlideshow)
+
 ENT.Screens = {}
 ENT.Screens[1] = { --Idle screen
     drawFunction = function(self, data)
-        local centerx = windowx + windoww * .5
+        local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+
+        render.ClearStencil()
+        render.SetStencilEnable(true)
+        render.SetStencilCompareFunction(STENCIL_ALWAYS)
+        render.SetStencilPassOperation(STENCIL_REPLACE)
+        render.SetStencilFailOperation(STENCIL_KEEP)
+        render.SetStencilZFailOperation(STENCIL_KEEP)
+
+        render.SetStencilWriteMask(1)
+        render.SetStencilTestMask(1)
+        render.SetStencilReferenceValue(1)
+
+        render.OverrideColorWriteEnable(true, false)
+
+        surface.SetDrawColor(color_white)
+        surface.DrawRect(windowx, windowy + 4, windoww, windowh - 8)
+
+        render.OverrideColorWriteEnable(false, false)
+
+        render.SetStencilCompareFunction(STENCIL_EQUAL)
+
+        print(theme.Data.Materials.idleSlideshow[self.IdleScreenSlideID])
+
+        surface.SetDrawColor(theme.Data.Colors.idleScreenSlideshowCol)
+        surface.SetMaterial(theme.Data.Materials.idleSlideshow[self.IdleScreenSlideID])
+
+        local slidew, slideh = windoww * self.IdleScreenSlideScale, windowh * self.IdleScreenSlideScale
+        surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
+
+        self.IdleScreenSlideScale = self.IdleScreenSlideScale + FrameTime() * .1
+
+        if self.IdleScreenSlideScale > 1.2 then
+            self.IdleScreenSlideID = self.IdleScreenSlideID == #theme.Data.Materials.idleSlideshow and 1 or self.IdleScreenSlideID + 1
+            self.IdleScreenSlideScale = 1
+            self.IdleScreenOldSlideAlpha = 255
+        end
+
+        if self.IdleScreenOldSlideAlpha > 0 then
+            surface.SetDrawColor(ColorAlpha(theme.Data.Colors.idleScreenSlideshowCol, self.IdleScreenOldSlideAlpha))
+            surface.SetMaterial(theme.Data.Materials.idleSlideshow[self.IdleScreenSlideID == 1 and #theme.Data.Materials.idleSlideshow or self.IdleScreenSlideID - 1])
+
+            slidew, slideh = windoww * 1.2, windowh * 1.2
+            surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
+
+            self.IdleScreenOldSlideAlpha = self.IdleScreenOldSlideAlpha - FrameTime() * 10
+        end
+
+        --print(self.IdleScreenSlideScale)
+        --print(self.IdleScreenOldSlideAlpha)
+
+        render.SetStencilEnable(false)
+
         local msgw, msgh = windoww * .6, windowh * .2
         draw.RoundedBox(12, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
 
@@ -223,10 +281,10 @@ ENT.Screens[1] = { --Idle screen
         draw.SimpleText(i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 55, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
 
         draw.RoundedBox(2,  windowx + (windoww-linew) * .5, liney, linew, lineh, theme.Data.Colors.idleScreenSeperatorCol)
-
         draw.SimpleText(i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 8, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
     end
 }
+
 ENT.Screens[2] = { --Lockdown screen
     drawFunction = function(self, data)
         local centerx, centery = windowx + windoww * .5, windowy + windowh * .5

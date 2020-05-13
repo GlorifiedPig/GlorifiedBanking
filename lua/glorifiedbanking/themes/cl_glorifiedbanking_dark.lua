@@ -26,6 +26,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         idleScreenMessageBackgroundCol = Color( 69, 69, 69 ),
         idleScreenSeperatorCol = Color( 255, 255, 255 ),
         idleScreenTextCol = Color( 255, 255, 255 ),
+        idleScreenSlideshowCol = Color( 255, 255, 255 ),
 
 
         lockdownIconCol = Color( 200, 62, 67 ),
@@ -169,7 +170,14 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
-        bankCard = Material( "glorified_banking/bank_card.png", "noclamp smooth" )
+        bankCard = Material( "glorified_banking/bank_card.png", "noclamp smooth" ),
+
+        idleSlideshow = {
+            Material( "glorified_banking/slideshow/slide1.png", "noclamp smooth" ),
+            Material( "glorified_banking/slideshow/slide2.png", "noclamp smooth" ),
+            Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" ),
+            Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" ),
+        }
     }
 } )
 
