@@ -10,6 +10,7 @@ util.AddNetworkString( "GlorifiedBanking.DepositRequested" )
 util.AddNetworkString( "GlorifiedBanking.TransferRequested" )
 util.AddNetworkString( "GlorifiedBanking.SendAnimation" )
 util.AddNetworkString( "GlorifiedBanking.CardInserted" )
+util.AddNetworkString( "GlorifiedBanking.Logout" )
 util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
 
 local function PlayerAuthChecks( ply )
@@ -49,11 +50,18 @@ end )
 
 net.Receive( "GlorifiedBanking.CardInserted", function( len, ply )
     local atmEntity = net.ReadEntity()
-    if atmEntity:GetCurrentUser() != NULL
+    if atmEntity:GetCurrentUser() == NULL
     and ply:GetActiveWeapon():GetClass() == "glorifiedbanking_card"
     and PlayerAuthChecks( ply )
     and ATMDistanceChecks( ply, atmEntity ) then
         atmEntity:InsertCard( ply )
+    end
+end )
+
+net.Receive( "GlorifiedBanking.Logout", function( len, ply )
+    local atmEntity = net.ReadEntity()
+    if atmEntity:GetCurrentUser() == ply then
+        atmEntity:Logout()
     end
 end )
 

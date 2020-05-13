@@ -22,28 +22,58 @@ function ENT:Initialize()
     end
 end
 
+function ENT:Think()
+    local user = self:GetCurrentUser()
+    if user == NULL then return end
+
+    local maxDistance = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
+    if self:GetPos():DistToSqr(user:GetPos()) > maxDistance * maxDistance then
+        self:Logout()
+    end
+end
+
 function ENT:InsertCard(ply)
     self:SetCurrentUser(ply)
-    self:SetScreenID(3)
+
     ply:StripWeapon("glorifiedbanking_card")
 
-    net.Start( "GlorifiedBanking.SendAnimation" )
+    net.Start("GlorifiedBanking.SendAnimation")
      net.WriteEntity(self)
      net.WriteUInt(GB_ANIM_CARD_IN, 3)
     net.SendPVS(self:GetPos())
+
+    timer.Simple(1.5, function()
+        self:SetScreenID(3)
+    end)
 end
 
-function ENT:RemoveCard()
-    local ply = self:GetCurrentUser()
-    if IsValid(ply) then
-        ply:Give("glorifiedbanking_card")
-    end
-
-    self:SetCurrentUser(NULL)
+function ENT:Logout()
     self:SetScreenID(1)
 
-    net.Start( "GlorifiedBanking.SendAnimation" )
+    net.Start("GlorifiedBanking.SendAnimation")
      net.WriteEntity(self)
      net.WriteUInt(GB_ANIM_CARD_OUT, 3)
     net.SendPVS(self:GetPos())
+
+    timer.Simple(1.5, function()
+        local ply = self:GetCurrentUser()
+        if IsValid(ply) then
+            ply:Give("glorifiedbanking_card")
+        end
+
+        self:SetCurrentUser(NULL)
+
+        net.Start("GlorifiedBanking.SendAnimation")
+        net.WriteEntity(self)
+        net.WriteUInt(GB_ANIM_IDLE, 3)
+        net.SendPVS(self:GetPos())
+    end)
 end
+
+hook.Add("PlayerDisconnected", "GlorifiedBanking.ATMEntity.PlayerDisconnected", function(ply)
+    for k,v in ipairs(ents.FindByClass("glorifiedbanking_atm")) do
+        if ply != v:GetCurrentUser() then continue end
+        v:Logout()
+        break
+    end
+end)

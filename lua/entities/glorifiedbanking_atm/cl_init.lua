@@ -17,20 +17,22 @@ end)
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
+ENT.CurrentUsername = ""
+
 function ENT:Think()
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
         self:EmitSound("GlorifiedBanking.Beep_Attention")
         self.LastAttentionBeep = CurTime()
     end
 
+    local currentUser = self:GetCurrentUser()
     local currentScreen = self.Screens[self:GetScreenID()]
 
-    if self.Lmao then
-        self.ShouldDrawCurrentScreen = false
-        return
+    if currentUser != NULL then
+        self.CurrentUsername = currentUser:Name()
     end
 
-    if currentScreen.loggedIn and not self:GetCurrentUser() then
+    if currentScreen.loggedIn and currentUser == NULL then
         self.ShouldDrawCurrentScreen = false
         return
     end
@@ -113,9 +115,15 @@ function ENT:DrawScreenBackground(showExit, backPage)
     end
 
     if showExit then
-        if (imgui.IsHovering(scrw-110, 10, 100, 100)) then
+        if imgui.IsHovering(scrw-110, 10, 100, 100) then
             hovering = true
             draw.RoundedBox(8, scrw-110, 10, 100, 100, theme.Data.Colors.exitBackgroundHoverCol)
+
+            if imgui.IsPressed() then
+                net.Start("GlorifiedBanking.Logout")
+                 net.WriteEntity(self)
+                net.SendToServer()
+            end
         else
             draw.RoundedBox(8, scrw-110, 10, 100, 100, theme.Data.Colors.exitBackgroundCol)
         end
@@ -287,7 +295,7 @@ ENT.Screens[3] = { --Main Menu
         surface.SetFont("GlorifiedBanking.ATMEntity.WelcomeBack")
         local contenty = windowy + 100
         local iconsize = 32
-        local text = i18n.GetPhrase("gbWelcomeBack", string.upper(self:GetCurrentUser():Name()))
+        local text = i18n.GetPhrase("gbWelcomeBack", string.upper(self.CurrentUsername))
         local contentw = iconsize + 6 + surface.GetTextSize(text)
 
         surface.SetDrawColor(theme.Data.Colors.menuUserIconCol)
@@ -488,7 +496,8 @@ local screenang = Angle(0, 270, 90)
 
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.02, 250, 200) then
-        local currentScreen = self.Screens[self:GetScreenID()]
+        local screenID = self:GetScreenID()
+        local currentScreen = self.Screens[screenID]
 
         local hovering = self:DrawScreenBackground(currentScreen.loggedIn, currentScreen.previousPage)
 
@@ -498,7 +507,7 @@ function ENT:DrawScreen()
 
         self:DrawLoadingScreen()
 
-        if imgui.IsHovering(0, 0, scrw, scrh) then
+        if screenID != 1 and imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
 
             surface.SetDrawColor(color_white)
