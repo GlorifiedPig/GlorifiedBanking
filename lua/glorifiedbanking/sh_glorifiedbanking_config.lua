@@ -17,3 +17,7 @@
         if specialGroups[ply:GetUserGroup()] then return specialGroups[ply:GetUserGroup()] end
     end
 --[[ End Interest Settings ]]--
+
+--[[ Other Config ]]--
+    GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM = 750 -- What is the maximum distance for the validation checks on the ATMs?
+--[[ End Other Config ]]--

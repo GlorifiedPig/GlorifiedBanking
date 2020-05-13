@@ -22,7 +22,6 @@
     GlorifiedBanking.Config.STARTING_BALANCE = 5000 -- How much money to start with in the player's bank account?
     GlorifiedBanking.Config.DROP_MONEY_ON_DEATH = false -- Whether or not money should be dropped on death.
     GlorifiedBanking.Config.DROP_MONEY_ON_DEATH_AMOUNT = 500 -- If the above is set to true, how much should the player drop on death?
-    GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM = 750 -- What is the maximum distance for the validation checks on the ATMs?
 --[[ End Other Options ]]--
 
 --[[ Permissions Settings ]]--
