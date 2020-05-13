@@ -36,14 +36,14 @@ end
 net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local atmEntity = net.ReadEntity()
-    if ValidationChecks( ply, amount, atmEntity ) then return end
+    if not ValidationChecks( ply, amount, atmEntity ) then return end
     GlorifiedBanking.WithdrawAmount( ply, amount )
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local atmEntity = net.ReadEntity()
-    if ValidationChecks( ply, amount, atmEntity ) then return end
+    if not ValidationChecks( ply, amount, atmEntity ) then return end
     GlorifiedBanking.DepositAmount( ply, amount )
 end )
 
