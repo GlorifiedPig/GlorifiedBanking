@@ -211,10 +211,25 @@ function ENT:DrawLoadingScreen()
     render.SetStencilEnable(false)
 end
 
-ENT.IdleScreenSlideID = 1
-ENT.IdleScreenSlideScale = 1
-ENT.IdleScreenOldSlideAlpha = 0
-ENT.IdleScreenOldSlideID = 1
+local idleScreenSlideID = 1
+local idleScreenSlideScale = 1
+local idleScreenOldSlideAlpha = 0
+local idleScreenOldSlideID = 1
+
+hook.Add("PostRender", "GlorifiedBanking.ATMEntity.PostRender", function()
+    idleScreenSlideScale = idleScreenSlideScale + FrameTime() * .01
+
+    if idleScreenSlideScale > 1.15 then
+        idleScreenOldSlideID = idleScreenSlideID
+        idleScreenSlideID = idleScreenSlideID == #theme.Data.Materials.idleSlideshow and 1 or idleScreenSlideID + 1
+        idleScreenSlideScale = 1
+        idleScreenOldSlideAlpha = 255
+    end
+
+    if idleScreenOldSlideAlpha > 0 then
+        idleScreenOldSlideAlpha = idleScreenOldSlideAlpha - FrameTime() * 80
+    end
+end)
 
 ENT.Screens = {}
 ENT.Screens[1] = { --Idle screen
@@ -242,28 +257,17 @@ ENT.Screens[1] = { --Idle screen
         render.SetStencilCompareFunction(STENCIL_EQUAL)
 
         surface.SetDrawColor(theme.Data.Colors.idleScreenSlideshowCol)
-        surface.SetMaterial(theme.Data.Materials.idleSlideshow[self.IdleScreenSlideID])
+        surface.SetMaterial(theme.Data.Materials.idleSlideshow[idleScreenSlideID])
 
-        local slidew, slideh = windoww * self.IdleScreenSlideScale, windowh * self.IdleScreenSlideScale
+        local slidew, slideh = windoww * idleScreenSlideScale, windowh * idleScreenSlideScale
         surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
 
-        self.IdleScreenSlideScale = self.IdleScreenSlideScale + FrameTime() * .01
-
-        if self.IdleScreenSlideScale > 1.15 then
-            self.IdleScreenOldSlideID = self.IdleScreenSlideID
-            self.IdleScreenSlideID = self.IdleScreenSlideID == #theme.Data.Materials.idleSlideshow and 1 or self.IdleScreenSlideID + 1
-            self.IdleScreenSlideScale = 1
-            self.IdleScreenOldSlideAlpha = 255
-        end
-
-        if self.IdleScreenOldSlideAlpha > 0 then
-            surface.SetDrawColor(ColorAlpha(theme.Data.Colors.idleScreenSlideshowCol, self.IdleScreenOldSlideAlpha))
-            surface.SetMaterial(theme.Data.Materials.idleSlideshow[self.IdleScreenOldSlideID])
+        if idleScreenOldSlideAlpha > 0 then
+            surface.SetDrawColor(ColorAlpha(theme.Data.Colors.idleScreenSlideshowCol, idleScreenOldSlideAlpha))
+            surface.SetMaterial(theme.Data.Materials.idleSlideshow[idleScreenOldSlideID])
 
             slidew, slideh = windoww * 1.15, windowh * 1.15
             surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
-
-            self.IdleScreenOldSlideAlpha = self.IdleScreenOldSlideAlpha - FrameTime() * 80
         end
 
         render.SetStencilEnable(false)
