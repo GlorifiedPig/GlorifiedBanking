@@ -55,7 +55,7 @@ end
 
 function ENT:InsertCard()
     if self:GetCurrentUser() != NULL then
-        notification.AddLegacy(i18n.GetPhrase("gbCardAtmInUse"), NOTIFY_ERROR, 5)
+        GlorifiedBanking.Notify(i18n.GetPhrase("gbCardAtmInUse"), NOTIFY_ERROR, 5)
         return
     end
 

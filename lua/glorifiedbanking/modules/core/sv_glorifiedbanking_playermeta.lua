@@ -61,7 +61,7 @@ end
 
 function GlorifiedBanking.DepositAmount( ply, depositAmount )
     if not ValidationChecks( ply, depositAmount ) then return end -- Always validate before doing important functions to keep things secure.
-    if GlorifiedBanking.CanAfford( ply, depositAmount ) then
+    if GlorifiedBanking.CanWalletAfford( ply, depositAmount ) then
         GlorifiedBanking.RemoveCash( ply, depositAmount )
         GlorifiedBanking.AddPlayerBalance( ply, depositAmount )
         GlorifiedBanking.LogDeposit( ply, depositAmount )

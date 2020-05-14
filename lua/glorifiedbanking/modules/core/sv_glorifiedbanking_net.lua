@@ -40,14 +40,28 @@ net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local atmEntity = net.ReadEntity()
     if not ValidationChecks( ply, amount, atmEntity ) then return end
-    GlorifiedBanking.WithdrawAmount( ply, amount )
+    local atmFee = math.floor( amount / 100 * atmEntity.WithdrawalFee )
+    if GlorifiedBanking.CanPlayerAfford( ply, atmFee + amount ) then
+        GlorifiedBanking.RemovePlayerBalance( ply, atmFee )
+        GlorifiedBanking.WithdrawAmount( ply, amount )
+        GlorifiedBanking.Notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbCashWithdrawn", GlorifiedBanking.FormatMoney( amount ) ) )
+    else
+        GlorifiedBanking.Notify( ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAffordFee" ) )
+    end
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local atmEntity = net.ReadEntity()
     if not ValidationChecks( ply, amount, atmEntity ) then return end
-    GlorifiedBanking.DepositAmount( ply, amount )
+    local atmFee = math.floor( amount / 100 * atmEntity.DepositFee )
+    if GlorifiedBanking.CanWalletAfford( ply, atmFee + amount ) then
+        GlorifiedBanking.RemoveCash( ply, atmFee )
+        GlorifiedBanking.DepositAmount( ply, amount )
+        GlorifiedBanking.Notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbCashDeposited", GlorifiedBanking.FormatMoney( amount ) ) )
+    else
+        GlorifiedBanking.Notify( ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAffordFee" ) )
+    end
 end )
 
 net.Receive( "GlorifiedBanking.CardInserted", function( len, ply )
