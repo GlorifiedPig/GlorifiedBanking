@@ -20,6 +20,10 @@ i18n.RegisterPhrases("en", {
     gbDepositHasFee = "THIS DEPOSIT WILL HAVE A %s%% FEE ADDED",
     gbDepositDisclaimer = "GLORIFIEDBANKING IS NOT RESPONSIBLE FOR LOSS OF MONEY AFTER DEPOSIT",
     gbTransactionTypeAmount = "TYPE AN AMOUNT",
+    gbContactingServer = "CONTACTING SERVER",
+    gbTakeDispensed = "PLEASE TAKE THE MONEY DISPENSED",
+    gbInsertMoney = "PLEASE INSERT THE MONEY TO DEPOSIT",
+    gbPleaseWait = "PLEASE WAIT A MOMENT",
     gbCardName = "GlorifiedBanking Card",
     gbCardInstructions = "Use left click to insert the card into a device.",
     gbCardInsertAir = "You can't insert the card into the air!",
@@ -33,5 +37,6 @@ i18n.RegisterPhrases("en", {
     gbCashWithdrawn = "You withdrew %s.",
     gbCashDeposited = "You deposited %s.",
     gbCashTransferred = "You transferred %s to %s.",
-    gbCannotAffordFee = "You are unable to afford the fee."
+    gbCannotAfford = "You cannot afford that.",
+    gbInvalidAmount = "Please enter a valid amount."
 })

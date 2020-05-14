@@ -12,6 +12,7 @@ util.AddNetworkString( "GlorifiedBanking.SendAnimation" )
 util.AddNetworkString( "GlorifiedBanking.CardInserted" )
 util.AddNetworkString( "GlorifiedBanking.Logout" )
 util.AddNetworkString( "GlorifiedBanking.ChangeScreen" )
+util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
 util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
 
 local function PlayerAuthChecks( ply )
@@ -33,6 +34,7 @@ local function ValidationChecks( ply, balance, atmEntity )
     or balance < 0
     or not PlayerAuthChecks( ply )
     or atmEntity:GetClass() != "glorifiedbanking_atm"
+    or atmEntity.ForcedLoad
     or not ATMDistanceChecks( ply, atmEntity ) )
 end
 
@@ -40,28 +42,16 @@ net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local atmEntity = net.ReadEntity()
     if not ValidationChecks( ply, amount, atmEntity ) then return end
-    local atmFee = math.floor( amount / 100 * atmEntity.WithdrawalFee )
-    if GlorifiedBanking.CanPlayerAfford( ply, atmFee + amount ) then
-        GlorifiedBanking.RemovePlayerBalance( ply, atmFee )
-        GlorifiedBanking.WithdrawAmount( ply, amount )
-        GlorifiedBanking.Notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbCashWithdrawn", GlorifiedBanking.FormatMoney( amount ) ) )
-    else
-        GlorifiedBanking.Notify( ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAffordFee" ) )
-    end
+
+    atmEntity:Withdraw(ply, amount)
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     local amount = net.ReadUInt( 32 )
     local atmEntity = net.ReadEntity()
     if not ValidationChecks( ply, amount, atmEntity ) then return end
-    local atmFee = math.floor( amount / 100 * atmEntity.DepositFee )
-    if GlorifiedBanking.CanWalletAfford( ply, atmFee + amount ) then
-        GlorifiedBanking.RemoveCash( ply, atmFee )
-        GlorifiedBanking.DepositAmount( ply, amount )
-        GlorifiedBanking.Notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbCashDeposited", GlorifiedBanking.FormatMoney( amount ) ) )
-    else
-        GlorifiedBanking.Notify( ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAffordFee" ) )
-    end
+
+    atmEntity:Deposit(ply, amount)
 end )
 
 net.Receive( "GlorifiedBanking.CardInserted", function( len, ply )
@@ -79,6 +69,11 @@ net.Receive( "GlorifiedBanking.Logout", function( len, ply )
     local atmEntity = net.ReadEntity()
     if atmEntity:GetClass() == "glorifiedbanking_atm"
     and atmEntity:GetCurrentUser() == ply then
+        if atmEntity.ForcedLoad then
+            atmEntity:EmitSound("GlorifiedBanking.Beep_Error")
+            return
+        end
+
         atmEntity:Logout()
     end
 end )
@@ -89,6 +84,11 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
     if atmEntity:GetClass() == "glorifiedbanking_atm"
     and atmEntity:GetCurrentUser() == ply
     and atmEntity.Screens[ newScreen ] then
+        if atmEntity.ForcedLoad then
+            atmEntity:EmitSound("GlorifiedBanking.Beep_Error")
+            return
+        end
+
         atmEntity:SetScreenID( newScreen )
     end
 end )

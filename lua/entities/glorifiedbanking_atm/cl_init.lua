@@ -156,8 +156,16 @@ end
 ENT.LoadingScreenX = -scrw
 ENT.LoadingScreenH = 300
 
+net.Receive("GlorifiedBanking.ForceLoad", function()
+    local ent = net.ReadEntity()
+    local reason = net.ReadString()
+
+    ent.ForcedLoad = reason != ""
+    ent.ForcedLoadReason = reason
+end)
+
 function ENT:DrawLoadingScreen()
-    if not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
+    if self.ForcedLoad or not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
         self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 30)
 
         if self.LoadingScreenX > 18 then
@@ -214,7 +222,7 @@ function ENT:DrawLoadingScreen()
     surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 - 20, centery - 60 + math.sin(animprog + .5) * 20, 40, 40)
     surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 + 40, centery - 60 + math.sin(animprog) * 20, 40, 40)
 
-    draw.SimpleText(i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.ForcedLoad and self.ForcedLoadReason or i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     render.SetStencilEnable(false)
 end
@@ -485,6 +493,12 @@ ENT.Screens[4].drawFunction = function(self, data) --Withdrawal screen
         self.WithdrawalFee > 0 and i18n.GetPhrase("gbWithdrawalHasFee", self.WithdrawalFee) or i18n.GetPhrase("gbWithdrawalFree"),
         i18n.GetPhrase("gbWithdrawalDisclaimer"),
         function(amount)
+            self.KeyPadBuffer = ""
+
+            net.Start("GlorifiedBanking.WithdrawalRequested")
+             net.WriteUInt(amount, 32)
+             net.WriteEntity(self)
+            net.SendToServer()
         end
     )
 end
@@ -498,6 +512,12 @@ ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
         self.DepositFee > 0 and i18n.GetPhrase("gbDepositHasFee", self.DepositFee) or i18n.GetPhrase("gbDepositFree"),
         i18n.GetPhrase("gbDepositDisclaimer"),
         function(amount)
+            self.KeyPadBuffer = ""
+
+            net.Start("GlorifiedBanking.DepositRequested")
+             net.WriteUInt(amount, 32)
+             net.WriteEntity(self)
+            net.SendToServer()
         end
     )
 end
@@ -518,7 +538,7 @@ function ENT:DrawScreen()
 
         self:DrawLoadingScreen()
 
-        if screenID != 1 and imgui.IsHovering(0, 0, scrw, scrh) then
+        if screenID != 1 and not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
 
             surface.SetDrawColor(color_white)
@@ -534,20 +554,6 @@ ENT.KeyPadBuffer = ""
 
 function ENT:PressKey(key)
     self:EmitSound("GlorifiedBanking.Key_Press")
-
-    if key == "1" then
-        self:PlayGBAnim(GB_ANIM_CARD_IN)
-    elseif key == "2" then
-        self:PlayGBAnim(GB_ANIM_CARD_OUT)
-    elseif key == "3" then
-        self:PlayGBAnim(GB_ANIM_MONEY_IN)
-    elseif key == "4" then
-        self:PlayGBAnim(GB_ANIM_MONEY_OUT)
-    elseif key == "5" then
-        self.Lmao = true
-    elseif key == "6" then
-        self.Lmao = false
-    end
 
     if key == "*" then return end
     if key == "#" then
@@ -636,7 +642,9 @@ local moneyoutpos = Vector(-10, 4.5, 19.37)
 local moneyang = Angle(0, 270, 0)
 
 net.Receive("GlorifiedBanking.SendAnimation", function()
-    net.ReadEntity():PlayGBAnim(net.ReadUInt(3))
+    local ent = net.ReadEntity()
+    ent:PlayGBAnim(net.ReadUInt(3))
+    ent.RequiresAttention = false
 end)
 
 function ENT:PlayGBAnim(type, skipsound)
@@ -655,27 +663,6 @@ function ENT:PlayGBAnim(type, skipsound)
 
         if type == GB_ANIM_MONEY_IN then
             self.MoneyPos:Set(moneyoutpos)
-
-            if not skipsound then
-                self:EmitSound("GlorifiedBanking.Money_In_Start")
-
-                timer.Simple(3.4, function()
-                    if not IsValid(self) then return end
-
-                    local id = self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
-
-                    timer.Simple(4, function() --For now we'll pretend the user takes 4 seconds to put in the money
-                        if not IsValid(self) then return end
-
-                        self:StopLoopingSound(id)
-                        self:EmitSound("GlorifiedBanking.Money_In_Finish")
-
-                        self:PlayGBAnim(GB_ANIM_MONEY_IN, true)
-                    end)
-                end)
-
-                return
-            end
         else
             if not skipsound then
                 self:EmitSound("GlorifiedBanking.Money_Out")
@@ -686,11 +673,6 @@ function ENT:PlayGBAnim(type, skipsound)
 
                     timer.Simple(1.2, function()
                         self.RequiresAttention = true
-
-                        timer.Simple(10, function() --For now we'll pretend the user takes 10 seconds to take the money
-                            self.RequiresAttention = false
-                            self.AnimState = GB_ANIM_IDLE
-                        end)
                     end)
                 end)
 
@@ -720,8 +702,6 @@ function ENT:PlayGBAnim(type, skipsound)
 end
 
 function ENT:OnRemove()
-    --TODO: Stop money out/in sound on remove
-
     if IsValid(self.MoneyModel) then
         self.MoneyModel:Remove()
     end

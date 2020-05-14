@@ -15,6 +15,7 @@ function ENT:Initialize()
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
+    self:SetUseType(SIMPLE_USE)
 
     local physObj = self:GetPhysicsObject()
     if (physObj:IsValid()) then
@@ -32,11 +33,27 @@ function ENT:Think()
     end
 end
 
+function ENT:Use(activator, caller, useType, value)
+    if IsValid(activator) and activator != self:GetCurrentUser() then return end
+
+    if self.WaitingToTakeMoney then self:TakeMoney(activator) end
+    if self.WaitingToGiveMoney then self:GiveMoney(activator) end
+end
+
 function ENT:PlayGBAnim(type)
     net.Start("GlorifiedBanking.SendAnimation")
      net.WriteEntity(self)
      net.WriteUInt(type, 3)
     net.SendPVS(self:GetPos())
+end
+
+function ENT:ForceLoad(message)
+    net.Start("GlorifiedBanking.ForceLoad")
+     net.WriteEntity(self)
+     net.WriteString(message)
+    net.SendPVS(self:GetPos())
+
+    self.ForcedLoad = message != ""
 end
 
 function ENT:InsertCard(ply)
@@ -66,10 +83,117 @@ function ENT:Logout()
     end)
 end
 
+function ENT:Withdraw(ply, amount)
+    if amount <= 0 then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
+
+    local atmFee = math.floor(amount / 100 * self.WithdrawalFee)
+    if not GlorifiedBanking.CanPlayerAfford(ply, atmFee + amount) then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
+
+    self:EmitSound("GlorifiedBanking.Beep_Normal")
+
+    self:ForceLoad(i18n.GetPhrase("gbContactingServer"))
+
+    GlorifiedBanking.RemovePlayerBalance(ply, atmFee)
+
+    self:PlayGBAnim(GB_ANIM_MONEY_OUT)
+
+    timer.Simple(7.1, function()
+        self:ForceLoad(i18n.GetPhrase("gbTakeDispensed"))
+        self.WaitingToTakeMoney = amount
+
+        timer.Simple(10, function()
+            if self.WaitingToTakeMoney then
+                self:TakeMoney(ply)
+            end
+        end)
+    end)
+end
+
+function ENT:TakeMoney(ply)
+    local amount = self.WaitingToTakeMoney
+    self.WaitingToTakeMoney = false
+
+    self:ForceLoad("")
+    self:PlayGBAnim(GB_ANIM_IDLE)
+
+    GlorifiedBanking.WithdrawAmount(ply, amount)
+    GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbCashWithdrawn", GlorifiedBanking.FormatMoney(amount)))
+end
+
+function ENT:Deposit(ply, amount)
+    if amount <= 0 then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
+
+    local atmFee = math.floor(amount / 100 * self.DepositFee)
+    if not GlorifiedBanking.CanWalletAfford(ply, atmFee + amount) then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
+
+    self:EmitSound("GlorifiedBanking.Beep_Normal")
+
+    self:EmitSound("GlorifiedBanking.Money_In_Start")
+
+    self:ForceLoad(i18n.GetPhrase("gbContactingServer"))
+
+    timer.Simple(3.4, function()
+        self.MoneyInLoop = self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
+        self.WaitingToGiveMoney = amount
+
+        self:ForceLoad(i18n.GetPhrase("gbInsertMoney"))
+
+        timer.Simple(10, function()
+            if self.WaitingToGiveMoney then
+                self:GiveMoney(ply)
+            end
+        end)
+    end)
+end
+
+function ENT:GiveMoney(ply)
+    local amount = self.WaitingToGiveMoney
+    local atmFee = math.floor(amount / 100 * self.DepositFee)
+    self.WaitingToGiveMoney = false
+
+    GlorifiedBanking.RemoveCash(ply, atmFee)
+
+    self:StopLoopingSound(self.MoneyInLoop)
+    self:EmitSound("GlorifiedBanking.Money_In_Finish")
+
+    self:PlayGBAnim(GB_ANIM_MONEY_IN)
+
+    self:ForceLoad(i18n.GetPhrase("gbPleaseWait"))
+
+    timer.Simple(3.8, function()
+        self:ForceLoad(i18n.GetPhrase("gbContactingServer"))
+
+        timer.Simple(1, function()
+            self:ForceLoad("")
+            GlorifiedBanking.DepositAmount(ply, amount)
+            GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbCashDeposited", GlorifiedBanking.FormatMoney(amount)))
+        end)
+    end)
+end
+
 hook.Add("PlayerDisconnected", "GlorifiedBanking.ATMEntity.PlayerDisconnected", function(ply)
     for k,v in ipairs(ents.FindByClass("glorifiedbanking_atm")) do
         if ply != v:GetCurrentUser() then continue end
         v:Logout()
+        v:PlayGBAnim(GB_ANIM_IDLE)
+        v:ForceLoad("")
+        v.WaitingToTakeMoney = false
         break
     end
 end)
