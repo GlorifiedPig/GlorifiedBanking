@@ -90,24 +90,17 @@ function ENT:Withdraw(ply, amount)
         return
     end
 
-    local atmFee = math.floor(amount / 100 * self.WithdrawalFee)
-    if not GlorifiedBanking.CanPlayerAfford(ply, atmFee + amount) then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
-        self:EmitSound("GlorifiedBanking.Beep_Error")
-        return
-    end
+    local atmFee = math.Clamp(math.floor(amount / 100 * self.WithdrawalFee), 0, amount)
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
     self:ForceLoad(i18n.GetPhrase("gbContactingServer"))
 
-    GlorifiedBanking.RemovePlayerBalance(ply, atmFee)
-
     self:PlayGBAnim(GB_ANIM_MONEY_OUT)
 
     timer.Simple(7.1, function()
         self:ForceLoad(i18n.GetPhrase("gbTakeDispensed"))
-        self.WaitingToTakeMoney = amount
+        self.WaitingToTakeMoney = amount - atmFee
 
         timer.Simple(10, function()
             if self.WaitingToTakeMoney then
@@ -135,12 +128,7 @@ function ENT:Deposit(ply, amount)
         return
     end
 
-    local atmFee = math.floor(amount / 100 * self.DepositFee)
-    if not GlorifiedBanking.CanWalletAfford(ply, atmFee + amount) then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
-        self:EmitSound("GlorifiedBanking.Beep_Error")
-        return
-    end
+    local atmFee = math.Clamp(math.floor(amount / 100 * self.DepositFee), 0, amount)
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -150,7 +138,7 @@ function ENT:Deposit(ply, amount)
 
     timer.Simple(3.4, function()
         self.MoneyInLoop = self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
-        self.WaitingToGiveMoney = amount
+        self.WaitingToGiveMoney = amount - atmFee
 
         self:ForceLoad(i18n.GetPhrase("gbInsertMoney"))
 
@@ -164,10 +152,7 @@ end
 
 function ENT:GiveMoney(ply)
     local amount = self.WaitingToGiveMoney
-    local atmFee = math.floor(amount / 100 * self.DepositFee)
     self.WaitingToGiveMoney = false
-
-    GlorifiedBanking.RemoveCash(ply, atmFee)
 
     self:StopLoopingSound(self.MoneyInLoop)
     self:EmitSound("GlorifiedBanking.Money_In_Finish")
