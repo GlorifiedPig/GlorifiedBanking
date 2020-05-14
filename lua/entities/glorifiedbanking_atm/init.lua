@@ -40,6 +40,14 @@ function ENT:Use(activator, caller, useType, value)
     if self.WaitingToGiveMoney then self:GiveMoney(activator) end
 end
 
+function ENT:ResetATM()
+    self:SetCurrentUser(NULL)
+    self:PlayGBAnim(GB_ANIM_IDLE)
+    self:ForceLoad("")
+    self.WaitingToTakeMoney = false
+    self.WaitingToGiveMoney = false
+end
+
 function ENT:PlayGBAnim(type)
     net.Start("GlorifiedBanking.SendAnimation")
      net.WriteEntity(self)
@@ -77,9 +85,7 @@ function ENT:Logout()
         local ply = self:GetCurrentUser()
         if IsValid(ply) then ply:Give("glorifiedbanking_card") end
 
-        self:SetCurrentUser(NULL)
-
-        self:PlayGBAnim(GB_ANIM_IDLE)
+        self:ResetATM()
     end)
 end
 
@@ -188,9 +194,6 @@ hook.Add("PlayerDisconnected", "GlorifiedBanking.ATMEntity.PlayerDisconnected", 
     for k,v in ipairs(ents.FindByClass("glorifiedbanking_atm")) do
         if ply != v:GetCurrentUser() then continue end
         v:Logout()
-        v:PlayGBAnim(GB_ANIM_IDLE)
-        v:ForceLoad("")
-        v.WaitingToTakeMoney = false
         break
     end
 end)
