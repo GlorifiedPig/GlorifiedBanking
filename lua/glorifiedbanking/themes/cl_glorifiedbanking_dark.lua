@@ -75,7 +75,11 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         adminMenuNavbarItemCol = Color( 255, 255, 255 ),
         adminMenuNavbarSelectedItemCol = Color( 32, 133, 175 ),
         adminMenuCloseButtonCol = Color( 201, 60, 63 ),
-        adminMenuCloseButtonHoverCol = Color( 134, 35, 37 )
+        adminMenuCloseButtonHoverCol = Color( 134, 35, 37 ),
+
+        logsMenuTransactionTypeTextCol = Color( 255, 255, 255 ),
+        logsMenuTransactionTypeSelectCol = Color( 33, 33, 33 ),
+        logsMenuLogBackgroundCol = Color( 33, 33, 33 )
     },
     Fonts = {
         ["ATMEntity.Title"] = {
@@ -165,6 +169,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         ["AdminMenu.NavbarItem"] = {
             font = "Montserrat",
             size = function() return ScrW() * .014 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.TransactionTypeSelect"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .021 end,
             weight = 500,
             antialias = true
         }

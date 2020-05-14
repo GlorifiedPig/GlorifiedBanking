@@ -9,22 +9,20 @@ function PANEL:Init()
     self.Theme = GlorifiedBanking.Themes.GetCurrent()
 
     self.Navbar = vgui.Create("GlorifiedBanking.AdminNavbar", self)
-    self.Container = vgui.Create("Panel", self)
 
-    self.Navbar:AddItem("HOME", LEFT, function(s)
-    end)
+    local function changePage(page)
+        if IsValid(self.Page) then self.Page:Remove() end
+        self.Page = vgui.Create(page, self)
+        self.Page:Dock(FILL)
+    end
 
-    self.Navbar:AddItem("LOGS", LEFT, function(s)
-        self.Page = vgui.Create("GlorifiedBanking.Logs", self.Container)
-    end)
+    self.Navbar:AddItem("HOME", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
-    self.Navbar:AddItem("BACKUPS", LEFT, function(s)
-        print("pressed backups")
-    end)
+    self.Navbar:AddItem("LOGS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
-    self.Navbar:AddItem("SETTINGS", LEFT, function(s)
-        print("pressed settings")
-    end)
+    self.Navbar:AddItem("BACKUPS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
+
+    self.Navbar:AddItem("SETTINGS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
     self.Navbar:AddItem("X", RIGHT, function(s)
         self:AlphaTo(0, 0.3, 0, function(anim, panel)
@@ -42,7 +40,9 @@ function PANEL:PerformLayout(w, h)
     self.Navbar:Dock(TOP)
     self.Navbar:SetSize(w, h * .06)
 
-    self.Container:Dock(FILL)
+    if IsValid(self.Page) then
+        self.Page:Dock(FILL)
+    end
 end
 
 function PANEL:Paint(w, h)
