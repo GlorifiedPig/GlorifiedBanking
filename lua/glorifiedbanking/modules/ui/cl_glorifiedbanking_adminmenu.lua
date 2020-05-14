@@ -18,13 +18,13 @@ function PANEL:Init()
             return
         end
 
-        self.Page:AlphaTo(0, 0.3, 0, function(anim, panel)
+        self.Page:AlphaTo(0, 0.15, 0, function(anim, panel)
             self.Page:Remove()
 
             self.Page = vgui.Create(page, self)
             self.Page:Dock(FILL)
             self.Page:SetAlpha(0)
-            self.Page:AlphaTo(255, 0.3)
+            self.Page:AlphaTo(255, 0.15)
         end)
     end
 
