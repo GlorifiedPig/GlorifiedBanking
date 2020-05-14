@@ -32,5 +32,6 @@ i18n.RegisterPhrases("en", {
     gbDropMoneyOnDeath = "You paid %s in hospital bills.",
     gbCashWithdrawn = "You withdrew %s.",
     gbCashDeposited = "You deposited %s.",
-    gbCashTransferred = "You transferred %s to %s."
+    gbCashTransferred = "You transferred %s to %s.",
+    gbCannotAffordFee = "You are unable to afford the fee."
 })
