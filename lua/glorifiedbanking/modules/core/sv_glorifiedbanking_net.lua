@@ -11,6 +11,7 @@ util.AddNetworkString( "GlorifiedBanking.TransferRequested" )
 util.AddNetworkString( "GlorifiedBanking.SendAnimation" )
 util.AddNetworkString( "GlorifiedBanking.CardInserted" )
 util.AddNetworkString( "GlorifiedBanking.Logout" )
+util.AddNetworkString( "GlorifiedBanking.ChangeScreen" )
 util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
 
 local function PlayerAuthChecks( ply )
@@ -31,6 +32,7 @@ local function ValidationChecks( ply, balance, atmEntity )
     or balance == nil
     or balance < 0
     or not PlayerAuthChecks( ply )
+    or atmEntity:GetClass() != "glorifiedbanking_atm"
     or not ATMDistanceChecks( ply, atmEntity ) )
 end
 
@@ -50,7 +52,8 @@ end )
 
 net.Receive( "GlorifiedBanking.CardInserted", function( len, ply )
     local atmEntity = net.ReadEntity()
-    if atmEntity:GetCurrentUser() == NULL
+    if atmEntity:GetClass() == "glorifiedbanking_atm"
+    and atmEntity:GetCurrentUser() == NULL
     and ply:GetActiveWeapon():GetClass() == "glorifiedbanking_card"
     and PlayerAuthChecks( ply )
     and ATMDistanceChecks( ply, atmEntity ) then
@@ -60,8 +63,19 @@ end )
 
 net.Receive( "GlorifiedBanking.Logout", function( len, ply )
     local atmEntity = net.ReadEntity()
-    if atmEntity:GetCurrentUser() == ply then
+    if atmEntity:GetClass() == "glorifiedbanking_atm"
+    and atmEntity:GetCurrentUser() == ply then
         atmEntity:Logout()
+    end
+end )
+
+net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
+    local newScreen = net.ReadUInt(4)
+    local atmEntity = net.ReadEntity()
+    if atmEntity:GetClass() == "glorifiedbanking_atm"
+    and atmEntity:GetCurrentUser() == ply
+    and atmEntity.Screens[ newScreen ] then
+        atmEntity:SetScreenID( newScreen )
     end
 end )
 
