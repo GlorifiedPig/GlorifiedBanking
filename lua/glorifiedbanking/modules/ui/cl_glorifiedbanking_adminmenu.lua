@@ -11,9 +11,21 @@ function PANEL:Init()
     self.Navbar = vgui.Create("GlorifiedBanking.AdminNavbar", self)
 
     local function changePage(page)
-        if IsValid(self.Page) then self.Page:Remove() end
-        self.Page = vgui.Create(page, self)
-        self.Page:Dock(FILL)
+        if not IsValid(self.Page) then
+            self.Page = vgui.Create(page, self)
+            self.Page:Dock(FILL)
+
+            return
+        end
+
+        self.Page:AlphaTo(0, 0.3, 0, function(anim, panel)
+            self.Page:Remove()
+
+            self.Page = vgui.Create(page, self)
+            self.Page:Dock(FILL)
+            self.Page:SetAlpha(0)
+            self.Page:AlphaTo(255, 0.3)
+        end)
     end
 
     self.Navbar:AddItem("HOME", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
