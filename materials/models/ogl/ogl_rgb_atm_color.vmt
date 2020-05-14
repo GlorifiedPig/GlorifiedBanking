@@ -17,6 +17,6 @@
 	
 		
 		$selfillum 1
-    $selfillummask "models/ogl/ogl_rgb_atm"
+    $selfillummask "models/ogl/ogl_rgb_atm_color"
 
 }
