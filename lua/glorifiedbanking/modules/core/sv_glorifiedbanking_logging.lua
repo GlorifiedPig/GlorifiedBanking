@@ -11,7 +11,6 @@ function GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
         ["Date"] = os.time(),
         ["Type"] = "Withdrawal",
         ["SteamID"] = ply:SteamID(),
-        ["ReceiverSteamID"] = NULL,
         ["Amount"] = withdrawAmount
     } )
 end
@@ -22,7 +21,6 @@ function GlorifiedBanking.LogDeposit( ply, depositAmount )
         ["Date"] = os.time(),
         ["Type"] = "Deposit",
         ["SteamID"] = ply:SteamID(),
-        ["ReceiverSteamID"] = NULL,
         ["Amount"] = depositAmount
     } )
 end
