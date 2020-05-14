@@ -67,7 +67,15 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
 
 
         keyHoverCol = Color(0, 0, 0, 100),
-        keyPressedCol = Color(0, 0, 0, 200)
+        keyPressedCol = Color(0, 0, 0, 200),
+
+
+        adminMenuBackgroundCol = Color( 50, 50, 50 ),
+        adminMenuNavbarBackgroundCol = Color( 38, 38, 38 ),
+        adminMenuNavbarItemCol = Color( 255, 255, 255 ),
+        adminMenuNavbarSelectedItemCol = Color( 32, 133, 175 ),
+        adminMenuCloseButtonCol = Color( 201, 60, 63 ),
+        adminMenuCloseButtonHoverCol = Color( 134, 35, 37 )
     },
     Fonts = {
         ["ATMEntity.Title"] = {
@@ -153,6 +161,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             size = function() return ScrH() * .02 end,
             weight = 700,
             antialias = true
+        },
+        ["AdminMenu.NavbarItem"] = {
+            font = "Montserrat",
+            size = function() return ScrW() * .014 end,
+            weight = 500,
+            antialias = true
         }
     },
     Materials = {
@@ -165,6 +179,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         transaction = Material( "glorified_banking/transaction.png", "noclamp smooth" ),
         user = Material( "glorified_banking/user.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
+        close = Material( "glorified_banking/close.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
         bankCard = Material( "glorified_banking/bank_card.png", "noclamp smooth" ),
