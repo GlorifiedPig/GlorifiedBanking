@@ -32,15 +32,19 @@ function ENT:Think()
     end
 end
 
+function ENT:PlayGBAnim(type)
+    net.Start("GlorifiedBanking.SendAnimation")
+     net.WriteEntity(self)
+     net.WriteUInt(type, 3)
+    net.SendPVS(self:GetPos())
+end
+
 function ENT:InsertCard(ply)
     self:SetCurrentUser(ply)
 
     ply:StripWeapon("glorifiedbanking_card")
 
-    net.Start("GlorifiedBanking.SendAnimation")
-     net.WriteEntity(self)
-     net.WriteUInt(GB_ANIM_CARD_IN, 3)
-    net.SendPVS(self:GetPos())
+    self:PlayGBAnim(GB_ANIM_CARD_IN)
 
     timer.Simple(1.5, function()
         self:SetScreenID(3)
@@ -50,10 +54,7 @@ end
 function ENT:Logout()
     self:SetScreenID(1)
 
-    net.Start("GlorifiedBanking.SendAnimation")
-     net.WriteEntity(self)
-     net.WriteUInt(GB_ANIM_CARD_OUT, 3)
-    net.SendPVS(self:GetPos())
+    self:PlayGBAnim(GB_ANIM_CARD_OUT)
 
     timer.Simple(1.5, function()
         local ply = self:GetCurrentUser()
@@ -61,10 +62,7 @@ function ENT:Logout()
 
         self:SetCurrentUser(NULL)
 
-        net.Start("GlorifiedBanking.SendAnimation")
-         net.WriteEntity(self)
-         net.WriteUInt(GB_ANIM_IDLE, 3)
-        net.SendPVS(self:GetPos())
+        self:PlayGBAnim(GB_ANIM_IDLE)
     end)
 end
 
