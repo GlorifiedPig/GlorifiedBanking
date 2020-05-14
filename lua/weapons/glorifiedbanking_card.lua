@@ -92,14 +92,14 @@ function SWEP:PrimaryAttack()
 
     local maxDist = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
     if tr.HitPos:DistToSqr(ply:GetPos()) > maxDist * maxDist then
-        GlorifiedBanking.Notify(i18n.GetPhrase("gbCardTooFarAway"), NOTIFY_ERROR, 3)
+        GlorifiedBanking.Notify(NOTIFY_ERROR, 3, i18n.GetPhrase("gbCardTooFarAway"))
         return
     end
 
     if not tr.Entity.InsertCard then
         local cantInsertPhrase = i18n.GetPhrase("gbCardCantInsert")
         if tr.Entity:GetClass() == "worldspawn" then cantInsertPhrase = i18n.GetPhrase("gbCardInsertAir") end
-        GlorifiedBanking.Notify(cantInsertPhrase, NOTIFY_ERROR, 3)
+        GlorifiedBanking.Notify(NOTIFY_ERROR, 3, cantInsertPhrase)
 
         return
     end
