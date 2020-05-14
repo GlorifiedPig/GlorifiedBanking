@@ -91,6 +91,12 @@ function ENT:Withdraw(ply, amount)
     end
 
     local atmFee = math.Clamp(math.floor(amount / 100 * self.WithdrawalFee), 0, amount)
+    amount = amount - atmFee
+    if not GlorifiedBanking.CanPlayerAfford(ply, amount) then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -100,7 +106,7 @@ function ENT:Withdraw(ply, amount)
 
     timer.Simple(7.1, function()
         self:ForceLoad(i18n.GetPhrase("gbTakeDispensed"))
-        self.WaitingToTakeMoney = amount - atmFee
+        self.WaitingToTakeMoney = amount
 
         timer.Simple(10, function()
             if self.WaitingToTakeMoney then
@@ -129,6 +135,12 @@ function ENT:Deposit(ply, amount)
     end
 
     local atmFee = math.Clamp(math.floor(amount / 100 * self.DepositFee), 0, amount)
+    amount = amount - atmFee
+    if not GlorifiedBanking.CanWalletAfford(ply, amount) then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -138,7 +150,7 @@ function ENT:Deposit(ply, amount)
 
     timer.Simple(3.4, function()
         self.MoneyInLoop = self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
-        self.WaitingToGiveMoney = amount - atmFee
+        self.WaitingToGiveMoney = amount
 
         self:ForceLoad(i18n.GetPhrase("gbInsertMoney"))
 
