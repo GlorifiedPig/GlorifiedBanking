@@ -21,7 +21,7 @@ function PANEL:Init()
     self.VBar.btnGrip.Color = Color(255, 255, 255)
     self.VBar.btnGrip.Paint = function(s, w, h)
         s.Color = lerpColor(FrameTime() * 15, s.Color, s:IsHovered() and self.Theme.Data.Colors.scrollBarHoverCol or self.Theme.Data.Colors.scrollBarCol)
-        draw.RoundedBox(w, 0, 0, w, h, s.Color)
+        draw.RoundedBox(w * .46, 0, 0, w, h, s.Color)
     end
 end
 
