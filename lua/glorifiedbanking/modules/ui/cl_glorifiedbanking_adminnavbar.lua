@@ -17,7 +17,6 @@ function PANEL:PerformLayout(w, h)
     end
 end
 
-
 local lerp = Lerp
 local function lerpColor(t, from, to)
     local col = Color(0, 0, 0)

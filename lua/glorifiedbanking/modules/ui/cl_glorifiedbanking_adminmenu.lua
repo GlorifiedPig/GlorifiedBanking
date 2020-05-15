@@ -68,5 +68,6 @@ if IsValid(GlorifiedBanking.AdminMenu) then
     GlorifiedBanking.AdminMenu = nil
 end
 
+if not IsValid(LocalPlayer()) then return end
 GlorifiedBanking.AdminMenu = vgui.Create("GlorifiedBanking.AdminMenu")
 print("Reloaded admin menu")

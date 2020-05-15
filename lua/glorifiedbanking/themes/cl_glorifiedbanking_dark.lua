@@ -81,12 +81,16 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         scrollBarHoverCol = Color( 85, 85, 85 ),
 
         dropdownBackgroundCol = Color( 33, 33, 33 ),
+        dropdownBackgroundHoverCol = Color( 45, 45, 45 ),
         dropdownSelectedTextCol = Color( 255, 255, 255 ),
 
         paginatorItemsTextCol = Color( 255, 255, 255 ),
         paginatorButtonTextCol = Color( 255, 255, 255 ),
-        paginatorButtonBackgroundCol = Color( 33, 33, 33 ),
-        paginatorButtonSelectedBackgroundCol = Color( 32, 133, 175 ),
+        paginatorArrowButtonBackgroundCol = Color( 33, 33, 33 ),
+        paginatorArrowButtonBackgroundHoverCol = Color( 25, 25, 25 ),
+        paginatorNumberButtonBackgroundCol = Color( 80, 80, 80, 0 ),
+        paginatorNumberButtonBackgroundHoverCol = Color( 80, 80, 80 ),
+        paginatorNumberButtonSelectedBackgroundCol = Color( 32, 133, 175 ),
 
         logsMenuTransactionTypeTextCol = Color( 255, 255, 255 ),
         logsMenuTransactionTypeSelectCol = Color( 33, 33, 33 ),

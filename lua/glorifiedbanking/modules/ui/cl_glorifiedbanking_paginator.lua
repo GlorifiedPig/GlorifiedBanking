@@ -33,16 +33,29 @@ function PANEL:Paint(w, h)
     draw.SimpleText(i18n.GetPhrase("gbItemsPerPage"), "GlorifiedBanking.AdminMenu.PaginatorPerPage", w * .024, h * .48, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
 
+function PANEL:OnPageSelected(no)
+    print("Selected page: " .. no)
+end
+
 function PANEL:SelectPage(no)
     if no < 1 or no > self.PageCount then return end
 
     self.SelectedPage = no
 
+    local buttonNo = (no - 2 > 0 and self.PageCount > 10) and no - 2 or 1
     for k,v in ipairs(self.Buttons) do
-        v.Selected = v.Text == tostring(no)
+        if not tonumber(v.Text) then continue end
+
+        v.Text = tostring(buttonNo)
+        v.DoClick = function(s)
+            self:SelectPage(buttonNo)
+        end
+
+        v.Selected = no == buttonNo
+        buttonNo = buttonNo + 1
     end
 
-    print("Selected page: " .. no)
+    self:OnPageSelected(no)
 end
 
 function PANEL:ClearButtons()
@@ -52,6 +65,18 @@ function PANEL:ClearButtons()
     end
 end
 
+local lerp = Lerp
+local function lerpColor(t, from, to)
+    local col = Color(0, 0, 0)
+
+    col.r = lerp(t, from.r, to.r)
+    col.g = lerp(t, from.g, to.g)
+    col.b = lerp(t, from.b, to.b)
+    col.a = lerp(t, from.a, to.a)
+
+    return col
+end
+
 function PANEL:CreatePageButton(text, drawbg, onClick)
     local btn = vgui.Create("DButton", self)
 
@@ -59,16 +84,16 @@ function PANEL:CreatePageButton(text, drawbg, onClick)
     btn:SetText("")
     btn.DoClick = onClick
 
+    btn.BackgroundColour = Color(0, 0, 0, 0)
     btn.Paint = function(s, w, h)
         if drawbg then
-            draw.RoundedBox(h * .2, 0, 0, w, h, s.Selected and self.Theme.Data.Colors.paginatorButtonSelectedBackgroundCol or self.Theme.Data.Colors.paginatorButtonBackgroundCol)
+            s.BackgroundColour = lerpColor(FrameTime() * 10, s.BackgroundColour, s:IsHovered() and self.Theme.Data.Colors.paginatorArrowButtonBackgroundHoverCol or self.Theme.Data.Colors.paginatorArrowButtonBackgroundCol)
         else
-            if s.Selected then
-                draw.RoundedBox(h * .2, 0, 0, w, h, self.Theme.Data.Colors.paginatorButtonSelectedBackgroundCol)
-            end
+            s.BackgroundColour = lerpColor(FrameTime() * 10, s.BackgroundColour, s.Selected and self.Theme.Data.Colors.paginatorNumberButtonSelectedBackgroundCol or s:IsHovered() and self.Theme.Data.Colors.paginatorNumberButtonBackgroundHoverCol or self.Theme.Data.Colors.paginatorNumberButtonBackgroundCol)
         end
 
-        draw.SimpleText(text, "GlorifiedBanking.AdminMenu.PaginatorButton", w / 2, h / 2, self.Theme.Data.Colors.paginatorButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.RoundedBox(h * .15, 0, 0, w, h, s.BackgroundColour)
+        draw.SimpleText(s.Text, "GlorifiedBanking.AdminMenu.PaginatorButton", w / 2, h / 2, self.Theme.Data.Colors.paginatorButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     return btn
@@ -79,31 +104,37 @@ function PANEL:SetupPaginator(itemcount)
 
     self.ItemCount = itemcount
     self.PageCount = math.floor(itemcount / self.ItemsPerPage)
-    self.SelectedPage = 0
 
-    self.Buttons[1] = self:CreatePageButton("<<", true, function(s)
-        self:SelectPage(1)
-    end)
+    if self.PageCount <= 1 then
+        self:Remove()
+        return
+    end
 
-    self.Buttons[2] = self:CreatePageButton("<", true, function(s)
+    if self.PageCount > 10 then
+        self.Buttons[1] = self:CreatePageButton("<<", true, function(s)
+            self:SelectPage(1)
+        end)
+    end
+
+    self.Buttons[#self.Buttons + 1] = self:CreatePageButton("<", true, function(s)
         self:SelectPage(self.SelectedPage - 1)
     end)
 
     for i = 1, math.min(self.PageCount, 10) do
-        self.Buttons[i + 2] = self:CreatePageButton(tostring(i), false, function(s)
+        self.Buttons[#self.Buttons + 1] = self:CreatePageButton(tostring(i), false, function(s)
             self:SelectPage(i)
         end)
     end
 
-    local btncount = #self.Buttons
-
-    self.Buttons[btncount + 1] = self:CreatePageButton(">", true, function(s)
+    self.Buttons[#self.Buttons + 1] = self:CreatePageButton(">", true, function(s)
         self:SelectPage(self.SelectedPage + 1)
     end)
 
-    self.Buttons[btncount + 2] = self:CreatePageButton(">>", true, function(s)
-        self:SelectPage(self.PageCount)
-    end)
+    if self.PageCount > 10 then
+        self.Buttons[#self.Buttons + 1] = self:CreatePageButton(">>", true, function(s)
+            self:SelectPage(self.PageCount)
+        end)
+    end
 
     self:SelectPage(1)
 end
