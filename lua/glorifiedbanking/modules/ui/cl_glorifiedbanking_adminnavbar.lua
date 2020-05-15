@@ -18,15 +18,6 @@ function PANEL:PerformLayout(w, h)
 end
 
 local lerp = Lerp
-local function lerpColor(t, from, to)
-    local col = Color(0, 0, 0)
-
-    col.r = lerp(t, from.r, to.r)
-    col.g = lerp(t, from.g, to.g)
-    col.b =  lerp(t, from.b, to.b)
-
-    return col
-end
 
 function PANEL:AddItem(name, dockType, onClick)
     local button = vgui.Create("DButton", self)
@@ -47,7 +38,7 @@ function PANEL:AddItem(name, dockType, onClick)
         button.Paint = function(s, w, h)
             local iconSize = h * .4
 
-            s.Color = lerpColor(FrameTime() * 5, s.Color, s:IsHovered() and self.Theme.Data.Colors.adminMenuCloseButtonHoverCol or self.Theme.Data.Colors.adminMenuCloseButtonCol)
+            s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 5, s.Color, s:IsHovered() and self.Theme.Data.Colors.adminMenuCloseButtonHoverCol or self.Theme.Data.Colors.adminMenuCloseButtonCol)
 
             surface.SetDrawColor(s.Color)
             surface.SetMaterial(self.Theme.Data.Materials.close)
@@ -61,7 +52,7 @@ function PANEL:AddItem(name, dockType, onClick)
             local underlineh = math.Round(h * .06)
 
             s.UnderlineY = lerp(FrameTime() * 13, s.UnderlineY, (button.Selected or s:IsHovered()) and 0 or underlineh)
-            s.Color = lerpColor(FrameTime() * 5, s.Color, button.Selected and self.Theme.Data.Colors.adminMenuNavbarSelectedItemCol or self.Theme.Data.Colors.adminMenuNavbarItemCol)
+            s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 5, s.Color, button.Selected and self.Theme.Data.Colors.adminMenuNavbarSelectedItemCol or self.Theme.Data.Colors.adminMenuNavbarItemCol)
 
             local underliney = math.Round(h - underlineh + s.UnderlineY)
 

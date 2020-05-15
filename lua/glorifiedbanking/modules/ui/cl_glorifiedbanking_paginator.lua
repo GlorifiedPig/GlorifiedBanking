@@ -65,18 +65,6 @@ function PANEL:ClearButtons()
     end
 end
 
-local lerp = Lerp
-local function lerpColor(t, from, to)
-    local col = Color(0, 0, 0)
-
-    col.r = lerp(t, from.r, to.r)
-    col.g = lerp(t, from.g, to.g)
-    col.b = lerp(t, from.b, to.b)
-    col.a = lerp(t, from.a, to.a)
-
-    return col
-end
-
 function PANEL:CreatePageButton(text, drawbg, onClick)
     local btn = vgui.Create("DButton", self)
 
@@ -87,9 +75,9 @@ function PANEL:CreatePageButton(text, drawbg, onClick)
     btn.BackgroundColour = Color(0, 0, 0, 0)
     btn.Paint = function(s, w, h)
         if drawbg then
-            s.BackgroundColour = lerpColor(FrameTime() * 10, s.BackgroundColour, s:IsHovered() and self.Theme.Data.Colors.paginatorArrowButtonBackgroundHoverCol or self.Theme.Data.Colors.paginatorArrowButtonBackgroundCol)
+            s.BackgroundColour = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.BackgroundColour, s:IsHovered() and self.Theme.Data.Colors.paginatorArrowButtonBackgroundHoverCol or self.Theme.Data.Colors.paginatorArrowButtonBackgroundCol)
         else
-            s.BackgroundColour = lerpColor(FrameTime() * 10, s.BackgroundColour, s.Selected and self.Theme.Data.Colors.paginatorNumberButtonSelectedBackgroundCol or s:IsHovered() and self.Theme.Data.Colors.paginatorNumberButtonBackgroundHoverCol or self.Theme.Data.Colors.paginatorNumberButtonBackgroundCol)
+            s.BackgroundColour = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.BackgroundColour, s.Selected and self.Theme.Data.Colors.paginatorNumberButtonSelectedBackgroundCol or s:IsHovered() and self.Theme.Data.Colors.paginatorNumberButtonBackgroundHoverCol or self.Theme.Data.Colors.paginatorNumberButtonBackgroundCol)
         end
 
         draw.RoundedBox(h * .15, 0, 0, w, h, s.BackgroundColour)
