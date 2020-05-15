@@ -46,6 +46,7 @@ function PANEL:Init()
     self.ScrollPanel = vgui.Create("GlorifiedBanking.ScrollPanel", self)
 
     self.Paginator = vgui.Create("GlorifiedBanking.Paginator", self)
+    self.Paginator:SetupPaginator(1000)
 
     self.Logs = {}
     for i = 1, 20 do
@@ -69,7 +70,7 @@ function PANEL:PerformLayout(w, h)
     self.ScrollPanel:Dock(FILL)
     self.ScrollPanel:DockPadding(0, 0, w * .013, 0)
 
-    self.Paginator:SetSize(w, h * .05)
+    self.Paginator:SetSize(w, h * .07)
     self.Paginator:Dock(BOTTOM)
 
     local logh = h * .08

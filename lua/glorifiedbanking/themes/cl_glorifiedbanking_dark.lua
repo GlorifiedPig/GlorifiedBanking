@@ -85,6 +85,8 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
 
         paginatorItemsTextCol = Color( 255, 255, 255 ),
         paginatorButtonTextCol = Color( 255, 255, 255 ),
+        paginatorButtonBackgroundCol = Color( 33, 33, 33 ),
+        paginatorButtonSelectedBackgroundCol = Color( 32, 133, 175 ),
 
         logsMenuTransactionTypeTextCol = Color( 255, 255, 255 ),
         logsMenuTransactionTypeSelectCol = Color( 33, 33, 33 ),
@@ -201,7 +203,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         },
         ["AdminMenu.PaginatorPerPage"] = {
             font = "Montserrat",
-            size = function() return ScrW() * .011 end,
+            size = function() return ScrW() * .009 end,
             weight = 500,
             antialias = true
         },
