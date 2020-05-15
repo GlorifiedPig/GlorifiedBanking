@@ -80,9 +80,18 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         scrollBarCol = Color( 105, 105, 105 ),
         scrollBarHoverCol = Color( 85, 85, 85 ),
 
+        dropdownBackgroundCol = Color( 33, 33, 33 ),
+        dropdownSelectedTextCol = Color( 255, 255, 255 ),
+
         logsMenuTransactionTypeTextCol = Color( 255, 255, 255 ),
         logsMenuTransactionTypeSelectCol = Color( 33, 33, 33 ),
-        logsMenuLogBackgroundCol = Color( 33, 33, 33 )
+
+        logsMenuLogBackgroundCol = Color( 33, 33, 33 ),
+        logsMenuLogInfoTextCol = Color( 255, 255, 255 ),
+        logsMenuLogPlayerNameTextCol = Color( 255, 255, 255 ),
+        logsMenuLogPlayerSteamIDTextCol = Color( 160, 160, 160 ),
+        logsMenuLogMoneyPositiveTextCol = Color( 87, 168, 50 ),
+        logsMenuLogMoneyNegativeTextCol = Color( 205, 57, 57 ),
     },
     Fonts = {
         ["ATMEntity.Title"] = {
@@ -175,9 +184,39 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 500,
             antialias = true
         },
+        ["AdminMenu.Dropdown"] = {
+            font = "Montserrat",
+            size = function() return ScrW() * .011 end,
+            weight = 500,
+            antialias = true
+        },
         ["AdminMenu.TransactionTypeSelect"] = {
             font = "Montserrat",
             size = function() return ScrH() * .021 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.LogPlayerInfo"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .0175 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.LogInfo"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .016 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.LogInfoBold"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .016 end,
+            weight = 700,
+            antialias = true
+        },
+        ["AdminMenu.LogMoney"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .024 end,
             weight = 500,
             antialias = true
         }
