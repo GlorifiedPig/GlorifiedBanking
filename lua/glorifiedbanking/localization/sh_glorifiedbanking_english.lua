@@ -30,6 +30,7 @@ i18n.RegisterPhrases("en", {
     gbTypeWithdrawals = "Withdrawals",
     gbTypeDeposits = "Deposits",
     gbTypeTransfers = "Transfers",
+    gbItemsPerPage = "Items Per Page",
     gbLogInfoType = "Type: ",
     gbLogInfoTime = "Time: ",
     gbLogInfoDate = "Date: ",

@@ -31,7 +31,7 @@ function PANEL:Init()
     end
 
     self.TransactionTypeSelect = vgui.Create("GlorifiedBanking.Dropdown", self.TopBar)
-    self.TransactionTypeSelect.Theme = self.Theme
+
     self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeAll"))
     self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeWithdrawals"))
     self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeDeposits"))
@@ -39,8 +39,8 @@ function PANEL:Init()
 
     self.TransactionTypeSelect:ChooseOptionID(1)
 
-    self.TransactionTypeSelect.OnSelect = function(index, value, data)
-        self.TransactionTypeSelect:SizeToContents()
+    self.TransactionTypeSelect.OnSelect = function(s, index, value, data)
+        s:SizeToContents()
     end
 
     self.ScrollPanel = vgui.Create("GlorifiedBanking.ScrollPanel", self)
@@ -64,13 +64,12 @@ function PANEL:PerformLayout(w, h)
 
     self.TransactionTypeSelect:SetSize(w * .1, h * .032)
     self.TransactionTypeSelect:SetPos(w * .024 + dropx + w * .01,  h * .008)
-
     self.TransactionTypeSelect:SizeToContents()
 
     self.ScrollPanel:Dock(FILL)
     self.ScrollPanel:DockPadding(0, 0, w * .013, 0)
 
-    self.Paginator:SetSize(w, h * .06)
+    self.Paginator:SetSize(w, h * .05)
     self.Paginator:Dock(BOTTOM)
 
     local logh = h * .08
