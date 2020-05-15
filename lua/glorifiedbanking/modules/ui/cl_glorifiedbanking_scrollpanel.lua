@@ -1,21 +1,49 @@
 
 local PANEL = {}
 
+local lerp = Lerp
+local function lerpColor(t, from, to)
+    local col = Color(0, 0, 0)
+
+    col.r = lerp(t, from.r, to.r)
+    col.g = lerp(t, from.g, to.g)
+    col.b =  lerp(t, from.b, to.b)
+
+    return col
+end
 function PANEL:Init()
-    function self.VBar:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 100))
-    end
+    self.Theme = self:GetParent().Theme
 
-    function self.VBar.btnUp:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(200, 100, 0))
-    end
+    self.VBar:SetHideButtons(true)
 
-    function self.VBar.btnDown:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(200, 100, 0))
-    end
+    function self.VBar:Paint(w, h) end
 
-    function self.VBar.btnGrip:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, Color(100, 200, 0))
+    self.VBar.btnGrip.Color = Color(255, 255, 255)
+    self.VBar.btnGrip.Paint = function(s, w, h)
+        s.Color = lerpColor(FrameTime() * 15, s.Color, s:IsHovered() and self.Theme.Data.Colors.scrollBarHoverCol or self.Theme.Data.Colors.scrollBarCol)
+        draw.RoundedBox(w, 0, 0, w, h, s.Color)
+    end
+end
+
+function PANEL:PerformLayout(w, h)
+    if not (w or h) then return end
+
+    self.VBar:SetWidth(w * .018)
+    self.VBar:Dock(RIGHT)
+
+    self:Rebuild()
+
+    self.VBar:SetUp(h, self.pnlCanvas:GetTall())
+
+    if self.VBar.Enabled then w = w - self.VBar:GetWide() end
+
+    self.pnlCanvas:SetPos(0, self.VBar:GetOffset())
+    self.pnlCanvas:SetWide(w)
+
+    self:Rebuild()
+
+    if h != self.pnlCanvas:GetTall() then
+        self.VBar:SetScroll(self.VBar:GetScroll())
     end
 end
 

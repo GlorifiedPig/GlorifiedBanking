@@ -34,8 +34,7 @@ function PANEL:Init()
     self.Paginator = vgui.Create("GlorifiedBanking.Paginator", self)
 
     self.Logs = {}
-
-    for i = 1, 50 do
+    for i = 1, 20 do
         self.Logs[i] = vgui.Create("GlorifiedBanking.Log", self.ScrollPanel)
         self.Logs[i].Data = math.Rand(1, 2) == 1 and logStruct or logStructForTransfers
         self.Logs[i].Theme = self.Theme
@@ -43,21 +42,21 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(w, h)
-    self.TopBar:SetSize(w, h * .05)
+    self.TopBar:SetSize(w, h * .04)
     self.TopBar:Dock(TOP)
 
     self.ScrollPanel:Dock(FILL)
-    self.ScrollPanel:DockPadding(w * .026,0, w * .026, 0)
+    self.ScrollPanel:DockPadding(0, 0, w * .013, 0)
 
     self.Paginator:SetSize(w, h * .1)
     self.Paginator:Dock(BOTTOM)
 
-    local logh = h * .08
-    local logmargin = h * .008
+    local logh = h * .09
+    local logmarginx, logmarginy = w * .026, h * .008
     for k,v in ipairs(self.Logs) do
         v:SetHeight(logh)
         v:Dock(TOP)
-        v:DockMargin(0, logmargin, 0, logmargin)
+        v:DockMargin(logmarginx, logmarginy, logmarginx, logmarginy)
     end
 end
 
