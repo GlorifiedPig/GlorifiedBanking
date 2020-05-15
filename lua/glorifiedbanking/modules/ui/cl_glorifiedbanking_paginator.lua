@@ -42,13 +42,19 @@ function PANEL:SelectPage(no)
 
     self.SelectedPage = no
 
-    local buttonNo = (no - 2 > 0 and self.PageCount > 10) and no - 2 or 1
+    local buttonNo = 1
+    if self.PageCount > 10 then
+        buttonNo = no - 2 > 0 and no - 2 or 1
+        buttonNo = buttonNo > self.PageCount - 9 and self.PageCount - 9 or buttonNo
+    end
+
     for k,v in ipairs(self.Buttons) do
         if not tonumber(v.Text) then continue end
 
         v.Text = tostring(buttonNo)
+        v.Page = buttonNo
         v.DoClick = function(s)
-            self:SelectPage(buttonNo)
+            self:SelectPage(s.Page)
         end
 
         v.Selected = no == buttonNo
