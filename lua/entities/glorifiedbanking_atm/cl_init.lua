@@ -646,17 +646,9 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
         data.players = player.GetHumans()
 
         local ply = LocalPlayer()
-        --for k,v in ipairs(data.players) do
-        --    if v == ply then table.remove(data.players, k) break end
-        --end
-
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
+        for k,v in ipairs(data.players) do
+            if v == ply then table.remove(data.players, k) break end
+        end
     end
 
     if not data.offset then data.offset = 0 end
