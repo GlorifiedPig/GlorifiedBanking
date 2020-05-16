@@ -38,5 +38,10 @@ ENT.Screens = {
         loggedIn = true,
         previousPage = 3,
         takesKeyInput = true
+    },
+    [6] = { --Transfer screen
+        loggedIn = true,
+        previousPage = 3,
+        takesKeyInput = true
     }
 }

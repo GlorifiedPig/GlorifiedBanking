@@ -251,6 +251,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         transfer = Material( "glorified_banking/transfer.png", "noclamp smooth" ),
         transaction = Material( "glorified_banking/transaction.png", "noclamp smooth" ),
         user = Material( "glorified_banking/user.png", "noclamp smooth" ),
+        player = Material( "glorified_banking/player.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         close = Material( "glorified_banking/close.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),

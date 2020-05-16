@@ -349,6 +349,10 @@ local menuButtons = {
     {
         name = i18n.GetPhrase("gbMenuTransfer"),
         pressFunc = function(self)
+            net.Start("GlorifiedBanking.ChangeScreen")
+             net.WriteUInt(6, 4)
+             net.WriteEntity(self)
+            net.SendToServer()
         end
     },
     {
@@ -520,6 +524,51 @@ ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
             net.SendToServer()
         end
     )
+end
+
+ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
+    local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+
+    local msgw, msgh = windoww * .95, 110
+    local msgy = windowy + windowh - 140
+
+    draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionButtonOutlineCol)
+
+    msgw, msgh = windoww * .93, 90
+    local hovering = false
+
+    local amount = #self.KeyPadBuffer > 0 and tonumber(self.KeyPadBuffer) or 0
+    if imgui.IsHovering(centerx - msgw * .5, msgy, msgw, msgh) then
+        hovering = true
+        draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonHoverCol)
+
+        if imgui.IsPressed() then
+
+        end
+    else
+        draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonBackgroundCol)
+    end
+
+    local iconsize = 38
+
+    surface.SetFont("GlorifiedBanking.ATMEntity.TransactionButton")
+    local buttonText = i18n.GetPhrase("gbMenuTransfer")
+    contentw = iconsize + 15 + surface.GetTextSize(buttonText)
+
+    msgy = msgy + 14
+    surface.SetDrawColor(theme.Data.Colors.transactionIconCol)
+    surface.SetMaterial(theme.Data.Materials.transfer)
+    surface.DrawTexturedRect(centerx - contentw * .5, msgy + 12, iconsize, iconsize)
+    draw.SimpleText(buttonText, "GlorifiedBanking.ATMEntity.TransactionButton", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+    msgw, msgh, msgy =  windoww * .95, 80, windowy + windowh - 245
+    draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionEntryOutlineCol)
+    msgw, msgh = windoww * .93, 60
+    draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
+
+    draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    return hovering
 end
 
 local screenpos = Vector(1.47, 13.46, 51.16)
