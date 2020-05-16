@@ -62,6 +62,8 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
 
 
         transferListBackgroundCol = Color( 70, 70, 70 ),
+        transferListArrowIconCol = Color( 255, 255, 255 ),
+        transferListArrowIconHoverCol = Color( 170, 170, 170 ),
         transferListPlayerIconCol = Color( 255, 255, 255 ),
         transferListPlayerCheckCol = Color( 46, 162, 212 ),
         transferListPlayerNameCol = Color( 255, 255, 255 ),
@@ -283,6 +285,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         user = Material( "glorified_banking/user.png", "noclamp smooth" ),
         player = Material( "glorified_banking/player.png", "noclamp smooth" ),
         check = Material( "glorified_banking/check.png", "noclamp smooth" ),
+        chevron = Material( "glorified_banking/chevron.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         close = Material( "glorified_banking/close.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),

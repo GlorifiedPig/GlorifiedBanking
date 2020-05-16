@@ -647,13 +647,8 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
 
         local ply = LocalPlayer()
         for k,v in ipairs(data.players) do
-            if v == ply then break end -- table.remove(data.players, k) break end
+            if v == ply then table.remove(data.players, k) break end
         end
-
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
-        data.players[#data.players + 1] = LocalPlayer()
     end
 
     if not data.offset then data.offset = 0 end
@@ -678,21 +673,25 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
 
     render.SetStencilCompareFunction(STENCIL_EQUAL)
 
-    local plyw, plyh = listw * .96, listh * .2
+    local plycount = #data.players
+    local showscroll = plycount > 4
+
+    local plyw, plyh = showscroll and listw * .90 or listw * .96, listh * .2
     local plyx, plyy = listx + listw * .02, data.offset + listy + 24
+
+    local maxscroll = -((plycount - 4) * (plyh + 16) + 8)
 
     iconsize = 80
 
     for k,v in ipairs(data.players) do
         if not IsValid(v) then table.remove(data.players, k) continue end
 
-        if k < 5 and imgui.IsHovering(plyx, plyy, plyw, plyh) then
+        if plyy > listy - maxscroll - plyh * 3 - 16 and plyy < listy + maxscroll + (plyh + 16) * 6 and imgui.IsHovering(plyx, plyy, plyw, plyh) then
             hovering = true
             draw.RoundedBox(6, plyx, plyy, plyw, plyh, theme.Data.Colors.transferListPlayerBackgroundHoverCol)
 
             if imgui.IsPressed() then
                 data.selected = v
-                print(2)
             end
         else
             draw.RoundedBox(6, plyx, plyy, plyw, plyh, theme.Data.Colors.transferListPlayerBackgroundCol)
@@ -714,6 +713,40 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     end
 
     render.SetStencilEnable(false)
+
+    if not showscroll then return hovering end
+
+    iconsize = 60
+    local arrowx = listx + listw - iconsize / 2 - 16
+    local arrowhoverx = listx + listw - iconsize - 10
+
+    if imgui.IsHovering(arrowhoverx, listy + 45 - iconsize / 2, iconsize, iconsize) then
+        hovering = true
+        surface.SetDrawColor(theme.Data.Colors.transferListArrowIconHoverCol)
+
+        if imgui.IsPressing() then
+            data.offset = math.min(data.offset + FrameTime() * 350, 0)
+        end
+    else
+        surface.SetDrawColor(theme.Data.Colors.transferListArrowIconCol)
+    end
+
+    surface.SetMaterial(theme.Data.Materials.chevron)
+    surface.DrawTexturedRectRotated(arrowx, listy + 45, iconsize, iconsize, 90)
+
+    if imgui.IsHovering(arrowhoverx, listy + listh - iconsize - 15, iconsize, iconsize) then
+        hovering = true
+        surface.SetDrawColor(theme.Data.Colors.transferListArrowIconHoverCol)
+
+        if imgui.IsPressing() then
+            data.offset = math.max(data.offset - FrameTime() * 350, maxscroll)
+        end
+    else
+        surface.SetDrawColor(theme.Data.Colors.transferListArrowIconCol)
+    end
+
+    surface.SetMaterial(theme.Data.Materials.chevron)
+    surface.DrawTexturedRectRotated(arrowx, listy + listh - iconsize / 2 - 15, iconsize, iconsize, 270)
 
     return hovering
 end
