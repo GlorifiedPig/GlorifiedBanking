@@ -417,7 +417,7 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
 
     surface.SetFont("GlorifiedBanking.ATMEntity.AccountBalance")
     local contenty = windowy + 110
-    local iconsize = 38
+    local iconsize = 46
     local text
 
     if self:GetCurrentUser() != LocalPlayer() then
@@ -426,16 +426,16 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
         text = i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
     end
 
-    local contentw = iconsize + 6 + surface.GetTextSize(text)
+    local contentw = iconsize + 12 + surface.GetTextSize(text)
 
-    surface.SetDrawColor(theme.Data.Colors.menuUserIconCol)
-    surface.SetMaterial(theme.Data.Materials.user)
+    surface.SetDrawColor(theme.Data.Colors.balanceIconCol)
+    surface.SetMaterial(theme.Data.Materials.money)
     surface.DrawTexturedRect(centerx - contentw * .5, contenty + 5, iconsize, iconsize)
 
-    draw.SimpleText(text, "GlorifiedBanking.ATMEntity.AccountBalance", centerx + contentw * .5, contenty, theme.Data.Colors.menuUserTextCol, TEXT_ALIGN_RIGHT)
+    draw.SimpleText(text, "GlorifiedBanking.ATMEntity.AccountBalance", centerx + contentw * .5, contenty, theme.Data.Colors.balanceTextCol, TEXT_ALIGN_RIGHT)
 
     contentw = contentw + 15
-    draw.RoundedBox(2, windowx + (windoww-contentw) * .5, contenty + 52, contentw, 4, theme.Data.Colors.menuUserUnderlineCol)
+    draw.RoundedBox(2, windowx + (windoww-contentw) * .5, contenty + 52, contentw, 4, theme.Data.Colors.balanceUnderlineCol)
 
     local msgw, msgh = windoww * .95, 60
     local msgy = centery - 203

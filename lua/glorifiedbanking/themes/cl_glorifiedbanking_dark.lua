@@ -42,6 +42,11 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         menuButtonUnderlineCol = Color( 37, 160, 213 ),
 
 
+        balanceIconCol = Color( 255, 255, 255 ),
+        balanceTextCol = Color( 255, 255, 255 ),
+        balanceUnderlineCol = Color( 255, 255, 255 ),
+
+
         transactionMessageLineCol = Color( 46, 162, 212 ),
         transactionMessageBackgroundCol = Color( 69, 69, 69 ),
         transactionWarningIconCol = Color( 255, 255, 255 ),
@@ -143,6 +148,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             font = "Montserrat",
             size = 44,
             weight = 600,
+            antialias = true
+        },
+        ["ATMEntity.AccountBalance"] = {
+            font = "Montserrat",
+            size = 52,
+            weight = 700,
             antialias = true
         },
         ["ATMEntity.MenuButton"] = {
@@ -250,6 +261,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         warning = Material( "glorified_banking/warning.png", "noclamp smooth" ),
         transfer = Material( "glorified_banking/transfer.png", "noclamp smooth" ),
         transaction = Material( "glorified_banking/transaction.png", "noclamp smooth" ),
+        money = Material( "glorified_banking/money.png", "noclamp smooth" ),
         user = Material( "glorified_banking/user.png", "noclamp smooth" ),
         player = Material( "glorified_banking/player.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
