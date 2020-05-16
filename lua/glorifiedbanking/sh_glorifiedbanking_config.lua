@@ -19,5 +19,5 @@
 --[[ End Interest Settings ]]--
 
 --[[ Other Config ]]--
-    GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM = 750 -- What is the maximum distance for the validation checks on the ATMs?
+    GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM = 250 -- What is the maximum distance for the validation checks on the ATMs?
 --[[ End Other Config ]]--
