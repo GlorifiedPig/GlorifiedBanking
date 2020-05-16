@@ -53,11 +53,8 @@ function PANEL:SelectPage(no)
 
         v.Text = tostring(buttonNo)
         v.Page = buttonNo
-        v.DoClick = function(s)
-            self:SelectPage(s.Page)
-        end
-
         v.Selected = no == buttonNo
+
         buttonNo = buttonNo + 1
     end
 
@@ -114,10 +111,13 @@ function PANEL:SetupPaginator(itemcount)
         self:SelectPage(self.SelectedPage - 1)
     end)
 
+    local function doClick(s)
+        self:SelectPage(s.Page)
+    end
+
     for i = 1, math.min(self.PageCount, 10) do
-        self.Buttons[#self.Buttons + 1] = self:CreatePageButton(tostring(i), false, function(s)
-            self:SelectPage(i)
-        end)
+        self.Buttons[#self.Buttons + 1] = self:CreatePageButton(tostring(i), false, doClick)
+        self.Buttons[#self.Buttons].Page = i
     end
 
     self.Buttons[#self.Buttons + 1] = self:CreatePageButton(">", true, function(s)
