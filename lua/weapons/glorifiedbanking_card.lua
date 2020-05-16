@@ -50,6 +50,7 @@ function SWEP:SecondaryAttack() end
 
 if SERVER then
     function SWEP:PrimaryAttack()
+        if not IsFirstTimePredicted() then return end
         if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
     end
 end
@@ -85,6 +86,8 @@ function SWEP:DrawHUDBackground()
 end
 
 function SWEP:PrimaryAttack()
+    if not IsFirstTimePredicted() then return end
+
     local ply = self:GetOwner()
 
     local tr = ply:GetEyeTraceNoCursor()
