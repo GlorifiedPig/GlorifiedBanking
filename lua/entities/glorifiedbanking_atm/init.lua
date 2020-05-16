@@ -29,6 +29,8 @@ function ENT:Think()
 
     local maxDistance = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
     if self:GetPos():DistToSqr(user:GetPos()) > maxDistance * maxDistance then
+        self.OldUser = self:GetCurrentUser()
+        self:SetCurrentUser(NULL)
         self:Logout()
     end
 end
@@ -82,10 +84,11 @@ function ENT:Logout()
     self:PlayGBAnim(GB_ANIM_CARD_OUT)
 
     timer.Simple(1.5, function()
-        local ply = self:GetCurrentUser()
-        if IsValid(ply) then ply:Give("glorifiedbanking_card") end
-
+        self:SetScreenID(1)
+        local ply = self.OldUser or self:GetCurrentUser()
         self:ResetATM()
+        if IsValid(ply) then ply:Give("glorifiedbanking_card") end
+        self.OldUser = false
     end)
 end
 
