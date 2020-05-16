@@ -55,7 +55,7 @@ end
 
 function ENT:InsertCard()
     if self:GetCurrentUser() != NULL then
-        GlorifiedBanking.Notify(i18n.GetPhrase("gbCardAtmInUse"), NOTIFY_ERROR, 5)
+        GlorifiedBanking.Notify(NOTIFY_ERROR, 5, i18n.GetPhrase("gbCardAtmInUse"))
         return
     end
 
@@ -415,6 +415,28 @@ end
 local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, bottomHint, disclaimer, onPress)
     local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
 
+    surface.SetFont("GlorifiedBanking.ATMEntity.AccountBalance")
+    local contenty = windowy + 110
+    local iconsize = 38
+    local text
+
+    if self:GetCurrentUser() != LocalPlayer() then
+        text = i18n.GetPhrase("gbAccountBalance", i18n.GetPhrase("gbHidden"))
+    else
+        text = i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
+    end
+
+    local contentw = iconsize + 6 + surface.GetTextSize(text)
+
+    surface.SetDrawColor(theme.Data.Colors.menuUserIconCol)
+    surface.SetMaterial(theme.Data.Materials.user)
+    surface.DrawTexturedRect(centerx - contentw * .5, contenty + 5, iconsize, iconsize)
+
+    draw.SimpleText(text, "GlorifiedBanking.ATMEntity.AccountBalance", centerx + contentw * .5, contenty, theme.Data.Colors.menuUserTextCol, TEXT_ALIGN_RIGHT)
+
+    contentw = contentw + 15
+    draw.RoundedBox(2, windowx + (windoww-contentw) * .5, contenty + 52, contentw, 4, theme.Data.Colors.menuUserUnderlineCol)
+
     local msgw, msgh = windoww * .95, 60
     local msgy = centery - 203
     draw.RoundedBoxEx(8, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
@@ -604,6 +626,7 @@ ENT.KeyPadBuffer = ""
 function ENT:PressKey(key)
     self:EmitSound("GlorifiedBanking.Key_Press")
 
+    if self:GetCurrentUser() != LocalPlayer() then return end
     if key == "*" then return end
     if key == "#" then
         self.KeyPadBuffer = ""
@@ -681,6 +704,8 @@ function ENT:DrawKeypad()
                 end
             end
         end
+
+        imgui.xCursor(0, 0, padw, padh)
 
         imgui.End3D2D()
     end
