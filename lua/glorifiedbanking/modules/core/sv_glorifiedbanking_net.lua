@@ -75,6 +75,7 @@ net.Receive( "GlorifiedBanking.Logout", function( len, ply )
         end
 
         atmEntity:Logout()
+        atmEntity:EmitSound("GlorifiedBanking.Beep_Normal")
     end
 end )
 
@@ -90,6 +91,8 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
         end
 
         atmEntity:SetScreenID( newScreen )
+        atmEntity:EmitSound("GlorifiedBanking.Beep_Normal")
+        atmEntity.LastAction = CurTime()
     end
 end )
 

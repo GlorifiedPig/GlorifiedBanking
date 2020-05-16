@@ -23,6 +23,8 @@ function ENT:Initialize()
     end
 end
 
+ENT.LastAction = 0
+
 function ENT:Think()
     local user = self:GetCurrentUser()
     if user == NULL then return end
@@ -32,7 +34,15 @@ function ENT:Think()
         self.OldUser = self:GetCurrentUser()
         self:SetCurrentUser(NULL)
         self:Logout()
+        return
     end
+
+    if CurTime() < self.LastAction + GlorifiedBanking.Config.LAST_ACTION_TIMEOUT then return end
+    self.OldUser = self:GetCurrentUser()
+    self:SetCurrentUser(NULL)
+    self:Logout()
+
+    GlorifiedBanking.Notify(self.OldUser, NOTIFY_ERROR, 5, i18n.GetPhrase("gbLoggedOutInactive"))
 end
 
 function ENT:Use(activator, caller, useType, value)
@@ -48,6 +58,7 @@ function ENT:ResetATM()
     self:ForceLoad("")
     self.WaitingToTakeMoney = false
     self.WaitingToGiveMoney = false
+    self.LastAction = 0
 end
 
 function ENT:PlayGBAnim(type)
@@ -67,6 +78,8 @@ function ENT:ForceLoad(message)
 end
 
 function ENT:InsertCard(ply)
+    self.LastAction = CurTime()
+
     self:SetCurrentUser(ply)
 
     ply:StripWeapon("glorifiedbanking_card")
@@ -93,6 +106,8 @@ function ENT:Logout()
 end
 
 function ENT:Withdraw(ply, amount)
+    self.LastAction = CurTime()
+
     if amount <= 0 then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
@@ -126,6 +141,8 @@ function ENT:Withdraw(ply, amount)
 end
 
 function ENT:TakeMoney(ply)
+    self.LastAction = CurTime()
+
     local amount = self.WaitingToTakeMoney
     self.WaitingToTakeMoney = false
 
@@ -137,6 +154,8 @@ function ENT:TakeMoney(ply)
 end
 
 function ENT:Deposit(ply, amount)
+    self.LastAction = CurTime()
+
     if amount <= 0 then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
@@ -172,6 +191,8 @@ function ENT:Deposit(ply, amount)
 end
 
 function ENT:GiveMoney(ply)
+    self.LastAction = CurTime()
+
     local amount = self.WaitingToGiveMoney
     self.WaitingToGiveMoney = false
 
