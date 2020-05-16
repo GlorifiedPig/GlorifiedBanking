@@ -212,6 +212,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 600,
             antialias = true
         },
+        ["ATMPlaceTool.Display"] = {
+            font = "Montserrat",
+            size = 34,
+            weight = 600,
+            antialias = true
+        },
         ["CardSWEP.Info"] = {
             font = "Courier New",
             size = function() return ScrH() * .02 end,

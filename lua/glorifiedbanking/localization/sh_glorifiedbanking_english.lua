@@ -53,5 +53,20 @@ i18n.RegisterPhrases("en", {
     gbCashDeposited = "You deposited %s.",
     gbCashTransferred = "You transferred %s to %s.",
     gbCannotAfford = "You cannot afford that.",
-    gbInvalidAmount = "Please enter a valid amount."
+    gbInvalidAmount = "Please enter a valid amount.",
+    gbToolName = "ATM Placer",
+    gbToolCategory = "Glorified Banking",
+    gbToolDescription = "Used to place ATMs on the wall and configure their individual settings.",
+    gbToolLeftClick = "Place a permanent ATM",
+    gbToolRightClick = "Remove a permanent ATM",
+    gbToolSignText = "Sign Text:",
+    gbToolSignTextHelp = "The text displayed on the ATM sign.",
+    gbToolWithdrawalFee = "Withdrawal Fee:",
+    gbToolWithdrawalFeeHelp = "The transaction fee for all withdrawals made with this ATM in percent.",
+    gbToolDepositFee = "Deposit Fee:",
+    gbToolDepositFeeHelp = "The transaction fee for all deposits made with this ATM in percent.",
+    gbToolTransferFee = "Transfer Fee:",
+    gbToolTransferFeeHelp = "The transaction fee for all transfers made with this ATM in percent.",
+    gbToolHeight = "Height Offset:",
+    gbToolHeightHelp = "The distance from the floor the ATM will be placed at."
 })
