@@ -54,6 +54,16 @@ net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
     atmEntity:Deposit(ply, amount)
 end )
 
+net.Receive( "GlorifiedBanking.TransferRequested", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+    local atmEntity = net.ReadEntity()
+    if not ValidationChecks( ply, amount, atmEntity ) then return end
+    local receiver = net.ReadEntity()
+    if not PlayerAuthChecks( receiver ) then return end
+
+    atmEntity:Transfer( ply, receiver, amount )
+end )
+
 net.Receive( "GlorifiedBanking.CardInserted", function( len, ply )
     local atmEntity = net.ReadEntity()
     if atmEntity:GetClass() == "glorifiedbanking_atm"
@@ -94,14 +104,6 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
         atmEntity:EmitSound("GlorifiedBanking.Beep_Normal")
         atmEntity.LastAction = CurTime()
     end
-end )
-
-net.Receive( "GlorifiedBanking.TransferRequested", function( len, ply )
-    local amount = net.ReadUInt( 32 )
-    local atmEntity = net.ReadEntity()
-    if ValidationChecks( ply, amount, atmEntity ) then return end
-    local receiver = net.ReadEntity()
-    GlorifiedBanking.TransferAmount( ply, receiver, amount )
 end )
 
 function GlorifiedBanking.SendTransactionData( ply )

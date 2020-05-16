@@ -215,6 +215,16 @@ function ENT:GiveMoney(ply)
     end)
 end
 
+function ENT:Transfer(ply, receiver, amount)
+    self:ForceLoad(i18n.GetPhrase("gbContactingServer"))
+
+    timer.Simple(3, function()
+        self:ForceLoad("")
+        GlorifiedBanking.TransferAmount(ply, receiver, amount)
+        GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbCashTransferred", GlorifiedBanking.FormatMoney(amount), receiver:Name()))
+    end)
+end
+
 hook.Add("PlayerDisconnected", "GlorifiedBanking.ATMEntity.PlayerDisconnected", function(ply)
     for k,v in ipairs(ents.FindByClass("glorifiedbanking_atm")) do
         if ply != v:GetCurrentUser() then continue end

@@ -612,7 +612,11 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
                 self:EmitSound("GlorifiedBanking.Beep_Error")
             end
 
-            return
+            net.Start("GlorifiedBanking.TransferRequested")
+                net.WriteUInt(amount, 32)
+                net.WriteEntity(self)
+                net.WriteEntity(data.selected)
+            net.SendToServer()
         end
     else
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonBackgroundCol)
