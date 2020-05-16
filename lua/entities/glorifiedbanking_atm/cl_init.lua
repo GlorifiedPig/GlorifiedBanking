@@ -112,8 +112,8 @@ function ENT:DrawScreenBackground(showExit, backPage)
 
             if imgui.IsPressed() then
                 net.Start("GlorifiedBanking.ChangeScreen")
-                net.WriteUInt(3, 4)
-                net.WriteEntity(self)
+                 net.WriteUInt(3, 4)
+                 net.WriteEntity(self)
                 net.SendToServer()
             end
         else
@@ -646,9 +646,17 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
         data.players = player.GetHumans()
 
         local ply = LocalPlayer()
-        for k,v in ipairs(data.players) do
-            if v == ply then table.remove(data.players, k) break end
-        end
+        --for k,v in ipairs(data.players) do
+        --    if v == ply then table.remove(data.players, k) break end
+        --end
+
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
     end
 
     if not data.offset then data.offset = 0 end
@@ -677,16 +685,19 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     local showscroll = plycount > 4
 
     local plyw, plyh = showscroll and listw * .90 or listw * .96, listh * .2
-    local plyx, plyy = listx + listw * .02, data.offset + listy + 24
-
-    local maxscroll = -((plycount - 4) * (plyh + 16) + 8)
+    local plyx, plyy = listx + listw * .02
 
     iconsize = 80
 
     for k,v in ipairs(data.players) do
         if not IsValid(v) then table.remove(data.players, k) continue end
 
-        if plyy > listy - maxscroll - plyh * 3 - 16 and plyy < listy + maxscroll + (plyh + 16) * 6 and imgui.IsHovering(plyx, plyy, plyw, plyh) then
+        plyy = data.offset + listy + 24 + (plyh + 16) * (k - 1)
+
+        if plyy + plyh < listy then continue end
+        if plyy > listy + listh then break end
+
+        if imgui.IsHovering(plyx, plyy, plyw, plyh) then
             hovering = true
             draw.RoundedBox(6, plyx, plyy, plyw, plyh, theme.Data.Colors.transferListPlayerBackgroundHoverCol)
 
@@ -709,7 +720,6 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
             surface.DrawTexturedRect(plyx + plyw - 101, plyy + 11, iconsize, iconsize)
         end
 
-        plyy = plyy + plyh + 16
     end
 
     render.SetStencilEnable(false)
@@ -739,7 +749,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
         surface.SetDrawColor(theme.Data.Colors.transferListArrowIconHoverCol)
 
         if imgui.IsPressing() then
-            data.offset = math.max(data.offset - FrameTime() * 350, maxscroll)
+            data.offset = math.max(data.offset - FrameTime() * 350, -((plycount - 4) * (plyh + 16) + 8))
         end
     else
         surface.SetDrawColor(theme.Data.Colors.transferListArrowIconCol)
