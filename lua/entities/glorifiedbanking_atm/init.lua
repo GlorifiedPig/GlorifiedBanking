@@ -37,6 +37,7 @@ function ENT:Think()
         return
     end
 
+    if not GlorifiedBanking.Config.LAST_ACTION_TIMEOUT then return end
     if CurTime() < self.LastAction + GlorifiedBanking.Config.LAST_ACTION_TIMEOUT then return end
     self.OldUser = self:GetCurrentUser()
     self:SetCurrentUser(NULL)
