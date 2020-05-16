@@ -18,6 +18,7 @@ end)
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 ENT.CurrentUsername = ""
+ENT.ScreenData = {}
 
 function ENT:Think()
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
@@ -70,6 +71,7 @@ ENT.OldScreenData = {}
 function ENT:OnScreenChange(name, old, new)
     self.OldScreenID = old
     self.OldScreenData = table.Copy(self.ScreenData)
+    self.ScreenData = {}
 
     timer.Simple(2, function()
         self.OldScreenID = 0
@@ -440,18 +442,18 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
     local msgw, msgh = windoww * .95, 60
     local msgy = centery - 203
     draw.RoundedBoxEx(8, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
-    draw.RoundedBox(2, windowx + (windoww-msgw) * .5, msgy, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+    draw.RoundedBox(2, windowx + (windoww-msgw) * .5, msgy, msgw, 4, theme.Data.Colors.transactionMessageLineCol)
     draw.SimpleText(topHint, "GlorifiedBanking.ATMEntity.TransactionHint", centerx, msgy + 10, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_CENTER)
 
     msgh = 46
     msgy = centery + 160
     draw.RoundedBoxEx(8, centerx - msgw * .5, msgy - 7, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
-    draw.RoundedBox(2, centerx - msgw * .5, msgy - 7, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
+    draw.RoundedBox(2, centerx - msgw * .5, msgy - 7, msgw, 4, theme.Data.Colors.transactionMessageLineCol)
 
-    local iconsize = 25
+    iconsize = 25
 
     surface.SetFont("GlorifiedBanking.ATMEntity.TransactionFee")
-    local contentw = iconsize + 10 + surface.GetTextSize(bottomHint)
+    contentw = iconsize + 10 + surface.GetTextSize(bottomHint)
 
     surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
     surface.SetMaterial(theme.Data.Materials.warning)
@@ -549,10 +551,50 @@ ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
 end
 
 ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
-    local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
+    local centerx = windowx + windoww * .5
 
-    local msgw, msgh = windoww * .95, 110
-    local msgy = windowy + windowh - 140
+    surface.SetFont("GlorifiedBanking.ATMEntity.AccountBalance")
+    local contenty = windowy + 25
+    local iconsize = 46
+    local text
+
+    if self:GetCurrentUser() != LocalPlayer() then
+        text = i18n.GetPhrase("gbAccountBalance", i18n.GetPhrase("gbHidden"))
+    else
+        text = i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
+    end
+
+    local contentw = iconsize + 12 + surface.GetTextSize(text)
+
+    surface.SetDrawColor(theme.Data.Colors.balanceIconCol)
+    surface.SetMaterial(theme.Data.Materials.money)
+    surface.DrawTexturedRect(centerx - contentw * .5, contenty + 5, iconsize, iconsize)
+
+    draw.SimpleText(text, "GlorifiedBanking.ATMEntity.AccountBalance", centerx + contentw * .5, contenty, theme.Data.Colors.balanceTextCol, TEXT_ALIGN_RIGHT)
+
+    contentw = contentw + 15
+    draw.RoundedBox(2, windowx + (windoww-contentw) * .5, contenty + 50, contentw, 4, theme.Data.Colors.menuUserUnderlineCol)
+
+    local msgw, msgh = windoww * .95, 46
+    local msgy = windowy + windowh - 79
+
+    draw.RoundedBoxEx(8, centerx - msgw * .5, msgy - 7, msgw, msgh, theme.Data.Colors.transactionMessageBackgroundCol, false, false, true, true)
+    draw.RoundedBox(2, centerx - msgw * .5, msgy - 7, msgw, 4, theme.Data.Colors.transactionMessageLineCol)
+
+    iconsize = 25
+
+    surface.SetFont("GlorifiedBanking.ATMEntity.TransactionFee")
+    local hintText = self.TransferFee > 0 and i18n.GetPhrase("gbTransferHasFee", self.TransferFee) or i18n.GetPhrase("gbTransferFree")
+    contentw = iconsize + 10 + surface.GetTextSize(hintText)
+
+    surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
+    surface.SetMaterial(theme.Data.Materials.warning)
+    surface.DrawTexturedRect(centerx - contentw * .5, msgy + 5, iconsize, iconsize)
+
+    draw.SimpleText(hintText, "GlorifiedBanking.ATMEntity.TransactionFee", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
+
+    msgw, msgh = windoww * .95, 110
+    msgy = windowy + windowh - 205
 
     draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionButtonOutlineCol)
 
@@ -565,13 +607,18 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonHoverCol)
 
         if imgui.IsPressed() then
+            if not IsValid(data.selected) then
+                GlorifiedBanking.Notify(NOTIFY_ERROR, 5, i18n.GetPhrase("gbSelectPlayer"))
+                self:EmitSound("GlorifiedBanking.Beep_Error")
+            end
 
+            return
         end
     else
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonBackgroundCol)
     end
 
-    local iconsize = 38
+    iconsize = 38
 
     surface.SetFont("GlorifiedBanking.ATMEntity.TransactionButton")
     local buttonText = i18n.GetPhrase("gbMenuTransfer")
@@ -583,12 +630,90 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     surface.DrawTexturedRect(centerx - contentw * .5, msgy + 12, iconsize, iconsize)
     draw.SimpleText(buttonText, "GlorifiedBanking.ATMEntity.TransactionButton", centerx + contentw * .5, msgy, theme.Data.Colors.transactionTextCol, TEXT_ALIGN_RIGHT)
 
-    msgw, msgh, msgy =  windoww * .95, 80, windowy + windowh - 245
+    msgw, msgh, msgy = windoww * .95, 80, windowy + windowh - 305
     draw.RoundedBox(8, centerx - msgw * .5, msgy - 10, msgw, msgh, theme.Data.Colors.transactionEntryOutlineCol)
     msgw, msgh = windoww * .93, 60
     draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
 
     draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    local listw, listh = windoww * .95, 505
+    local listx, listy = centerx - listw * .5, windowy + 100
+
+    draw.RoundedBox(6, listx, listy, listw, listh, theme.Data.Colors.transferListBackgroundCol)
+
+    if not data.players then
+        data.players = player.GetHumans()
+
+        local ply = LocalPlayer()
+        for k,v in ipairs(data.players) do
+            if v == ply then break end -- table.remove(data.players, k) break end
+        end
+
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+        data.players[#data.players + 1] = LocalPlayer()
+    end
+
+    if not data.offset then data.offset = 0 end
+
+    render.ClearStencil()
+    render.SetStencilEnable(true)
+    render.SetStencilCompareFunction(STENCIL_ALWAYS)
+    render.SetStencilPassOperation(STENCIL_REPLACE)
+    render.SetStencilFailOperation(STENCIL_KEEP)
+    render.SetStencilZFailOperation(STENCIL_KEEP)
+
+    render.SetStencilWriteMask(1)
+    render.SetStencilTestMask(1)
+    render.SetStencilReferenceValue(1)
+
+    render.OverrideColorWriteEnable(true, false)
+
+    surface.SetDrawColor(color_white)
+    surface.DrawRect(listx, listy, listw, listh)
+
+    render.OverrideColorWriteEnable(false, false)
+
+    render.SetStencilCompareFunction(STENCIL_EQUAL)
+
+    local plyw, plyh = listw * .96, listh * .2
+    local plyx, plyy = listx + listw * .02, data.offset + listy + 24
+
+    iconsize = 80
+
+    for k,v in ipairs(data.players) do
+        if not IsValid(v) then table.remove(data.players, k) continue end
+
+        if k < 5 and imgui.IsHovering(plyx, plyy, plyw, plyh) then
+            hovering = true
+            draw.RoundedBox(6, plyx, plyy, plyw, plyh, theme.Data.Colors.transferListPlayerBackgroundHoverCol)
+
+            if imgui.IsPressed() then
+                data.selected = v
+                print(2)
+            end
+        else
+            draw.RoundedBox(6, plyx, plyy, plyw, plyh, theme.Data.Colors.transferListPlayerBackgroundCol)
+        end
+
+        surface.SetDrawColor(theme.Data.Colors.transferListPlayerIconCol)
+        surface.SetMaterial(theme.Data.Materials.player)
+        surface.DrawTexturedRect(plyx + 20, plyy + 11, iconsize, iconsize)
+
+        draw.SimpleText(v:Name(), "GlorifiedBanking.ATMEntity.TransferPlayerName", plyx + 35 + iconsize, plyy + plyh / 2, theme.Data.Colors.transferListPlayerNameCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+
+        if data.selected == v then
+            surface.SetDrawColor(theme.Data.Colors.transferListPlayerCheckCol)
+            surface.SetMaterial(theme.Data.Materials.check)
+            surface.DrawTexturedRect(plyx + plyw - 101, plyy + 11, iconsize, iconsize)
+        end
+
+        plyy = plyy + plyh + 16
+    end
+
+    render.SetStencilEnable(false)
 
     return hovering
 end
@@ -602,7 +727,6 @@ function ENT:DrawScreen()
         local currentScreen = self.Screens[screenID]
 
         local hovering = self:DrawScreenBackground(currentScreen.loggedIn, currentScreen.previousPage)
-
         if self.ShouldDrawCurrentScreen and self.OldScreenID == 0 then
             hovering = currentScreen.drawFunction(self, self.ScreenData) or hovering
         end

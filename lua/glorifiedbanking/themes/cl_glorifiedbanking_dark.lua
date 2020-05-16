@@ -61,6 +61,14 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         transactionEntryOutlineCol = Color( 65, 65, 65 ),
 
 
+        transferListBackgroundCol = Color( 70, 70, 70 ),
+        transferListPlayerIconCol = Color( 255, 255, 255 ),
+        transferListPlayerCheckCol = Color( 46, 162, 212 ),
+        transferListPlayerNameCol = Color( 255, 255, 255 ),
+        transferListPlayerBackgroundCol = Color( 51, 51, 51 ),
+        transferListPlayerBackgroundHoverCol = Color( 60, 60, 60 ),
+
+
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
         loadingScreenBorderCol = Color( 46, 162, 212 ),
         loadingScreenTextCol = Color( 255, 255, 255 ),
@@ -82,12 +90,15 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         adminMenuCloseButtonCol = Color( 201, 60, 63 ),
         adminMenuCloseButtonHoverCol = Color( 134, 35, 37 ),
 
+
         scrollBarCol = Color( 105, 105, 105 ),
         scrollBarHoverCol = Color( 85, 85, 85 ),
+
 
         dropdownBackgroundCol = Color( 33, 33, 33 ),
         dropdownBackgroundHoverCol = Color( 45, 45, 45 ),
         dropdownSelectedTextCol = Color( 255, 255, 255 ),
+
 
         paginatorItemsTextCol = Color( 255, 255, 255 ),
         paginatorButtonTextCol = Color( 255, 255, 255 ),
@@ -96,6 +107,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         paginatorNumberButtonBackgroundCol = Color( 80, 80, 80, 0 ),
         paginatorNumberButtonBackgroundHoverCol = Color( 80, 80, 80 ),
         paginatorNumberButtonSelectedBackgroundCol = Color( 32, 133, 175 ),
+
 
         logsMenuTransactionTypeTextCol = Color( 255, 255, 255 ),
         logsMenuTransactionTypeSelectCol = Color( 33, 33, 33 ),
@@ -192,6 +204,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 600,
             antialias = true
         },
+        ["ATMEntity.TransferPlayerName"] = {
+            font = "Montserrat",
+            size = 52,
+            weight = 600,
+            antialias = true
+        },
         ["CardSWEP.Info"] = {
             font = "Courier New",
             size = function() return ScrH() * .02 end,
@@ -264,6 +282,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         money = Material( "glorified_banking/money.png", "noclamp smooth" ),
         user = Material( "glorified_banking/user.png", "noclamp smooth" ),
         player = Material( "glorified_banking/player.png", "noclamp smooth" ),
+        check = Material( "glorified_banking/check.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         close = Material( "glorified_banking/close.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
