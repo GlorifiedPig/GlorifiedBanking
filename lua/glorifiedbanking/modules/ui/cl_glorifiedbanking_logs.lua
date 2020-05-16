@@ -56,14 +56,14 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(w, h)
-    self.TopBar:SetSize(w, h * .04)
+    self.TopBar:SetSize(w, h * .05)
     self.TopBar:Dock(TOP)
 
     surface.SetFont("GlorifiedBanking.AdminMenu.TransactionTypeSelect")
     local dropx = surface.GetTextSize(i18n.GetPhrase("gbTransactionType"))
 
     self.TransactionTypeSelect:SetSize(w * .1, h * .032)
-    self.TransactionTypeSelect:SetPos(w * .024 + dropx + w * .01,  h * .004)
+    self.TransactionTypeSelect:SetPos(w * .024 + dropx + w * .01,  h * .011)
     self.TransactionTypeSelect:SizeToContents()
 
     self.ScrollPanel:Dock(FILL)
