@@ -73,7 +73,7 @@ function ENT:OnScreenChange(name, old, new)
     self.OldScreenData = table.Copy(self.ScreenData)
     self.ScreenData = {}
 
-    timer.Simple(2, function()
+    timer.Simple(1.2, function()
         self.OldScreenID = 0
         self.OldScreenData = {}
         self.KeyPadBuffer = ""
@@ -168,16 +168,16 @@ end)
 
 function ENT:DrawLoadingScreen()
     if self.ForcedLoad or not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
-        self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, 30)
+        self.LoadingScreenX = Lerp(FrameTime() * 8, self.LoadingScreenX, 30)
 
         if self.LoadingScreenX > 18 then
-            self.LoadingScreenH = Lerp(FrameTime() * 6, self.LoadingScreenH, windowh)
+            self.LoadingScreenH = Lerp(FrameTime() *8, self.LoadingScreenH, windowh)
         end
     else
-        self.LoadingScreenH = Lerp(FrameTime() * 5, self.LoadingScreenH, 300)
+        self.LoadingScreenH = Lerp(FrameTime() * 8, self.LoadingScreenH, 300)
 
         if self.LoadingScreenH < 320 then
-            self.LoadingScreenX = Lerp(FrameTime() * 5, self.LoadingScreenX, -scrw)
+            self.LoadingScreenX = Lerp(FrameTime() * 8, self.LoadingScreenX, -scrw)
         end
     end
 
