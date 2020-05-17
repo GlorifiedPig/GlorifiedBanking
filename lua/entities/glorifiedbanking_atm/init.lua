@@ -216,6 +216,24 @@ function ENT:GiveMoney(ply)
 end
 
 function ENT:Transfer(ply, receiver, amount)
+    self.LastAction = CurTime()
+
+    if amount <= 0 then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
+
+    local atmFee = math.Clamp(math.floor(amount / 100 * self:GetTransferFee()), 0, amount)
+    amount = amount - atmFee
+    if not GlorifiedBanking.CanPlayerAfford(ply, amount) then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
+    end
+
+    self:EmitSound("GlorifiedBanking.Beep_Normal")
+
     self:ForceLoad(i18n.GetPhrase("gbContactingServer"))
 
     timer.Simple(3, function()
