@@ -78,7 +78,7 @@ local function getAtmPos(tr, heightOffset)
 
     local distToFloor = math.abs(tr.HitPos[3] - floorTr.HitPos[3])
 
-    return tr.HitPos - (tr.HitNormal * -10.524150848389) - Vector(0, 0, distToFloor - heightOffset), angles
+    return tr.HitPos - (tr.HitNormal * -9.6) - Vector(0, 0, distToFloor - heightOffset), angles
 end
 
 function TOOL:UpdateGhost(ent, ply)
