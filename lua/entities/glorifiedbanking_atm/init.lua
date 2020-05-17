@@ -31,7 +31,7 @@ function ENT:Think()
 
     local maxDistance = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
     if self:GetPos():DistToSqr(user:GetPos()) > maxDistance * maxDistance then
-        self.OldUser = self:GetCurrentUser()
+        self.OldUser = user
         self:SetCurrentUser(NULL)
         self:Logout()
         return
@@ -39,7 +39,7 @@ function ENT:Think()
 
     if not GlorifiedBanking.Config.LAST_ACTION_TIMEOUT then return end
     if CurTime() < self.LastAction + GlorifiedBanking.Config.LAST_ACTION_TIMEOUT then return end
-    self.OldUser = self:GetCurrentUser()
+    self.OldUser = user
     self:SetCurrentUser(NULL)
     self:Logout()
 
