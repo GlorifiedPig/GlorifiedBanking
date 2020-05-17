@@ -369,7 +369,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         idleSlideshow = {
             [1] = Material( "glorified_banking/slideshow/robbery.png", "noclamp smooth" ),
             [2] = Material( "glorified_banking/slideshow/bank.png", "noclamp smooth" ),
-            [3] = Material( "glorified_banking/slideshow/slide3.png", "noclamp smooth" )
+            [3] = Material( "glorified_banking/slideshow/transaction.png", "noclamp smooth" )
         }
     }
 } )
