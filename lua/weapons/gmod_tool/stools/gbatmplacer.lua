@@ -111,7 +111,6 @@ end
 if CLIENT then return end
 
 function TOOL:LeftClick( tr )
-    -- TODO: Save fees in GlorifiedPersistentEnts
     if GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
         local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber( "height" ) )
 
