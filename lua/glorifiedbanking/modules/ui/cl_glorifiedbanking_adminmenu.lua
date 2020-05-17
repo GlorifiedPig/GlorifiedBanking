@@ -28,11 +28,9 @@ function PANEL:Init()
         end)
     end
 
-    self.Navbar:AddItem("PLAYERS", LEFT, function(s) changePage("GlorifiedBanking.Players") end)
-
-    self.Navbar:AddItem("LOGS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
-
-    self.Navbar:AddItem("SETTINGS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
+    self.Navbar:AddItem(i18n.GetPhrase("gbAdminMenuPlayers"), LEFT, function(s) changePage("GlorifiedBanking.Players") end)
+    self.Navbar:AddItem(i18n.GetPhrase("gbAdminMenuLogs"), LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
+    self.Navbar:AddItem(i18n.GetPhrase("gbAdminMenuSettings"), LEFT, function(s) changePage("GlorifiedBanking.Settings") end)
 
     self.Navbar:AddItem("X", RIGHT, function(s)
         self:AlphaTo(0, 0.3, 0, function(anim, panel)
