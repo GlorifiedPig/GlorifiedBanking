@@ -28,7 +28,7 @@ function PANEL:Init()
         end)
     end
 
-    self.Navbar:AddItem("HOME", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
+    self.Navbar:AddItem("PLAYERS", LEFT, function(s) changePage("GlorifiedBanking.Players") end)
 
     self.Navbar:AddItem("LOGS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
@@ -43,6 +43,7 @@ function PANEL:Init()
     end)
 
     self.Navbar:SelectTab(1)
+    changePage("GlorifiedBanking.Players")
 
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)

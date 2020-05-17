@@ -31,6 +31,7 @@ i18n.RegisterPhrases("en", {
     gbPleaseWait = "PLEASE WAIT A MOMENT",
     gbCardName = "GlorifiedBanking Card",
     gbTransactionType = "Transaction Type",
+    gbPlayersOnline = "Players online: %s",
     gbTypeAll = "All",
     gbTypeWithdrawals = "Withdrawals",
     gbTypeDeposits = "Deposits",
