@@ -47,5 +47,10 @@ ENT.Screens = {
         loggedIn = true,
         previousPage = 3,
         takesKeyInput = true
+    },
+    [7] = { --Transactions screen
+        loggedIn = true,
+        previousPage = 3,
+        takesKeyInput = true
     }
 }

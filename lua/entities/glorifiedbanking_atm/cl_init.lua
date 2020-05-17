@@ -171,7 +171,7 @@ function ENT:DrawLoadingScreen()
         self.LoadingScreenX = Lerp(FrameTime() * 8, self.LoadingScreenX, 30)
 
         if self.LoadingScreenX > 18 then
-            self.LoadingScreenH = Lerp(FrameTime() *8, self.LoadingScreenH, windowh)
+            self.LoadingScreenH = Lerp(FrameTime() * 8, self.LoadingScreenH, windowh)
         end
     else
         self.LoadingScreenH = Lerp(FrameTime() * 8, self.LoadingScreenH, 300)
@@ -360,6 +360,10 @@ local menuButtons = {
     {
         name = i18n.GetPhrase("gbMenuTransactions"),
         pressFunc = function(self)
+            net.Start("GlorifiedBanking.ChangeScreen")
+             net.WriteUInt(7, 4)
+             net.WriteEntity(self)
+            net.SendToServer()
         end
     }
 }
@@ -750,6 +754,9 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     surface.DrawTexturedRectRotated(arrowx, listy + listh - iconsize / 2 - 15, iconsize, iconsize, 270)
 
     return hovering
+end
+
+ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
 end
 
 local screenpos = Vector(1.47, 13.46, 51.16)
