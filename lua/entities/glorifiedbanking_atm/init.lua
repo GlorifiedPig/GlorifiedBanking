@@ -115,7 +115,7 @@ function ENT:Withdraw(ply, amount)
         return
     end
 
-    local atmFee = math.Clamp(math.floor(amount / 100 * self.WithdrawalFee), 0, amount)
+    local atmFee = math.Clamp(math.floor(amount / 100 * self:GetWithdrawalFee()), 0, amount)
     amount = amount - atmFee
     if not GlorifiedBanking.CanPlayerAfford(ply, amount) then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
@@ -163,7 +163,7 @@ function ENT:Deposit(ply, amount)
         return
     end
 
-    local atmFee = math.Clamp(math.floor(amount / 100 * self.DepositFee), 0, amount)
+    local atmFee = math.Clamp(math.floor(amount / 100 * self:GetDepositFee()), 0, amount)
     amount = amount - atmFee
     if not GlorifiedBanking.CanWalletAfford(ply, amount) then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))

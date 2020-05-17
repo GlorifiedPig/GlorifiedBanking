@@ -110,13 +110,25 @@ end
 
 if CLIENT then return end
 
-function TOOL:LeftClick(tr)
-    //TODO: Spawn ATM at pos getAtmPos(tr, heightOffset)
-    //      Set shared vars on ATM: Withdrawal/Deposit/Transfer Fees, Sign Text self:GetClientNumber() for fees, self:GetClientInfo() to get sign text
-    //      Save the ATM permanently
-    //      Configurable admin permissions
+function TOOL:LeftClick( tr )
+    if GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
+        local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber( "height" ) )
+
+        local createdATM = ents.Create( "glorifiedbanking_atm" )
+        createdATM:SetPos( atmPos )
+        createdATM:SetAngles( atmAngles )
+        createdATM:SetWithdrawalFee( self:GetClientNumber( "withdrawalfee" ) )
+        createdATM:SetDepositFee( self:GetClientNumber( "depositfee" ) )
+        createdATM:SetTransferFee( self:GetClientNumber( "transferfee" ) )
+        createdATM:SetSignText( self:GetClientInfo( "signtext" ) )
+        createdATM:Spawn()
+        createdATM:GetPhysicsObject():EnableMotion( false )
+    end
 end
 
-function TOOL:RightClick(tr)
-    //TODO: Remove the ATM then delete it from the permanent database
+function TOOL:RightClick( tr )
+    if not tr.Hit or not IsValid( tr.Entity ) then return end
+    if tr.Entity:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
+        SafeRemoveEntity( tr.Entity )
+    end
 end

@@ -38,6 +38,10 @@
         ["glorifiedbanking_restorebackup"] = {
             MinAccess = "superadmin",
             Description = "Permission for which usergroups are able to restore to a previous backup."
-        }
+        },
+        ["glorifiedbanking_placeatms"] = {
+            MinAccess = "superadmin",
+            Description = "Permission to place ATMs with the toolgun around the map."
+        },
     }
 --[[ End Permissions Settings ]]--

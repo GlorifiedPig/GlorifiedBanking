@@ -518,7 +518,7 @@ ENT.Screens[4].drawFunction = function(self, data) --Withdrawal screen
         i18n.GetPhrase("gbWithdrawAmount"),
         i18n.GetPhrase("gbMenuWithdraw"),
         theme.Data.Materials.transaction,
-        self.WithdrawalFee > 0 and i18n.GetPhrase("gbWithdrawalHasFee", self.WithdrawalFee) or i18n.GetPhrase("gbWithdrawalFree"),
+        self:GetWithdrawalFee() > 0 and i18n.GetPhrase("gbWithdrawalHasFee", self:GetWithdrawalFee()) or i18n.GetPhrase("gbWithdrawalFree"),
         i18n.GetPhrase("gbWithdrawalDisclaimer"),
         function(amount)
             self.KeyPadBuffer = ""
@@ -537,7 +537,7 @@ ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
         i18n.GetPhrase("gbDepositAmount"),
         i18n.GetPhrase("gbMenuDeposit"),
         theme.Data.Materials.transaction,
-        self.DepositFee > 0 and i18n.GetPhrase("gbDepositHasFee", self.DepositFee) or i18n.GetPhrase("gbDepositFree"),
+        self:GetDepositFee() > 0 and i18n.GetPhrase("gbDepositHasFee", self:GetDepositFee()) or i18n.GetPhrase("gbDepositFree"),
         i18n.GetPhrase("gbDepositDisclaimer"),
         function(amount)
             self.KeyPadBuffer = ""
@@ -584,7 +584,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     iconsize = 25
 
     surface.SetFont("GlorifiedBanking.ATMEntity.TransactionFee")
-    local hintText = self.TransferFee > 0 and i18n.GetPhrase("gbTransferHasFee", self.TransferFee) or i18n.GetPhrase("gbTransferFree")
+    local hintText = self:GetTransferFee() > 0 and i18n.GetPhrase("gbTransferHasFee", self:GetTransferFee()) or i18n.GetPhrase("gbTransferFree")
     contentw = iconsize + 10 + surface.GetTextSize(hintText)
 
     surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
