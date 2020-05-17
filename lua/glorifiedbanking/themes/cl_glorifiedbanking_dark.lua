@@ -140,6 +140,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         setBalanceButtonTextCol = Color( 255, 255, 255 ),
         setBalanceEntryTextCol = Color( 74, 74, 74 ),
         setBalanceEntryBackgroundCol = Color( 255, 255, 255 ),
+
+
+        resetBalanceYesButtonBackgroundCol = Color( 87, 168, 50 ),
+        resetBalanceYesButtonBackgroundHoverCol = Color( 62, 123, 32 ),
+        resetBalanceNoButtonBackgroundCol = Color( 205, 57, 57 ),
+        resetBalanceNoButtonBackgroundHoverCol = Color( 158, 41, 41 )
     },
     Fonts = {
         ["ATMEntity.Title"] = {

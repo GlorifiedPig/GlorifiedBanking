@@ -34,6 +34,13 @@ function PANEL:AddPlayer(ply, balance)
         draw.SimpleText(i18n.GetPhrase("gbResetBalance"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
+    self.ResetBalance.DoClick = function(s)
+        if IsValid(GlorifiedBanking.UI.ConfirmationPopup) then return end
+
+        GlorifiedBanking.UI.ConfirmationPopup = vgui.Create("GlorifiedBanking.ConfirmationPopup")
+        GlorifiedBanking.UI.ConfirmationPopup.Player = self.Player
+    end
+
     self.ViewTransactions = vgui.Create("DButton", self)
     self.ViewTransactions:SetText("")
     self.ViewTransactions.Color = Color(255, 255, 255)

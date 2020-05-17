@@ -32,8 +32,6 @@ function PANEL:Init()
 
     self.Navbar:AddItem("LOGS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
-    self.Navbar:AddItem("BACKUPS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
-
     self.Navbar:AddItem("SETTINGS", LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
     self.Navbar:AddItem("X", RIGHT, function(s)
