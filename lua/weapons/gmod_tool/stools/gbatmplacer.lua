@@ -133,5 +133,8 @@ function TOOL:LeftClick( tr )
 end
 
 function TOOL:RightClick( tr )
-    --TODO: Remove the ATM then delete it from the permanent database
+    if not tr.Hit or not IsValid( tr.Entity ) then return end
+    if tr.Entity:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( ply, "glorifiedbanking_placeatms" ) then
+        SafeRemoveEntity( tr.Entity )
+    end
 end
