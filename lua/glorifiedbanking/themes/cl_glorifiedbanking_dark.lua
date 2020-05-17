@@ -124,6 +124,22 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         logsMenuLogPlayerSteamIDTextCol = Color( 160, 160, 160 ),
         logsMenuLogMoneyPositiveTextCol = Color( 87, 168, 50 ),
         logsMenuLogMoneyNegativeTextCol = Color( 205, 57, 57 ),
+
+
+        playersMenuSetButtonBackgroundCol = Color( 26, 134, 177 ),
+        playersMenuSetButtonBackgroundHoverCol = Color( 31, 168, 223 ),
+        playersMenuResetButtonBackgroundCol = Color( 205, 57, 57 ),
+        playersMenuResetButtonBackgroundHoverCol = Color( 158, 41, 41 ),
+        playersMenuTransactionsButtonBackgroundCol = Color( 74, 74, 74 ),
+        playersMenuTransactionsButtonBackgroundHoverCol = Color( 50, 50, 50 ),
+        playersMenuButtonTextCol = Color( 255, 255, 255 ),
+
+
+        setBalanceButtonBackgroundCol = Color( 87, 168, 50 ),
+        setBalanceButtonBackgroundHoverCol = Color( 62, 123, 32 ),
+        setBalanceButtonTextCol = Color( 255, 255, 255 ),
+        setBalanceEntryTextCol = Color( 74, 74, 74 ),
+        setBalanceEntryBackgroundCol = Color( 255, 255, 255 ),
     },
     Fonts = {
         ["ATMEntity.Title"] = {
@@ -291,6 +307,36 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         ["AdminMenu.LogMoney"] = {
             font = "Montserrat",
             size = function() return ScrH() * .024 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.PlayerSetBalance"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .017 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.SetBalanceTitle"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .028 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.SetBalanceDescription"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .024 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.SetBalanceEntry"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .022 end,
+            weight = 500,
+            antialias = true
+        },
+        ["AdminMenu.SetBalanceButton"] = {
+            font = "Montserrat",
+            size = function() return ScrH() * .03 end,
             weight = 500,
             antialias = true
         }

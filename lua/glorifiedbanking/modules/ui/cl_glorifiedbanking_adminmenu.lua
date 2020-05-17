@@ -64,11 +64,11 @@ end
 
 vgui.Register("GlorifiedBanking.AdminMenu", PANEL, "EditablePanel")
 
-if IsValid(GlorifiedBanking.AdminMenu) then
-    GlorifiedBanking.AdminMenu:Remove()
-    GlorifiedBanking.AdminMenu = nil
+if IsValid(GlorifiedBanking.UI.AdminMenu) then
+    GlorifiedBanking.UI.AdminMenu:Remove()
+    GlorifiedBanking.UI.AdminMenu = nil
 end
 
 if not IsValid(LocalPlayer()) then return end
-GlorifiedBanking.AdminMenu = vgui.Create("GlorifiedBanking.AdminMenu")
+GlorifiedBanking.UI.AdminMenu = vgui.Create("GlorifiedBanking.AdminMenu")
 print("Reloaded admin menu")
