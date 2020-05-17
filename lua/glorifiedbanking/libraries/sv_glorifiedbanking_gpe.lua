@@ -13,7 +13,13 @@ function GlorifiedPersistentEnts.SaveEntityInfo( ent )
     if not GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then return end
     local posInfoJSON = {
         Pos = ent:GetPos(),
-        Angles = ent:GetAngles()
+        Angles = ent:GetAngles(),
+        EntInfo = {
+            WithdrawalFee = ent:GetWithdrawalFee(),
+            DepositFee = ent:GetDepositFee(),
+            TransferFee = ent:GetTransferFee(),
+            SignText = ent:GetSignText()
+        }
     }
     posInfoJSON = util.TableToJSON( posInfoJSON )
     if ent.EntID != nil then
@@ -41,6 +47,10 @@ function GlorifiedPersistentEnts.LoadEntities()
         local gpeEntity = ents.Create( v["Class"] )
         gpeEntity:SetPos( gpeEntityInfo.Pos )
         gpeEntity:SetAngles( gpeEntityInfo.Angles )
+        gpeEntity:SetWithdrawalFee( gpeEntityInfo.EntInfo.WithdrawalFee )
+        gpeEntity:SetDepositFee( gpeEntityInfo.EntInfo.DepositFee )
+        gpeEntity:SetTransferFee( gpeEntityInfo.EntInfo.TransferFee )
+        gpeEntity:SetSignText( gpeEntityInfo.EntInfo.SignText )
         gpeEntity:Spawn()
         if gpeEntity:GetPhysicsObject():IsValid() then
             gpeEntity:GetPhysicsObject():EnableMotion( false )
