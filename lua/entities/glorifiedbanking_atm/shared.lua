@@ -9,23 +9,23 @@ ENT.AdminOnly = true
 
 function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "ScreenID")
-    self:NetworkVar("Entity", 0, "CurrentUser")
     self:NetworkVar("Int", 1, "WithdrawalFee")
     self:NetworkVar("Int", 2, "DepositFee")
     self:NetworkVar("Int", 3, "TransferFee")
     self:NetworkVar("String", 0, "SignText")
+    self:NetworkVar("Entity", 0, "CurrentUser")
 
     if SERVER then
         self:SetScreenID(1)
         self:SetCurrentUser(NULL)
+        self:SetWithdrawalFee(0)
+        self:SetDepositFee(0)
+        self:SetTransferFee(0)
+        self:SetSignText("GlorifiedBanking")
     else
         self:NetworkVarNotify("ScreenID", self.OnScreenChange)
     end
 end
-
-ENT.WithdrawalFee = 50
-ENT.DepositFee = 80
-ENT.TransferFee = 0
 
 ENT.Screens = {
     [1] = {}, --Idle screen
