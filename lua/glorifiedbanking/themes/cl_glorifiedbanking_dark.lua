@@ -216,9 +216,15 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 600,
             antialias = true
         },
-        ["ATMEntity.SignText"] = {
+        ["ATMEntity.SignTextSmall"] = {
             font = "Subway Ticker Grid",
-            size = 120,
+            size = 80,
+            weight = 600,
+            antialias = true
+        },
+        ["ATMEntity.SignTextLarge"] = {
+            font = "Subway Ticker Grid",
+            size = 140,
             weight = 600,
             antialias = true
         },

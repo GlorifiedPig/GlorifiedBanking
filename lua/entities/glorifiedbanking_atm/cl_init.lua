@@ -883,7 +883,8 @@ function ENT:DrawSign()
     cam.Start3D2D(self:LocalToWorld(signpos), self:LocalToWorldAngles(signang), 0.05)
         surface.SetDrawColor(theme.Data.Colors.signBackgroundCol)
         surface.DrawRect(0, 0, signw, signh)
-        draw.SimpleText(self.SignText, "GlorifiedBanking.ATMEntity.SignText", signw / 2, signh / 2, theme.Data.Colors.signTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        local text = self:GetSignText()
+        draw.SimpleText(text, #text > 9 and "GlorifiedBanking.ATMEntity.SignTextSmall" or "GlorifiedBanking.ATMEntity.SignTextLarge", signw / 2, signh * .46, theme.Data.Colors.signTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     cam.End3D2D()
 end
 
