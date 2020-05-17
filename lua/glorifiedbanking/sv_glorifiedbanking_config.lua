@@ -41,7 +41,7 @@
         },
         ["glorifiedbanking_placeatms"] = {
             MinAccess = "superadmin",
-            Description = "Permission to place ATMs with the toolgun around the map."
+            Description = "Permission to place and remove ATMs with the toolgun around the map."
         },
     }
 --[[ End Permissions Settings ]]--
