@@ -85,6 +85,10 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         keyPressedCol = Color(0, 0, 0, 200),
 
 
+        signBackgroundCol = Color( 0, 0, 0 ),
+        signTextCol = Color( 255, 255, 255 ),
+
+
         adminMenuBackgroundCol = Color( 50, 50, 50 ),
         adminMenuNavbarBackgroundCol = Color( 38, 38, 38 ),
         adminMenuNavbarItemCol = Color( 255, 255, 255 ),
@@ -209,6 +213,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         ["ATMEntity.TransferPlayerName"] = {
             font = "Montserrat",
             size = 52,
+            weight = 600,
+            antialias = true
+        },
+        ["ATMEntity.SignText"] = {
+            font = "Subway Ticker Grid",
+            size = 120,
             weight = 600,
             antialias = true
         },

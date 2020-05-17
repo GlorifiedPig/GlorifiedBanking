@@ -85,7 +85,7 @@ function ENT:DrawTranslucent()
 
     self:DrawScreen()
     self:DrawKeypad()
-    --TODO: Draw sign
+    self:DrawSign()
 
     self:DrawAnimations()
 end
@@ -872,6 +872,19 @@ function ENT:DrawKeypad()
 
         imgui.End3D2D()
     end
+end
+
+local signpos = Vector(-8.3, 14.5, 71.3)
+local signang = Angle(0, 270, 90)
+
+local signw, signh = 553, 162
+
+function ENT:DrawSign()
+    cam.Start3D2D(self:LocalToWorld(signpos), self:LocalToWorldAngles(signang), 0.05)
+        surface.SetDrawColor(theme.Data.Colors.signBackgroundCol)
+        surface.DrawRect(0, 0, signw, signh)
+        draw.SimpleText(self.SignText, "GlorifiedBanking.ATMEntity.SignText", signw / 2, signh / 2, theme.Data.Colors.signTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    cam.End3D2D()
 end
 
 local moneyinpos = Vector(-7, 4.5, 19.37)
