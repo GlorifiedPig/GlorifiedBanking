@@ -21,7 +21,7 @@ function ENT:SetupDataTables()
         self:SetWithdrawalFee(0)
         self:SetDepositFee(0)
         self:SetTransferFee(0)
-        self:SetSignText("GlorifiedBanking")
+        self:SetSignText("ATM")
     else
         self:NetworkVarNotify("ScreenID", self.OnScreenChange)
     end
