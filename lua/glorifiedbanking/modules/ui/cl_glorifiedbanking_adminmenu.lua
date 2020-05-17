@@ -2,7 +2,7 @@
 local PANEL = {}
 
 function PANEL:Init()
-    self:SetSize(ScrW() * .42, ScrH() * .8)
+    self:SetSize(ScrH() * .746, ScrH() * .8)
     self:Center()
     self:MakePopup()
 
@@ -30,7 +30,11 @@ function PANEL:Init()
 
     self.Navbar:AddItem(i18n.GetPhrase("gbAdminMenuPlayers"), LEFT, function(s) changePage("GlorifiedBanking.Players") end)
     self.Navbar:AddItem(i18n.GetPhrase("gbAdminMenuLogs"), LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
-    self.Navbar:AddItem(i18n.GetPhrase("gbAdminMenuSettings"), LEFT, function(s) changePage("GlorifiedBanking.Settings") end)
+
+    self.Navbar:AddItem("LOCK", LEFT, function(s)
+
+    end)
+
 
     self.Navbar:AddItem("X", RIGHT, function(s)
         self:AlphaTo(0, 0.3, 0, function(anim, panel)

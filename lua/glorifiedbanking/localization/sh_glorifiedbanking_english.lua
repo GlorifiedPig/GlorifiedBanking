@@ -42,6 +42,7 @@ i18n.RegisterPhrases("en", {
     gbAdminMenuPlayers = "PLAYERS",
     gbAdminMenuLogs = "LOGS",
     gbAdminMenuSettings = "SETTINGS",
+    gbAdminMenuLockdown = "LOCKDOWN MODE",
     gbResetBalance = "Reset Balance",
     gbViewTransactions = "Transactions",
     gbTypeAll = "All",
