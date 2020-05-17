@@ -27,6 +27,21 @@ ENT.LastAction = 0
 
 function ENT:Think()
     local user = self:GetCurrentUser()
+
+    if GlorifiedBanking.LockdownEnabled then
+        if user != NULL then
+            self.OldUser = user
+            self:SetCurrentUser(NULL)
+            self:Logout()
+            return
+        end
+
+        self:SetScreenID(2)
+        return
+    end
+
+    if self:GetScreenID() == 2 then self:SetScreenID(1) return end
+
     if user == NULL then return end
 
     local maxDistance = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
@@ -93,12 +108,13 @@ function ENT:InsertCard(ply)
 end
 
 function ENT:Logout()
-    self:SetScreenID(1)
+    local screenid = GlorifiedBanking.LockdownEnabled and 2 or 1
+    self:SetScreenID(screenid)
 
     self:PlayGBAnim(GB_ANIM_CARD_OUT)
 
     timer.Simple(1.5, function()
-        self:SetScreenID(1)
+        self:SetScreenID(screenid)
         local ply = self.OldUser or self:GetCurrentUser()
         self:ResetATM()
         if IsValid(ply) then ply:Give("glorifiedbanking_card") end
