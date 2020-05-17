@@ -11,24 +11,19 @@ TOOL.ClientConVar["withdrawalfee"] = 0
 TOOL.ClientConVar["depositfee"] = 0
 TOOL.ClientConVar["transferfee"] = 0
 
-local function canTool(tr)
-    return tr.Hit and tr.Entity and tr.Entity:IsWorld()
-end
-
 if CLIENT then
     TOOL.Information = {
         {name = "info", stage = 1},
         {name = "left"},
-        {name = "right"}
+        {name = "right"},
+		{name = "reload"}
     }
 
     language.Add("tool.gbatmplacer.name", i18n.GetPhrase("gbToolName"))
     language.Add("tool.gbatmplacer.desc", i18n.GetPhrase("gbToolDescription"))
     language.Add("tool.gbatmplacer.left", i18n.GetPhrase("gbToolLeftClick"))
     language.Add("tool.gbatmplacer.right", i18n.GetPhrase("gbToolRightClick"))
-
-    function TOOL:LeftClick(tr) return canTool(tr) end
-    function TOOL:RightClick(tr) return canTool(tr) end
+    language.Add("tool.gbatmplacer.reload", i18n.GetPhrase("gbToolReload"))
 
     local backgroundCol = Color(20, 20, 20)
     function TOOL:DrawToolScreen(w, h)
@@ -130,5 +125,14 @@ function TOOL:RightClick( tr )
     if not tr.Hit or not IsValid( tr.Entity ) then return end
     if tr.Entity:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
         SafeRemoveEntity( tr.Entity )
+    end
+end
+
+function TOOL:Reload( tr )
+    if tr.Entity:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
+        tr.Entity:SetWithdrawalFee( self:GetClientNumber( "withdrawalfee" ) )
+        tr.Entity:SetDepositFee( self:GetClientNumber( "depositfee" ) )
+        tr.Entity:SetTransferFee( self:GetClientNumber( "transferfee" ) )
+        tr.Entity:SetSignText( self:GetClientInfo( "signtext" ) )
     end
 end

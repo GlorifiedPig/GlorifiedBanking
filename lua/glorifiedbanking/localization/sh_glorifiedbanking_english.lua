@@ -72,6 +72,7 @@ i18n.RegisterPhrases("en", {
     gbToolDescription = "Used to place ATMs on the wall and configure their individual settings.",
     gbToolLeftClick = "Place a permanent ATM",
     gbToolRightClick = "Remove a permanent ATM",
+    gbToolReload = "Apply settings to an ATM",
     gbToolSignText = "Sign Text:",
     gbToolSignTextHelp = "The text displayed on the ATM sign.",
     gbToolWithdrawalFee = "Withdrawal Fee:",
