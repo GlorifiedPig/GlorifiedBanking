@@ -16,7 +16,7 @@ if CLIENT then
         {name = "info", stage = 1},
         {name = "left"},
         {name = "right"},
-		{name = "reload"}
+        {name = "reload"}
     }
 
     language.Add("tool.gbatmplacer.name", i18n.GetPhrase("gbToolName"))
@@ -108,6 +108,7 @@ if CLIENT then return end
 function TOOL:LeftClick( tr )
     if GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
         local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber( "height" ) )
+        if not atmPos or not atmAngles then return end
 
         local createdATM = ents.Create( "glorifiedbanking_atm" )
         createdATM:SetPos( atmPos )
