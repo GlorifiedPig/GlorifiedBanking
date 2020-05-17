@@ -31,10 +31,9 @@ function PANEL:AddItem(name, dockType, onClick)
     end
 
     button:SetText("")
+    button.Color = self.Theme.Data.Colors.adminMenuNavbarItemCol
 
     if button.Text == "X" then
-        button.Color = self.Theme.Data.Colors.adminMenuNavbarItemCol
-
         button.Paint = function(s, w, h)
             local iconSize = h * .4
 
@@ -46,7 +45,6 @@ function PANEL:AddItem(name, dockType, onClick)
          end
     else
         button.UnderlineY = 0
-        button.Color = self.Theme.Data.Colors.adminMenuNavbarItemCol
 
         button.Paint = function(s, w, h)
             local underlineh = math.Round(h * .06)
