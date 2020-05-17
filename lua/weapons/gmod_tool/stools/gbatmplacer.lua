@@ -110,13 +110,28 @@ end
 
 if CLIENT then return end
 
-function TOOL:LeftClick(tr)
-    //TODO: Spawn ATM at pos getAtmPos(tr, heightOffset)
-    //      Set shared vars on ATM: Withdrawal/Deposit/Transfer Fees, Sign Text self:GetClientNumber() for fees, self:GetClientInfo() to get sign text
-    //      Save the ATM permanently
-    //      Configurable admin permissions
+function TOOL:LeftClick( tr )
+    -- TODO: Save fees in GlorifiedPersistentEnts
+    local ply = self:GetOwner()
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_placeatms" ) then
+        local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber( "height" ) )
+        local withdrawalPercentage = self:GetClientNumber( "withdrawalfee" )
+        local depositPercentage = self:GetClientNumber( "depositfee" )
+        local transferPercentage = self:GetClientNumber( "transferfee" )
+        local signText = self:GetClientInfo( "signtext" )
+
+        local createdATM = ents.Create( "glorifiedbanking_atm" )
+        createdATM:SetPos( atmPos )
+        createdATM:SetAngles( atmAngles )
+        createdATM:SetWithdrawalFee( withdrawalPercentage )
+        createdATM.SetDepositFee( depositPercentage )
+        createdATM.SetTransferFee( transferPercentage )
+        createdATM.SetSignText( signText )
+        createdATM:Spawn()
+        createdATM:GetPhysicsObject():EnableMotion( false )
+    end
 end
 
-function TOOL:RightClick(tr)
-    //TODO: Remove the ATM then delete it from the permanent database
+function TOOL:RightClick( tr )
+    --TODO: Remove the ATM then delete it from the permanent database
 end

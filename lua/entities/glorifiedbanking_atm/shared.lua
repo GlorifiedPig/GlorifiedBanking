@@ -10,6 +10,10 @@ ENT.AdminOnly = true
 function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "ScreenID")
     self:NetworkVar("Entity", 0, "CurrentUser")
+    self:NetworkVar("Int", 1, "WithdrawalFee")
+    self:NetworkVar("Int", 2, "DepositFee")
+    self:NetworkVar("Int", 3, "TransferFee")
+    self:NetworkVar("String", 0, "SignText")
 
     if SERVER then
         self:SetScreenID(1)

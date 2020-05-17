@@ -8,11 +8,13 @@
 util.AddNetworkString( "GlorifiedBanking.WithdrawalRequested" )
 util.AddNetworkString( "GlorifiedBanking.DepositRequested" )
 util.AddNetworkString( "GlorifiedBanking.TransferRequested" )
+
 util.AddNetworkString( "GlorifiedBanking.SendAnimation" )
 util.AddNetworkString( "GlorifiedBanking.CardInserted" )
 util.AddNetworkString( "GlorifiedBanking.Logout" )
 util.AddNetworkString( "GlorifiedBanking.ChangeScreen" )
 util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
+
 util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
 
 local function PlayerAuthChecks( ply )
