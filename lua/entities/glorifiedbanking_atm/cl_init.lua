@@ -361,11 +361,6 @@ local menuButtons = {
         name = i18n.GetPhrase("gbMenuTransactions"),
         pressFunc = function(self)
         end
-    },
-    {
-        name = i18n.GetPhrase("gbMenuSettings"),
-        pressFunc = function(self)
-        end
     }
 }
 
@@ -373,7 +368,7 @@ ENT.Screens[3].drawFunction = function(self, data) --Main Menu
     local centerx = windowx + windoww * .5, windowy + windowh * .5
 
     surface.SetFont("GlorifiedBanking.ATMEntity.WelcomeBack")
-    local contenty = windowy + 100
+    local contenty = windowy + 150
     local iconsize = 32
     local text = i18n.GetPhrase("gbWelcomeBack", string.upper(self.CurrentUsername))
     local contentw = iconsize + 6 + surface.GetTextSize(text)
@@ -683,8 +678,6 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     local plyw, plyh = showscroll and listw * .90 or listw * .96, listh * .2
     local plyx, plyy = listx + listw * .02
 
-    iconsize = 80
-
     for k,v in ipairs(data.players) do
         if not IsValid(v) then table.remove(data.players, k) continue end
 
@@ -704,6 +697,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
             draw.RoundedBox(6, plyx, plyy, plyw, plyh, theme.Data.Colors.transferListPlayerBackgroundCol)
         end
 
+        iconsize = 80
         surface.SetDrawColor(theme.Data.Colors.transferListPlayerIconCol)
         surface.SetMaterial(theme.Data.Materials.player)
         surface.DrawTexturedRect(plyx + 20, plyy + 11, iconsize, iconsize)
@@ -711,9 +705,10 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
         draw.SimpleText(v:Name(), "GlorifiedBanking.ATMEntity.TransferPlayerName", plyx + 35 + iconsize, plyy + plyh / 2, theme.Data.Colors.transferListPlayerNameCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         if data.selected == v then
+            iconsize = 60
             surface.SetDrawColor(theme.Data.Colors.transferListPlayerCheckCol)
             surface.SetMaterial(theme.Data.Materials.check)
-            surface.DrawTexturedRect(plyx + plyw - 101, plyy + 11, iconsize, iconsize)
+            surface.DrawTexturedRect(plyx + plyw - 80, plyy + 22, iconsize, iconsize)
         end
 
     end
