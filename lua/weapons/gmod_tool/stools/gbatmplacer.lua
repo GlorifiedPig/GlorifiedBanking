@@ -112,8 +112,7 @@ if CLIENT then return end
 
 function TOOL:LeftClick( tr )
     -- TODO: Save fees in GlorifiedPersistentEnts
-    local ply = self:GetOwner()
-    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_placeatms" ) then
+    if GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
         local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber( "height" ) )
 
         local createdATM = ents.Create( "glorifiedbanking_atm" )
@@ -130,7 +129,7 @@ end
 
 function TOOL:RightClick( tr )
     if not tr.Hit or not IsValid( tr.Entity ) then return end
-    if tr.Entity:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( ply, "glorifiedbanking_placeatms" ) then
+    if tr.Entity:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
         SafeRemoveEntity( tr.Entity )
     end
 end
