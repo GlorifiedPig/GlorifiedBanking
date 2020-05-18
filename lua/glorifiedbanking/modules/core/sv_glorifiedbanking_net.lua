@@ -130,6 +130,7 @@ concommand.Add( "glorifiedbanking_admin", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
         net.Start( "GlorifiedBanking.AdminPanel.OpenAdminPanel" )
         net.WriteBool( GlorifiedBanking.LockdownEnabled )
+        net.WriteBool( GlorifiedBanking.HasPermission( ply, "glorifiedbanking_setplayerbalance" ) )
         net.Send( ply )
     end
 end )
