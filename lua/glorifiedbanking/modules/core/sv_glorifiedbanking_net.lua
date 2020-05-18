@@ -155,12 +155,12 @@ end )
 
 net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
-        local pageNumber = net.ReadUInt( 16 )
-        local itemLimit = net.ReadUInt( 6 )
-        local filter = net.ReadString()
-        local filterSteamID = net.ReadString()
+        local pageNumber = GlorifedBanking.SQL.EscapeString( tostring( net.ReadUInt( 16 ) ) )
+        local itemLimit = GlorifedBanking.SQL.EscapeString( tostring( net.ReadUInt( 6 ) ) )
+        local filter = GlorifedBanking.SQL.EscapeString( net.ReadString() )
+        local filterSteamID = GlorifedBanking.SQL.EscapeString( net.ReadString() )
         if filter != "All" and filter != "Withdrawals" and filter != "Deposits" and filter != "Transfers" then return end
-        local query = "SET @row_number:=0; SELECT @row_number:=@row_number+1 AS `row_number`,`Date`,`Type`,`SteamID`,`ReceiverSteamID`,`Amount` FROM `gb_logs` WHERE "
+        local query = "SELECT * FROM `gb_logs` WHERE "
 
         if filter != "All" then
             query = query .. "`Type` = '" .. filter .. "' AND "
@@ -170,9 +170,9 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
             query = query .. "`SteamID` = '" .. filterSteamID .. "' AND "
         end
 
-        local startLimit = pageNumber == 1 and 1 or ( pageNumber - 1 ) * itemLimit
-        local endLimit = pageNumber == 1 and itemLimit or pageNumber * itemLimit
-        query = query .. "row_number BETWEEN " .. startLimit .. " AND " .. endLimit
+        local startLimit = pageNumber == 1 and 0 or ( pageNumber - 1 ) * itemLimit
+        local endLimit = ( pageNumber == 1 and itemLimit or pageNumber * itemLimit ) - startLimit
+        query = query .. "LIMIT " .. endLimit .. ", " .. startLimit
         GlorifiedBanking.SQL.Query( query, function( queryResult )
             net.Start( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
             net.WriteLargeString( util.TableToJSON( queryResult ) )
