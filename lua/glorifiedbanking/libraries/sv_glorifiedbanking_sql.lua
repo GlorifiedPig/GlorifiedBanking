@@ -12,6 +12,10 @@ if GlorifiedBanking.Config.SQL_TYPE == "mysqloo" then
     end
 end
 
+function GlorifiedBanking.SQL.GetType()
+    if mysqloo and GlorifiedBanking.Config.SQL_TYPE == "mysqloo" then return "mysqloo" else return "sqlite" end
+end
+
 function GlorifiedBanking.SQL.EscapeString( string )
     if GlorifiedBanking.SQL.Database then
         return GlorifiedBanking.SQL.Database:escape( string )
@@ -27,7 +31,7 @@ function GlorifiedBanking.SQL.ThrowError( error )
 end
 
 function GlorifiedBanking.SQL.Query( sqlQuery, successFunc )
-    if GlorifiedBanking.Config.SQL_TYPE == "mysqloo" and mysqloo then
+    if GlorifiedBanking.SQL.GetType() == "mysqloo" then
         local query = GlorifiedBanking.SQL.Database:query( sqlQuery )
         if successFunc then
             function query:onSuccess( queryData )

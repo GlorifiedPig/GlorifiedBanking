@@ -21,6 +21,8 @@ util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetPlayerBalance" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetLockdownStatus" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.PlayerListOpened" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
+util.AddNetworkString( "GlorifiedBanking.AdminPanel.RequestLogUpdate" )
+util.AddNetworkString( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
 
 local function PlayerAuthChecks( ply )
     return not ( not ply:IsValid()
@@ -98,11 +100,11 @@ net.Receive( "GlorifiedBanking.Logout", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
-    local newScreen = net.ReadUInt(4)
+    local newScreen = net.ReadUInt( 4 )
     local atmEntity = net.ReadEntity()
     if atmEntity:GetClass() == "glorifiedbanking_atm"
     and atmEntity:GetCurrentUser() == ply
-    and atmEntity.Screens[ newScreen ] then
+    and atmEntity.Screens[newScreen] then
         if atmEntity.ForcedLoad then
             atmEntity:EmitSound( "GlorifiedBanking.Beep_Error" )
             return
@@ -148,6 +150,34 @@ net.Receive( "GlorifiedBanking.AdminPanel.PlayerListOpened", function( len, ply 
         net.Start( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
         net.WriteLargeString( util.TableToJSON( playerList ) )
         net.Send( ply )
+    end
+end )
+
+net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply )
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
+        local pageNumber = net.ReadUInt( 16 )
+        local itemLimit = net.ReadUInt( 6 )
+        local filter = net.ReadString()
+        local filterSteamID = net.ReadString()
+        if filter != "All" and filter != "Withdrawals" and filter != "Deposits" and filter != "Transfers" then return end
+        local query = "SELECT * FROM `gb_logs` WHERE "
+
+        if filter != "All" then
+            query = query .. "`Type` = '" .. filter .. "' AND "
+        end
+
+        if filterSteamID != "NONE" then
+            query = query .. "`SteamID` = '" .. filterSteamID .. "' AND "
+        end
+
+        local startLimit = pageNumber == 1 and 1 or ( pageNumber - 1 ) * itemLimit
+        local endLimit = pageNumber == 1 and itemLimit or pageNumber * itemLimit
+        query = query .. "ROW_NUMBER() BETWEEN " .. startLimit .. " AND " .. endLimit
+        GlorifiedBanking.SQL.Query( query, function( queryResult )
+            net.Start( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
+            net.WriteLargeString( util.TableToJSON( queryResult ) )
+            net.Send( ply )
+        end )
     end
 end )
 
