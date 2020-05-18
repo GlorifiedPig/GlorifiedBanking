@@ -18,13 +18,26 @@ end
 function GlorifiedBanking.SetPlayerBalance( ply, balance )
     if not ValidationChecks( ply, balance ) then return end -- Always validate before doing important functions to keep things secure.
     balance = tonumber( balance ) -- Make sure to convert "500" to 500, just in case some function provides a string for whatever reason.
-    if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
     balance = math.Round( balance ) -- Make sure the balance is always rounded to an integer, we don't want floats slipping through.
     balance = minClamp( balance, 0 ) -- Make sure the balance never goes below zero.
+    if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
     hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- Args are ply, oldBalance and then newBalance. Documented in the markdown file.
     GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID() .. "'" ) -- Update the player's SQL data.
     ply.GlorifiedBanking.Balance = balance -- Cache the balance for easier usage elsewhere without the need to call another SQL query.
     ply:SetNWInt( "GlorifiedBanking.Balance", balance ) -- Set the networked balance so we don't have to include it in the net messages later.
+end
+
+function GlorifiedBanking.SetPlayerBalanceBySteamID( steamID, balance )
+    if not balance or balance == nil or balance < 0 then return end
+    balance = tonumber( balance )
+    balance = math.Round( balance )
+    balance = minClamp( balance )
+    local plyFromSteamID = player.GetBySteamID( steamID )
+    if plyFromSteamID then
+        GlorifiedBanking.SetPlayerBalance( plyFromSteamID, balance )
+    else
+        GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. steamID .. "'" ) -- Update the player's SQL data.
+    end
 end
 
 function GlorifiedBanking.GetPlayerBalance( ply )
