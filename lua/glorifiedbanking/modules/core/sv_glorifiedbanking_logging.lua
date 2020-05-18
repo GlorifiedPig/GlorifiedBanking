@@ -1,12 +1,12 @@
 
-GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_logs` ( `Date` TIMESTAMP NOT NULL , `Type` VARCHAR(16) NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `ReceiverSteamID` VARCHAR(32) , `Amount` BIGINT(64) NOT NULL )" )
+GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_logs` ( `Date` INT(32) NOT NULL , `Type` VARCHAR(16) NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `ReceiverSteamID` VARCHAR(32) , `Amount` BIGINT(64) NOT NULL )" )
 
 GlorifiedBanking.Logs = GlorifiedBanking.Logs or {}
 
 GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs`", function( queryResult ) GlorifiedBanking.Logs = queryResult end )
 
 function GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
-    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( '" .. os.time() .. "', 'Withdrawal', '" .. ply:SteamID() .. "', " .. withdrawAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Withdrawal', '" .. ply:SteamID() .. "', " .. withdrawAmount .. " )" )
     table.insert( GlorifiedBanking.Logs, {
         ["Date"] = os.time(),
         ["Type"] = "Withdrawal",
@@ -16,7 +16,7 @@ function GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
 end
 
 function GlorifiedBanking.LogDeposit( ply, depositAmount )
-    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( '" .. os.time() .. "', 'Deposit', '" .. ply:SteamID() .. "', " .. depositAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Deposit', '" .. ply:SteamID() .. "', " .. depositAmount .. " )" )
     table.insert( GlorifiedBanking.Logs, {
         ["Date"] = os.time(),
         ["Type"] = "Deposit",
@@ -26,7 +26,7 @@ function GlorifiedBanking.LogDeposit( ply, depositAmount )
 end
 
 function GlorifiedBanking.LogTransfer( ply, receiver, transferAmount )
-    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `ReceiverSteamID`, `Amount` ) VALUES ( '" .. os.time() .. "', 'Transfer', '" .. ply:SteamID() .. "', '" .. receiver:SteamID() .. "', " .. transferAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `ReceiverSteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Transfer', '" .. ply:SteamID() .. "', '" .. receiver:SteamID() .. "', " .. transferAmount .. " )" )
     table.insert( GlorifiedBanking.Logs, {
         ["Date"] = os.time(),
         ["Type"] = "Transfer",
