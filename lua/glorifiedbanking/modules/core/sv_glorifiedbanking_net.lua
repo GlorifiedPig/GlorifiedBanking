@@ -151,6 +151,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.PlayerListOpened", function( len, ply 
 end )
 
 concommand.Add( "glorifiedbanking_admin", function( len, ply )
+    if not IsValid( ply ) then return end
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
         net.Start( "GlorifiedBanking.AdminPanel.OpenAdminPanel" )
         net.WriteBool( GlorifiedBanking.LockdownEnabled )
