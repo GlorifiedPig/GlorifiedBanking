@@ -48,7 +48,9 @@ function PANEL:Init()
     end)
 
     self.Navbar:SelectTab(1)
-    changePage("GlorifiedBanking.Players")
+    timer.Simple(0, function()
+        changePage("GlorifiedBanking.Players")
+    end)
 
     self:SetAlpha(0)
     self:AlphaTo(255, 0.3)
