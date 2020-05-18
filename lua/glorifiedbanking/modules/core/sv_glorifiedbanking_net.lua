@@ -17,8 +17,6 @@ util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
 
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetPlayerBalance" )
 
-util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
-
 local function PlayerAuthChecks( ply )
     return not ( not ply:IsValid()
     or ply:IsBot()
@@ -118,17 +116,3 @@ net.Receive( "GlorifiedBanking.AdminPanel.SetPlayerBalance", function( len, ply 
         GlorifiedBanking.SetPlayerBalanceBySteamID( plySteamID, newBalance )
     end
 end )
-
-function GlorifiedBanking.SendTransactionData( ply )
-    GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_withdrawals` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 50", function( withdrawalQuery )
-        GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_deposits` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 50", function( depositQuery )
-            GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_transfers` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 20", function( transferQuery )
-                net.Start( "GlorifiedBanking.SendTransactionData" )
-                net.WriteLargeString( util.TableToJSON( withdrawalQuery ) )
-                net.WriteLargeString( util.TableToJSON( depositQuery ) )
-                net.WriteLargeString( util.TableToJSON( transferQuery ) )
-                net.Send( ply )
-            end )
-        end )
-    end )
-end
