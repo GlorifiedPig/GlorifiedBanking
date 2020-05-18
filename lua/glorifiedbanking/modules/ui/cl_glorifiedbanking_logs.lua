@@ -1,26 +1,6 @@
 
 local PANEL = {}
 
-local logStruct = {
-    type = "Deposit",
-    time = "19:05:16",
-    date = "14/04/2020",
-    amount = "$10,000,000",
-    username = "Tom.bat",
-    steamid = "STEAM_0:0:127595314"
-}
-
-local logStructForTransfers = {
-    type = "Transfer",
-    time = "19:05:16",
-    date = "14/04/2020",
-    amount = "$10,000,000",
-    username = "Tom.bat",
-    steamid = "STEAM_0:0:127595314",
-    username2 = "GlorifiedPig",
-    steamid2 = "STEAM_0:0:56521306",
-}
-
 function PANEL:Init()
     self.Theme = self:GetParent().Theme
 
@@ -51,12 +31,21 @@ function PANEL:Init()
     timer.Simple(0, function()
         if self.SteamID then return end
 
-        for i = 1, 20 do
-            self.Logs[i] = vgui.Create("GlorifiedBanking.Log", self.ScrollPanel)
-            self.Logs[i].Theme = self.Theme
-            self.Logs[i]:AddData(math.random(1, 2) == 1 and logStruct or logStructForTransfers)
-        end
+
     end)
+end
+
+function PANEL:AddLog(logData)
+    local logid = #self.Logs + 1
+
+    self.Logs[logid] = vgui.Create("GlorifiedBanking.Log", self.ScrollPanel)
+    self.Logs[logid].Theme = self.Theme
+    self.Logs[logid]:AddData(logData)
+end
+
+function PANEL:ResetLogs()
+    self.ScrollPanel:Clear()
+    table.Empty(self.Logs)
 end
 
 function PANEL:SetSteamID(steamid)

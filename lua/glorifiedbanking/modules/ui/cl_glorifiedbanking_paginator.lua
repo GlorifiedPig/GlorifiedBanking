@@ -33,8 +33,8 @@ function PANEL:Paint(w, h)
     draw.SimpleText(i18n.GetPhrase("gbItemsPerPage"), "GlorifiedBanking.AdminMenu.PaginatorPerPage", w * .024, h * .48, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
 
-function PANEL:OnPageSelected(no)
-    print("Selected page: " .. no)
+function PANEL:OnPageSelected(pageNo, limit)
+    print("Selected page: " .. pageNo)
 end
 
 function PANEL:SelectPage(no)
@@ -58,7 +58,7 @@ function PANEL:SelectPage(no)
         buttonNo = buttonNo + 1
     end
 
-    self:OnPageSelected(no)
+    self:OnPageSelected(no, self.ItemsPerPage)
 end
 
 function PANEL:ClearButtons()
