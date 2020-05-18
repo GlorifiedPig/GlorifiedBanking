@@ -12,7 +12,7 @@ function PANEL:PerformLayout(w, h)
     surface.SetFont("GlorifiedBanking.AdminMenu.NavbarItem")
 
     for k,v in ipairs(self.Buttons) do
-        v:SetSize((v.Text == "X" and w * .055) or (v.Text == "LOCK" and w * .28) or surface.GetTextSize(v.Text) + w * .06, h)
+        v:SetSize((v.Text == "X" and w * .055) or (v.Text == "LOCK" and surface.GetTextSize(i18n.GetPhrase("gbAdminMenuLockdown")) + w * .06) or surface.GetTextSize(v.Text) + w * .06, h)
         v:Dock(v.DockType)
     end
 end
@@ -45,9 +45,10 @@ function PANEL:AddItem(name, dockType, onClick)
          end
     elseif name == "LOCK" then
         button.Paint = function(s, w, h)
-            s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 5, s.Color, button.Selected and self.Theme.Data.Colors.adminMenuNavbarSelectedItemCol or self.Theme.Data.Colors.adminMenuNavbarItemCol)
+            local lockdown = self:GetParent().LockdownMode
+            s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 5, s.Color, lockdown and self.Theme.Data.Colors.adminMenuNavbarLockdownCol or self.Theme.Data.Colors.adminMenuNavbarItemCol)
 
-            draw.SimpleText(i18n.GetPhrase("gbAdminMenuLockdown"), "GlorifiedBanking.AdminMenu.NavbarItem", w / 2, h / 2, s.Color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText(i18n.GetPhrase("gbAdminMenuLockdown"), "GlorifiedBanking.AdminMenu.NavbarItem", w / 2, h / 2, lockdown and ColorAlpha(s.Color, math.abs(math.sin(CurTime())) * 255) or s.Color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     else
         button.UnderlineY = 0

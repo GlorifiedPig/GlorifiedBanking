@@ -7,6 +7,7 @@ function PANEL:Init()
     self:MakePopup()
 
     self.Theme = GlorifiedBanking.Themes.GetCurrent()
+    self.LockdownMode = false
 
     self.Navbar = vgui.Create("GlorifiedBanking.AdminNavbar", self)
 
@@ -32,7 +33,11 @@ function PANEL:Init()
     self.Navbar:AddItem(i18n.GetPhrase("gbAdminMenuLogs"), LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
     self.Navbar:AddItem("LOCK", LEFT, function(s)
+        self.LockdownMode = not self.LockdownMode
 
+        net.Start("GlorifiedBanking.AdminPanel.SetLockdownStatus")
+         net.WriteBool(self.LockdownMode)
+        net.SendToServer()
     end)
 
 

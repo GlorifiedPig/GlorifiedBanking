@@ -93,6 +93,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         adminMenuNavbarBackgroundCol = Color( 38, 38, 38 ),
         adminMenuNavbarItemCol = Color( 255, 255, 255 ),
         adminMenuNavbarSelectedItemCol = Color( 32, 133, 175 ),
+        adminMenuNavbarLockdownCol = Color( 205, 57, 57 ),
         adminMenuCloseButtonCol = Color( 201, 60, 63 ),
         adminMenuCloseButtonHoverCol = Color( 134, 35, 37 ),
 
