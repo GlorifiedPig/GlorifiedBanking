@@ -153,6 +153,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.PlayerListOpened", function( len, ply 
     end
 end )
 
+-- Please forgive me lord, this will be rewritten.
 net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
         local pageNumber = GlorifedBanking.SQL.EscapeString( tostring( net.ReadUInt( 16 ) ) )
