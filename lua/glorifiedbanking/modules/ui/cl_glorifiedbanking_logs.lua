@@ -29,9 +29,12 @@ function PANEL:Init()
 
     self.Logs = {}
     timer.Simple(0, function()
-        if self.SteamID then return end
-
-
+        net.Start("GlorifiedBanking.AdminPanel.RequestLogUpdate")
+         net.WriteUInt(1, 16)
+         net.WriteUInt(20, 6)
+         net.WriteString("All")
+         net.WriteString(self.SteamID or "NONE")
+        net.SendToServer()
     end)
 end
 
@@ -120,3 +123,17 @@ function PANEL:PerformLayout(w, h)
 end
 
 vgui.Register("GlorifiedBanking.Logs", PANEL, "Panel")
+
+net.Receive("GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo", function()
+    local logs = util.JSONToTable(net.ReadLargeString())
+    if not logs then return end
+
+    local panel = GlorifiedBanking.UI.AdminMenu.Page
+    if not panel.ResetLogs then return end
+
+    panel:ResetLogs()
+
+    for k,v in ipairs(logs) do
+        panel:AddLog(v)
+    end
+end)
