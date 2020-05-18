@@ -13,6 +13,7 @@ util.AddNetworkString( "GlorifiedBanking.SendAnimation" )
 util.AddNetworkString( "GlorifiedBanking.CardInserted" )
 util.AddNetworkString( "GlorifiedBanking.Logout" )
 util.AddNetworkString( "GlorifiedBanking.ChangeScreen" )
+util.AddNetworkString( "GlorifiedBanking.ChangeScreen.SendLogs" )
 util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
 
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.OpenAdminPanel" )
@@ -108,6 +109,14 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
         atmEntity:SetScreenID( newScreen )
         atmEntity:EmitSound("GlorifiedBanking.Beep_Normal")
         atmEntity.LastAction = CurTime()
+
+        if newScreen == 7 then -- Is this screen the transaction history screen?
+            GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs` WHERE `SteamID` = '" .. ply:SteamID() .. "' OR `ReceiverSteamID` = '" .. ply:SteamID() .. "' LIMIT 10", function( queryResult )
+                net.Start( "GlorifiedBanking.ChangeScreen.SendLogs" )
+                net.WriteLargeString( util.TableToJSON( queryResult ) )
+                net.Send( ply )
+            end )
+        end
     end
 end )
 
