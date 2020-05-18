@@ -170,6 +170,8 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
             query = query .. "`SteamID` = '" .. filterSteamID .. "' AND "
         end
 
+        if string.sub( query, -4 ) == "AND " then query = string.sub( query, 1, -5 ) end
+
         local startLimit = pageNumber == 1 and 0 or ( pageNumber - 1 ) * itemLimit
         local endLimit = ( pageNumber == 1 and itemLimit or pageNumber * itemLimit ) - startLimit
         query = query .. "LIMIT " .. endLimit .. ", " .. startLimit
