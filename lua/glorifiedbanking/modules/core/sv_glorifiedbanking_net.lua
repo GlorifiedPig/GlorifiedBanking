@@ -113,6 +113,7 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
         if newScreen == 7 then -- Is this screen the transaction history screen?
             GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs` WHERE `SteamID` = '" .. ply:SteamID() .. "' OR `ReceiverSteamID` = '" .. ply:SteamID() .. "' LIMIT 10", function( queryResult )
                 net.Start( "GlorifiedBanking.ChangeScreen.SendLogs" )
+                net.WriteEntity( atmEntity )
                 net.WriteLargeString( util.TableToJSON( queryResult ) )
                 net.Send( ply )
             end )
