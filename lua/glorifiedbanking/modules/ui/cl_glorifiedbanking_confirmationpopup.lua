@@ -38,7 +38,13 @@ function PANEL:Init()
     end
 
     self.Yes.DoClick = function(s)
-        --Set self.Player's balance to 0
+        if not self.SteamID then return end
+
+        net.Start("GlorifiedBanking.AdminPanel.SetPlayerBalance")
+         net.WriteString(self.SteamID)
+         net.WriteUInt(0, 32)
+        net.Send()
+
         self:Remove()
     end
 
