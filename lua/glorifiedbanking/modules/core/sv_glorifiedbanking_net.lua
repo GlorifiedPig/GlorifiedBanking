@@ -16,6 +16,7 @@ util.AddNetworkString( "GlorifiedBanking.ChangeScreen" )
 util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
 
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetPlayerBalance" )
+util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetLockdownStatus" )
 
 local function PlayerAuthChecks( ply )
     return not ( not ply:IsValid()
@@ -114,5 +115,12 @@ net.Receive( "GlorifiedBanking.AdminPanel.SetPlayerBalance", function( len, ply 
         local plySteamID = net.ReadString()
         local newBalance = net.ReadUInt( 32 )
         GlorifiedBanking.SetPlayerBalanceBySteamID( plySteamID, newBalance )
+    end
+end )
+
+net.Receive( "GlorifiedBanking.AdminPanel.SetLockdownStatus", function( len, ply )
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_togglelockdown" ) then
+        local newStatus = net.ReadBool()
+        GlorifiedBanking.SetLockdownStatus( newStatus )
     end
 end )
