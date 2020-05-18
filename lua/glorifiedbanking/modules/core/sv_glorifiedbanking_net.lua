@@ -15,6 +15,7 @@ util.AddNetworkString( "GlorifiedBanking.Logout" )
 util.AddNetworkString( "GlorifiedBanking.ChangeScreen" )
 util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
 
+util.AddNetworkString( "GlorifiedBanking.AdminPanel.OpenAdminPanel" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetPlayerBalance" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetLockdownStatus" )
 
@@ -122,5 +123,13 @@ net.Receive( "GlorifiedBanking.AdminPanel.SetLockdownStatus", function( len, ply
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_togglelockdown" ) then
         local newStatus = net.ReadBool()
         GlorifiedBanking.SetLockdownStatus( newStatus )
+    end
+end )
+
+concommand.Add( "glorifiedbanking_admin", function( len, ply )
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
+        net.Start( "GlorifiedBanking.AdminPanel.OpenAdminPanel" )
+        net.WriteBool( GlorifiedBanking.LockdownEnabled )
+        net.Send( ply )
     end
 end )
