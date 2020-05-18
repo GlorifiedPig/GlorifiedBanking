@@ -880,14 +880,15 @@ end
 ENT.KeyPadBuffer = ""
 
 function ENT:PressKey(key)
+    if self:GetCurrentUser() != LocalPlayer() then return end
     self:EmitSound("GlorifiedBanking.Key_Press")
 
-    if self:GetCurrentUser() != LocalPlayer() then return end
-    if key == "*" then return end
-    if key == "#" then
+    if key == "*" then
         self.KeyPadBuffer = ""
         return
     end
+    if key == "#" then return end
+
     if not self.Screens[self:GetScreenID()].takesKeyInput then return end
     if #self.KeyPadBuffer > 13 then return end
 
