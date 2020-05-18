@@ -20,9 +20,19 @@ net.Receive("GlorifiedBanking.ChangeScreen.SendLogs", function()
     if not IsValid(ent) then return end
 
     local data = util.JSONToTable(net.ReadLargeString())
-    PrintTable(data)
 
-    --ent.ScreenData.Transactions = data
+    for k,v in ipairs(data) do
+        v.Amount = GlorifiedBanking.FormatMoney(v.Amount)
+        v.Date = os.date("%d/%m/%y - %H:%M", v.Date)
+
+        if v.ReceiverSteamID then
+            v.Username = v.SteamID
+        end
+
+        v.MoneyColor = (v.Type == "Deposit" and theme.Data.Colors.transactionListEntryMoneyPositiveCol) or (v.Type == "Transfer" and v.ReceiverSteamID and theme.Data.Colors.transactionListEntryMoneyPositiveCol) or theme.Data.Colors.transactionListEntryMoneyNegativeCol
+    end
+
+    ent.ScreenData.Transactions = data
 end)
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
@@ -823,20 +833,19 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
         draw.RoundedBox(10, entryx, entryy, entryw, entryh, theme.Data.Colors.transactionListEntryCol)
 
         draw.RoundedBox(8, entryx + 10, entryy + boxoffset, 220, boxh, theme.Data.Colors.transactionListEntryTextBackgroundCol)
-        draw.SimpleText(v.time, "GlorifiedBanking.ATMEntity.TransactionDetail", entryx + 15, entryy + entrycentrey, theme.Data.Colors.transactionListEntryTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(v.Date, "GlorifiedBanking.ATMEntity.TransactionDetail", entryx + 15, entryy + entrycentrey, theme.Data.Colors.transactionListEntryTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         draw.RoundedBox(8, entryx + 250, entryy + boxoffset, 230, boxh, theme.Data.Colors.transactionListEntryTextBackgroundCol)
-        draw.SimpleText(v.type, "GlorifiedBanking.ATMEntity.TransactionDetail", entryx + 255, entryy + entrycentrey, theme.Data.Colors.transactionListEntryTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(v.Type, "GlorifiedBanking.ATMEntity.TransactionDetail", entryx + 255, entryy + entrycentrey, theme.Data.Colors.transactionListEntryTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         draw.RoundedBox(8, entryx + 500, entryy + boxoffset, 360, boxh, theme.Data.Colors.transactionListEntryTextBackgroundCol)
-        draw.SimpleText(v.username2 or "N/A", "GlorifiedBanking.ATMEntity.TransactionDetail", entryx + 505, entryy + entrycentrey, theme.Data.Colors.transactionListEntryTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(v.User or "N/A", "GlorifiedBanking.ATMEntity.TransactionDetail", entryx + 505, entryy + entrycentrey, theme.Data.Colors.transactionListEntryTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         draw.RoundedBox(8, entryx + 880, entryy + boxoffset, 252, boxh, theme.Data.Colors.transactionListEntryTextBackgroundCol)
-        draw.SimpleText(v.amount, "GlorifiedBanking.ATMEntity.TransactionMoney", entryx + 885, entryy + entrycentrey, theme.Data.Colors.transactionListEntryTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(v.Amount, "GlorifiedBanking.ATMEntity.TransactionMoney", entryx + 885, entryy + entrycentrey, v.MoneyColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         entryy = entryy + entryh + 5
     end
-
 end
 
 local screenpos = Vector(1.47, 13.46, 51.16)

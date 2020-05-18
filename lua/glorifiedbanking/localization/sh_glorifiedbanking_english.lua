@@ -46,7 +46,7 @@ i18n.RegisterPhrases("en", {
     gbAdminMenuLockdown = "LOCKDOWN MODE",
     gbTransactionsTime = "TIME",
     gbTransactionsType = "TYPE",
-    gbTransactionsUsers = "USERS",
+    gbTransactionsUsers = "SENDER",
     gbTransactionsTotal = "TOTAL",
     gbResetBalance = "Reset Balance",
     gbViewTransactions = "Transactions",
