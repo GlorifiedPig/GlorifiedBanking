@@ -2,7 +2,7 @@
 resource.AddFile("resource/fonts/glorified_banking/montserratregular.ttf")
 resource.AddFile("resource/fonts/glorified_banking/orbitronregular.ttf")
 
-local soundLevel = 58
+local soundLevel = 60
 
 sound.Add({
 	name = "GlorifiedBanking.Key_Press",
