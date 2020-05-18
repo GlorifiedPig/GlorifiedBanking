@@ -71,6 +71,16 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         transferListPlayerBackgroundHoverCol = Color( 60, 60, 60 ),
 
 
+        transactionListBackgorundCol = Color( 70, 70, 70 ),
+        transactionListHeaderCol = Color( 49, 49, 49 ),
+        transactionListHeaderUnderlineCol = Color( 37, 161, 214 ),
+        transactionListEntryCol = Color( 57, 57, 57 ),
+        transactionListEntryTextCol = Color( 255, 255, 255 ),
+        transactionListEntryTextBackgroundCol = Color( 49, 49, 49 ),
+        transactionListEntryMoneyPositiveCol = Color( 87, 168, 50 ),
+        transactionListEntryMoneyNegativeCol = Color( 205, 57, 57 ),
+
+
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
         loadingScreenBorderCol = Color( 46, 162, 212 ),
         loadingScreenTextCol = Color( 255, 255, 255 ),
@@ -239,6 +249,24 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             font = "Montserrat",
             size = 52,
             weight = 600,
+            antialias = true
+        },
+        ["ATMEntity.TransactionHeader"] = {
+            font = "Montserrat",
+            size = 47,
+            weight = 700,
+            antialias = true
+        },
+        ["ATMEntity.TransactionDetail"] = {
+            font = "Montserrat",
+            size = 37,
+            weight = 500,
+            antialias = true
+        },
+        ["ATMEntity.TransactionMoney"] = {
+            font = "Montserrat",
+            size = 37,
+            weight = 700,
             antialias = true
         },
         ["ATMEntity.SignTextSmall"] = {
