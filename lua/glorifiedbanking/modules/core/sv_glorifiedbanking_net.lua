@@ -162,28 +162,31 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
         local itemLimit = GlorifiedBanking.SQL.EscapeString( tostring( net.ReadUInt( 6 ) ) )
         local filter = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
         local filterSteamID = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
-        if filter != "All" and filter != "Withdrawals" and filter != "Deposits" and filter != "Transfers" then return end
+        if filter != "All" and filter != "Withdraw" and filter != "Deposit" and filter != "Transfer" then return end
         local query = "SELECT * FROM `gb_logs` "
 
         if filter != "All" then
-            query = query .. "`Type` = '" .. filter .. "' AND "
+            query = query .. "WHERE `Type` = '" .. filter .. "' AND "
         end
 
         if filterSteamID != "NONE" then
-            query = query .. "WHERE `SteamID` = '" .. filterSteamID .. "' AND "
+            query = query .. (filter == "All" and "WHERE" or "") .. "`SteamID` = '" .. filterSteamID .. "' AND "
         end
 
         if string.sub( query, -4 ) == "AND " then query = string.sub( query, 1, -5 ) end
 
-        local offset = pageNumber == 1 and 0 or ( pageNumber - 1 ) * itemLimit
-        local limit = ( pageNumber == 1 and itemLimit or pageNumber * itemLimit ) - offset
-        query = query .. "LIMIT " .. limit .. " OFFSET " .. offset
+        local offset = pageNumber == 1 and 0 or (pageNumber - 1) * itemLimit
+        query = query .. "LIMIT " .. itemLimit .. " OFFSET " .. offset
+
+        print(query)
 
         GlorifiedBanking.SQL.Query( query, function( queryResult )
-        PrintTable(queryResult)
-            net.Start( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
-            net.WriteLargeString( util.TableToJSON( queryResult ) )
-            net.Send( ply )
+            GlorifiedBanking.SQL.Query( "SELECT COUNT(*) FROM gb_logs;", function( rowCount )
+                net.Start( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
+                net.WriteLargeString( util.TableToJSON( queryResult ) )
+                net.WriteUInt(rowCount[1]["COUNT(*)"], 32)
+                net.Send( ply )
+            end )
         end )
     end
 end )
