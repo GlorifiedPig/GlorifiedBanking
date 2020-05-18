@@ -79,6 +79,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         transactionListEntryTextBackgroundCol = Color( 49, 49, 49 ),
         transactionListEntryMoneyPositiveCol = Color( 87, 168, 50 ),
         transactionListEntryMoneyNegativeCol = Color( 205, 57, 57 ),
+        transactionListHiddenTextCol = Color( 255, 255, 255 ),
 
 
         loadingScreenBackgroundCol = Color( 49, 49, 49 ),
@@ -266,6 +267,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         ["ATMEntity.TransactionMoney"] = {
             font = "Montserrat",
             size = 37,
+            weight = 700,
+            antialias = true
+        },
+        ["ATMEntity.TransactionHidden"] = {
+            font = "Montserrat",
+            size = 150,
             weight = 700,
             antialias = true
         },

@@ -2,22 +2,33 @@
 local PANEL = {}
 
 function PANEL:Init()
+    net.Start("GlorifiedBanking.AdminPanel.PlayerListOpened")
+    net.SendToServer()
+
     self.Theme = self:GetParent().Theme
 
     self.TopBar = vgui.Create("Panel", self)
     self.TopBar.Theme = self:GetParent().Theme
     self.TopBar.Paint = function(s, w, h)
-        draw.SimpleText(i18n.GetPhrase("gbPlayersOnline", 20), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(i18n.GetPhrase("gbPlayersOnline", #self.Players), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     self.ScrollPanel = vgui.Create("GlorifiedBanking.ScrollPanel", self)
 
     self.Players = {}
-    for i = 1, 20 do
-        self.Players[i] = vgui.Create("GlorifiedBanking.Player", self.ScrollPanel)
-        self.Players[i].Theme = self.Theme
-        self.Players[i]:AddPlayer(LocalPlayer(), math.random(100, 10000000))
-    end
+end
+
+function PANEL:AddPlayer(ply)
+    local playerid = #self.Players
+
+    self.Players[playerid] = vgui.Create("GlorifiedBanking.Player", self.ScrollPanel)
+    self.Players[playerid].Theme = self.Theme
+    self.Players[playerid]:AddPlayer(ply, ply.Balance)
+end
+
+function PANEL:ResetPlayers()
+    self.ScrollPanel:Clear()
+    table.Empty(self.Players)
 end
 
 function PANEL:PerformLayout(w, h)
@@ -38,3 +49,17 @@ function PANEL:PerformLayout(w, h)
 end
 
 vgui.Register("GlorifiedBanking.Players", PANEL, "Panel")
+
+net.Receive("GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo", function()
+    local players = util.JSONToTable(net.ReadLargeString())
+    if not players then return end
+
+    local panel = GlorifiedBanking.UI.AdminMenu.Page
+    if not panel.ResetPlayers then return end
+
+    panel:ResetPlayers()
+
+    for k,v in ipairs(players) do
+        panel:AddPlayer(v)
+    end
+end)
