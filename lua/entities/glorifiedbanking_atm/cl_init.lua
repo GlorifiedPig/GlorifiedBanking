@@ -856,7 +856,7 @@ function ENT:DrawScreen()
 
         self:DrawLoadingScreen()
 
-        if screenID != 1 and not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
+        if screenID != 1 and screenID != 2 and not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
 
             surface.SetDrawColor(color_white)
