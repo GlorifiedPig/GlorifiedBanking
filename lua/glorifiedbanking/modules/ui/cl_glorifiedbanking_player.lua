@@ -96,6 +96,11 @@ function PANEL:PerformLayout(w, h)
     self.ResetBalance:SetSize(w * .14, h * .4)
     self.ResetBalance:SetPos(w * .43, h * .3)
 
+    if not self.CanEditPlayers then
+        self.SetBalance:SetVisible(false)
+        self.ResetBalance:SetVisible(false)
+    end
+
     self.ViewTransactions:SetSize(w * .13, h * .4)
     self.ViewTransactions:SetPos(w * .58, h * .3)
 end
