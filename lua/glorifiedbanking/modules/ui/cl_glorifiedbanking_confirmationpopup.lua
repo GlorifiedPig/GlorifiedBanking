@@ -88,13 +88,3 @@ function PANEL:Paint(w, h)
 end
 
 vgui.Register("GlorifiedBanking.ConfirmationPopup", PANEL, "EditablePanel")
-
-
-if IsValid(GlorifiedBanking.UI.ConfirmationPopup) then
-    GlorifiedBanking.UI.ConfirmationPopup:Remove()
-    GlorifiedBanking.UI.ConfirmationPopup = nil
-end
-
-if not IsValid(LocalPlayer()) then return end
-GlorifiedBanking.UI.ConfirmationPopup = vgui.Create("GlorifiedBanking.ConfirmationPopup")
-print("Reloaded admin menu")
