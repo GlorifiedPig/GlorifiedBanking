@@ -15,6 +15,16 @@ hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdat
     theme = newTheme
 end)
 
+net.Receive("GlorifiedBanking.ChangeScreen.SendLogs", function()
+    local ent = net.ReadEntity()
+    if not IsValid(ent) then return end
+
+    local data = util.JSONToTable(net.ReadLargeString())
+    PrintTable(data)
+
+    --ent.ScreenData.Transactions = data
+end)
+
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 ENT.CurrentUsername = ""
@@ -797,21 +807,9 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
     draw.SimpleText(i18n.GetPhrase("gbTransactionsUsers"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 500, texty, theme.Data.Colors.transactionListEntryTextCol)
     draw.SimpleText(i18n.GetPhrase("gbTransactionsTotal"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 880, texty, theme.Data.Colors.transactionListEntryTextCol)
 
-    if not data.transactions then
-        data.transactions = {}
-
-        for i = 1, 10 do
-            data.transactions[#data.transactions + 1] = {
-                type = "Transfer",
-                time = "19:05:16",
-                date = "14/04/2020",
-                amount = "$10,000,000",
-                username = "Tom.bat",
-                steamid = "STEAM_0:0:127595314",
-                username2 = "GlorifiedPig",
-                steamid2 = "STEAM_0:0:56521306",
-            }
-        end
+    if not data.Transactions then
+        draw.SimpleText(i18n.GetPhrase("gbHidden"), "GlorifiedBanking.ATMEntity.TransactionHidden", listx + listw / 2, listy + listh / 2, theme.Data.Colors.transactionListHiddenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        return
     end
 
     entryy = entryy + entryh + 10
@@ -821,7 +819,7 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
     local boxoffset = entryh * .1
     local entrycentrey = entryh * .5
 
-    for k,v in ipairs(data.transactions) do
+    for k,v in ipairs(data.Transactions) do
         draw.RoundedBox(10, entryx, entryy, entryw, entryh, theme.Data.Colors.transactionListEntryCol)
 
         draw.RoundedBox(8, entryx + 10, entryy + boxoffset, 220, boxh, theme.Data.Colors.transactionListEntryTextBackgroundCol)
