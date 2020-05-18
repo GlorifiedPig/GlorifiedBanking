@@ -31,7 +31,7 @@ function GlorifiedBanking.SetPlayerBalanceBySteamID( steamID, balance )
     if not balance or balance == nil or balance < 0 then return end
     balance = tonumber( balance )
     balance = math.Round( balance )
-    balance = minClamp( balance )
+    balance = minClamp( balance, 0 )
     local plyFromSteamID = player.GetBySteamID( steamID )
     if plyFromSteamID then
         GlorifiedBanking.SetPlayerBalance( plyFromSteamID, balance )
