@@ -68,11 +68,19 @@ end
 
 vgui.Register("GlorifiedBanking.AdminMenu", PANEL, "EditablePanel")
 
-if IsValid(GlorifiedBanking.UI.AdminMenu) then
-    GlorifiedBanking.UI.AdminMenu:Remove()
-    GlorifiedBanking.UI.AdminMenu = nil
+function GlorifiedBanking.UI.OpenAdminMenu(lockdownEnabled, canEditPlayers)
+    if not IsValid(LocalPlayer()) then return end
+
+    if IsValid(GlorifiedBanking.UI.AdminMenu) then
+        GlorifiedBanking.UI.AdminMenu:Remove()
+        GlorifiedBanking.UI.AdminMenu = nil
+    end
+
+    GlorifiedBanking.UI.AdminMenu = vgui.Create("GlorifiedBanking.AdminMenu")
+    GlorifiedBanking.UI.AdminMenu.LockdownMode = lockdownEnabled
+    GlorifiedBanking.UI.AdminMenu.CanEditPlayers = canEditPlayers
 end
 
-if not IsValid(LocalPlayer()) then return end
-GlorifiedBanking.UI.AdminMenu = vgui.Create("GlorifiedBanking.AdminMenu")
-print("Reloaded admin menu")
+net.Receive("GlorifiedBanking.AdminPanel.OpenAdminPanel", function()
+    GlorifiedBanking.UI.OpenAdminMenu(net.ReadBool(), net.ReadBool())
+end)
