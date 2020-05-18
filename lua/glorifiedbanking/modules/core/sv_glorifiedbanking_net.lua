@@ -19,6 +19,8 @@ util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.OpenAdminPanel" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetPlayerBalance" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetLockdownStatus" )
+util.AddNetworkString( "GlorifiedBanking.AdminPanel.PlayerListOpened" )
+util.AddNetworkString( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
 
 local function PlayerAuthChecks( ply )
     return not ( not ply:IsValid()
@@ -102,12 +104,12 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
     and atmEntity:GetCurrentUser() == ply
     and atmEntity.Screens[ newScreen ] then
         if atmEntity.ForcedLoad then
-            atmEntity:EmitSound("GlorifiedBanking.Beep_Error")
+            atmEntity:EmitSound( "GlorifiedBanking.Beep_Error" )
             return
         end
 
         atmEntity:SetScreenID( newScreen )
-        atmEntity:EmitSound("GlorifiedBanking.Beep_Normal")
+        atmEntity:EmitSound( "GlorifiedBanking.Beep_Normal" )
         atmEntity.LastAction = CurTime()
 
         if newScreen == 7 then -- Is this screen the transaction history screen?
@@ -133,6 +135,18 @@ net.Receive( "GlorifiedBanking.AdminPanel.SetLockdownStatus", function( len, ply
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_togglelockdown" ) then
         local newStatus = net.ReadBool()
         GlorifiedBanking.SetLockdownStatus( newStatus )
+    end
+end )
+
+net.Receive( "GlorifiedBanking.AdminPanel.PlayerListOpened", function( len, ply )
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
+        local playerList = player.GetAll()
+        for k, v in ipairs( playerList ) do
+            playerList[k].Balance = GlorifiedBanking.GetPlayerBalance( v )
+        end
+        net.Start( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
+        net.WriteLargeString( util.TableToJSON( playerList ) )
+        net.Send( ply )
     end
 end )
 

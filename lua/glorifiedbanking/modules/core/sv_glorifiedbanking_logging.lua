@@ -1,5 +1,5 @@
 
-GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_logs` ( `Date` TIMESTAMP NOT NULL , `Type` VARCHAR(16) NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `ReceiverSteamID` VARCHAR(32) DEFAULT(NULL) , `Amount` BIGINT(64) NOT NULL )" )
+GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_logs` ( `Date` TIMESTAMP NOT NULL , `Type` VARCHAR(16) NOT NULL , `SteamID` VARCHAR(32) NOT NULL , `ReceiverSteamID` VARCHAR(32) , `Amount` BIGINT(64) NOT NULL )" )
 
 GlorifiedBanking.Logs = GlorifiedBanking.Logs or {}
 
