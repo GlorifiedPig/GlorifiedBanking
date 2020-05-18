@@ -62,3 +62,9 @@ end )
 hook.Add("InitPostEntity", "GlorifiedBanking.Themes.InitPostEntity", function()
     GlorifiedBanking.Themes.Select( cookie.GetString( "GlorifiedBanking.Theme", defaultTheme ) )
 end )
+
+concommand.Add( "glorifiedbanking_theme", function( ply, args )
+    if ply != LocalPlayer() then return end
+    local theme = string.lower( args[1] )
+    GlorifiedBanking.Themes.Select( theme )
+end )
