@@ -51,6 +51,20 @@ function PANEL:AddPlayer(ply, balance)
         draw.SimpleText(i18n.GetPhrase("gbViewTransactions"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
+    self.ViewTransactions.DoClick = function(s)
+        local parent = self:GetParent():GetParent():GetParent()
+        parent:AlphaTo(0, 0.15, 0, function(anim, panel)
+            parent:Remove()
+
+            local menuPanel = parent:GetParent()
+            menuPanel.Page = vgui.Create("GlorifiedBanking.Logs", menuPanel)
+            menuPanel.Page:Dock(FILL)
+            menuPanel.Page:SetAlpha(0)
+            menuPanel.Page:AlphaTo(255, 0.15)
+            menuPanel.Page:SetSteamID(ply:SteamID())
+        end)
+    end
+
     local function drawPlayerInfo(playerno, x, containerh, align)
         local centerh = containerh / 2
         local spacing = containerh * .1
