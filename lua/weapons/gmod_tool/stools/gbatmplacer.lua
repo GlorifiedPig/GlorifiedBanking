@@ -6,6 +6,7 @@ TOOL.Author = "Tom.bat"
 TOOL.ConfigName = ""
 
 TOOL.ClientConVar["height"] = 22
+TOOL.ClientConVar["snap"] = 0
 TOOL.ClientConVar["signtext"] = "ATM"
 TOOL.ClientConVar["withdrawalfee"] = 0
 TOOL.ClientConVar["depositfee"] = 0
@@ -35,6 +36,10 @@ if CLIENT then
     end
 
     function TOOL.BuildCPanel(panel)
+        panel:NumSlider(i18n.GetPhrase("gbToolSnap"), "gbatmplacer_snap", 0, 150, 2)
+        panel:ControlHelp(i18n.GetPhrase("gbToolSnapHelp"))
+        panel:Help("")
+
         panel:NumSlider(i18n.GetPhrase("gbToolHeight"), "gbatmplacer_height", 0, 50, 2)
         panel:ControlHelp(i18n.GetPhrase("gbToolHeightHelp"))
         panel:Help("")
@@ -56,7 +61,7 @@ if CLIENT then
     end
 end
 
-local function getAtmPos(tr, heightOffset)
+local function getAtmPos(tr, heightOffset, snap)
     if not tr.Hit or IsValid(tr.Entity) then return false end
 
     local angles = tr.HitNormal:Angle()
@@ -73,6 +78,14 @@ local function getAtmPos(tr, heightOffset)
 
     local distToFloor = math.abs(tr.HitPos[3] - floorTr.HitPos[3])
 
+    if snap > 0 then
+        if (angles[2] > 180 and angles[2] <= 270) or angles[2] > 360 then
+            tr.HitPos[1] = math.floor(tr.HitPos[1] / snap + 0.5) * snap
+        else
+            tr.HitPos[2] = math.floor(tr.HitPos[2] / snap + 0.5) * snap
+        end
+    end
+
     return tr.HitPos - (tr.HitNormal * -9.6) - Vector(0, 0, distToFloor - heightOffset), angles
 end
 
@@ -80,7 +93,7 @@ function TOOL:UpdateGhost(ent, ply)
     if not IsValid(ent) then return end
 
     local tr = ply:GetEyeTrace()
-    local ghostPos, ghostAngles = getAtmPos(tr, self:GetClientNumber("height"))
+    local ghostPos, ghostAngles = getAtmPos(tr, self:GetClientNumber("height"), self:GetClientNumber("snap"))
     if not ghostPos or not ghostAngles then
         ent:SetNoDraw(true)
         return
@@ -107,7 +120,7 @@ if CLIENT then return end
 
 function TOOL:LeftClick( tr )
     if GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
-        local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber( "height" ) )
+        local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber( "height" ), self:GetClientNumber( "snap" ) )
         if not atmPos or not atmAngles then return end
 
         local createdATM = ents.Create( "glorifiedbanking_atm" )
