@@ -160,7 +160,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
         local filter = net.ReadString()
         local filterSteamID = net.ReadString()
         if filter != "All" and filter != "Withdrawals" and filter != "Deposits" and filter != "Transfers" then return end
-        local query = "SELECT * FROM `gb_logs` WHERE "
+        local query = "SET @row_number:=0; SELECT @row_number:=@row_number+1 AS `row_number`,`Date`,`Type`,`SteamID`,`ReceiverSteamID`,`Amount` FROM `gb_logs` WHERE "
 
         if filter != "All" then
             query = query .. "`Type` = '" .. filter .. "' AND "
@@ -172,7 +172,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
 
         local startLimit = pageNumber == 1 and 1 or ( pageNumber - 1 ) * itemLimit
         local endLimit = pageNumber == 1 and itemLimit or pageNumber * itemLimit
-        query = query .. "ROW_NUMBER() BETWEEN " .. startLimit .. " AND " .. endLimit
+        query = query .. "row_number BETWEEN " .. startLimit .. " AND " .. endLimit
         GlorifiedBanking.SQL.Query( query, function( queryResult )
             net.Start( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
             net.WriteLargeString( util.TableToJSON( queryResult ) )
