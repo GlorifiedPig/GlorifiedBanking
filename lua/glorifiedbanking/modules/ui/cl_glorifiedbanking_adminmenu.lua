@@ -7,7 +7,6 @@ function PANEL:Init()
     self:MakePopup()
 
     self.Theme = GlorifiedBanking.Themes.GetCurrent()
-    self.LockdownMode = false
 
     self.Navbar = vgui.Create("GlorifiedBanking.AdminNavbar", self)
 
@@ -15,6 +14,7 @@ function PANEL:Init()
         if not IsValid(self.Page) then
             self.Page = vgui.Create(page, self)
             self.Page:Dock(FILL)
+            self.Page.CanEditPlayers = self.CanEditPlayers
 
             return
         end
@@ -26,6 +26,7 @@ function PANEL:Init()
             self.Page:Dock(FILL)
             self.Page:SetAlpha(0)
             self.Page:AlphaTo(255, 0.15)
+            self.Page.CanEditPlayers = self.CanEditPlayers
         end)
     end
 
