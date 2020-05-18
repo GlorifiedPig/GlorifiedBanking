@@ -140,10 +140,11 @@ end )
 
 net.Receive( "GlorifiedBanking.AdminPanel.PlayerListOpened", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
-        local playerList = player.GetAll()
-        for k, v in ipairs( playerList ) do
-            playerList[k].Balance = GlorifiedBanking.GetPlayerBalance( v )
+        local playerList = {}
+        for k, v in ipairs( player.GetAll() ) do
+            playerList[ v:SteamID() ] = GlorifiedBanking.GetPlayerBalance( v )
         end
+
         net.Start( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
         net.WriteLargeString( util.TableToJSON( playerList ) )
         net.Send( ply )
