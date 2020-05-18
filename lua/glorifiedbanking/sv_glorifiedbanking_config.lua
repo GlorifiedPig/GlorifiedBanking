@@ -43,5 +43,9 @@
             MinAccess = "superadmin",
             Description = "Permission to place and remove ATMs with the toolgun around the map."
         },
+        ["glorifiedbanking_setplayerbalance"] = {
+            MinAccess = "superadmin",
+            Description = "Permission to set player's balances in the admin panel."
+        },
     }
 --[[ End Permissions Settings ]]--

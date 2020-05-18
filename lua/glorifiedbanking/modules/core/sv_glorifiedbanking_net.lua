@@ -15,6 +15,8 @@ util.AddNetworkString( "GlorifiedBanking.Logout" )
 util.AddNetworkString( "GlorifiedBanking.ChangeScreen" )
 util.AddNetworkString( "GlorifiedBanking.ForceLoad" )
 
+util.AddNetworkString( "GlorifiedBanking.AdminPanel.SetPlayerBalance" )
+
 util.AddNetworkString( "GlorifiedBanking.SendTransactionData" )
 
 local function PlayerAuthChecks( ply )
@@ -106,6 +108,14 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
         atmEntity:SetScreenID( newScreen )
         atmEntity:EmitSound("GlorifiedBanking.Beep_Normal")
         atmEntity.LastAction = CurTime()
+    end
+end )
+
+net.Receive( "GlorifiedBanking.AdminPanel.SetPlayerBalance", function( len, ply )
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_setplayerbalance" ) then
+        local plySteamID = net.ReadString()
+        local newBalance = net.ReadUInt( 32 )
+        GlorifiedBanking.SetPlayerBalanceBySteamID( plySteamID, newBalance )
     end
 end )
 
