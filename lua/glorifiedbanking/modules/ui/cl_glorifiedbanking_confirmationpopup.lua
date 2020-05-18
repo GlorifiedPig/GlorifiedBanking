@@ -84,7 +84,7 @@ function PANEL:Paint(w, h)
     draw.RoundedBoxEx(6, 0, 0, w, h * .18, self.Theme.Data.Colors.adminMenuNavbarBackgroundCol, true, true)
 
     draw.SimpleText(i18n.GetPhrase("gbConfirmation"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .021, h * .08, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.DrawText(i18n.GetPhrase("gbConfirmationBalance", self.Player and self.Player:Name() or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
+    draw.DrawText(i18n.GetPhrase("gbConfirmationBalance", self.SteamID and self.SteamID or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
 end
 
 vgui.Register("GlorifiedBanking.ConfirmationPopup", PANEL, "EditablePanel")
