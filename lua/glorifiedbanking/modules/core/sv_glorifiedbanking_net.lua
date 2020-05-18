@@ -156,10 +156,10 @@ end )
 -- Please forgive me lord, this will be rewritten.
 net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
-        local pageNumber = GlorifedBanking.SQL.EscapeString( tostring( net.ReadUInt( 16 ) ) )
-        local itemLimit = GlorifedBanking.SQL.EscapeString( tostring( net.ReadUInt( 6 ) ) )
-        local filter = GlorifedBanking.SQL.EscapeString( net.ReadString() )
-        local filterSteamID = GlorifedBanking.SQL.EscapeString( net.ReadString() )
+        local pageNumber = GlorifiedBanking.SQL.EscapeString( tostring( net.ReadUInt( 16 ) ) )
+        local itemLimit = GlorifiedBanking.SQL.EscapeString( tostring( net.ReadUInt( 6 ) ) )
+        local filter = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
+        local filterSteamID = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
         if filter != "All" and filter != "Withdrawals" and filter != "Deposits" and filter != "Transfers" then return end
         local query = "SELECT * FROM `gb_logs` WHERE "
 
