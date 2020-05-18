@@ -58,3 +58,9 @@ hook.Add( "InitPostEntity", "GlorifiedBanking.Backups.InitPostEntity", function(
         end
     end )
 end )
+
+concommand.Add( "glorifiedbanking_restorebackup", function( ply, args )
+    if ply == NULL or GlorifiedBanking.HasPermission( ply, "glorifiedbanking_restorebackups" ) then
+        GlorifiedBanking.LoadBackupFile( args[1] )
+    end
+end )

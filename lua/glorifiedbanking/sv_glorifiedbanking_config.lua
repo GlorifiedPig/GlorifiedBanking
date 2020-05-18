@@ -35,7 +35,7 @@
             MinAccess = "admin",
             Description = "Permission for which usergroups are able to enable/disable lockdown mode."
         },
-        ["glorifiedbanking_restorebackup"] = {
+        ["glorifiedbanking_restorebackups"] = {
             MinAccess = "superadmin",
             Description = "Permission for which usergroups are able to restore to a previous backup."
         },
