@@ -43,7 +43,17 @@ function PANEL:Init()
     end
 
     self.Enter.DoClick = function(s)
-        --Set self.Player's balance to self.Entry:GetValue()
+        if not self.SteamID then return end
+        if self.Entry:GetValue() < 0 then
+            GlorifiedBanking.Notify(NOTIFY_ERROR, 3, i18n.GetPhrase("gbCantHaveNegative"))
+            return
+        end
+
+        net.Start("GlorifiedBanking.AdminPanel.SetPlayerBalance")
+         net.WriteString(self.SteamID)
+         net.WriteUInt(self.Entry:GetValue(), 32)
+        net.Send()
+
         self:Remove()
     end
 end

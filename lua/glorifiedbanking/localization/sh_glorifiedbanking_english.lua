@@ -54,6 +54,7 @@ i18n.RegisterPhrases("en", {
     gbLogInfoType = "Type: ",
     gbLogInfoTime = "Time: ",
     gbLogInfoDate = "Date: ",
+    gbCantHaveNegative = "You can't set a negative balance!",
     gbLoggedOutInactive = "You have been logged out of the ATM due to inactivity.",
     gbCardInstructions = "Use left click to insert the card into a device.",
     gbCardInsertAir = "You can't insert the card into the air!",
