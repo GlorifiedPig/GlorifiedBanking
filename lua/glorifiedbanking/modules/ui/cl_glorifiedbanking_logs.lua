@@ -67,7 +67,7 @@ function PANEL:SetSteamID(steamid)
 
     self.Back.Color = self.Theme.Data.Colors.adminMenuNavbarItemCol
     self.Back.Paint = function(s, w, h)
-        s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 5, s.Color, s:IsHovered() and self.Theme.Data.Colors.logsMenuBackButtonHoverCol or self.Theme.Data.Colors.logsMenuBackButtonCol)
+        s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.logsMenuBackButtonHoverCol or self.Theme.Data.Colors.logsMenuBackButtonCol)
 
         local iconSize = h * .8
         surface.SetDrawColor(s.Color)

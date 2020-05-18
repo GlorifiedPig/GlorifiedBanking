@@ -126,7 +126,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         logsMenuLogMoneyPositiveTextCol = Color( 87, 168, 50 ),
         logsMenuLogMoneyNegativeTextCol = Color( 205, 57, 57 ),
         logsMenuBackButtonCol = Color( 255, 255, 255 ),
-        logsMenuBackButtonHoverCol = Color( 225, 225, 225 ),
+        logsMenuBackButtonHoverCol = Color( 160, 160, 160 ),
 
 
         playersMenuSetButtonBackgroundCol = Color( 26, 134, 177 ),
