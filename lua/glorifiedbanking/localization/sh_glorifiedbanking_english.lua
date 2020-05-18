@@ -84,6 +84,8 @@ i18n.RegisterPhrases("en", {
     gbToolDepositFeeHelp = "The transaction fee for all deposits made with this ATM in percent.",
     gbToolTransferFee = "Transfer Fee:",
     gbToolTransferFeeHelp = "The transaction fee for all transfers made with this ATM in percent.",
+    gbToolSnap = "Snap Amount:",
+    gbToolSnapHelp = "The distance between each snapping point.",
     gbToolHeight = "Height Offset:",
     gbToolHeightHelp = "The distance from the floor the ATM will be placed at."
 })
