@@ -81,13 +81,6 @@ hook.Add( "OnEntityCreated", GlorifiedBanking.GlorifiedPersistentEnts.Identifier
     end
 end )
 
-hook.Add( "EntityRemoved", GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. ".GPE.EntityRemoved", function( ent )
-    if GlorifiedBanking.GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then
-        print( "[GlorifiedBanking.GlorifiedPersistentEnts] Deleted Entity ID " .. ent.EntID .. " from table `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`" )
-        sql.Query( "DELETE FROM `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. ent.EntID )
-    end
-end )
-
 hook.Add( "InitPostEntity", GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. ".GPE.InitPostEntity", GlorifiedBanking.GlorifiedPersistentEnts.LoadEntities )
 
 concommand.Add( GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. "removeents", function( ply )

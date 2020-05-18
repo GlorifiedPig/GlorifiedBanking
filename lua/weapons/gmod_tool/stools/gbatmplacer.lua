@@ -132,7 +132,6 @@ function TOOL:LeftClick( tr )
         createdATM:SetSignText( self:GetClientInfo( "signtext" ) )
         createdATM:Spawn()
         createdATM:GetPhysicsObject():EnableMotion( false )
-        GlorifiedBanking.GlorifiedPersistentEnts.SaveEntityInfo( createdATM )
     end
 end
 
