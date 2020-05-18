@@ -6,8 +6,8 @@
 
 --[[ Interest Settings ]]--
     GlorifiedBanking.Config.INTEREST_ENABLED = true -- Should interest be enabled or not?
-    GlorifiedBanking.Config.INTEREST_TIMER = 20 -- How often should the player receive interest?
-    GlorifiedBanking.Config.INTEREST_MAX = 50000 -- What's the maximum amount a player can receive in interest?
+    GlorifiedBanking.Config.INTEREST_TIMER = 120 -- How often should the player receive interest?
+    GlorifiedBanking.Config.INTEREST_MAX = 10000 -- What's the maximum amount a player can receive in interest?
     GlorifiedBanking.Config.DEFAULT_INTEREST_PERCENTAGE = 0.1 -- What % should the player get for interest per x seconds? Set to 0 to disable interest for normal players.
     GlorifiedBanking.Config.INTEREST_AMOUNT_CUSTOMFUNC = function( ply ) -- Special function to return different interest for certain players.
         local specialGroups = {
