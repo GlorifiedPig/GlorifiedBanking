@@ -18,12 +18,13 @@ function PANEL:Init()
     self.Players = {}
 end
 
-function PANEL:AddPlayer(ply)
-    local playerid = #self.Players
+function PANEL:AddPlayer(ply, balance)
+    local playerid = #self.Players + 1
 
     self.Players[playerid] = vgui.Create("GlorifiedBanking.Player", self.ScrollPanel)
     self.Players[playerid].Theme = self.Theme
-    self.Players[playerid]:AddPlayer(ply, ply.Balance)
+    self.Players[playerid].CanEditPlayers = self.CanEditPlayers
+    self.Players[playerid]:AddPlayer(ply, balance)
 end
 
 function PANEL:ResetPlayers()
@@ -51,15 +52,17 @@ end
 vgui.Register("GlorifiedBanking.Players", PANEL, "Panel")
 
 net.Receive("GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo", function()
-    local players = util.JSONToTable(net.ReadLargeString())
-    if not players then return end
+    local playersBals = util.JSONToTable(net.ReadLargeString())
+    if not playersBals then return end
 
     local panel = GlorifiedBanking.UI.AdminMenu.Page
     if not panel.ResetPlayers then return end
 
+    local players = player.GetAll()
+
     panel:ResetPlayers()
 
     for k,v in ipairs(players) do
-        panel:AddPlayer(v)
+        panel:AddPlayer(v, playersBals[v:SteamID()] or -1)
     end
 end)
