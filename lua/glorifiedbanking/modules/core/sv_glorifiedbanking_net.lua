@@ -116,10 +116,12 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
 
         if newScreen == 7 then -- Is this screen the transaction history screen?
             GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs` WHERE `SteamID` = '" .. ply:SteamID() .. "' OR `ReceiverSteamID` = '" .. ply:SteamID() .. "'ORDER BY `Date` DESC LIMIT 10", function( queryResult )
-                net.Start( "GlorifiedBanking.ChangeScreen.SendLogs" )
-                net.WriteEntity( atmEntity )
-                net.WriteLargeString( util.TableToJSON( queryResult ) )
-                net.Send( ply )
+                timer.Simple( .5, function()
+                    net.Start( "GlorifiedBanking.ChangeScreen.SendLogs" )
+                    net.WriteEntity( atmEntity )
+                    net.WriteLargeString( util.TableToJSON( queryResult ) )
+                    net.Send( ply )
+                end )
             end )
         end
     end
@@ -161,22 +163,24 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
         local filter = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
         local filterSteamID = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
         if filter != "All" and filter != "Withdrawals" and filter != "Deposits" and filter != "Transfers" then return end
-        local query = "SELECT * FROM `gb_logs` WHERE "
+        local query = "SELECT * FROM `gb_logs` "
 
         if filter != "All" then
             query = query .. "`Type` = '" .. filter .. "' AND "
         end
 
         if filterSteamID != "NONE" then
-            query = query .. "`SteamID` = '" .. filterSteamID .. "' AND "
+            query = query .. "WHERE `SteamID` = '" .. filterSteamID .. "' AND "
         end
 
         if string.sub( query, -4 ) == "AND " then query = string.sub( query, 1, -5 ) end
 
-        local startLimit = pageNumber == 1 and 0 or ( pageNumber - 1 ) * itemLimit
-        local endLimit = ( pageNumber == 1 and itemLimit or pageNumber * itemLimit ) - startLimit
-        query = query .. "LIMIT " .. endLimit .. ", " .. startLimit
+        local offset = pageNumber == 1 and 0 or ( pageNumber - 1 ) * itemLimit
+        local limit = ( pageNumber == 1 and itemLimit or pageNumber * itemLimit ) - offset
+        query = query .. "LIMIT " .. limit .. " OFFSET " .. offset
+
         GlorifiedBanking.SQL.Query( query, function( queryResult )
+        PrintTable(queryResult)
             net.Start( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
             net.WriteLargeString( util.TableToJSON( queryResult ) )
             net.Send( ply )
