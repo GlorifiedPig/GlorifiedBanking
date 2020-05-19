@@ -44,7 +44,7 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 ENT.CurrentUsername = ""
 ENT.ScreenData = {}
 function ENT:Think()
-    self.LocalPlayer = LocalPlayer()
+    if not self.LocalPlayer then self.LocalPlayer = LocalPlayer() end
 
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
         self:EmitSound("GlorifiedBanking.Beep_Attention")
@@ -554,6 +554,19 @@ ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
     )
 end
 
+ENT.Screens[6].onEnterPressed = function(self, amount)
+    if not IsValid(self.ScreenData.selected) then
+        GlorifiedBanking.Notify(NOTIFY_ERROR, 5, i18n.GetPhrase("gbSelectPlayer"))
+        self:EmitSound("GlorifiedBanking.Beep_Error")
+    end
+
+    net.Start("GlorifiedBanking.TransferRequested")
+        net.WriteUInt(amount, 32)
+        net.WriteEntity(self.ScreenData)
+        net.WriteEntity(self.ScreenData.selected)
+    net.SendToServer()
+end
+
 ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     local centerx = windowx + windoww * .5
 
@@ -611,16 +624,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonHoverCol)
 
         if imgui.IsPressed() then
-            if not IsValid(data.selected) then
-                GlorifiedBanking.Notify(NOTIFY_ERROR, 5, i18n.GetPhrase("gbSelectPlayer"))
-                self:EmitSound("GlorifiedBanking.Beep_Error")
-            end
-
-            net.Start("GlorifiedBanking.TransferRequested")
-                net.WriteUInt(amount, 32)
-                net.WriteEntity(self)
-                net.WriteEntity(data.selected)
-            net.SendToServer()
+            self.Screens[6].onEnterPressed(self, amount)
         end
     else
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonBackgroundCol)
