@@ -477,13 +477,13 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
     msgw, msgh = windoww * .93, 90
     local hovering = false
 
-    local amount = #self.KeyPadBuffer > 0 and tonumber(self.KeyPadBuffer) or 0
+    local amount = self:GetKeypadContent()
     if imgui.IsHovering(centerx - msgw * .5, msgy, msgw, msgh) then
         hovering = true
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonHoverCol)
 
         if imgui.IsPressed() then
-            onPress(amount)
+            onPress(self, amount)
         end
     else
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonBackgroundCol)
@@ -510,6 +510,16 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
     return hovering
 end
 
+--Button press/submit button press method for withdrawals
+ENT.Screens[4].onEnterPressed = function(self, amount)
+    self.KeyPadBuffer = ""
+
+    net.Start("GlorifiedBanking.WithdrawalRequested")
+     net.WriteUInt(amount, 32)
+     net.WriteEntity(self)
+    net.SendToServer()
+end
+
 ENT.Screens[4].drawFunction = function(self, data) --Withdrawal screen
     return drawTypeAmountScreen(
         self,
@@ -518,15 +528,18 @@ ENT.Screens[4].drawFunction = function(self, data) --Withdrawal screen
         theme.Data.Materials.transaction,
         self:GetWithdrawalFee() > 0 and i18n.GetPhrase("gbWithdrawalHasFee", self:GetWithdrawalFee()) or i18n.GetPhrase("gbWithdrawalFree"),
         i18n.GetPhrase("gbWithdrawalDisclaimer"),
-        function(amount)
-            self.KeyPadBuffer = ""
-
-            net.Start("GlorifiedBanking.WithdrawalRequested")
-             net.WriteUInt(amount, 32)
-             net.WriteEntity(self)
-            net.SendToServer()
-        end
+        self.Screens[4].onEnterPressed
     )
+end
+
+--Button press/submit button press method for deposits
+ENT.Screens[5].onEnterPressed = function(self, amount)
+    self.KeyPadBuffer = ""
+
+    net.Start("GlorifiedBanking.DepositRequested")
+     net.WriteUInt(amount, 32)
+     net.WriteEntity(self)
+    net.SendToServer()
 end
 
 ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
@@ -537,14 +550,7 @@ ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
         theme.Data.Materials.transaction,
         self:GetDepositFee() > 0 and i18n.GetPhrase("gbDepositHasFee", self:GetDepositFee()) or i18n.GetPhrase("gbDepositFree"),
         i18n.GetPhrase("gbDepositDisclaimer"),
-        function(amount)
-            self.KeyPadBuffer = ""
-
-            net.Start("GlorifiedBanking.DepositRequested")
-             net.WriteUInt(amount, 32)
-             net.WriteEntity(self)
-            net.SendToServer()
-        end
+        self.Screens[5].onEnterPressed
     )
 end
 
@@ -599,7 +605,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     msgw, msgh = windoww * .93, 90
     local hovering = false
 
-    local amount = #self.KeyPadBuffer > 0 and tonumber(self.KeyPadBuffer) or 0
+    local amount = self:GetKeypadContent()
     if imgui.IsHovering(centerx - msgw * .5, msgy, msgw, msgh) then
         hovering = true
         draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionButtonHoverCol)
@@ -656,7 +662,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
 
     GlorifiedBanking.UI.StartCutOut(function()
         surface.SetDrawColor(color_white)
-    surface.DrawRect(listx, listy, listw, listh)
+        surface.DrawRect(listx, listy, listw, listh)
     end)
 
     local plycount = #data.players
@@ -849,16 +855,23 @@ function ENT:PressKey(key)
         return
     end
 
-    if not self.Screens[self:GetScreenID()].takesKeyInput then return end
+    local curScreen = self.Screens[self:GetScreenID()]
+    if not curScreen.takesKeyInput then return end
 
     if key == "#" then
-
+        if not curScreen.onEnterPressed then return end
+        curScreen.onEnterPressed(self, self:GetKeypadContent())
         return
     end
 
     if #self.KeyPadBuffer > 13 then return end
 
     self.KeyPadBuffer = self.KeyPadBuffer .. key
+end
+
+--Keypad content getter
+function ENT:GetKeypadContent()
+    return #self.KeyPadBuffer > 0 and tonumber(self.KeyPadBuffer) or 0
 end
 
 --Numpad shortcuts
