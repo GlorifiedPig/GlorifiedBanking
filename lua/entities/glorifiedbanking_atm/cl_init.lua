@@ -99,7 +99,7 @@ function ENT:OnScreenChange(name, old, new)
     self.OldScreenData = table.Copy(self.ScreenData)
     self.ScreenData = {}
 
-    timer.Simple(1.2, function()
+    timer.Simple(1.2, function() --Minimum load time of 1.2 seconds to let the full anim play
         self.OldScreenID = 0
         self.OldScreenData = {}
         self.KeyPadBuffer = ""
