@@ -115,7 +115,7 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
         atmEntity.LastAction = CurTime()
 
         if newScreen == 7 then -- Is this screen the transaction history screen?
-            GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs` WHERE `SteamID` = '" .. ply:SteamID() .. "' OR `ReceiverSteamID` = '" .. ply:SteamID() .. "'ORDER BY `Date` DESC LIMIT 10", function( queryResult )
+            GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs` WHERE `SteamID` = '" .. ply:SteamID() .. "' OR `ReceiverSteamID` = '" .. ply:SteamID() .. "' ORDER BY `Date` DESC LIMIT 10", function( queryResult )
                 timer.Simple( .5, function()
                     net.Start( "GlorifiedBanking.ChangeScreen.SendLogs" )
                     net.WriteEntity( atmEntity )
@@ -162,7 +162,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
         local itemLimit = GlorifiedBanking.SQL.EscapeString( tostring( net.ReadUInt( 6 ) ) )
         local filter = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
         local filterSteamID = GlorifiedBanking.SQL.EscapeString( net.ReadString() )
-        if filter != "All" and filter != "Withdraw" and filter != "Deposit" and filter != "Transfer" then return end
+        if filter != "All" and filter != "Withdrawal" and filter != "Deposit" and filter != "Transfer" then return end
         local query = "SELECT * FROM `gb_logs` "
 
         if filter != "All" then
@@ -176,9 +176,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
         if string.sub( query, -4 ) == "AND " then query = string.sub( query, 1, -5 ) end
 
         local offset = pageNumber == 1 and 0 or (pageNumber - 1) * itemLimit
-        query = query .. "LIMIT " .. itemLimit .. " OFFSET " .. offset
-
-        print(query)
+        query = query .. "ORDER BY `Date` DESC LIMIT " .. itemLimit .. " OFFSET " .. offset
 
         GlorifiedBanking.SQL.Query( query, function( queryResult )
             GlorifiedBanking.SQL.Query( "SELECT COUNT(*) FROM gb_logs;", function( rowCount )

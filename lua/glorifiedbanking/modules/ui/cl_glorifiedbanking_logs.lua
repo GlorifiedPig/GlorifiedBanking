@@ -12,30 +12,38 @@ function PANEL:Init()
 
     self.TransactionTypeSelect = vgui.Create("GlorifiedBanking.Dropdown", self.TopBar)
 
-    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeAll"))
-    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeWithdrawals"))
-    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeDeposits"))
-    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeTransfers"))
+    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeAll"), "All")
+    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeWithdrawals"), "Withdrawal")
+    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeDeposits"), "Deposit")
+    self.TransactionTypeSelect:AddChoice(i18n.GetPhrase("gbTypeTransfers"), "Transfer")
     self.TransactionTypeSelect:ChooseOptionID(1)
 
     self.TransactionTypeSelect.OnSelect = function(s, index, value, data)
         s:SizeToContents()
+        self:RequestLogs()
     end
 
     self.ScrollPanel = vgui.Create("GlorifiedBanking.ScrollPanel", self)
 
     self.Paginator = vgui.Create("GlorifiedBanking.Paginator", self)
-    self.Paginator:SetupPaginator(100)
+
+    self.Paginator.OnPageSelected = function()
+        self:RequestLogs()
+    end
 
     self.Logs = {}
     timer.Simple(0, function()
-        net.Start("GlorifiedBanking.AdminPanel.RequestLogUpdate")
-         net.WriteUInt(1, 16)
-         net.WriteUInt(20, 6)
-         net.WriteString("All")
-         net.WriteString(self.SteamID or "NONE")
-        net.SendToServer()
+        self:RequestLogs()
     end)
+end
+
+function PANEL:RequestLogs()
+    net.Start("GlorifiedBanking.AdminPanel.RequestLogUpdate")
+     net.WriteUInt(self.Paginator.SelectedPage or 1, 16)
+     net.WriteUInt(self.Paginator.ItemsPerPage or 20, 6)
+     net.WriteString(self.TransactionTypeSelect:GetOptionData(self.TransactionTypeSelect:GetSelectedID()))
+     net.WriteString(self.SteamID or "NONE")
+    net.SendToServer()
 end
 
 function PANEL:AddLog(logData)
@@ -124,12 +132,17 @@ end
 
 vgui.Register("GlorifiedBanking.Logs", PANEL, "Panel")
 
-net.Receive("GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo", function()
+net.Receive("GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo", function()
     local logs = util.JSONToTable(net.ReadLargeString())
     if not logs then return end
 
     local panel = GlorifiedBanking.UI.AdminMenu.Page
     if not panel.ResetLogs then return end
+
+
+    if IsValid(panel.Paginator) then
+        panel.Paginator:SetupPaginator(net.ReadUInt(32))
+    end
 
     panel:ResetLogs()
 

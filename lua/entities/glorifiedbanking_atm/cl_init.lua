@@ -32,8 +32,6 @@ net.Receive("GlorifiedBanking.ChangeScreen.SendLogs", function()
         v.MoneyColor = (v.Type == "Deposit" and theme.Data.Colors.transactionListEntryMoneyPositiveCol) or (v.Type == "Transfer" and v.ReceiverSteamID and theme.Data.Colors.transactionListEntryMoneyPositiveCol) or theme.Data.Colors.transactionListEntryMoneyNegativeCol
     end
 
-    PrintTable(data)
-
     ent.ScreenData.Transactions = table.Copy(data)
 end)
 

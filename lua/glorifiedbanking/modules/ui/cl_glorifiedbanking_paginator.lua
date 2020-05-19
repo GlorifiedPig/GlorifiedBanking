@@ -5,9 +5,9 @@ function PANEL:Init()
     self.Theme = self:GetParent().Theme
 
     self.ItemsPerPage = 20
-    self.ItemCount = 1000
+    self.ItemCount = 0
     self.PageCount = 0
-    self.SelectedPage = 0
+    self.SelectedPage = 1
 
     self.ItemCountSelector = vgui.Create("GlorifiedBanking.Dropdown", self)
 
@@ -23,7 +23,7 @@ function PANEL:Init()
         s:SizeToContents()
 
         self.ItemsPerPage = value
-        self:SetupPaginator(self.ItemCount)
+        self:SetupPaginator(self.ItemCount, true)
     end
 
     self.Buttons = {}
@@ -90,13 +90,16 @@ function PANEL:CreatePageButton(text, drawbg, onClick)
     return btn
 end
 
-function PANEL:SetupPaginator(itemcount)
+function PANEL:SetupPaginator(itemcount, force)
+    if not force and self.ItemCount > 0 then return end
+
     self:ClearButtons()
 
     self.ItemCount = itemcount
-    self.PageCount = math.floor(itemcount / self.ItemsPerPage)
+    self.PageCount = math.ceil(itemcount / self.ItemsPerPage)
 
     if self.PageCount <= 1 then
+        if force then self:SelectPage(1) end
         self:Remove()
         return
     end
