@@ -825,7 +825,7 @@ function ENT:DrawScreen()
 
         self:DrawLoadingScreen()
 
-        if not currentScreen.hideCursor and not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
+        if not currentScreen.hideCursor and self.LocalPlayer == self:GetCurrentUser() and  not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
 
             surface.SetDrawColor(color_white)
