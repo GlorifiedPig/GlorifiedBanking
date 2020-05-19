@@ -121,6 +121,7 @@ end
 local scrw, scrh = 1286, 1129
 local windoww, windowh = scrw-60, scrh-188
 local windowx, windowy = 30, 158
+local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
 function ENT:DrawScreenBackground(showExit, backPage)
     local hovering = false
 
@@ -220,7 +221,6 @@ function ENT:DrawLoadingScreen()
         surface.DrawRect(0, 0, scrw, scrh)
     end)
 
-    local centery = windowy + windowh / 2
     local y = centery - self.LoadingScreenH / 2
 
     surface.SetDrawColor(theme.Data.Colors.loadingScreenBackgroundCol)
@@ -264,8 +264,6 @@ end)
 
 --Define all of our screen drawing functions
 ENT.Screens[1].drawFunction = function(self, data) --Idle screen
-    local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
-
     GlorifiedBanking.UI.StartCutOut(function()
         surface.SetDrawColor(color_white)
         surface.DrawRect(windowx, windowy + 4, windoww, windowh - 8)
@@ -299,8 +297,6 @@ ENT.Screens[1].drawFunction = function(self, data) --Idle screen
 end
 
 ENT.Screens[2].drawFunction = function(self, data) --Lockdown screen
-    local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
-
     local msgw, msgh = windoww * .95, 100
     draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + 35, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
     draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + 35, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
@@ -368,8 +364,6 @@ local menuButtons = {
 }
 
 ENT.Screens[3].drawFunction = function(self, data) --Main Menu
-    local centerx = windowx + windoww * .5, windowy + windowh * .5
-
     surface.SetFont("GlorifiedBanking.ATMEntity.WelcomeBack")
     local contenty = windowy + 150
     local iconsize = 32
@@ -413,8 +407,6 @@ ENT.Screens[3].drawFunction = function(self, data) --Main Menu
 end
 
 local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, bottomHint, disclaimer, onPress)
-    local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
-
     surface.SetFont("GlorifiedBanking.ATMEntity.AccountBalance")
     local contenty = windowy + 110
     local iconsize = 46
@@ -568,8 +560,6 @@ ENT.Screens[6].onEnterPressed = function(self, amount)
 end
 
 ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
-    local centerx = windowx + windoww * .5
-
     surface.SetFont("GlorifiedBanking.ATMEntity.AccountBalance")
     local contenty = windowy + 25
     local iconsize = 46
@@ -750,8 +740,6 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
 end
 
 ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
-    local centerx = windowx + windoww * .5
-
     surface.SetFont("GlorifiedBanking.ATMEntity.AccountBalance")
     local contenty = windowy + 15
     local iconsize = 46
