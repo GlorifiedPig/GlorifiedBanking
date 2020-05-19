@@ -18,6 +18,7 @@
 --[[ End Backup System Configuration ]]--
 
 --[[ Other Options ]]--
+    GlorifiedBanking.Config.USE_FASTDL = false --Should we use FastDL or WorkshopDL? True for FastDL, false for Workshop
     GlorifiedBanking.Config.LAST_ACTION_TIMEOUT = false -- How long should we wait after an action on the ATM before timing out the user? False to disable.
     GlorifiedBanking.Config.SALARY_TO_BANK = true -- Should the player's salary get transferred to his bank account?
     GlorifiedBanking.Config.STARTING_BALANCE = 5000 -- How much money to start with in the player's bank account?
