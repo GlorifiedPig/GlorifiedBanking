@@ -1,5 +1,5 @@
 
-local soundLevel = 58
+local soundLevel = 50
 
 sound.Add({
     name = "GlorifiedBanking.Key_Press",
