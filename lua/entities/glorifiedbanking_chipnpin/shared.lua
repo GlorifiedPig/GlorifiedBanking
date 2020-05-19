@@ -1,7 +1,7 @@
 
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
-ENT.PrintName = "Glorified Chip 'N' Pin Machine"
+ENT.PrintName = "Glorified Card Reader"
 ENT.Category = "GlorifiedBanking"
 ENT.Author = "Tom.bat"
 ENT.Spawnable = true

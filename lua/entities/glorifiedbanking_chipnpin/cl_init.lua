@@ -7,7 +7,7 @@ imgui.DisableDeveloperMode = true
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 local padpos = Vector(0, 0, 30)
-local padangles = Angle(90, 0, 0)
+local padangles = Angle(270, 180, 0)
 local keyw, keyh = 50, 50
 local keyspacing = 10
 function ENT:DrawKeypad()
@@ -19,7 +19,7 @@ function ENT:DrawKeypad()
                     surface.SetDrawColor(Color(100, 100, 100))
 
                     if imgui.IsPressed() then
-                        print("Pressed key: " .. tostring(i * 3 + j))
+                        print("Pressed key: " .. tostring(i * 3 + j + 1))
                     end
                 else
                     surface.SetDrawColor(color_white or Color(100, 100, 100))
