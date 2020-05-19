@@ -24,3 +24,13 @@ function ENT:SetMerchant(ply)
     end
     self:CPPISetOwner(ply)
 end
+
+--Transer money method, the main function of the card reader
+function ENT:Transfer(sender)
+    local merchant = self:GetMerchant()
+
+    GlorifiedBanking.Notify(sender, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbPaidByCard", receiver:Name(), GlorifiedBanking.FormatMoney(amount)))
+    GlorifiedBanking.Notify(merchant, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbPaidByCardReceive", sender:Name(), GlorifiedBanking.FormatMoney(amount)))
+
+    GlorifiedBanking.TransferAmount(sender, merchant, amount)
+end
