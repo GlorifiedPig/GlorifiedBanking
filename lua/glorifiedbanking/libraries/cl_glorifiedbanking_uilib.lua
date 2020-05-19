@@ -1,5 +1,5 @@
 
-GlorifiedBanking.UI = {}
+GlorifiedBanking.UI = GlorifiedBanking.UI or {}
 
 local lerp = Lerp
 function GlorifiedBanking.UI.LerpColor( t, from, to )
