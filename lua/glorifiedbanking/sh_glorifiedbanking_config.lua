@@ -19,5 +19,6 @@
 --[[ End Interest Settings ]]--
 
 --[[ Other Config ]]--
+    GlorifiedBanking.Config.CARD_PAYMENT_FEE = 0 --Percentage fee (0-100) taken from transactions done via card readers.
     GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM = 250 -- What is the maximum distance for the validation checks on the ATMs?
 --[[ End Other Config ]]--
