@@ -56,6 +56,13 @@ function PANEL:Init()
 
         self:Remove()
     end
+
+    timer.Simple(0, function()
+        if self.Username then return end
+        steamworks.RequestPlayerInfo(util.SteamIDTo64(self.SteamID), function(name)
+            self.Username = name
+        end)
+    end)
 end
 
 function PANEL:PerformLayout(w, h)
@@ -78,7 +85,7 @@ function PANEL:Paint(w, h)
     draw.RoundedBoxEx(6, 0, 0, w, h * .18, self.Theme.Data.Colors.adminMenuNavbarBackgroundCol, true, true)
 
     draw.SimpleText(i18n.GetPhrase("gbSetBalance"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .021, h * .08, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.SimpleText(i18n.GetPhrase("gbEnterBalance", self.SteamID and self.SteamID or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
+    draw.SimpleText(i18n.GetPhrase("gbEnterBalance", self.Username and self.Username or self.SteamID or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
 end
 
 vgui.Register("GlorifiedBanking.BalancePopup", PANEL, "EditablePanel")
