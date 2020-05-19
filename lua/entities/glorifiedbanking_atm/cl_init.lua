@@ -110,6 +110,9 @@ end
 function ENT:DrawTranslucent()
     self:DrawModel()
 
+    if not self.LocalPlayer then return end
+    if self.LocalPlayer:GetPos():DistToSqr(self:GetPos()) > 1000 * 1000 then return end
+
     self:DrawScreen()
     self:DrawKeypad()
     self:DrawSign()
