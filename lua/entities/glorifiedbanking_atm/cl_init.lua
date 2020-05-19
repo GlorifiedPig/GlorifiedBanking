@@ -215,25 +215,10 @@ function ENT:DrawLoadingScreen()
         self.Screens[self.OldScreenID].drawFunction(self, self.OldScreenData)
     end
 
-    render.ClearStencil()
-    render.SetStencilEnable(true)
-    render.SetStencilCompareFunction(STENCIL_ALWAYS)
-    render.SetStencilPassOperation(STENCIL_REPLACE)
-    render.SetStencilFailOperation(STENCIL_KEEP)
-    render.SetStencilZFailOperation(STENCIL_KEEP)
-
-    render.SetStencilWriteMask(1)
-    render.SetStencilTestMask(1)
-    render.SetStencilReferenceValue(1)
-
-    render.OverrideColorWriteEnable(true, false)
-
-    surface.SetDrawColor(color_white)
-    surface.DrawRect(0, 0, scrw, scrh)
-
-    render.OverrideColorWriteEnable(false, false)
-
-    render.SetStencilCompareFunction(STENCIL_EQUAL)
+    GlorifiedBanking.UI.StartCutOut(function()
+        surface.SetDrawColor(color_white)
+        surface.DrawRect(0, 0, scrw, scrh)
+    end)
 
     local centery = windowy + windowh / 2
     local y = centery - self.LoadingScreenH / 2
@@ -254,7 +239,7 @@ function ENT:DrawLoadingScreen()
 
     draw.SimpleText(self.ForcedLoad and self.ForcedLoadReason or i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-    render.SetStencilEnable(false)
+    GlorifiedBanking.UI.EndCutOut()
 end
 
 --Manage the idle screen slideshow globally rather than per-entity
@@ -281,25 +266,10 @@ end)
 ENT.Screens[1].drawFunction = function(self, data) --Idle screen
     local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
 
-    render.ClearStencil()
-    render.SetStencilEnable(true)
-    render.SetStencilCompareFunction(STENCIL_ALWAYS)
-    render.SetStencilPassOperation(STENCIL_REPLACE)
-    render.SetStencilFailOperation(STENCIL_KEEP)
-    render.SetStencilZFailOperation(STENCIL_KEEP)
-
-    render.SetStencilWriteMask(1)
-    render.SetStencilTestMask(1)
-    render.SetStencilReferenceValue(1)
-
-    render.OverrideColorWriteEnable(true, false)
-
-    surface.SetDrawColor(color_white)
-    surface.DrawRect(windowx, windowy + 4, windoww, windowh - 8)
-
-    render.OverrideColorWriteEnable(false, false)
-
-    render.SetStencilCompareFunction(STENCIL_EQUAL)
+    GlorifiedBanking.UI.StartCutOut(function()
+        surface.SetDrawColor(color_white)
+        surface.DrawRect(windowx, windowy + 4, windoww, windowh - 8)
+    end)
 
     surface.SetDrawColor(theme.Data.Colors.idleScreenSlideshowCol)
     surface.SetMaterial(theme.Data.Materials.idleSlideshow[idleScreenSlideID])
@@ -315,7 +285,7 @@ ENT.Screens[1].drawFunction = function(self, data) --Idle screen
         surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
     end
 
-    render.SetStencilEnable(false)
+    GlorifiedBanking.UI.EndCutOut()
 
     local msgw, msgh = windoww * .6, windowh * .2
     draw.RoundedBox(12, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
@@ -684,25 +654,10 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
 
     if not data.offset then data.offset = 0 end
 
-    render.ClearStencil()
-    render.SetStencilEnable(true)
-    render.SetStencilCompareFunction(STENCIL_ALWAYS)
-    render.SetStencilPassOperation(STENCIL_REPLACE)
-    render.SetStencilFailOperation(STENCIL_KEEP)
-    render.SetStencilZFailOperation(STENCIL_KEEP)
-
-    render.SetStencilWriteMask(1)
-    render.SetStencilTestMask(1)
-    render.SetStencilReferenceValue(1)
-
-    render.OverrideColorWriteEnable(true, false)
-
-    surface.SetDrawColor(color_white)
+    GlorifiedBanking.UI.StartCutOut(function()
+        surface.SetDrawColor(color_white)
     surface.DrawRect(listx, listy, listw, listh)
-
-    render.OverrideColorWriteEnable(false, false)
-
-    render.SetStencilCompareFunction(STENCIL_EQUAL)
+    end)
 
     local plycount = #data.players
     local showscroll = plycount > 4
@@ -745,7 +700,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
 
     end
 
-    render.SetStencilEnable(false)
+    GlorifiedBanking.UI.EndCutOut()
 
     if not showscroll then return hovering end
 
