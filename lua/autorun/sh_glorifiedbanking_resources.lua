@@ -93,8 +93,10 @@ sound.Add({
 
 if SERVER then
     AddCSLuaFile()
+
     if not GlorifiedBanking.Config.USE_FASTDL then
         resource.AddWorkshop( "2101502704" )
+        return
     end
 
     --Sounds
@@ -146,7 +148,6 @@ if SERVER then
     resource.AddFile("materials/glorified_banking/slideshow/bank.png")
     resource.AddFile("materials/glorified_banking/slideshow/robbery.png")
     resource.AddFile("materials/glorified_banking/slideshow/transaction.png")
-
 
     --Fonts
     resource.AddFile("resource/fonts/montserratregular.ttf")
