@@ -81,6 +81,7 @@ function PANEL:SetSteamID(steamid)
 
             local menuPanel = self:GetParent()
             menuPanel.Page = vgui.Create("GlorifiedBanking.Players", menuPanel)
+            menuPanel.Page.CanEditPlayers = menuPanel.CanEditPlayers
             menuPanel.Page:Dock(FILL)
             menuPanel.Page:SetAlpha(0)
             menuPanel.Page:AlphaTo(255, 0.15)
