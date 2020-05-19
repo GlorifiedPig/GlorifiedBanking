@@ -550,11 +550,12 @@ ENT.Screens[6].onEnterPressed = function(self, amount)
     if not IsValid(self.ScreenData.selected) then
         GlorifiedBanking.Notify(NOTIFY_ERROR, 5, i18n.GetPhrase("gbSelectPlayer"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
+        return
     end
 
     net.Start("GlorifiedBanking.TransferRequested")
         net.WriteUInt(amount, 32)
-        net.WriteEntity(self.ScreenData)
+        net.WriteEntity(self)
         net.WriteEntity(self.ScreenData.selected)
     net.SendToServer()
 end
