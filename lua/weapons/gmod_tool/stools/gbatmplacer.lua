@@ -136,9 +136,11 @@ function TOOL:LeftClick( tr )
 end
 
 function TOOL:RightClick( tr )
-    if not tr.Hit or not IsValid( tr.Entity ) then return end
-    if tr.Entity:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
-        SafeRemoveEntity( tr.Entity )
+    local ent = tr.Entity
+    if not tr.Hit or not IsValid( ent ) then return end
+    if ent:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
+        GlorifiedBanking.GlorifiedPersistentEnts.RemoveEntityFromDB( ent )
+        SafeRemoveEntity( ent )
     end
 end
 
