@@ -1,6 +1,5 @@
 
-resource.AddFile("resource/fonts/glorified_banking/montserratregular.ttf")
-resource.AddFile("resource/fonts/glorified_banking/orbitronregular.ttf")
+resource.AddWorkshop( "2101502704" )
 
 local soundLevel = 60
 
