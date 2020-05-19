@@ -268,6 +268,7 @@ function ENT:Transfer(ply, receiver, amount)
         self:ForceLoad("")
         GlorifiedBanking.TransferAmount(ply, receiver, amount)
         GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbCashTransferred", GlorifiedBanking.FormatMoney(amount), receiver:Name()))
+        GlorifiedBanking.Notify(receiver, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbCashTransferReceive", ply:Name(), GlorifiedBanking.FormatMoney(amount)))
     end)
 end
 

@@ -72,6 +72,7 @@ i18n.RegisterPhrases("en", {
     gbCashWithdrawn = "You withdrew %s.",
     gbCashDeposited = "You deposited %s.",
     gbCashTransferred = "You transferred %s to %s.",
+    gbCashTransferReceive = "%s transferred %s to your account.",
     gbCannotAfford = "You cannot afford that.",
     gbInvalidAmount = "Please enter a valid amount.",
     gbToolName = "ATM Placer",
