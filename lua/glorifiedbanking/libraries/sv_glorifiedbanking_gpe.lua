@@ -88,7 +88,7 @@ concommand.Add( GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. "removeen
         print( "[GlorifiedBanking.GlorifiedPersistentEnts] Cleared table `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`" )
         sql.Query( "DELETE FROM `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`")
         for k, v in pairs( GlorifiedBanking.GlorifiedPersistentEnts.EntClasses ) do
-            for k2, v2 in pairs( ents.FindByClass( v ) ) do
+            for k2, v2 in pairs( ents.FindByClass( k ) ) do
                 SafeRemoveEntity( v2 )
             end
         end
