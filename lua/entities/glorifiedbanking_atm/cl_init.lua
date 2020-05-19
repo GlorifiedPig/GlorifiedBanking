@@ -4,17 +4,20 @@ include("shared.lua")
 local imgui = GlorifiedBanking.imgui
 imgui.DisableDeveloperMode = true
 
+--Enums for animations
 local GB_ANIM_IDLE = 0
 local GB_ANIM_MONEY_IN = 1
 local GB_ANIM_MONEY_OUT = 2
 local GB_ANIM_CARD_IN = 3
 local GB_ANIM_CARD_OUT = 4
 
+--Localise the theme data
 local theme = GlorifiedBanking.Themes.GetCurrent()
 hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdated", function(newTheme)
     theme = newTheme
 end)
 
+--Transaction log networking
 net.Receive("GlorifiedBanking.ChangeScreen.SendLogs", function()
     local ent = net.ReadEntity()
     if not IsValid(ent) then return end
@@ -37,9 +40,9 @@ end)
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
+--Check for the required screen data here
 ENT.CurrentUsername = ""
 ENT.ScreenData = {}
-
 function ENT:Think()
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
         self:EmitSound("GlorifiedBanking.Beep_Attention")
@@ -74,6 +77,7 @@ function ENT:Think()
     self.ShouldDrawCurrentScreen = true
 end
 
+--Insert card method, used by the SWEP for future card reading entities
 function ENT:InsertCard()
     if self:GetCurrentUser() != NULL then
         GlorifiedBanking.Notify(NOTIFY_ERROR, 5, i18n.GetPhrase("gbCardAtmInUse"))
@@ -85,9 +89,9 @@ function ENT:InsertCard()
     net.SendToServer()
 end
 
+--Loading screen manager
 ENT.OldScreenID = 0
 ENT.OldScreenData = {}
-
 function ENT:OnScreenChange(name, old, new)
     self.OldScreenID = old
     self.OldScreenData = table.Copy(self.ScreenData)
@@ -100,6 +104,7 @@ function ENT:OnScreenChange(name, old, new)
     end)
 end
 
+--Main draw hook
 function ENT:DrawTranslucent()
     self:DrawModel()
 
@@ -110,10 +115,10 @@ function ENT:DrawTranslucent()
     self:DrawAnimations()
 end
 
+--Draw the background of the screen and navbar
 local scrw, scrh = 1286, 1129
 local windoww, windowh = scrw-60, scrh-188
 local windowx, windowy = 30, 158
-
 function ENT:DrawScreenBackground(showExit, backPage)
     local hovering = false
 
@@ -175,9 +180,7 @@ function ENT:DrawScreenBackground(showExit, backPage)
     return hovering
 end
 
-ENT.LoadingScreenX = -scrw
-ENT.LoadingScreenH = 300
-
+--Force load networking
 net.Receive("GlorifiedBanking.ForceLoad", function()
     local ent = net.ReadEntity()
     local reason = net.ReadString()
@@ -186,6 +189,9 @@ net.Receive("GlorifiedBanking.ForceLoad", function()
     ent.ForcedLoadReason = reason
 end)
 
+--Draw the loading screen + animate it
+ENT.LoadingScreenX = -scrw
+ENT.LoadingScreenH = 300
 function ENT:DrawLoadingScreen()
     if self.ForcedLoad or not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
         self.LoadingScreenX = Lerp(FrameTime() * 8, self.LoadingScreenX, 30)
@@ -249,11 +255,11 @@ function ENT:DrawLoadingScreen()
     render.SetStencilEnable(false)
 end
 
+--Manage the idle screen slideshow globally rather than per-entity
 local idleScreenSlideID = 1
 local idleScreenSlideScale = 1
 local idleScreenOldSlideAlpha = 0
 local idleScreenOldSlideID = 1
-
 hook.Add("PostRender", "GlorifiedBanking.ATMEntity.PostRender", function()
     idleScreenSlideScale = idleScreenSlideScale + FrameTime() * .01
 
@@ -269,6 +275,7 @@ hook.Add("PostRender", "GlorifiedBanking.ATMEntity.PostRender", function()
     end
 end)
 
+--Define all of our screen drawing functions
 ENT.Screens[1].drawFunction = function(self, data) --Idle screen
     local centerx, centery = windowx + windoww * .5, windowy + windowh * .5
 
@@ -848,9 +855,9 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
     end
 end
 
+--Draw the current screen
 local screenpos = Vector(1.47, 13.46, 51.16)
 local screenang = Angle(0, 270, 90)
-
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.02, 250, 200) then
         local screenID = self:GetScreenID()
@@ -863,7 +870,7 @@ function ENT:DrawScreen()
 
         self:DrawLoadingScreen()
 
-        if screenID != 1 and screenID != 2 and not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
+        if not currentScreen.hideCursor and not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
 
             surface.SetDrawColor(color_white)
@@ -875,8 +882,8 @@ function ENT:DrawScreen()
     end
 end
 
+--Keypad management code
 ENT.KeyPadBuffer = ""
-
 function ENT:PressKey(key)
     if self:GetCurrentUser() != LocalPlayer() then return end
     self:EmitSound("GlorifiedBanking.Key_Press")
@@ -885,14 +892,20 @@ function ENT:PressKey(key)
         self.KeyPadBuffer = ""
         return
     end
-    if key == "#" then return end
 
     if not self.Screens[self:GetScreenID()].takesKeyInput then return end
+
+    if key == "#" then
+
+        return
+    end
+
     if #self.KeyPadBuffer > 13 then return end
 
     self.KeyPadBuffer = self.KeyPadBuffer .. key
 end
 
+--Numpad shortcuts
 local buttons = {
     [KEY_PAD_0] = "0",
     [KEY_PAD_1] = "1",
@@ -904,8 +917,8 @@ local buttons = {
     [KEY_PAD_7] = "7",
     [KEY_PAD_8] = "8",
     [KEY_PAD_9] = "9",
-    [KEY_PAD_MULTIPLY] = "*",
-    [KEY_PAD_DIVIDE] = "#"
+    [KEY_PAD_MINUS] = "*",
+    [KEY_PAD_ENTER] = "#"
 }
 
 hook.Add("PlayerButtonDown", "GlorifiedBanking.ATMEntity.PlayerButtonDown", function(ply, btn)
@@ -920,12 +933,11 @@ hook.Add("PlayerButtonDown", "GlorifiedBanking.ATMEntity.PlayerButtonDown", func
     tr.Entity:PressKey(buttons[btn])
 end)
 
+--Draw the keypad button hover and cursor
 local padw, padh = 253, 204
 local keyw, keyh = 38, 37
-
 local padpos = Vector(-7.33, 6.94, 24.04)
 local padang = Angle(-28.6, 0, 0)
-
 function ENT:DrawKeypad()
     self.IsHoveringKeypad = false
 
@@ -966,11 +978,10 @@ function ENT:DrawKeypad()
     end
 end
 
+--Draw the sign above the ATM
 local signpos = Vector(-8.3, 14.5, 71.3)
 local signang = Angle(0, 270, 90)
-
 local signw, signh = 553, 162
-
 function ENT:DrawSign()
     cam.Start3D2D(self:LocalToWorld(signpos), self:LocalToWorldAngles(signang), 0.05)
         surface.SetDrawColor(theme.Data.Colors.signBackgroundCol)
@@ -980,16 +991,10 @@ function ENT:DrawSign()
     cam.End3D2D()
 end
 
+--Animation setup method
 local moneyinpos = Vector(-7, 4.5, 19.37)
 local moneyoutpos = Vector(-10, 4.5, 19.37)
 local moneyang = Angle(0, 270, 0)
-
-net.Receive("GlorifiedBanking.SendAnimation", function()
-    local ent = net.ReadEntity()
-    ent:PlayGBAnim(net.ReadUInt(3))
-    ent.RequiresAttention = false
-end)
-
 function ENT:PlayGBAnim(type, skipsound)
     if type == GB_ANIM_CARD_IN then
         self.CardPos = 60
@@ -1025,12 +1030,7 @@ function ENT:PlayGBAnim(type, skipsound)
             self.MoneyPos:Set(moneyinpos)
         end
 
-        if not IsValid(self.MoneyModel) then
-            self.MoneyModel = ents.CreateClientProp()
-            self.MoneyModel:SetModel("models/props/cs_assault/Money.mdl")
-            self.MoneyModel:Spawn()
-        end
-
+        if not IsValid(self.MoneyModel) then self.MoneyModel = ClientsideModel("models/props/cs_assault/Money.mdl") end
         self.MoneyModel:SetPos(self:LocalToWorld(self.MoneyPos))
         self.MoneyModel:SetAngles(self:LocalToWorldAngles(moneyang))
     else
@@ -1044,15 +1044,23 @@ function ENT:PlayGBAnim(type, skipsound)
     self.AnimState = type
 end
 
+--Animation networking
+net.Receive("GlorifiedBanking.SendAnimation", function()
+    local ent = net.ReadEntity()
+    ent:PlayGBAnim(net.ReadUInt(3))
+    ent.RequiresAttention = false
+end)
+
+--Cleanup money clientside ent
 function ENT:OnRemove()
     if IsValid(self.MoneyModel) then
         self.MoneyModel:Remove()
     end
 end
 
+--Draw the playing animation
 local cardpos = Vector(-4, -10.45, 19.81)
 local cardang = Angle(0, 180, 0)
-
 function ENT:DrawAnimations()
     if self.AnimState == GB_ANIM_IDLE then return end
 

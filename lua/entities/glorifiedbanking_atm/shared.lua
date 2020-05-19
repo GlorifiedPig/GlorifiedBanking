@@ -7,6 +7,7 @@ ENT.Author = "Tom.bat"
 ENT.Spawnable = true
 ENT.AdminOnly = true
 
+--Set up the network vars
 function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "ScreenID")
     self:NetworkVar("Int", 1, "WithdrawalFee")
@@ -27,9 +28,14 @@ function ENT:SetupDataTables()
     end
 end
 
+--Define all of our possible screens
 ENT.Screens = {
-    [1] = {}, --Idle screen
-    [2] = {}, --Lockdown screen
+    [1] = { --Idle screen
+        hideCursor = true
+    },
+    [2] = { --Lockdown screen
+        hideCursor = true
+    },
     [3] = { --Main Menu
         loggedIn = true
     },
