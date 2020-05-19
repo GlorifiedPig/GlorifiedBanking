@@ -44,6 +44,8 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 ENT.CurrentUsername = ""
 ENT.ScreenData = {}
 function ENT:Think()
+    self.LocalPlayer = LocalPlayer()
+
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
         self:EmitSound("GlorifiedBanking.Beep_Attention")
         self.LastAttentionBeep = CurTime()
@@ -448,7 +450,7 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
     local iconsize = 46
     local text
 
-    if self:GetCurrentUser() != LocalPlayer() then
+    if self:GetCurrentUser() != self.LocalPlayer then
         text = i18n.GetPhrase("gbAccountBalance", i18n.GetPhrase("gbHidden"))
     else
         text = i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
@@ -584,7 +586,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     local iconsize = 46
     local text
 
-    if self:GetCurrentUser() != LocalPlayer() then
+    if self:GetCurrentUser() != self.LocalPlayer then
         text = i18n.GetPhrase("gbAccountBalance", i18n.GetPhrase("gbHidden"))
     else
         text = i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
@@ -675,9 +677,8 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     if not data.players then
         data.players = player.GetHumans()
 
-        local ply = LocalPlayer()
         for k,v in ipairs(data.players) do
-            if v == ply then table.remove(data.players, k) break end
+            if v == self.LocalPlayer then table.remove(data.players, k) break end
         end
     end
 
@@ -791,7 +792,7 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
     local iconsize = 46
     local text
 
-    if self:GetCurrentUser() != LocalPlayer() then
+    if self:GetCurrentUser() != self.LocalPlayer then
         text = i18n.GetPhrase("gbAccountBalance", i18n.GetPhrase("gbHidden"))
     else
         text = i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
@@ -885,7 +886,7 @@ end
 --Keypad management code
 ENT.KeyPadBuffer = ""
 function ENT:PressKey(key)
-    if self:GetCurrentUser() != LocalPlayer() then return end
+    if self:GetCurrentUser() != self.LocalPlayer then return end
     self:EmitSound("GlorifiedBanking.Key_Press")
 
     if key == "*" then
