@@ -80,6 +80,11 @@ function ENT:ResetATM()
     self.LastAction = 0
 end
 
+--Fee calculation method
+function ENT:CalculateFee(amount, feePercent)
+    return math.Clamp(math.floor(amount / 100 * feePercent), 0, amount)
+end
+
 --Network an animation state to the nearby players
 function ENT:PlayGBAnim(type)
     net.Start("GlorifiedBanking.SendAnimation")
@@ -139,13 +144,15 @@ function ENT:Withdraw(ply, amount)
         return
     end
 
-    local atmFee = math.Clamp(math.floor(amount / 100 * self:GetWithdrawalFee()), 0, amount)
-    amount = amount - atmFee
-    if not GlorifiedBanking.CanPlayerAfford(ply, amount) then
+    local fee = self:CalculateFee(amount, self:GetWithdrawalFee())
+
+    if not GlorifiedBanking.CanPlayerAfford(ply, amount + fee) then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
+
+    GlorifiedBanking.RemovePlayerBalance(ply, fee)
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -189,13 +196,15 @@ function ENT:Deposit(ply, amount)
         return
     end
 
-    local atmFee = math.Clamp(math.floor(amount / 100 * self:GetDepositFee()), 0, amount)
-    amount = amount - atmFee
-    if not GlorifiedBanking.CanWalletAfford(ply, amount) then
+    local fee = self:CalculateFee(amount, self:GetDepositFee())
+
+    if not GlorifiedBanking.CanWalletAfford(ply, amount + fee) then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
+
+    GlorifiedBanking.RemoveCash(ply, fee)
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -252,13 +261,15 @@ function ENT:Transfer(ply, receiver, amount)
         return
     end
 
-    local atmFee = math.Clamp(math.floor(amount / 100 * self:GetTransferFee()), 0, amount)
-    amount = amount - atmFee
+    local fee = self:CalculateFee(amount, self:GetTransferFee())
+
     if not GlorifiedBanking.CanPlayerAfford(ply, amount) then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
+
+    GlorifiedBanking.RemovePlayerBalance(ply, fee)
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
