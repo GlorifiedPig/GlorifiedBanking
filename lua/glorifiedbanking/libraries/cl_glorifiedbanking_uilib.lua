@@ -37,3 +37,19 @@ end
 function GlorifiedBanking.UI.EndCutOut()
     render.SetStencilEnable(false)
 end
+
+function GlorifiedBanking.UI.GetImgur(id, callback)
+    if file.Exists("glorifiedbanking/" .. id .. ".png", "DATA") then
+        return callback(Material("../data/glorifiedbanking/" .. id .. ".png"))
+    end
+
+    http.Fetch("https://i.imgur.com/" .. id .. ".png",
+        function(body, len, headers, code)
+            file.Write("glorifiedbanking/" .. id .. ".png", body)
+            return callback(Material("../data/glorifiedbanking/" .. id .. ".png"))
+        end,
+        function(error)
+            return callback(Material("nil"))
+        end
+    )
+end
