@@ -29,6 +29,13 @@ function PANEL:Init()
     self.Entry = vgui.Create("DTextEntry", self)
     self.Entry:SetValue("Filf1VB")
     self.Entry:SetFont("GlorifiedBanking.AdminMenu.SetBalanceEntry")
+    self.Entry:SetUpdateOnType(true)
+
+    self.Entry.OnValueChange = function(s, value)
+        GlorifiedBanking.UI.GetImgur(value, function(mat)
+            self.CardMaterial = mat
+        end)
+    end
 
     local ply = LocalPlayer()
     local cardName = ply:Name()
@@ -42,7 +49,7 @@ function PANEL:Init()
     self.CardPreview = vgui.Create("Panel", self)
     self.CardPreview.Paint = function(s, w, h)
         surface.SetDrawColor(color_white)
-        surface.SetMaterial(self.Theme.Data.Materials.bankCard)
+        surface.SetMaterial(self.CardMaterial or self.Theme.Data.Materials.bankCard)
         surface.DrawTexturedRect(0, 0, w, h)
 
         draw.SimpleText(cardID, "GlorifiedBanking.CardDesigner.CardInfo", w * .032, h * .73, self.Theme.Data.Colors.cardNumberTextCol)
@@ -76,7 +83,8 @@ function PANEL:Init()
     end
 
     self.Reset.DoClick = function(s)
-
+        self.Entry:SetValue("Filf1VB")
+        self.Save:DoClick()
     end
 end
 
