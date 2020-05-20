@@ -29,6 +29,7 @@ end
 function ENT:Transfer(sender)
     local merchant = self:GetMerchant()
     if not IsValid(merchant) then return end
+    if sender == merchant then return end
 
     local amount = self:GetTransactionAmount(0)
     if amount <= 0 then
