@@ -6,7 +6,7 @@ function GlorifiedBanking.CanWalletAfford( ply, amount )
 end
 
 function GlorifiedBanking.FormatMoney( amount )
-    return DarkRP.formatMoney( amount )
+    return DarkRP.formatMoney( tonumber( amount ) )
 end
 
 if SERVER then
