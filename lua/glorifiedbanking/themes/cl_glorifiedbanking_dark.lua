@@ -383,6 +383,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             size = function() return ScrH() * .03 end,
             weight = 500,
             antialias = true
+        },
+        ["CardDesigner.CardInfo"] = {
+            font = "Courier New",
+            size = function() return ScrH() * .032 end,
+            weight = 700,
+            antialias = true
         }
     },
     Materials = {
@@ -411,3 +417,5 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         }
     }
 } )
+
+GlorifiedBanking.Themes.GenerateFonts() --REMOVE ON PRODUCTION
