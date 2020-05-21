@@ -68,7 +68,7 @@ function PANEL:AddData(data)
         drawPlayerInfo(1, h * .77, h, TEXT_ALIGN_LEFT)
         drawInfo(w, h / 2)
 
-        draw.SimpleText(self.Data.Amount, "GlorifiedBanking.AdminMenu.LogMoney", w * .95, h / 2, self.Data.Type == "Withdrawal" and self.Theme.Data.Colors.logsMenuLogMoneyNegativeTextCol or self.Theme.Data.Colors.logsMenuLogMoneyPositiveTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(self.Data.Amount, "GlorifiedBanking.AdminMenu.LogMoney", w * .99, h / 2, self.Data.Type == "Withdrawal" and self.Theme.Data.Colors.logsMenuLogMoneyNegativeTextCol or self.Theme.Data.Colors.logsMenuLogMoneyPositiveTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     end
 
     if self.Data.Type != "Transfer" then return end

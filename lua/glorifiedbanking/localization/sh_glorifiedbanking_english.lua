@@ -1,4 +1,5 @@
-i18n.RegisterPhrases("en", {
+
+i18n.RegisterPhrases( "en", {
     gbSystemName = "GlorifiedBanking",
     gbLoading = "LOADING",
     gbEnterCard = "ENTER YOUR CARD",
@@ -95,4 +96,4 @@ i18n.RegisterPhrases("en", {
     gbToolSnapHelp = "The distance between each snapping point.",
     gbToolHeight = "Height Offset:",
     gbToolHeightHelp = "The distance from the floor the ATM will be placed at."
-})
+} )
