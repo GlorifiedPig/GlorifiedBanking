@@ -38,6 +38,8 @@ function SWEP:Initialize()
     for i = 4, 15, 4 do
         self.CardDisplayID = self.CardDisplayID .. " " .. id:sub(i, i + 3)
     end
+
+    self.CardDesign = table.Copy(GlorifiedBanking.CardDesign)
 end
 
 function SWEP:Deploy()
@@ -77,12 +79,11 @@ function SWEP:DrawHUDBackground()
     local cardx = scrw - pad - cardw
 
     surface.SetDrawColor(color_white)
-    surface.SetMaterial(theme.Data.Materials.bankCard)
+    surface.SetMaterial(GlorifiedBanking.CardMaterial)
     surface.DrawTexturedRect(cardx, scrh - pad - cardh, cardw, cardh)
 
-    local textx = cardx + cardw * .042
-    draw.SimpleText(self.CardDisplayID, "GlorifiedBanking.CardSWEP.Info", textx, scrh - pad - cardh + cardh * .73, theme.Data.Colors.cardNumberTextCol)
-    draw.SimpleText(self.CardDisplayName, "GlorifiedBanking.CardSWEP.Info", textx, scrh - pad - cardh + cardh * .85, theme.Data.Colors.cardNameTextCol)
+    draw.SimpleText(self.CardDisplayID, "GlorifiedBanking.CardSWEP.Info", cardx + cardw * self.CardDesign.idPos[1], scrh - pad - cardh + cardh * self.CardDesign.idPos[2], theme.Data.Colors.cardNumberTextCol, self.CardDesign.idAlign)
+    draw.SimpleText(self.CardDisplayName, "GlorifiedBanking.CardSWEP.Info", cardx + cardw * self.CardDesign.namePos[1], scrh - pad - cardh + cardh * self.CardDesign.namePos[2], theme.Data.Colors.cardNameTextCol, self.CardDesign.nameAlign)
 end
 
 function SWEP:PrimaryAttack()
