@@ -1,4 +1,10 @@
 
+--[[
+    Script Ownership:
+    {{ user_id }}
+    Version: {{ script_version_name }}
+]]--
+
 GlorifiedBanking = GlorifiedBanking or {
     Config = {},
     Version = "2.3.1"

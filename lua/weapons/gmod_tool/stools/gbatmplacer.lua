@@ -20,7 +20,7 @@ if CLIENT then
         {name = "reload"}
     }
 
-    language.Add("tool.gbatmplacer.name", i18n.GetPhrase("gbToolName"))
+    language.Add("tool.gbatmplacer.name", i18n.GetPhrase("gbToolName")) -- {{ user_id | 25 }}
     language.Add("tool.gbatmplacer.desc", i18n.GetPhrase("gbToolDescription"))
     language.Add("tool.gbatmplacer.left", i18n.GetPhrase("gbToolLeftClick"))
     language.Add("tool.gbatmplacer.right", i18n.GetPhrase("gbToolRightClick"))
@@ -64,7 +64,7 @@ end
 local function getAtmPos(tr, heightOffset, snap)
     if not tr.Hit or IsValid(tr.Entity) then return false end
 
-    local angles = tr.HitNormal:Angle()
+    local angles = tr.HitNormal:Angle() -- {{ user_id sha256 key }}
     if angles[1] != 0 then return false end
     angles[2] = angles[2] + 180
 
@@ -113,7 +113,7 @@ function TOOL:Think()
         self:MakeGhostEntity("models/ogl/ogl_main_atm.mdl", vector_origin, Angle())
     end
 
-    self:UpdateGhost(self.GhostEntity, self:GetOwner())
+    self:UpdateGhost(self.GhostEntity, self:GetOwner()) -- {{ user_id sha256 key }}
 end
 
 if CLIENT then return end
