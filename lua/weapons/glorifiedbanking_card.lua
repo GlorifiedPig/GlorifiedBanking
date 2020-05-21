@@ -82,7 +82,7 @@ function SWEP:DrawHUDBackground()
 
     local textx = cardx + cardw * .042
     draw.SimpleText(self.CardDisplayID, "GlorifiedBanking.CardSWEP.Info", textx, scrh - pad - cardh + cardh * .73, theme.Data.Colors.cardNumberTextCol)
-    draw.SimpleText(self.CardDisplayName, "GlorifiedBanking.CardSWEP.Info", textx, scrh - pad - cardh + cardh * .15, theme.Data.Colors.cardNameTextCol)
+    draw.SimpleText(self.CardDisplayName, "GlorifiedBanking.CardSWEP.Info", textx, scrh - pad - cardh + cardh * .85, theme.Data.Colors.cardNameTextCol)
 end
 
 function SWEP:PrimaryAttack()
