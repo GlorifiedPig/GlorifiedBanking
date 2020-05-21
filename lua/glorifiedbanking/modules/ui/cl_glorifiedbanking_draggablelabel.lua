@@ -13,8 +13,10 @@ function PANEL:Think()
         local x = mousex - self.Dragging[1]
         local y = mousey - self.Dragging[2]
 
-        x = math.Clamp(x, 0, ScrW() - self:GetWide())
-        y = math.Clamp(y, 0, ScrH() - self:GetTall())
+        local parentw, parenty = self:GetParent():GetSize()
+
+        x = math.Clamp(x, 0, parentw - self:GetWide())
+        y = math.Clamp(y, 0, parenty - self:GetTall())
 
         self:SetPos(x, y)
     end
