@@ -117,7 +117,10 @@ end
 function PANEL:ResetText()
     local cardw, cardh = self.CardPreview:GetSize()
     self.CardPreview.CardID:SetPos(cardw * defNameX, cardh * defNameY)
+    self.CardPreview.CardID.Pos = {defNameX, defNameY}
+
     self.CardPreview.CardName:SetPos(cardw * defIdX, cardh * defIdY)
+    self.CardPreview.CardID.Pos = {defIdX, defIdY}
 end
 
 function PANEL:PerformLayout(w, h)
@@ -128,7 +131,7 @@ function PANEL:PerformLayout(w, h)
     self.Entry:SetPos(w * .015, h * .12)
 
     local cardh = h * .55
-    local cardw = (420 / 240) * cardh
+    local cardw = 420 / 240 * cardh
     self.CardPreview:SetSize(cardw, cardh)
     self.CardPreview:SetPos((w - cardw) * .5, h * .225)
 
