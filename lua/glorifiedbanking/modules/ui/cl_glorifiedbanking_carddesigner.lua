@@ -1,6 +1,7 @@
 
 local PANEL = {}
 
+local defId = "Filf1VB"
 local defNameX, defNameY = .042, .73
 local defIdX, defIdY = .042, .85
 
@@ -30,7 +31,7 @@ function PANEL:Init()
     end
 
     self.Entry = vgui.Create("DTextEntry", self)
-    self.Entry:SetValue("Filf1VB")
+    self.Entry:SetValue(defId)
     self.Entry:SetFont("GlorifiedBanking.AdminMenu.SetBalanceEntry")
     self.Entry:SetUpdateOnType(true)
 
@@ -108,7 +109,7 @@ function PANEL:Init()
     end
 
     self.Reset.DoClick = function(s)
-        self.Entry:SetValue("Filf1VB")
+        self.Entry:SetValue(defId)
         self:ResetText()
     end
 end
