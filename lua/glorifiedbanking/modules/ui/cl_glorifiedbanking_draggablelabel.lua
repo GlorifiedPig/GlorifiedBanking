@@ -23,13 +23,13 @@ function PANEL:Think()
 end
 
 function PANEL:OnMousePressed()
-    self.Dragging = { gui.MouseX() - self.x, gui.MouseY() - self.y }
-    self:MouseCapture( true )
+    self.Dragging = {gui.MouseX() - self.x, gui.MouseY() - self.y}
+    self:MouseCapture(true)
 end
 
 function PANEL:OnMouseReleased()
     self.Dragging = nil
-    self:MouseCapture( false )
+    self:MouseCapture(false)
 
     self:OnDropped(self:GetPos())
 end
