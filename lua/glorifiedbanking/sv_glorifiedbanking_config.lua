@@ -48,5 +48,9 @@
             MinAccess = "superadmin",
             Description = "Permission to set player's balances in the admin panel."
         },
+        ["glorifiedbanking_changecarddesign"] = {
+            MinAccess = "superadmin",
+            Description = "Permission to change the look of the bank card."
+        }
     }
 --[[ End Permissions Settings ]]--
