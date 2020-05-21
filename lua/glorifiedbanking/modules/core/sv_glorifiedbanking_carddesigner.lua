@@ -35,6 +35,8 @@ function GlorifiedBanking.SendCardDesign( recipients )
      net.WriteFloat( cardDesign.namePos[2] )
      net.WriteUInt( cardDesign.nameAlign, 2 )
     net.Send( recipients )
+
+    PrintTable(cardDesign)
 end
 
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.CardDesigner.PlayerInitialSpawn", function( ply )
@@ -42,7 +44,6 @@ hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.CardDesigner.PlayerInitialSpaw
         if ply != ply2 or cmd:IsForced() then return end
         GlorifiedBanking.SendCardDesign( ply )
         hook.Remove( "SetupMove", "GlorifiedBanking.CardDesigner.FullLoad." .. ply:UserID() )
-
     end )
 end )
 
@@ -50,4 +51,4 @@ hook.Add( "PlayerDisconnected", "GlorifiedBanking.CardDesigner.PlayerDisconnecte
     hook.Remove( "SetupMove", "GlorifiedBanking.CardDesigner.FullLoad." .. ply:UserID() )
 end )
 
-cardDesign = util.JSONToTable(cookie.GetString( "GlorifiedBanking.Theme", "" )) or table.Copy(defaultDesign)
+cardDesign = util.JSONToTable(cookie.GetString( "GlorifiedBanking.CardDesign", "" )) or table.Copy(defaultDesign)
