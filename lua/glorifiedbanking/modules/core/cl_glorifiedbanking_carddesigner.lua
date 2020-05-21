@@ -10,10 +10,10 @@ GlorifiedBanking.CardDesign = {
 net.Receive("GlorifiedBanking.CardDesigner.SendDesignInfo", function()
     GlorifiedBanking.CardDesign = {
         imgur = net.ReadString(),
-        namePos = {net.ReadFloat(), net.ReadFloat()},
-        nameAlign = net.ReadUInt( 2 ),
         idPos = {net.ReadFloat(), net.ReadFloat()},
         idAlign = net.ReadUInt( 2 ),
+        namePos = {net.ReadFloat(), net.ReadFloat()},
+        nameAlign = net.ReadUInt( 2 )
     }
 
     GlorifiedBanking.UI.GetImgur(GlorifiedBanking.CardDesign.imgur, function(mat)

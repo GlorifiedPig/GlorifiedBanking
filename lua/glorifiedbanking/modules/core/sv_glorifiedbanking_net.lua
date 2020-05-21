@@ -196,10 +196,10 @@ net.Receive( "GlorifiedBanking.CardDesigner.UpdateDesign", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_changecarddesign" ) then
         GlorifiedBanking.SetCardDesign(
             net.ReadString(), -- Imgur ID
-            net.ReadFloat(), -- Name info
+            net.ReadFloat(), -- ID info
             net.ReadFloat(),
             net.ReadUInt( 2 ),
-            net.ReadFloat(), -- ID info
+            net.ReadFloat(), -- Name info
             net.ReadFloat(),
             net.ReadUInt( 2 )
         )

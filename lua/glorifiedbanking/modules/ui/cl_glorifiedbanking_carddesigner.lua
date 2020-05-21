@@ -99,14 +99,14 @@ function PANEL:Init()
         local nameCenterPos = (self.CardPreview.CardName:GetPos() + (self.CardPreview.CardName:GetWide() / 2)) / parentWide
         local nameAlign = (nameCenterPos > .4 and nameCenterPos < .6) and 1 or nameCenterPos > .6 and 2 or 0
 
-        net.Start( "GlorifiedBanking.CardDesigner.SendDesignInfo" )
+        net.Start( "GlorifiedBanking.CardDesigner.UpdateDesign" )
          net.WriteString( self.Entry:GetValue() )
          net.WriteFloat( self.CardPreview.CardID.Pos[1] )
          net.WriteFloat( self.CardPreview.CardID.Pos[2] )
-         net.WriteUInt( nameAlign, 2)
+         net.WriteUInt( idAlign, 2)
          net.WriteFloat( self.CardPreview.CardName.Pos[1] )
          net.WriteFloat( self.CardPreview.CardName.Pos[2] )
-         net.WriteUInt( idAlign, 2 )
+         net.WriteUInt( nameAlign, 2 )
         net.SendToServer()
 
         self:Remove()
