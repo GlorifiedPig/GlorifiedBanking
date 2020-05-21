@@ -169,11 +169,7 @@ end
 
 vgui.Register("GlorifiedBanking.CardDesigner", PANEL, "EditablePanel")
 
-if not IsValid(LocalPlayer()) then return end
-
-if IsValid(GlorifiedBanking.UI.CardDesigner) then
-    GlorifiedBanking.UI.CardDesigner:Remove()
-    GlorifiedBanking.UI.CardDesigner = nil
-end
-
-GlorifiedBanking.UI.CardDesigner = vgui.Create("GlorifiedBanking.CardDesigner")
+net.Receive("GlorifiedBanking.CardDesigner.OpenCardDesigner", function()
+    if IsValid(GlorifiedBanking.UI.CardDesigner) then return end
+    GlorifiedBanking.UI.CardDesigner = vgui.Create("GlorifiedBanking.CardDesigner")
+end)

@@ -26,6 +26,7 @@ util.AddNetworkString( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
 
 util.AddNetworkString( "GlorifiedBanking.CardDesigner.UpdateDesign" )
 util.AddNetworkString( "GlorifiedBanking.CardDesigner.SendDesignInfo" )
+util.AddNetworkString( "GlorifiedBanking.CardDesigner.OpenCardDesigner" )
 
 local function PlayerAuthChecks( ply )
     return not ( not ply:IsValid()
@@ -214,6 +215,14 @@ concommand.Add( "glorifiedbanking_admin", function( ply )
         net.Start( "GlorifiedBanking.AdminPanel.OpenAdminPanel" )
         net.WriteBool( GlorifiedBanking.LockdownEnabled )
         net.WriteBool( GlorifiedBanking.HasPermission( ply, "glorifiedbanking_setplayerbalance" ) )
+        net.Send( ply )
+    end
+end )
+
+concommand.Add( "glorifiedbanking_carddesigner", function( ply )
+    if not IsValid( ply ) then return end
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_changecarddesign" ) then
+        net.Start( "GlorifiedBanking.CardDesigner.OpenCardDesigner" )
         net.Send( ply )
     end
 end )
