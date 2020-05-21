@@ -35,8 +35,6 @@ function GlorifiedBanking.SendCardDesign( recipients )
      net.WriteFloat( cardDesign.namePos[2] )
      net.WriteUInt( cardDesign.nameAlign, 2 )
     net.Send( recipients )
-
-    PrintTable(cardDesign)
 end
 
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.CardDesigner.PlayerInitialSpawn", function( ply )
