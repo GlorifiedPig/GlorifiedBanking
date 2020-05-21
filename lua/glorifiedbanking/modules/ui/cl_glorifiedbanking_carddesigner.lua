@@ -1,6 +1,9 @@
 
 local PANEL = {}
 
+local defNameX, defNameY = .042, .73
+local defIdX, defIdY = .042, .85
+
 function PANEL:Init()
     self:SetSize(ScrH() * .6, ScrH() * .6)
     self:Center()
@@ -37,23 +40,42 @@ function PANEL:Init()
         end)
     end
 
-    local ply = LocalPlayer()
-    local cardName = ply:Name()
-    local id = ply:SteamID64():sub(-16)
-    cardID  = id:sub(1, 4)
-
-    for i = 4, 15, 4 do
-        cardID = cardID .. " " .. id:sub(i, i + 3)
-    end
-
     self.CardPreview = vgui.Create("Panel", self)
     self.CardPreview.Paint = function(s, w, h)
         surface.SetDrawColor(color_white)
         surface.SetMaterial(self.CardMaterial or self.Theme.Data.Materials.bankCard)
         surface.DrawTexturedRect(0, 0, w, h)
+    end
 
-        draw.SimpleText(cardID, "GlorifiedBanking.CardDesigner.CardInfo", w * .032, h * .73, self.Theme.Data.Colors.cardNumberTextCol)
-        draw.SimpleText(cardName, "GlorifiedBanking.CardDesigner.CardInfo", w * .032, h * .85, self.Theme.Data.Colors.cardNameTextCol)
+    local ply = LocalPlayer()
+    local id = ply:SteamID64():sub(-16)
+    local cardID = id:sub(1, 4)
+    for i = 4, 15, 4 do
+        cardID = cardID .. " " .. id:sub(i, i + 3)
+    end
+
+    self.CardPreview.CardID = vgui.Create("GlorifiedBanking.DraggableLabel", self.CardPreview)
+    self.CardPreview.CardID:SetText(cardID)
+    self.CardPreview.CardID:SetFont("GlorifiedBanking.CardDesigner.CardInfo")
+    self.CardPreview.CardID:SetTextColor(self.Theme.Data.Colors.cardNumberTextCol)
+    self.CardPreview.CardID:SizeToContents()
+    self.CardPreview.CardID.Pos = {defIdX, defIdY}
+
+    function self.CardPreview.CardID:OnDropped(x, y)
+        local pw, ph = self:GetParent():GetSize()
+        self.Pos = {x / pw, y / ph}
+    end
+
+    self.CardPreview.CardName = vgui.Create("GlorifiedBanking.DraggableLabel", self.CardPreview)
+    self.CardPreview.CardName:SetText(ply:Name())
+    self.CardPreview.CardName:SetFont("GlorifiedBanking.CardDesigner.CardInfo")
+    self.CardPreview.CardName:SetTextColor(self.Theme.Data.Colors.cardNameTextCol)
+    self.CardPreview.CardName:SizeToContents()
+    self.CardPreview.CardName.Pos = {defNameX, defNameY}
+
+    function self.CardPreview.CardName:OnDropped(x, y)
+        local pw, ph = self:GetParent():GetSize()
+        self.Pos = {x / pw, y / ph}
     end
 
     self.Save = vgui.Create("DButton", self)
@@ -68,7 +90,10 @@ function PANEL:Init()
     end
 
     self.Save.DoClick = function(s)
-
+        --NETWORK THESE BASTARDS:
+        --self.Entry:GetValue() (Imgur ID)
+        --self.CardPreview.CardID.Pos
+        --self.CardPreview.CardName.Pos
     end
 
     self.Reset = vgui.Create("DButton", self)
@@ -84,8 +109,14 @@ function PANEL:Init()
 
     self.Reset.DoClick = function(s)
         self.Entry:SetValue("Filf1VB")
-        self.Save:DoClick()
+        self:ResetText()
     end
+end
+
+function PANEL:ResetText()
+    local cardw, cardh = self.CardPreview:GetSize()
+    self.CardPreview.CardID:SetPos(cardw * defNameX, cardh * defNameY)
+    self.CardPreview.CardName:SetPos(cardw * defIdX, cardh * defIdY)
 end
 
 function PANEL:PerformLayout(w, h)
@@ -96,9 +127,11 @@ function PANEL:PerformLayout(w, h)
     self.Entry:SetPos(w * .015, h * .12)
 
     local cardh = h * .55
-    local cardw = (1008 / 576) * cardh
+    local cardw = (420 / 240) * cardh
     self.CardPreview:SetSize(cardw, cardh)
     self.CardPreview:SetPos((w - cardw) * .5, h * .225)
+
+    self:ResetText()
 
     self.Save:SetSize(w * .97, h * .07)
     self.Save:SetPos(w * .015, h * .82)
