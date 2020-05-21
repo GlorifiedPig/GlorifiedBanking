@@ -12,7 +12,7 @@ function PANEL:Init()
 end
 
 function PANEL:DoClick()
-    if !self.SteamID then return end
+    if not self.SteamID then return end
 
     gui.OpenURL("https://steamcommunity.com/profiles/" .. self.SteamID)
 end
@@ -26,6 +26,8 @@ function PANEL:SetPlayer(id, size)
 end
 
 function PANEL:SetSteamID(steamid, size)
+    if not isstring(steamid) then return end
+
     self.SteamID = steamid
     self.Avatar:SetSteamID(steamid, size)
 end
