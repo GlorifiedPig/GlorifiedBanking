@@ -10,8 +10,8 @@ function PANEL:Think()
         local mousex = math.Clamp(gui.MouseX(), 1, ScrW() - 1)
         local mousey = math.Clamp(gui.MouseY(), 1, ScrH() - 1)
 
-        local x = mousex - s.Dragging[1]
-        local y = mousey - s.Dragging[2]
+        local x = mousex - self.Dragging[1]
+        local y = mousey - self.Dragging[2]
 
         x = math.Clamp(x, 0, ScrW() - self:GetWide())
         y = math.Clamp(y, 0, ScrH() - self:GetTall())
