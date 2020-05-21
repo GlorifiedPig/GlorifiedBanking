@@ -1,7 +1,13 @@
 
+--[[
+    Script Ownership:
+    {{ user_id }}
+    Version: {{ script_version_name }}
+]]--
+
 GlorifiedBanking = GlorifiedBanking or {
     Config = {},
-    Version = "2.2.1"
+    Version = "2.3.2"
 }
 
 print( "[GlorifiedBanking] This server is running version " .. GlorifiedBanking.Version .. "." )

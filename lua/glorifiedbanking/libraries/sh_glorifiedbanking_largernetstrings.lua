@@ -19,7 +19,7 @@ if SERVER then
     function net.WriteLargeString( largeString )
         local chunksToSend = math.ceil( string.len( largeString ) / 2000 )
         local chunksTbl = chunkstring( largeString, 2000 )
-        net.WriteUInt( chunksToSend, 8 ) -- send how many chunks we are supposed to be receiving for an appropriate clientsided for loop
+        net.WriteUInt( chunksToSend, 8 ) -- send how many chunks we are supposed to be receiving for an appropriate clientsided for loop {{ user_id sha256 key }}
         for i = 1, chunksToSend do
             net.WriteData( util.Compress( chunksTbl[i] ), 16008 ) -- 2000 max chars * 8 + 8 for bytecount
         end
