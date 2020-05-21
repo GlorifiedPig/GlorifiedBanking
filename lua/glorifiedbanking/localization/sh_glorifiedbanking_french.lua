@@ -26,7 +26,7 @@ i18n.RegisterPhrases( "fr", {
     gbTransferHasFee = "CE TRANSFERT AURA UN %s%% DE FRAIS SUPPLÉMENTAIRES",
     gbSelectPlayer = "Veuillez sélectionner un joueur vers lequel vous souhaitez transférer de l'argent.",
     gbTransactionTypeAmount = "SAISIR UN MONTANT",
-    gbContactingServer = "CONTACTER LE SERVEUR",
+    gbContactingServer = "CONTACTE LE SERVEUR",
     gbTakeDispensed = "VEUILLEZ RETIRER L'ARGENT",
     gbInsertMoney = "VEUILLEZ DÉPOSER L'ARGENT",
     gbPleaseWait = "VEUILLEZ PATIENTER UN INSTANT.",
@@ -90,7 +90,7 @@ i18n.RegisterPhrases( "fr", {
     gbToolDepositFeeHelp = "Les frais de transaction pour tous les dépôts effectués à ce distributeur automatique en pourcentage.",
     gbToolTransferFee = "Frais de transfert:",
     gbToolTransferFeeHelp = "Les frais de transaction pour tous les virements effectués avec ce distributeur automatique en pourcentage.",
-    gbToolSnap = "Snap Amount:",
+    gbToolSnap = "Niveau d'accrochage:",
     gbToolSnapHelp = "La distance entre chaque point d'accrochage.",
     gbToolHeight = "Décalage en hauteur:",
     gbToolHeightHelp = "La distance par rapport au sol sur lequel se trouve le distributeur de billets."
