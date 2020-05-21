@@ -97,16 +97,19 @@ function PANEL:Init()
         local idAlign = (idCenterPos > .4 and idCenterPos < .6) and 2 or idCenterPos > .6 and 1 or 0
 
         local nameCenterPos = (self.CardPreview.CardName:GetPos() + (self.CardPreview.CardName:GetWide() / 2)) / parentWide
-        local nameAlign = (nameCenterPos > .4 and nameCenterPos < .6) and 2 or nameCenterPos > .6 and 1 or 0
-        --Left 0, Right 1, Center 3
+        local nameAlign = (nameCenterPos > .4 and nameCenterPos < .6) and 1 or nameCenterPos > .6 and 2 or 0
 
+        net.Start( "GlorifiedBanking.CardDesigner.SendDesignInfo" )
+         net.WriteString( self.Entry:GetValue() )
+         net.WriteFloat( elf.CardPreview.CardID.Pos[1] )
+         net.WriteFloat( elf.CardPreview.CardID.Pos[2] )
+         net.WriteUInt( nameAlign, 2)
+         net.WriteFloat( self.CardPreview.CardName.Pos[1] )
+         net.WriteFloat( self.CardPreview.CardName.Pos[2] )
+         net.WriteUInt( idAlign, 2 )
+        net.Send( recipients )
 
-        --NETWORK THESE BASTARDS:
-        --self.Entry:GetValue() (Imgur ID)
-        --self.CardPreview.CardID.Pos (x and y)
-        --self.CardPreview.CardID.Align (left, right, center)
-        --self.CardPreview.CardName.Pos (x and y)
-        --self.CardPreview.CardName.Align
+        self:Remove()
     end
 
     self.Reset = vgui.Create("DButton", self)
