@@ -11,6 +11,8 @@ local GB_ANIM_MONEY_OUT = 2
 local GB_ANIM_CARD_IN = 3
 local GB_ANIM_CARD_OUT = 4
 
+GlorifiedBanking.ATMTable = {}
+
 function ENT:Initialize()
     self:SetModel("models/ogl/ogl_main_atm.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
@@ -22,6 +24,13 @@ function ENT:Initialize()
     if (physObj:IsValid()) then
         physObj:Wake()
     end
+
+    table.insert(GlorifiedBanking.ATMTable, self)
+end
+
+--Remove the ATM from the global table on delete
+function ENT:OnRemove()
+    table.RemoveByValue(GlorifiedBanking.ATMTable, self)
 end
 
 --User/ATM status checks
@@ -153,6 +162,7 @@ function ENT:Withdraw(ply, amount)
     end
 
     GlorifiedBanking.RemovePlayerBalance(ply, fee)
+    hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -165,7 +175,7 @@ function ENT:Withdraw(ply, amount)
         self.WaitingToTakeMoney = amount
 
         timer.Simple(10, function() --Wait 10 seconds before forcing the user to take the money
-            if self.WaitingToTakeMoney then
+            if self.WaitingToTakeMoney and ply:IsValid() then
                 self:TakeMoney(ply)
             end
         end)
@@ -205,6 +215,7 @@ function ENT:Deposit(ply, amount)
     end
 
     GlorifiedBanking.RemoveCash(ply, fee)
+    hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -270,6 +281,7 @@ function ENT:Transfer(ply, receiver, amount)
     end
 
     GlorifiedBanking.RemovePlayerBalance(ply, fee)
+    hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -285,7 +297,7 @@ end
 
 --Log out the current user on disconnect
 hook.Add("PlayerDisconnected", "GlorifiedBanking.ATMEntity.PlayerDisconnected", function(ply)
-    for k,v in ipairs(ents.FindByClass("glorifiedbanking_atm")) do
+    for k,v in ipairs(GlorifiedBanking.ATMTable) do
         if ply != v:GetCurrentUser() then continue end
         v:Logout()
         break
