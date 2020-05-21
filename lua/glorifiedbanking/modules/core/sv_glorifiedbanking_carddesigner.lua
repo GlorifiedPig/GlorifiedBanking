@@ -39,10 +39,10 @@ end
 
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.CardDesigner.PlayerInitialSpawn", function( ply )
     hook.Add( "SetupMove", "GlorifiedBanking.CardDesigner.FullLoad." .. ply:UserID(), function( ply2, _, cmd )
-        if ply == ply2 and not cmd:IsForced() then
-            GlorifiedBanking.SendCardDesign( ply )
-            hook.Remove( "SetupMove", "GlorifiedBanking.CardDesigner.FullLoad." .. ply:UserID() )
-        end
+        if ply != ply2 or cmd:IsForced() then return end
+        GlorifiedBanking.SendCardDesign( ply )
+        hook.Remove( "SetupMove", "GlorifiedBanking.CardDesigner.FullLoad." .. ply:UserID() )
+
     end )
 end )
 
@@ -50,4 +50,4 @@ hook.Add( "PlayerDisconnected", "GlorifiedBanking.CardDesigner.PlayerDisconnecte
     hook.Remove( "SetupMove", "GlorifiedBanking.CardDesigner.FullLoad." .. ply:UserID() )
 end )
 
-cardDesign = util.JSONToTable(cookie.GetString( "GlorifiedBanking.Theme", false )) or table.Copy(defaultDesign)
+cardDesign = util.JSONToTable(cookie.GetString( "GlorifiedBanking.Theme", "" )) or table.Copy(defaultDesign)
