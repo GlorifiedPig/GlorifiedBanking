@@ -31,7 +31,7 @@ function PANEL:Init()
     end
 
     self.Entry = vgui.Create("DTextEntry", self)
-    self.Entry:SetValue(defId)
+    self.Entry:SetValue(GlorifiedBanking.CardDesign.imgur)
     self.Entry:SetFont("GlorifiedBanking.AdminMenu.SetBalanceEntry")
     self.Entry:SetUpdateOnType(true)
 
@@ -60,7 +60,7 @@ function PANEL:Init()
     self.CardPreview.CardID:SetFont("GlorifiedBanking.CardDesigner.CardInfo")
     self.CardPreview.CardID:SetTextColor(self.Theme.Data.Colors.cardNumberTextCol)
     self.CardPreview.CardID:SizeToContents()
-    self.CardPreview.CardID.Pos = {defIdX, defIdY}
+    self.CardPreview.CardID.Pos = {GlorifiedBanking.CardDesign.idPos[1], GlorifiedBanking.CardDesign.idPos[2]}
 
     function self.CardPreview.CardID:OnDropped(x, y)
         local pw, ph = self:GetParent():GetSize()
@@ -72,7 +72,7 @@ function PANEL:Init()
     self.CardPreview.CardName:SetFont("GlorifiedBanking.CardDesigner.CardInfo")
     self.CardPreview.CardName:SetTextColor(self.Theme.Data.Colors.cardNameTextCol)
     self.CardPreview.CardName:SizeToContents()
-    self.CardPreview.CardName.Pos = {defNameX, defNameY}
+    self.CardPreview.CardName.Pos = {GlorifiedBanking.CardDesign.namePos[1], GlorifiedBanking.CardDesign.namePos[2]}
 
     function self.CardPreview.CardName:OnDropped(x, y)
         local pw, ph = self:GetParent():GetSize()
@@ -96,15 +96,29 @@ function PANEL:Init()
         local idCenterPos = (self.CardPreview.CardID:GetPos() + self.CardPreview.CardID:GetWide() / 2) / parentWide
         local idAlign = (idCenterPos > .4 and idCenterPos < .6) and 2 or idCenterPos > .6 and 1 or 0
 
+        local idPos = self.CardPreview.CardID.Pos[1]
+        if idAlign == 1 then
+            idPos = idCenterPos
+        elseif idAlign == 2 then
+            idPos = (self.CardPreview.CardID:GetPos() + self.CardPreview.CardID:GetWide()) / parentWide
+        end
+
         local nameCenterPos = (self.CardPreview.CardName:GetPos() + (self.CardPreview.CardName:GetWide() / 2)) / parentWide
         local nameAlign = (nameCenterPos > .4 and nameCenterPos < .6) and 1 or nameCenterPos > .6 and 2 or 0
 
+        local namePos = self.CardPreview.CardName.Pos[1]
+        if nameAlign == 1 then
+            namePos = nameCenterPos
+        elseif nameAlign == 2 then
+            namePos = (self.CardPreview.CardName:GetPos() + self.CardPreview.CardName:GetWide()) / parentWide
+        end
+
         net.Start( "GlorifiedBanking.CardDesigner.UpdateDesign" )
          net.WriteString( self.Entry:GetValue() )
-         net.WriteFloat( self.CardPreview.CardID.Pos[1] )
+         net.WriteFloat( idPos )
          net.WriteFloat( self.CardPreview.CardID.Pos[2] )
          net.WriteUInt( idAlign, 2)
-         net.WriteFloat( self.CardPreview.CardName.Pos[1] )
+         net.WriteFloat( namePos )
          net.WriteFloat( self.CardPreview.CardName.Pos[2] )
          net.WriteUInt( nameAlign, 2 )
         net.SendToServer()
@@ -125,17 +139,20 @@ function PANEL:Init()
 
     self.Reset.DoClick = function(s)
         self.Entry:SetValue(defId)
-        self:ResetText()
+        self:ResetText(true)
     end
 end
 
-function PANEL:ResetText()
+function PANEL:ResetText(toDefaults)
     local cardw, cardh = self.CardPreview:GetSize()
-    self.CardPreview.CardID:SetPos(cardw * defNameX, cardh * defNameY)
-    self.CardPreview.CardID.Pos = {defNameX, defNameY}
 
-    self.CardPreview.CardName:SetPos(cardw * defIdX, cardh * defIdY)
-    self.CardPreview.CardID.Pos = {defIdX, defIdY}
+    if toDefaults then
+        self.CardPreview.CardID.Pos = {defNameX, defNameY}
+        self.CardPreview.CardName.Pos = {defIdX, defIdY}
+    end
+
+    self.CardPreview.CardID:SetPos(cardw * self.CardPreview.CardID.Pos[1], cardh * self.CardPreview.CardID.Pos[2])
+    self.CardPreview.CardName:SetPos(cardw * self.CardPreview.CardName.Pos[1], cardh * self.CardPreview.CardName.Pos[2])
 end
 
 function PANEL:PerformLayout(w, h)
