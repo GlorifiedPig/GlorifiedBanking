@@ -153,6 +153,7 @@ function ENT:Withdraw(ply, amount)
     end
 
     GlorifiedBanking.RemovePlayerBalance(ply, fee)
+    hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -165,7 +166,7 @@ function ENT:Withdraw(ply, amount)
         self.WaitingToTakeMoney = amount
 
         timer.Simple(10, function() --Wait 10 seconds before forcing the user to take the money
-            if self.WaitingToTakeMoney then
+            if self.WaitingToTakeMoney and ply:IsValid() then
                 self:TakeMoney(ply)
             end
         end)
@@ -205,6 +206,7 @@ function ENT:Deposit(ply, amount)
     end
 
     GlorifiedBanking.RemoveCash(ply, fee)
+    hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
@@ -270,6 +272,7 @@ function ENT:Transfer(ply, receiver, amount)
     end
 
     GlorifiedBanking.RemovePlayerBalance(ply, fee)
+    hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
