@@ -28,6 +28,10 @@ end
 function PANEL:OnMouseReleased()
     self.Dragging = nil
     self:MouseCapture( false )
+
+    self:OnDropped(self:GetPos())
 end
+
+function PANEL:OnDropped(x, y) end
 
 vgui.Register("GlorifiedBanking.DraggableLabel", PANEL, "DLabel")
