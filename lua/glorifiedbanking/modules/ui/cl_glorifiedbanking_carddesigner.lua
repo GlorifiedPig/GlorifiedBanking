@@ -91,10 +91,22 @@ function PANEL:Init()
     end
 
     self.Save.DoClick = function(s)
+        local parentWide = self.CardPreview:GetWide()
+
+        local idCenterPos = (self.CardPreview.CardID:GetPos() + self.CardPreview.CardID:GetWide() / 2) / parentWide
+        local idAlign = (idCenterPos > .4 and idCenterPos < .6) and 2 or idCenterPos > .6 and 1 or 0
+
+        local nameCenterPos = (self.CardPreview.CardName:GetPos() + (self.CardPreview.CardName:GetWide() / 2)) / parentWide
+        local nameAlign = (nameCenterPos > .4 and nameCenterPos < .6) and 2 or nameCenterPos > .6 and 1 or 0
+        --Left 0, Right 1, Center 3
+
+
         --NETWORK THESE BASTARDS:
         --self.Entry:GetValue() (Imgur ID)
-        --self.CardPreview.CardID.Pos
-        --self.CardPreview.CardName.Pos
+        --self.CardPreview.CardID.Pos (x and y)
+        --self.CardPreview.CardID.Align (left, right, center)
+        --self.CardPreview.CardName.Pos (x and y)
+        --self.CardPreview.CardName.Align
     end
 
     self.Reset = vgui.Create("DButton", self)
