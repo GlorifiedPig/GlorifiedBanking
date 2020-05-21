@@ -24,6 +24,9 @@ util.AddNetworkString( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.RequestLogUpdate" )
 util.AddNetworkString( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
 
+util.AddNetworkString( "GlorifiedBanking.CardDesigner.UpdateDesign" )
+util.AddNetworkString( "GlorifiedBanking.CardDesigner.SendDesignInfo" )
+
 local function PlayerAuthChecks( ply )
     return not ( not ply:IsValid()
     or ply:IsBot()
@@ -188,6 +191,22 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
         end )
     end
 end )
+
+net.Receive( "GlorifiedBanking.CardDesigner.UpdateDesign", function( len, ply )
+    if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_changecarddesign" ) then
+        GlorifiedBanking.SetCardDesign(
+            net.ReadString(), -- Imgur ID
+            net.ReadFloat(), -- Name info
+            net.ReadFloat(),
+            net.ReadUInt( 2 ),
+            net.ReadFloat(), -- ID info
+            net.ReadFloat(),
+            net.ReadUInt( 2 )
+        )
+
+        GlorifiedBanking.SendCardDesign( player.GetAll() )
+    end
+end)
 
 concommand.Add( "glorifiedbanking_admin", function( ply )
     if not IsValid( ply ) then return end
