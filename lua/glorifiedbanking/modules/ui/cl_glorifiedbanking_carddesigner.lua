@@ -107,7 +107,7 @@ function PANEL:Init()
          net.WriteFloat( self.CardPreview.CardName.Pos[1] )
          net.WriteFloat( self.CardPreview.CardName.Pos[2] )
          net.WriteUInt( idAlign, 2 )
-        net.Send( recipients )
+        net.SendToServer()
 
         self:Remove()
     end
