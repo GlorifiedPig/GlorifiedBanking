@@ -37,3 +37,21 @@ end
 function GlorifiedBanking.UI.EndCutOut()
     render.SetStencilEnable(false)
 end
+
+file.CreateDir("glorifiedbanking")
+function GlorifiedBanking.UI.GetImgur(id, callback, useproxy)
+    if file.Exists("glorifiedbanking/" .. id .. ".png", "DATA") then
+        return callback(Material("../data/glorifiedbanking/" .. id .. ".png", "noclamp smooth"))
+    end
+
+    http.Fetch(useproxy and "https://proxy.duckduckgo.com/iu/?u=https://i.imgur.com" or "https://i.imgur.com/" .. id .. ".png",
+        function(body, len, headers, code)
+            file.Write("glorifiedbanking/" .. id .. ".png", body)
+            return callback(Material("../data/glorifiedbanking/" .. id .. ".png", "noclamp smooth"))
+        end,
+        function(error)
+            if useproxy then return callback(Material("nil")) end
+            return GlorifiedBanking.UI.GetImgur(id, callback, true)
+        end
+    )
+end

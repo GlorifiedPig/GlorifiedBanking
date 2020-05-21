@@ -1032,7 +1032,7 @@ function ENT:DrawAnimations()
     if self.AnimState == GB_ANIM_CARD_IN or self.AnimState == GB_ANIM_CARD_OUT then
         cam.Start3D2D(self:LocalToWorld(cardpos), self:LocalToWorldAngles(cardang), 0.07)
             surface.SetDrawColor(color_white)
-            surface.SetMaterial(theme.Data.Materials.bankCard)
+            surface.SetMaterial(GlorifiedBanking.CardMaterial)
             surface.DrawTexturedRect(self.CardPos, 0, 70, 40)
         cam.End3D2D()
 
