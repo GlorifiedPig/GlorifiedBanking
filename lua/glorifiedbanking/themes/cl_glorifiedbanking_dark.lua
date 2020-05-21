@@ -408,7 +408,6 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         close = Material( "glorified_banking/close.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
-        bankCard = Material( "glorified_banking/bank_card.png", "noclamp smooth" ),
 
         idleSlideshow = {
             [1] = Material( "glorified_banking/slideshow/robbery.png", "noclamp smooth" ),

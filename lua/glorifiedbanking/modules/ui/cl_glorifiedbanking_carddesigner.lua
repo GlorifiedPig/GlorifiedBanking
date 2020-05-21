@@ -44,7 +44,7 @@ function PANEL:Init()
     self.CardPreview = vgui.Create("Panel", self)
     self.CardPreview.Paint = function(s, w, h)
         surface.SetDrawColor(color_white)
-        surface.SetMaterial(self.CardMaterial or self.Theme.Data.Materials.bankCard)
+        surface.SetMaterial(self.CardMaterial or GlorifiedBanking.CardMaterial)
         surface.DrawTexturedRect(0, 0, w, h)
     end
 
