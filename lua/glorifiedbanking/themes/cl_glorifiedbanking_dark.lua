@@ -417,5 +417,3 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         }
     }
 } )
-
-GlorifiedBanking.Themes.GenerateFonts() --REMOVE ON PRODUCTION
