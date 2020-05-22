@@ -1,5 +1,5 @@
 
-GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_players`( `SteamID` VARCHAR(32) NOT NULL, `Balance` BIGINT(64) NOT NULL, `LastName` VARCHAR(64) NOT NULL , PRIMARY KEY( `SteamID` ) )" )
+GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_players`( `SteamID` VARCHAR(32) NOT NULL, `Balance` BIGINT(64) NOT NULL, `LastName` VARCHAR(64) DEFAULT '' , PRIMARY KEY( `SteamID` ) )" )
 
 local startingBalance = GlorifiedBanking.Config.STARTING_BALANCE
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.SQLPlayer.PlayerInitialSpawn", function( ply )
