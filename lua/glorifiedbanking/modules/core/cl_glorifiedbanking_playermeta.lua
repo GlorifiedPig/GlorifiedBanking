@@ -1,6 +1,6 @@
 
 function GlorifiedBanking.GetPlayerBalance()
-    return LocalPlayer():GetNWInt( "GlorifiedBanking.Balance" ) or 0
+    return LocalPlayer():GetNW2Int( "GlorifiedBanking.Balance" ) or 0
 end
 
 function GlorifiedBanking.CanPlayerAfford( affordAmount )

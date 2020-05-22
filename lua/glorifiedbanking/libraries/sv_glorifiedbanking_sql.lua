@@ -13,7 +13,7 @@ if GlorifiedBanking.Config.SQL_TYPE == "mysqloo" then
 end
 
 function GlorifiedBanking.SQL.GetType()
-    if mysqloo and GlorifiedBanking.Config.SQL_TYPE == "mysqloo" then return "mysqloo" else return "sqlite" end
+    if mysqloo and GlorifiedBanking.Config.SQL_TYPE == "mysqloo" then return "mysqloo" end return "sqlite"
 end
 
 function GlorifiedBanking.SQL.EscapeString( string )
@@ -47,7 +47,7 @@ function GlorifiedBanking.SQL.Query( sqlQuery, successFunc )
 end
 
 concommand.Add( "glorifiedbanking_printsqlerrors", function( ply )
-    if ply == NULL then
+    if ply == NULL or ply:IsSuperAdmin() then
         PrintTable( GlorifiedBanking.SQL.CachedErrors )
     end
 end )

@@ -59,7 +59,7 @@ function PANEL:Init()
 
     timer.Simple(0, function()
         if self.Username then return end
-        steamworks.RequestPlayerInfo(util.SteamIDTo64(self.SteamID), function(name)
+        steamworks.RequestPlayerInfo(self.SteamID, function(name)
             self.Username = name
         end)
     end)

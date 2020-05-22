@@ -6,7 +6,7 @@ function GlorifiedBanking.ImportSteamIDFromBluesATM( steamid, balance )
 
         if ply and ply:IsPlayer() then
             ply.GlorifiedBanking.Balance = balance
-            ply:SetNWInt( "GlorifiedBanking.Balance", balance )
+            ply:SetNW2Int( "GlorifiedBanking.Balance", balance )
         end
     end )
 end
@@ -17,7 +17,7 @@ concommand.Add( "glorifiedbanking_importbluesdata", function( ply )
             if sql.TableExists( "batm_personal_accounts" ) then
                 local accountDataTbl = sql.Query( "SELECT * FROM `batm_personal_accounts`" )
                 for k, v in ipairs( accountDataTbl ) do
-                    local steamid = util.SteamIDFrom64( v["steamid"] )
+                    local steamid = v["steamid"]
                     local balance = util.JSONToTable( v["accountinfo"] )["balance"]
 
                     GlorifiedBanking.ImportSteamIDFromBluesATM( steamid, balance )
@@ -40,7 +40,7 @@ concommand.Add( "glorifiedbanking_importbluesdata", function( ply )
 
                 function query:onSuccess( queryData )
                     for k, v in ipairs( queryData ) do
-                        local steamid = util.SteamIDFrom64( v["steamid"] )
+                        local steamid = v["steamid"]
                         local balance = util.JSONToTable( v["accountinfo"] )["balance"]
 
                         GlorifiedBanking.ImportSteamIDFromBluesATM( steamid, balance )

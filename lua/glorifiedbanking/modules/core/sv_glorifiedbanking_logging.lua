@@ -6,31 +6,31 @@ GlorifiedBanking.Logs = GlorifiedBanking.Logs or {}
 GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs`", function( queryResult ) GlorifiedBanking.Logs = queryResult end )
 
 function GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
-    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Withdrawal', '" .. ply:SteamID() .. "', " .. withdrawAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Withdrawal', '" .. ply:SteamID64() .. "', " .. withdrawAmount .. " )" )
     table.insert( GlorifiedBanking.Logs, {
         ["Date"] = os.time(),
         ["Type"] = "Withdrawal",
-        ["SteamID"] = ply:SteamID(),
+        ["SteamID"] = ply:SteamID64(),
         ["Amount"] = withdrawAmount
     } )
 end
 
 function GlorifiedBanking.LogDeposit( ply, depositAmount )
-    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Deposit', '" .. ply:SteamID() .. "', " .. depositAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Deposit', '" .. ply:SteamID64() .. "', " .. depositAmount .. " )" )
     table.insert( GlorifiedBanking.Logs, {
         ["Date"] = os.time(),
         ["Type"] = "Deposit",
-        ["SteamID"] = ply:SteamID(),
+        ["SteamID"] = ply:SteamID64(),
         ["Amount"] = depositAmount
     } )
 end
 
 function GlorifiedBanking.LogTransfer( ply, receiver, transferAmount )
-    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `ReceiverSteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Transfer', '" .. ply:SteamID() .. "', '" .. receiver:SteamID() .. "', " .. transferAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `ReceiverSteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Transfer', '" .. ply:SteamID64() .. "', '" .. receiver:SteamID() .. "', " .. transferAmount .. " )" )
     table.insert( GlorifiedBanking.Logs, {
         ["Date"] = os.time(),
         ["Type"] = "Transfer",
-        ["SteamID"] = ply:SteamID(),
+        ["SteamID"] = ply:SteamID64(),
         ["ReceiverSteamID"] = receiver:SteamID(),
         ["Amount"] = transferAmount
     } )
