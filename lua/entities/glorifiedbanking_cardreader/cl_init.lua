@@ -7,6 +7,7 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:Think()
     if not self.LocalPlayer then self.LocalPlayer = LocalPlayer() end
+    self.IsMerchant = self.LocalPlayer == self:GetMerchant()
 end
 
 function ENT:DrawTranslucent()
