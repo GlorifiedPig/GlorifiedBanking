@@ -2,7 +2,6 @@
 include("shared.lua")
 
 local imgui = GlorifiedBanking.imgui
-imgui.DisableDeveloperMode = true
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
@@ -33,8 +32,32 @@ function ENT:DrawKeypad()
     end
 end
 
+function ENT:Think()
+    if not self.LocalPlayer then self.LocalPlayer = LocalPlayer() end
+end
+
+
+local scrw, scrh = 530, 702
+function ENT:DrawScreenBackground()
+    surface.SetDrawColor(color_white)
+    surface.DrawRect(0, 0, scrw, scrh)
+end
+
+local screenpos = Vector(-2.65, 4.41, .69)
+local screenang = Angle(0, 0, 5.5)
+function ENT:DrawScreen()
+    if imgui.Entity3D2D(self, screenpos, screenang, 0.01, 250, 200) then
+        self:DrawScreenBackground()
+
+        imgui.End3D2D()
+    end
+end
+
 function ENT:DrawTranslucent()
     self:DrawModel()
 
-    self:DrawKeypad()
+    if not self.LocalPlayer then return end
+    if self.LocalPlayer:GetPos():DistToSqr(self:GetPos()) > 1000 * 1000 then return end
+
+    self:DrawScreen()
 end
