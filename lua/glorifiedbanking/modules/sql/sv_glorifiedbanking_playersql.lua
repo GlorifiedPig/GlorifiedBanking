@@ -26,7 +26,15 @@ concommand.Add( "glorifiedbanking_sqlsidto64", function( ply )
             if isSQLite == "sqlite" then sql.Begin() end
             for k, v in pairs( queryResult ) do
                 local plySteamID = v["SteamID"]
-                GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `SteamID` = '" .. util.SteamIDTo64( plySteamID ) .. "' WHERE `SteamID` = '" .. plySteamID .. "'" )
+                local plySteamID64 = util.SteamIDTo64( plySteamID )
+                GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE `SteamID` = '" .. plySteamID64 .. "'", function( queryResult2 )
+                    if queryResult2 and table.IsEmpty( queryResult2 ) == false then
+                        GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = '" .. v["Balance"] .. "' WHERE `SteamID` = '" .. plySteamID64 .. "'" )
+                    else
+                        GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `SteamID` = '" .. plySteamID64 .. "' WHERE `SteamID` = '" .. plySteamID .. "'" )
+                    end
+                    GlorifiedBanking.SQL.Query( "DELETE FROM `gb_players` WHERE `SteamID` = '" .. plySteamID .. "'" )
+                end )
             end
             if isSQLite == "sqlite" then sql.Commit() end
         end )
