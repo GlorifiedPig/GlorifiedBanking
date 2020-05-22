@@ -5,15 +5,27 @@ local startingBalance = GlorifiedBanking.Config.STARTING_BALANCE
 hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.SQLPlayer.PlayerInitialSpawn", function( ply )
     if ply:IsBot() then return end
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end
-    GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 1", function( queryResult )
+    GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE `SteamID` = '" .. ply:SteamID64() .. "' LIMIT 1", function( queryResult )
         if queryResult and table.IsEmpty( queryResult ) == false then
             ply.GlorifiedBanking.Balance = queryResult[1]["Balance"]
             ply:SetNW2Int( "GlorifiedBanking.Balance", queryResult[1]["Balance"] )
-            GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `LastName` = '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
+            GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `LastName` = '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' WHERE `SteamID` = '" .. ply:SteamID64() .. "'" )
         else
             ply.GlorifiedBanking.Balance = startingBalance
             ply:SetNW2Int( "GlorifiedBanking.Balance", startingBalance )
-            GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance`, `LastName` ) VALUES ( '" .. ply:SteamID() .. "', " .. startingBalance .. ", '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' )" ) -- {{ user_id | 25 }}
+            GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance`, `LastName` ) VALUES ( '" .. ply:SteamID64() .. "', " .. startingBalance .. ", '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' )" ) -- {{ user_id | 25 }}
         end
     end )
+end )
+
+-- This command is intensive, don't spam it!
+concommand.Add( "glorifiedbanking_sqlsidto64", function( ply )
+    if ply == NULL or ply:IsSuperAdmin() then
+        GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE Left(`SteamID`, 5) = 'STEAM'", function( queryResult )
+            for k, v in pairs( queryResult ) do
+                local plySteamID = v["SteamID"]
+                GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `SteamID` = '" .. util.SteamIDTo64( plySteamID ) .. "' WHERE `SteamID` = '" .. plySteamID .. "'" )
+            end
+        end )
+    end
 end )

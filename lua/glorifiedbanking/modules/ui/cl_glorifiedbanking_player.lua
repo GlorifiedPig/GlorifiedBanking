@@ -61,7 +61,7 @@ function PANEL:AddPlayer(ply, balance)
             menuPanel.Page:Dock(FILL)
             menuPanel.Page:SetAlpha(0)
             menuPanel.Page:AlphaTo(255, 0.15)
-            menuPanel.Page:SetSteamID(ply:SteamID())
+            menuPanel.Page:SetSteamID(ply:SteamID64())
         end)
     end
 

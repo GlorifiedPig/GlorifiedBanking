@@ -2,8 +2,8 @@
 local PANEL = {}
 
 function PANEL:AddData(data)
-    data.SteamID64 = util.SteamIDTo64(data.SteamID)
-    if data.ReceiverSteamID then data.ReceiverSteamID64 = util.SteamIDTo64(data.ReceiverSteamID) end
+    data.SteamID64 = data.SteamID
+    if data.ReceiverSteamID then data.ReceiverSteamID64 = data.ReceiverSteamID end
 
     data.Time = os.date("%H:%M:%S", data.Date)
     data.Date = os.date("%d/%m/%Y", data.Date)
