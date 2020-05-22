@@ -6,7 +6,7 @@ function GlorifiedBanking.ImportSteamIDFromBluesATM( steamid, balance )
 
         if ply and ply:IsPlayer() then
             ply.GlorifiedBanking.Balance = balance
-            ply:SetNWInt( "GlorifiedBanking.Balance", balance )
+            ply:SetNW2Int( "GlorifiedBanking.Balance", balance )
         end
     end )
 end

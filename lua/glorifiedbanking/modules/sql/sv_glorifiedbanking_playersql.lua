@@ -8,11 +8,11 @@ hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.SQLPlayer.PlayerInitialSpawn",
     GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE `SteamID` = '" .. ply:SteamID() .. "' LIMIT 1", function( queryResult )
         if queryResult and table.IsEmpty( queryResult ) == false then
             ply.GlorifiedBanking.Balance = queryResult[1]["Balance"]
-            ply:SetNWInt( "GlorifiedBanking.Balance", queryResult[1]["Balance"] )
+            ply:SetNW2Int( "GlorifiedBanking.Balance", queryResult[1]["Balance"] )
             GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `LastName` = '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' WHERE `SteamID` = '" .. ply:SteamID() .. "'" )
         else
             ply.GlorifiedBanking.Balance = startingBalance
-            ply:SetNWInt( "GlorifiedBanking.Balance", startingBalance )
+            ply:SetNW2Int( "GlorifiedBanking.Balance", startingBalance )
             GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance`, `LastName` ) VALUES ( '" .. ply:SteamID() .. "', " .. startingBalance .. ", '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' )" ) -- {{ user_id | 25 }}
         end
     end )
