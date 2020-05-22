@@ -36,7 +36,9 @@ concommand.Add( "glorifiedbanking_sqlsidto64", function( ply )
                     GlorifiedBanking.SQL.Query( "DELETE FROM `gb_players` WHERE `SteamID` = '" .. plySteamID .. "'" )
                 end )
             end
+            GlorifiedBanking.SQL.Query( "DROP TABLE `gb_logs`" )
             if isSQLite == "sqlite" then sql.Commit() end
+            print( "[GlorifiedBanking] Database structure converted. Please restart your server." )
         end )
     end
 end )
