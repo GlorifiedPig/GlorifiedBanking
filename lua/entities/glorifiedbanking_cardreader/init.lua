@@ -44,7 +44,8 @@ function ENT:Transfer(sender)
         return
     end
 
-    GlorifiedBanking.RemovePlayerBalance(sender, fee)
+    GlorifiedBanking.RemovePlayerBalance(ply, fee)
+    hook.Run("GlorifiedBanking.FeeTaken", ply, fee)
 
     timer.Simple(3, function() --Wait for insert card animation
         timer.Simple(2, function() --Wait while we contact the server
