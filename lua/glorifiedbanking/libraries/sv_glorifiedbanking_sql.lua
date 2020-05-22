@@ -41,10 +41,8 @@ function GlorifiedBanking.SQL.Query( sqlQuery, successFunc )
         function query:onError( error ) GlorifiedBanking.SQL.ThrowError( error ) end
         query:start()
     else
-        sql.Begin()
         local queryData = sql.Query( sqlQuery )
         if successFunc then successFunc( queryData ) end
-        sql.Commit()
     end
 end
 
