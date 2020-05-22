@@ -1,6 +1,7 @@
 
 i18n.RegisterPhrases( "en", {
     gbSystemName = "GlorifiedBanking",
+    gbSystemNameCaps = "GLORIFIEDBANKING",
     gbLoading = "LOADING",
     gbEnterCard = "ENTER YOUR CARD",
     gbToContinue = "TO CONTINUE",
@@ -41,6 +42,7 @@ i18n.RegisterPhrases( "en", {
     gbConfirmationBalance = "Do want to reset %s's balance?",
     gbYes = "Yes",
     gbNo = "No",
+    gbCardReader = "CARD READER",
     gbAdminMenuPlayers = "PLAYERS",
     gbAdminMenuLogs = "LOGS",
     gbAdminMenuSettings = "SETTINGS",
@@ -83,7 +85,7 @@ i18n.RegisterPhrases( "en", {
     gbCannotAfford = "You cannot afford that.",
     gbInvalidAmount = "Please enter a valid amount.",
     gbToolName = "ATM Placer",
-    gbToolCategory = "Glorified Banking",
+    gbToolCategory = "GlorifiedBanking",
     gbToolDescription = "Used to place ATMs on the wall and configure their individual settings.",
     gbToolLeftClick = "Place a permanent ATM",
     gbToolRightClick = "Remove a permanent ATM",

@@ -96,6 +96,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         keyPressedCol = Color(0, 0, 0, 200),
 
 
+        readerBgCol = Color( 49, 49, 49 ),
+        readerHeaderBgCol = Color( 93, 93, 93 ),
+        readerHeaderTextCol = Color( 255, 255, 255 ),
+        readerHeaderLineCol = Color( 46, 162, 212 ),
+
+
         signBackgroundCol = Color( 0, 0, 0 ),
         signTextCol = Color( 255, 255, 255 ),
 
@@ -288,6 +294,18 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 600,
             antialias = true
         },
+        ["ReaderEntity.HeaderTop"] = {
+            font = "Orbitron",
+            size = 45,
+            weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.HeaderBottom"] = {
+            font = "Orbitron",
+            size = 38,
+            weight = 600,
+            antialias = true
+        },
         ["ATMPlaceTool.Display"] = {
             font = "Montserrat",
             size = 34,
@@ -416,3 +434,5 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         }
     }
 } )
+
+GlorifiedBanking.Themes.Select("Dark")

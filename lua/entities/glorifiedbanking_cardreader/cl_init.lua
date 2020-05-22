@@ -3,6 +3,12 @@ include("shared.lua")
 
 local imgui = GlorifiedBanking.imgui
 
+--Localise the theme data
+local theme = GlorifiedBanking.Themes.GetCurrent()
+hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdated", function(newTheme)
+    theme = newTheme
+end)
+
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:Think()
@@ -32,8 +38,14 @@ end
 
 local scrw, scrh = 530, 702
 function ENT:DrawScreenBackground()
-    surface.SetDrawColor(color_black)
+    surface.SetDrawColor(theme.Data.Colors.readerBgCol)
     surface.DrawRect(0, 0, scrw, scrh)
+
+    draw.RoundedBox(12, scrw * .05, 28, scrw * .9, 100, theme.Data.Colors.readerHeaderBgCol)
+    draw.RoundedBox(2, scrw * .05, 77, scrw * .9, 4, theme.Data.Colors.readerHeaderLineCol)
+
+    draw.SimpleText(i18n.GetPhrase("gbSystemNameCaps"), "GlorifiedBanking.ReaderEntity.HeaderTop", scrw * .5, 55, theme.Data.Colors.readerHeaderTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(i18n.GetPhrase("gbCardReader"), "GlorifiedBanking.ReaderEntity.HeaderBottom", scrw * .5, 100, theme.Data.Colors.readerHeaderTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 local keyx, keyy = 120, 220
