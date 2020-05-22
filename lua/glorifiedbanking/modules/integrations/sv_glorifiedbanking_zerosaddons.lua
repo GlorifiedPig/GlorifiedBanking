@@ -25,7 +25,7 @@ end
 
 if ztm and ztm.f and ztm.f.GiveMoney then
     local oldztmfunc = ztm.f.GiveMoney
-    function ztm.f.GiveMoney( ply, money )
+    function ztm.f.GiveMoney( ply, money ) -- {{ user_id | 25 }}
         if money >= 0 then
             GlorifiedBanking.AddPlayerBalance( ply, money )
         else

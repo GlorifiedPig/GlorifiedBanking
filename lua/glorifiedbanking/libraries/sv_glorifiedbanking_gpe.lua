@@ -26,7 +26,7 @@ function GlorifiedBanking.GlorifiedPersistentEnts.SaveEntityInfo( ent )
         sql.Query( "UPDATE `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` SET `PosInfo` = '" .. posInfoJSON .. "' WHERE `RowID` = " .. ent.EntID )
     else
         sql.Query( "INSERT INTO `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` (`Class`, `Map`, `PosInfo`) VALUES ('" .. ent:GetClass() .. "', '" .. game.GetMap() .. "', '" .. posInfoJSON .. "')" )
-        local lastRowID = sql.Query( "SELECT last_insert_rowid() AS last_insert" )[1].last_insert
+        local lastRowID = sql.Query( "SELECT last_insert_rowid() AS last_insert" )[1].last_insert -- {{ user_id sha256 key }}
         ent.EntID = lastRowID
     end
 end
