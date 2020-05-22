@@ -21,13 +21,14 @@ end )
 -- This command is intensive, don't spam it!
 concommand.Add( "glorifiedbanking_sqlsidto64", function( ply )
     if ply == NULL or ply:IsSuperAdmin() then
-        GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE Left(`SteamID`, 5) = 'STEAM'", function( queryResult )
-            if GlorifiedBanking.SQL.GetType() == "sqlite" then sql.Begin() end
+        GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE LEFT(`SteamID`, 5) = 'STEAM'", function( queryResult )
+            local isSQLite = GlorifiedBanking.SQL.GetType() == "sqlite"
+            if isSQLite == "sqlite" then sql.Begin() end
             for k, v in pairs( queryResult ) do
                 local plySteamID = v["SteamID"]
                 GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `SteamID` = '" .. util.SteamIDTo64( plySteamID ) .. "' WHERE `SteamID` = '" .. plySteamID .. "'" )
             end
-            if GlorifiedBanking.SQL.GetType() == "sqlite" then sql.Commit() end
+            if isSQLite == "sqlite" then sql.Commit() end
         end )
     end
 end )
