@@ -87,17 +87,25 @@ function ENT:DrawKeypad()
             local keyNo = j * 3 + i + 1
             local key = (keyNo == 10 and "#") or (keyNo == 11 and "0") or (keyNo == 12 and "*") or tostring(keyNo)
 
-            if imgui.IsHovering(x, y, keyw, keyh) then
-                if imgui.IsPressed() then
-                    self:PressKey(key)
-                end
+            local keyHovered = imgui.IsHovering(x, y, keyw, keyh)
+            hovering = keyHovered or hovering
 
-                draw.RoundedBox(8, x, y, keyw, keyh, theme.Data.Colors.readerKeyBgHoverCol)
-            else
-                draw.RoundedBox(8, x, y, keyw, keyh, theme.Data.Colors.readerKeyBgCol)
+            if keyHovered and imgui.IsPressed() then
+                self:PressKey(key)
             end
 
-            draw.SimpleText(key, "GlorifiedBanking.ReaderEntity.KeyNumber", x + keyw / 2, y + keyh * .47, theme.Data.Colors.readerKeyTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            if keyNo < 10 or keyNo == 11 then
+                draw.RoundedBox(8, x, y, keyw, keyh, keyHovered and theme.Data.Colors.readerKeyBgHoverCol or theme.Data.Colors.readerKeyBgCol)
+                draw.SimpleText(key, "GlorifiedBanking.ReaderEntity.KeyNumber", x + keyw / 2, y + keyh * .47, theme.Data.Colors.readerKeyTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                continue
+            end
+
+            if keyNo == 10 then
+                draw.RoundedBox(8, x, y, keyw, keyh, keyHovered and theme.Data.Colors.readerKeyCancelBgHoverCol or theme.Data.Colors.readerKeyCancelBgCol)
+                continue
+            end
+
+            draw.RoundedBox(8, x, y, keyw, keyh, keyHovered and theme.Data.Colors.readerKeySubmitBgHoverCol or theme.Data.Colors.readerKeySubmitBgCol)
         end
     end
 
