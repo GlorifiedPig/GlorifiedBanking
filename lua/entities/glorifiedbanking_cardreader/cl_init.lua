@@ -23,7 +23,7 @@ ENT.Screens[1].onEnterPressed = function(self, amount)
 
 end
 
-ENT.Screens[1].drawFunction = function(self, data) --Amount entry screen
+ENT.Screens[1].drawFunction = function(self) --Amount entry screen
     draw.RoundedBox(10, scrw * .05, 140, scrw * .9, 80, theme.Data.Colors.readerEntryBgCol)
 
     local keypadContent = self:GetKeypadContent()
@@ -50,7 +50,7 @@ function ENT:DrawScreen()
         local currentScreen = self.Screens[screenID]
 
         self:DrawScreenBackground()
-        local hovering = currentScreen.drawFunction(self, self.ScreenData)
+        local hovering = currentScreen.drawFunction(self)
 
         --if not currentScreen.hideCursor and self.LocalPlayer == self:GetCurrentUser() and  not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
         --    local mx, my = imgui.CursorPos()
@@ -100,12 +100,24 @@ function ENT:DrawKeypad()
                 continue
             end
 
+            local iconsize = keyw * .7
+            local iconoff = (keyw - iconsize) / 2
+
             if keyNo == 10 then
                 draw.RoundedBox(8, x, y, keyw, keyh, keyHovered and theme.Data.Colors.readerKeyCancelBgHoverCol or theme.Data.Colors.readerKeyCancelBgCol)
+
+                surface.SetDrawColor(theme.Data.Colors.readerKeyIconCol)
+                surface.SetMaterial(theme.Data.Materials.close)
+                surface.DrawTexturedRect(x + iconoff, y + iconoff, iconsize, iconsize)
+
                 continue
             end
 
             draw.RoundedBox(8, x, y, keyw, keyh, keyHovered and theme.Data.Colors.readerKeySubmitBgHoverCol or theme.Data.Colors.readerKeySubmitBgCol)
+
+            surface.SetDrawColor(theme.Data.Colors.readerKeyIconCol)
+            surface.SetMaterial(theme.Data.Materials.check)
+            surface.DrawTexturedRect(x + iconoff, y + iconoff, iconsize, iconsize)
         end
     end
 
@@ -130,7 +142,7 @@ function ENT:PressKey(key)
         return
     end
 
-    if #self.KeyPadBuffer > 13 then return end
+    if #self.KeyPadBuffer > 10 then return end
 
     self.KeyPadBuffer = self.KeyPadBuffer .. key
 end

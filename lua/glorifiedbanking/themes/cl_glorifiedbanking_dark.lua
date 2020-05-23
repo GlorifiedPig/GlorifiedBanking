@@ -114,6 +114,8 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         readerKeyCancelBgHoverCol = Color( 131, 26, 26 ),
         readerKeySubmitBgCol = Color( 58, 187, 82 ),
         readerKeySubmitBgHoverCol = Color( 28, 107, 43 ),
+        readerKeyIconCol = Color( 255, 255, 255 ),
+
 
         signBackgroundCol = Color( 0, 0, 0 ),
         signTextCol = Color( 255, 255, 255 ),
