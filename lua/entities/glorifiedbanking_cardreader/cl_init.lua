@@ -21,6 +21,10 @@ local scrw, scrh = 530, 702
 ENT.Screens[1].onEnterPressed = function(self, amount)
     self.KeyPadBuffer = ""
 
+    net.Start("GlorifiedBanking.CardReader.StartTransaction")
+     net.WriteUInt(amount, 32)
+     net.WriteEntity(self)
+    net.SendToServer()
 end
 
 ENT.Screens[1].drawFunction = function(self) --Amount entry screen
@@ -31,6 +35,10 @@ ENT.Screens[1].drawFunction = function(self) --Amount entry screen
     draw.SimpleText(entered and GlorifiedBanking.FormatMoney(keypadContent) or i18n.GetPhrase("gbEnterAmount"), entered and "GlorifiedBanking.ReaderEntity.EnteredAmount" or "GlorifiedBanking.ReaderEntity.EnterAmount", scrw * .5, 180, entered and theme.Data.Colors.readerEntryEnterTextCol or theme.Data.Colors.readerEntryEnterEmptyTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     return self:DrawKeypad()
+end
+
+ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
+
 end
 
 function ENT:DrawTranslucent()
