@@ -20,10 +20,10 @@ end
 
 --Use entity ownership to get the merchant user
 function ENT:GetMerchant()
-    local owner = self.Getowning_ent and self:Getowning_ent()
-    if owner then return end
+    local owner = self:CPPIGetOwner()
+    if owner then return owner end
 
-    owner = self:CPPIGetOwner()
+    return self.Getowning_ent and self:Getowning_ent()
 end
 
 --Define all of our possible screens
