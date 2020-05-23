@@ -102,6 +102,16 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         readerHeaderLineCol = Color( 46, 162, 212 ),
 
 
+        readerEntryBgCol = Color( 64, 64, 64 ),
+        readerEntryEnterEmptyTextCol = Color( 97, 97, 97 ),
+        readerEntryEnterTextCol = Color( 255, 255, 255 ),
+
+
+        readerKeyBgCol = Color( 64, 64, 64 ),
+        readerKeyBgHoverCol = Color( 37, 161, 214 ),
+        readerKeyTextCol = Color( 255, 255, 255 ),
+
+
         signBackgroundCol = Color( 0, 0, 0 ),
         signTextCol = Color( 255, 255, 255 ),
 
@@ -304,6 +314,24 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             font = "Orbitron",
             size = 38,
             weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.EnterAmount"] = {
+            font = "Orbitron",
+            size = 42,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.EnteredAmount"] = {
+            font = "Orbitron",
+            size = 50,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.KeyNumber"] = {
+            font = "Montserrat",
+            size = 100,
+            weight = 700,
             antialias = true
         },
         ["ATMPlaceTool.Display"] = {

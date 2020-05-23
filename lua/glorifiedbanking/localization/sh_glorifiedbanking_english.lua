@@ -43,6 +43,7 @@ i18n.RegisterPhrases( "en", {
     gbYes = "Yes",
     gbNo = "No",
     gbCardReader = "CARD READER",
+    gbEnterAmount = "ENTER AMOUNT",
     gbAdminMenuPlayers = "PLAYERS",
     gbAdminMenuLogs = "LOGS",
     gbAdminMenuSettings = "SETTINGS",

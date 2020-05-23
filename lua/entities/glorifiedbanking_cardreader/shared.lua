@@ -9,9 +9,11 @@ ENT.AdminOnly = true
 
 --Set up the network vars
 function ENT:SetupDataTables()
-    self:NetworkVar("Int", 0, "TransactionAmount")
+    self:NetworkVar("Int", 0, "ScreenID")
+    self:NetworkVar("Int", 1, "TransactionAmount")
 
     if SERVER then
+        self:SetScreenID(1)
         self:SetTransactionAmount(0)
     end
 end
@@ -23,3 +25,9 @@ function ENT:GetMerchant()
 
     owner = self:CPPIGetOwner()
 end
+
+--Define all of our possible screens
+ENT.Screens = {
+    [1] = {}, --Amount entry screen
+    [2] = {} --Payment screen
+}
