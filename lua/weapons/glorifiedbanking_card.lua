@@ -32,7 +32,7 @@ function SWEP:Initialize()
     local ply = self:GetOwner()
     self.CardDisplayName = ply:Name()
 
-    local id = ply:SteamID64():sub(-16)
+    local id = tostring(ply:SteamID64() or "1234123412341234"):sub(-16)
     self.CardDisplayID  = id:sub(1, 4)
 
     for i = 4, 15, 4 do
