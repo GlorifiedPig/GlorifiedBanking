@@ -5,7 +5,7 @@ local imgui = GlorifiedBanking.imgui
 
 --Localise the theme data
 local theme = GlorifiedBanking.Themes.GetCurrent()
-hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ATMEntity.ThemeUpdated", function(newTheme)
+hook.Add("GlorifiedBanking.ThemeUpdated", "GlorifiedBanking.ReaderEntity.ThemeUpdated", function(newTheme)
     theme = newTheme
 end)
 
@@ -13,7 +13,7 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:Think()
     if not self.LocalPlayer then self.LocalPlayer = LocalPlayer() end
-    self.IsMerchant = true--self.LocalPlayer == self:GetMerchant()
+    self.IsMerchant = self.LocalPlayer == self:GetMerchant()
 end
 
 local scrw, scrh = 530, 702
