@@ -68,7 +68,7 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
     draw.SimpleText(GlorifiedBanking.FormatMoney(self:GetTransactionAmount() or -1), "GlorifiedBanking.ReaderEntity.TransactionAmount", scrw * .5, 368, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     local merchant = self:GetMerchant()
-    draw.SimpleText(i18n.GetPhrase("gbToAccount", merchant and string.upper(merchant:Name()) or "N/a"), "GlorifiedBanking.ReaderEntity.PaymentTo", scrw * .5, 445, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(i18n.GetPhrase("gbToAccount", merchant and string.upper(merchant:Name()) or "N/a"), "GlorifiedBanking.ReaderEntity.PaymentRecipient", scrw * .5, 440, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     draw.RoundedBox(12, scrw * .05, 540, scrw * .9, 140, theme.Data.Colors.readerConfirmOuterBgCol)
 
@@ -127,15 +127,7 @@ function ENT:DrawScreen()
         local currentScreen = self.Screens[screenID]
 
         self:DrawScreenBackground()
-        local hovering = currentScreen.drawFunction(self)
-
-        --if not currentScreen.hideCursor and self.LocalPlayer == self:GetCurrentUser() and  not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
-        --    local mx, my = imgui.CursorPos()
-
-        --    surface.SetDrawColor(color_white)
-        --    surface.SetMaterial(hovering and theme.Data.Materials.cursorHover or theme.Data.Materials.cursor)
-        --    surface.DrawTexturedRect(hovering and mx - 12 or mx, my, 45, 45)
-        --end
+        currentScreen.drawFunction(self)
 
         imgui.End3D2D()
     end
