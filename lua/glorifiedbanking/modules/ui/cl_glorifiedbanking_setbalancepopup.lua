@@ -54,6 +54,9 @@ function PANEL:Init()
          net.WriteUInt(self.Entry:GetValue(), 32)
         net.SendToServer()
 
+        net.Start("GlorifiedBanking.AdminPanel.PlayerListOpened")
+        net.SendToServer()
+
         self:Remove()
     end
 
