@@ -363,6 +363,24 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 600,
             antialias = true
         },
+        ["ReaderEntity.PaymentTo"] = {
+            font = "Montserrat",
+            size = 60,
+            weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.TransactionAmount"] = {
+            font = "Orbitron",
+            size = 60,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.ConfirmTransaction"] = {
+            font = "Montserrat",
+            size = 80,
+            weight = 700,
+            antialias = true
+        },
         ["ATMPlaceTool.Display"] = {
             font = "Montserrat",
             size = 34,

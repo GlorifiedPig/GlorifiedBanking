@@ -43,6 +43,12 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
     if imgui.IsHovering(scrw * .05, 140, scrw * .9, 80) then
         hovering = true
         draw.RoundedBox(12, scrw * .05, 140, scrw * .9, 80, theme.Data.Colors.readerBackBgHoverCol)
+
+        if imgui.IsPressed() then
+            net.Start("GlorifiedBanking.CardReader.BackToMenu")
+             net.WriteEntity(self)
+            net.SendToServer()
+        end
     else
         draw.RoundedBox(12, scrw * .05, 140, scrw * .9, 80, theme.Data.Colors.readerBackBgCol)
     end
@@ -52,6 +58,41 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
     surface.SetDrawColor(theme.Data.Colors.readerBackIconCol)
     surface.SetMaterial(theme.Data.Materials.chevron)
     surface.DrawTexturedRectRotated(60, 180, 45, 45, 180)
+
+    draw.SimpleText(i18n.GetPhrase("gbPaymentOf"), "GlorifiedBanking.ReaderEntity.PaymentTo", scrw * .5, 290, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    draw.RoundedBoxEx(12, scrw * .05, 320, scrw * .9, 100, theme.Data.Colors.readerPayAmountBgCol, true, true)
+    draw.RoundedBox(2, scrw * .05, 416, scrw * .9, 4, theme.Data.Colors.readerPayAmountUnderlineCol)
+    draw.SimpleText(GlorifiedBanking.FormatMoney(self:GetTransactionAmount() or -1), "GlorifiedBanking.ReaderEntity.TransactionAmount", scrw * .5, 368, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    local merchant = self:GetMerchant()
+    draw.SimpleText(i18n.GetPhrase("gbToAccount", merchant and string.upper(merchant:Name()) or "N/a"), "GlorifiedBanking.ReaderEntity.PaymentTo", scrw * .5, 445, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    draw.RoundedBox(12, scrw * .05, 540, scrw * .9, 140, theme.Data.Colors.readerConfirmOuterBgCol)
+
+    if imgui.IsHovering(scrw * .075, 550, scrw * .85, 120) then
+        hovering = true
+        draw.RoundedBox(12, scrw * .075, 550, scrw * .85, 120, theme.Data.Colors.readerConfirmBgHoverCol)
+
+        if imgui.IsPressed() then
+            net.Start("GlorifiedBanking.CardReader.ConfirmTransaction")
+             net.WriteEntity(self)
+            net.SendToServer()
+        end
+    else
+        draw.RoundedBox(12, scrw * .075, 550, scrw * .85, 120, theme.Data.Colors.readerConfirmBgCol)
+    end
+
+    local iconsize = 55
+
+    surface.SetFont("GlorifiedBanking.ReaderEntity.ConfirmTransaction")
+    local width = iconsize + 20 + surface.GetTextSize(i18n.GetPhrase("gbConfirm"))
+
+    surface.SetDrawColor(theme.Data.Colors.readerBackIconCol)
+    surface.SetMaterial(theme.Data.Materials.transfer)
+    surface.DrawTexturedRect(scrw * .5 - width * .5, 585, iconsize, iconsize)
+
+    draw.SimpleText(i18n.GetPhrase("gbConfirm"), "GlorifiedBanking.ReaderEntity.ConfirmTransaction", scrw * .5 + width * .5, 610, theme.Data.Colors.readerConfirmTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
     return hovering
 end
@@ -152,6 +193,8 @@ ENT.KeyPadBuffer = ""
 function ENT:PressKey(key)
     if not self.IsMerchant then return end
 
+    self:EmitSound("GlorifiedBanking.Beep_Reader_Normal")
+
     if key == "#" then
         self.KeyPadBuffer = ""
         return
@@ -165,7 +208,7 @@ function ENT:PressKey(key)
         return
     end
 
-    if #self.KeyPadBuffer > 10 then return end
+    if #self.KeyPadBuffer > 8 then return end
 
     self.KeyPadBuffer = self.KeyPadBuffer .. key
 end
