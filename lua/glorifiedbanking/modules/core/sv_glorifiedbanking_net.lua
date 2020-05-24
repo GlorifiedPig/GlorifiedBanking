@@ -140,6 +140,11 @@ net.Receive( "GlorifiedBanking.CardReader.StartTransaction", function( len, ply 
 
     if not ValidationChecks( ply, amount, readerEntity ) then return end
 
+    if amount <= 0 then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
+        return
+    end
+
     readerEntity:SetTransactionAmount( amount )
     readerEntity:SetScreenID( 2 )
 end )
