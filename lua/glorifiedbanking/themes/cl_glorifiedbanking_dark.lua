@@ -134,6 +134,8 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         readerConfirmTextCol = Color( 255, 255, 255 ),
         readerConfirmIconCol = Color( 255, 255, 255 ),
 
+        readerLoadingSpinnerCol = Color( 255, 255, 255 ),
+        readerLoadingTextCol = Color( 255, 255, 255 ),
 
         signBackgroundCol = Color( 0, 0, 0 ),
         signTextCol = Color( 255, 255, 255 ),
@@ -381,6 +383,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 700,
             antialias = true
         },
+        ["ReaderEntity.Loading"] = {
+            font = "Montserrat",
+            size = 70,
+            weight = 700,
+            antialias = true
+        },
         ["ATMPlaceTool.Display"] = {
             font = "Montserrat",
             size = 34,
@@ -499,6 +507,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         chevron = Material( "glorified_banking/chevron.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         close = Material( "glorified_banking/close.png", "noclamp smooth" ),
+        loading = Material( "glorified_banking/loading_spinner.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
 
