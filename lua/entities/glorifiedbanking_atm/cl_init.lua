@@ -216,7 +216,9 @@ function ENT:DrawLoadingScreen()
     if self.LoadingScreenX < -(scrw - 40) then return end
 
     if self.OldScreenID > 0 then
-        self.Screens[self.OldScreenID].drawFunction(self, self.OldScreenData)
+        if self.Screens[self.OldScreenID] and self.OldScreenData then
+            self.Screens[self.OldScreenID].drawFunction(self, self.OldScreenData)
+        end
     end
 
     GlorifiedBanking.UI.StartCutOut(function()
