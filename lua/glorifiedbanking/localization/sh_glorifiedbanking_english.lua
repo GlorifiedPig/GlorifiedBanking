@@ -9,6 +9,7 @@ i18n.RegisterPhrases( "en", {
     gbBackShortly = "OUR SYSTEMS WILL BE BACK ONLINE SHORTLY",
     gbWelcomeBack = "WELCOME BACK, %s!",
     gbAccountBalance = "ACCOUNT BALANCE: %s",
+    gbBack = "BACK",
     gbHidden = "HIDDEN",
     gbMenuWithdraw = "WITHDRAW",
     gbMenuDeposit = "DEPOSIT",

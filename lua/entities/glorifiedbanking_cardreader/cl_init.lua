@@ -38,7 +38,22 @@ ENT.Screens[1].drawFunction = function(self) --Amount entry screen
 end
 
 ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
+    local hovering = false
 
+    if imgui.IsHovering(scrw * .05, 140, scrw * .9, 80) then
+        hovering = true
+        draw.RoundedBox(12, scrw * .05, 140, scrw * .9, 80, theme.Data.Colors.readerBackBgHoverCol)
+    else
+        draw.RoundedBox(12, scrw * .05, 140, scrw * .9, 80, theme.Data.Colors.readerBackBgCol)
+    end
+
+    draw.SimpleText(i18n.GetPhrase("gbBack"), "GlorifiedBanking.ReaderEntity.Back", scrw * .5, 177, theme.Data.Colors.readerBackTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    surface.SetDrawColor(theme.Data.Colors.readerBackIconCol)
+    surface.SetMaterial(theme.Data.Materials.chevron)
+    surface.DrawTexturedRectRotated(60, 180, 45, 45, 180)
+
+    return hovering
 end
 
 function ENT:DrawTranslucent()
