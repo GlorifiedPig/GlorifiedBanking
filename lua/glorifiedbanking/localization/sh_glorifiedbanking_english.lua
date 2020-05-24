@@ -47,6 +47,7 @@ i18n.RegisterPhrases( "en", {
     gbPaymentOf = "PAYMENT OF",
     gbToAccount = "TO %s",
     gbCantPaySelf = "You can't pay yourself!",
+    gbNeedCard = "You need to have your card in hand to make this payment!",
     gbConfirm = "CONFIRM",
     gbEnterAmount = "ENTER AMOUNT",
     gbAdminMenuPlayers = "PLAYERS",

@@ -16,6 +16,8 @@ function ENT:Think()
     self.IsMerchant = self.LocalPlayer == self:GetMerchant()
 end
 
+function ENT:InsertCard() end
+
 local scrw, scrh = 530, 702
 --Button press/submit button press method for amount entry
 ENT.Screens[1].onEnterPressed = function(self, amount)

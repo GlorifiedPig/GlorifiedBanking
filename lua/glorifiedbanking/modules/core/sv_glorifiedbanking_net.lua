@@ -173,6 +173,12 @@ net.Receive("GlorifiedBanking.CardReader.ConfirmTransaction", function( len, ply
 
     if not ATMDistanceChecks( ply, readerEntity ) then return end
     if readerEntity:GetClass() != "glorifiedbanking_cardreader" then return end
+
+    if ply:GetActiveWeapon():GetClass() != "glorifiedbanking_card" then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbNeedCard"))
+        return
+    end
+
     if ply == readerEntity:GetMerchant() then
         readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbCantPaySelf"))
