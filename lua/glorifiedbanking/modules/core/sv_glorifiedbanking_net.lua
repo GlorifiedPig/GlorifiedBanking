@@ -87,6 +87,7 @@ net.Receive( "GlorifiedBanking.CardInserted", function( len, ply )
     if not GlorifiedBanking.LockdownEnabled
     and atmEntity:GetClass() == "glorifiedbanking_atm"
     and atmEntity:GetCurrentUser() == NULL
+    and IsValid(ply:GetActiveWeapon())
     and ply:GetActiveWeapon():GetClass() == "glorifiedbanking_card"
     and PlayerAuthChecks( ply )
     and ATMDistanceChecks( ply, atmEntity ) then
