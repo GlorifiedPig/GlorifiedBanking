@@ -188,9 +188,6 @@ net.Receive("GlorifiedBanking.CardReader.ConfirmTransaction", function( len, ply
     readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Normal")
 
     readerEntity:Transfer(ply)
-
-    readerEntity:SetTransactionAmount( 0 )
-    readerEntity:SetScreenID( 1 )
 end)
 
 net.Receive( "GlorifiedBanking.AdminPanel.SetPlayerBalance", function( len, ply )

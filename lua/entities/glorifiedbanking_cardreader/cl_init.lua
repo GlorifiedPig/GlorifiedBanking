@@ -74,7 +74,7 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
 
     if imgui.IsHovering(scrw * .075, 550, scrw * .85, 120) then
         hovering = true
-        draw.RoundedBox(12, scrw * .075, 550, scrw * .85, 120, theme.Data.Colors.readerConfirmBgHoverCol)
+        draw.RoundedBox(10, scrw * .075, 550, scrw * .85, 120, theme.Data.Colors.readerConfirmBgHoverCol)
 
         if imgui.IsPressed() then
             net.Start("GlorifiedBanking.CardReader.ConfirmTransaction")
@@ -82,7 +82,7 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
             net.SendToServer()
         end
     else
-        draw.RoundedBox(12, scrw * .075, 550, scrw * .85, 120, theme.Data.Colors.readerConfirmBgCol)
+        draw.RoundedBox(10, scrw * .075, 550, scrw * .85, 120, theme.Data.Colors.readerConfirmBgCol)
     end
 
     local iconsize = 55
@@ -97,6 +97,17 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
     draw.SimpleText(i18n.GetPhrase("gbConfirm"), "GlorifiedBanking.ReaderEntity.ConfirmTransaction", scrw * .5 + width * .5, 610, theme.Data.Colors.readerConfirmTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
     return hovering
+end
+
+ENT.Screens[3].drawFunction = function(self) --Loading screen
+    surface.SetDrawColor(theme.Data.Colors.readerBgCol)
+    surface.DrawRect(0, 0, scrw, scrh)
+
+    surface.SetDrawColor(theme.Data.Colors.readerLoadingSpinnerCol)
+    surface.SetMaterial(theme.Data.Materials.loading)
+    surface.DrawTexturedRectRotated(scrw * .5, scrh * .5 - 50, 200, 200, -CurTime() * 100)
+
+    draw.SimpleText(i18n.GetPhrase("gbReaderLoading"), "GlorifiedBanking.ReaderEntity.Loading", scrw * .5, scrh * .5 + 100, theme.Data.Colors.readerLoadingTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function ENT:DrawTranslucent()
