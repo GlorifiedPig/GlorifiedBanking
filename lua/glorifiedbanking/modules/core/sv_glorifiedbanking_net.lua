@@ -28,6 +28,11 @@ util.AddNetworkString( "GlorifiedBanking.CardDesigner.UpdateDesign" )
 util.AddNetworkString( "GlorifiedBanking.CardDesigner.SendDesignInfo" )
 util.AddNetworkString( "GlorifiedBanking.CardDesigner.OpenCardDesigner" )
 
+util.AddNetworkString( "GlorifiedBanking.CardReader.StartTransaction" )
+util.AddNetworkString( "GlorifiedBanking.CardReader.BackToMenu" )
+util.AddNetworkString( "GlorifiedBanking.CardReader.ConfirmTransaction" )
+
+
 local function PlayerAuthChecks( ply )
     return not ( not ply:IsValid()
     or ply:IsBot()
@@ -46,7 +51,7 @@ local function ValidationChecks( ply, balance, atmEntity )
     or balance == nil
     or balance < 0
     or not PlayerAuthChecks( ply )
-    or atmEntity:GetClass() != "glorifiedbanking_atm"
+    or (atmEntity:GetClass() != "glorifiedbanking_atm" and atmEntity:GetClass() != "glorifiedbanking_cardreader")
     or atmEntity.ForcedLoad
     or not ATMDistanceChecks( ply, atmEntity ) )
 end
@@ -82,6 +87,7 @@ net.Receive( "GlorifiedBanking.CardInserted", function( len, ply )
     if not GlorifiedBanking.LockdownEnabled
     and atmEntity:GetClass() == "glorifiedbanking_atm"
     and atmEntity:GetCurrentUser() == NULL
+    and IsValid(ply:GetActiveWeapon())
     and ply:GetActiveWeapon():GetClass() == "glorifiedbanking_card"
     and PlayerAuthChecks( ply )
     and ATMDistanceChecks( ply, atmEntity ) then
@@ -130,6 +136,60 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
         end
     end
 end )
+
+net.Receive( "GlorifiedBanking.CardReader.StartTransaction", function( len, ply )
+    local amount = net.ReadUInt( 32 )
+    local readerEntity = net.ReadEntity()
+
+    if not ValidationChecks( ply, amount, readerEntity ) then return end
+    if ply != readerEntity:GetMerchant() then return end
+
+    if amount <= 0 then
+        readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
+        return
+    end
+
+    readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Normal")
+
+    readerEntity:SetTransactionAmount( amount )
+    readerEntity:SetScreenID( 2 )
+end )
+
+net.Receive( "GlorifiedBanking.CardReader.BackToMenu", function( len, ply )
+    local readerEntity = net.ReadEntity()
+
+    if not ATMDistanceChecks( ply, readerEntity ) then return end
+    if readerEntity:GetClass() != "glorifiedbanking_cardreader" then return end
+    if ply != readerEntity:GetMerchant() then return end
+
+    readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Normal")
+
+    readerEntity:SetTransactionAmount( 0 )
+    readerEntity:SetScreenID( 1 )
+end )
+
+net.Receive("GlorifiedBanking.CardReader.ConfirmTransaction", function( len, ply )
+    local readerEntity = net.ReadEntity()
+
+    if not ATMDistanceChecks( ply, readerEntity ) then return end
+    if readerEntity:GetClass() != "glorifiedbanking_cardreader" then return end
+
+    if ply:GetActiveWeapon():GetClass() != "glorifiedbanking_card" then
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbNeedCard"))
+        return
+    end
+
+    if ply == readerEntity:GetMerchant() then
+        readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbCantPaySelf"))
+        return
+    end
+
+    readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Normal")
+
+    readerEntity:Transfer(ply)
+end)
 
 net.Receive( "GlorifiedBanking.AdminPanel.SetPlayerBalance", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_setplayerbalance" ) then
