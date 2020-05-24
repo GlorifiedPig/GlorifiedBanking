@@ -135,6 +135,7 @@ if SERVER then
 
     --Models
     resource.AddFile("models/ogl/ogl_main_atm.mdl")
+    resource.AddFile("models/ogl/ogl_chip.mdl")
 
     --Model Materials
     resource.AddFile("materials/models/ogl/ogl_main_atm.vmt")
@@ -146,6 +147,8 @@ if SERVER then
     resource.AddFile("materials/models/ogl/ogl_rgb_atm_nrm.vmt")
     resource.AddFile("materials/models/ogl/ogl_sign_atm.vmt")
     resource.AddFile("materials/models/ogl/ogl_sign_atm_nrm.vmt")
+    resource.AddFile("materials/models/ogl/ogl_chip.vmt")
+    resource.AddFile("materials/models/ogl/ogl_chip_nrm.vmt")
 
     --UI Materials
     resource.AddFile("materials/glorified_banking/back.png")
@@ -165,6 +168,7 @@ if SERVER then
     resource.AddFile("materials/glorified_banking/transfer.png")
     resource.AddFile("materials/glorified_banking/user.png")
     resource.AddFile("materials/glorified_banking/warning.png")
+    resource.AddFile("materials/glorified_banking/loading_spinner.png")
 
     --Slideshow Materials
     resource.AddFile("materials/glorified_banking/slideshow/bank.png")
