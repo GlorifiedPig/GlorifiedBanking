@@ -96,6 +96,47 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         keyPressedCol = Color(0, 0, 0, 200),
 
 
+        readerBgCol = Color( 49, 49, 49 ),
+        readerHeaderBgCol = Color( 93, 93, 93 ),
+        readerHeaderTextCol = Color( 255, 255, 255 ),
+        readerHeaderLineCol = Color( 46, 162, 212 ),
+
+
+        readerEntryBgCol = Color( 64, 64, 64 ),
+        readerEntryEnterEmptyTextCol = Color( 97, 97, 97 ),
+        readerEntryEnterTextCol = Color( 255, 255, 255 ),
+
+
+        readerKeyBgCol = Color( 64, 64, 64 ),
+        readerKeyBgHoverCol = Color( 37, 161, 214 ),
+        readerKeyTextCol = Color( 255, 255, 255 ),
+        readerKeyCancelBgCol = Color( 181, 46, 46 ),
+        readerKeyCancelBgHoverCol = Color( 131, 26, 26 ),
+        readerKeySubmitBgCol = Color( 58, 187, 82 ),
+        readerKeySubmitBgHoverCol = Color( 28, 107, 43 ),
+        readerKeyIconCol = Color( 255, 255, 255 ),
+
+
+        readerBackBgCol = Color( 64, 64, 64 ),
+        readerBackBgHoverCol = Color( 37, 161, 214 ),
+        readerBackTextCol = Color( 255, 255, 255 ),
+        readerBackIconCol = Color( 255, 255, 255 ),
+
+
+        readerPayAmountBgCol = Color( 64, 64, 64 ),
+        readerPayAmountUnderlineCol = Color( 37, 161, 214 ),
+        readerPayAmountTextCol = Color( 255, 255, 255 ),
+
+
+        readerConfirmBgCol = Color( 54, 202, 118 ),
+        readerConfirmBgHoverCol = Color( 47, 127, 82 ),
+        readerConfirmOuterBgCol = Color( 64, 64, 64 ),
+        readerConfirmTextCol = Color( 255, 255, 255 ),
+        readerConfirmIconCol = Color( 255, 255, 255 ),
+
+        readerLoadingSpinnerCol = Color( 255, 255, 255 ),
+        readerLoadingTextCol = Color( 255, 255, 255 ),
+
         signBackgroundCol = Color( 0, 0, 0 ),
         signTextCol = Color( 255, 255, 255 ),
 
@@ -288,6 +329,72 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 600,
             antialias = true
         },
+        ["ReaderEntity.HeaderTop"] = {
+            font = "Orbitron",
+            size = 45,
+            weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.HeaderBottom"] = {
+            font = "Orbitron",
+            size = 38,
+            weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.EnterAmount"] = {
+            font = "Orbitron",
+            size = 42,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.EnteredAmount"] = {
+            font = "Orbitron",
+            size = 50,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.KeyNumber"] = {
+            font = "Montserrat",
+            size = 100,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.Back"] = {
+            font = "Montserrat",
+            size = 70,
+            weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.PaymentTo"] = {
+            font = "Montserrat",
+            size = 60,
+            weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.PaymentRecipient"] = {
+            font = "Montserrat",
+            size = 46,
+            weight = 600,
+            antialias = true
+        },
+        ["ReaderEntity.TransactionAmount"] = {
+            font = "Orbitron",
+            size = 60,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.ConfirmTransaction"] = {
+            font = "Montserrat",
+            size = 80,
+            weight = 700,
+            antialias = true
+        },
+        ["ReaderEntity.Loading"] = {
+            font = "Montserrat",
+            size = 70,
+            weight = 700,
+            antialias = true
+        },
         ["ATMPlaceTool.Display"] = {
             font = "Montserrat",
             size = 34,
@@ -406,6 +513,7 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         chevron = Material( "glorified_banking/chevron.png", "noclamp smooth" ),
         circle = Material( "glorified_banking/circle.png", "noclamp smooth" ),
         close = Material( "glorified_banking/close.png", "noclamp smooth" ),
+        loading = Material( "glorified_banking/loading_spinner.png", "noclamp smooth" ),
         cursor = Material( "glorified_banking/cursor.png", "noclamp smooth" ),
         cursorHover = Material( "glorified_banking/cursor_hover.png", "noclamp smooth" ),
 
@@ -416,3 +524,5 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
         }
     }
 } )
+
+GlorifiedBanking.Themes.Select("Dark")
