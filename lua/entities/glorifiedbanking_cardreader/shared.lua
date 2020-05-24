@@ -29,5 +29,6 @@ end
 --Define all of our possible screens
 ENT.Screens = {
     [1] = {}, --Amount entry screen
-    [2] = {} --Payment screen
+    [2] = {}, --Payment screen
+    [3] = {} --Loading screen
 }
