@@ -44,8 +44,8 @@ function ENT:Transfer(sender)
         return
     end
 
-    GlorifiedBanking.RemovePlayerBalance(ply, fee)
-    hook.Run("GlorifiedBanking.FeeTaken", ply, fee)
+    GlorifiedBanking.RemovePlayerBalance(sender, fee)
+    hook.Run("GlorifiedBanking.FeeTaken", sender, fee)
 
     self:SetScreenID(3)
 
@@ -56,7 +56,7 @@ function ENT:Transfer(sender)
         self:SetScreenID(1)
 
         GlorifiedBanking.TransferAmount(sender, merchant, amount)
-        GlorifiedBanking.Notify(sender, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbPaidByCard", receiver:Name(), GlorifiedBanking.FormatMoney(amount)))
+        GlorifiedBanking.Notify(sender, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbPaidByCard", merchant:Name(), GlorifiedBanking.FormatMoney(amount)))
         GlorifiedBanking.Notify(merchant, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbPaidByCardReceive", sender:Name(), GlorifiedBanking.FormatMoney(amount)))
     end)
 end
