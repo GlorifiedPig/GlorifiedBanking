@@ -1,11 +1,11 @@
 
-local soundLevel = 50
+local atmSoundLevel = 50
 
 sound.Add({
     name = "GlorifiedBanking.Key_Press",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/key_press.mp3"
 })
@@ -14,7 +14,7 @@ sound.Add({
     name = "GlorifiedBanking.Beep_Normal",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/beep_normal.mp3"
 })
@@ -23,7 +23,7 @@ sound.Add({
     name = "GlorifiedBanking.Beep_Attention",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/beep_attention.mp3"
 })
@@ -32,7 +32,7 @@ sound.Add({
     name = "GlorifiedBanking.Beep_Error",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/beep_error.mp3"
 })
@@ -41,7 +41,7 @@ sound.Add({
     name = "GlorifiedBanking.Card_Insert",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/card_insert.mp3"
 })
@@ -50,7 +50,7 @@ sound.Add({
     name = "GlorifiedBanking.Card_Remove",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/card_remove.mp3"
 })
@@ -59,7 +59,7 @@ sound.Add({
     name = "GlorifiedBanking.Money_In_Start",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/money_in_start.mp3"
 })
@@ -68,7 +68,7 @@ sound.Add({
     name = "GlorifiedBanking.Money_In_Loop",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/money_in_loop.wav"
 })
@@ -77,7 +77,7 @@ sound.Add({
     name = "GlorifiedBanking.Money_In_Finish",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/money_in_finish.mp3"
 })
@@ -86,9 +86,29 @@ sound.Add({
     name = "GlorifiedBanking.Money_Out",
     channel = CHAN_AUTO,
     volume = 1.0,
-    level = soundLevel,
+    level = atmSoundLevel,
     pitch = 100,
     sound = "glorified_banking/money_out.mp3"
+})
+
+local readerSoundlevel = 40
+
+sound.Add({
+    name = "GlorifiedBanking.Beep_Reader_Normal",
+    channel = CHAN_AUTO,
+    volume = 1.0,
+    level = readerSoundlevel,
+    pitch = 60,
+    sound = "glorified_banking/beep_normal.mp3"
+})
+
+sound.Add({
+    name = "GlorifiedBanking.Beep_Reader_Error",
+    channel = CHAN_AUTO,
+    volume = 1.0,
+    level = readerSoundlevel,
+    pitch = 60,
+    sound = "glorified_banking/beep_error.mp3"
 })
 
 if SERVER then
@@ -103,6 +123,8 @@ if SERVER then
     resource.AddFile("sound/glorified_banking/beep_attention.mp3")
     resource.AddFile("sound/glorified_banking/beep_error.mp3")
     resource.AddFile("sound/glorified_banking/beep_normal.mp3")
+    resource.AddFile("sound/glorified_banking/beep_reader_normal.mp3")
+    resource.AddFile("sound/glorified_banking/beep_reader_error.mp3")
     resource.AddFile("sound/glorified_banking/card_insert.mp3")
     resource.AddFile("sound/glorified_banking/card_remove.mp3")
     resource.AddFile("sound/glorified_banking/key_press.mp3")
