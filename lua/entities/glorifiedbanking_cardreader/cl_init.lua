@@ -68,7 +68,7 @@ end
 local screenpos = Vector(-2.65, 4.41, .69)
 local screenang = Angle(0, 0, 5.5)
 function ENT:DrawScreen()
-    if imgui.Entity3D2D(self, screenpos, screenang, 0.01, 250, 200) then
+    if imgui.Entity3D2D(self, screenpos, screenang, 0.01, 150, 120) then
         local screenID = self:GetScreenID()
         local currentScreen = self.Screens[screenID]
 
