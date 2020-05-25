@@ -1,6 +1,6 @@
 
 --[[ SQL Configuration ]]--
-    GlorifiedBanking.Config.SQL_TYPE = "mysqloo" -- 'sqlite' or 'mysqloo'
+    GlorifiedBanking.Config.SQL_TYPE = "sqlite" -- 'sqlite' or 'mysqloo'
     GlorifiedBanking.Config.SQL_DETAILS = {
         [ "host" ] = "localhost",
         [ "user" ] = "root",

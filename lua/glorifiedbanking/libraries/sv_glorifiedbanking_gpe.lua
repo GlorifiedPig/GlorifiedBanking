@@ -34,6 +34,7 @@ end
 function GlorifiedBanking.GlorifiedPersistentEnts.RemoveEntityFromDB( ent )
     if not GlorifiedBanking.GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then return end
     if ent.EntID != nil then
+        print( "[GlorifiedBanking.GlorifiedPersistentEnts] Deleted Entity ID " .. ent.EntID .. " from table `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`" )
         sql.Query( "DELETE FROM `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. ent.EntID )
     end
 end

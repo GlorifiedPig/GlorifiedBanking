@@ -13,7 +13,7 @@ hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.SQLPlayer.PlayerInitialSpawn",
         else
             ply.GlorifiedBanking.Balance = startingBalance
             ply:SetNW2Int( "GlorifiedBanking.Balance", startingBalance )
-            GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance`, `LastName` ) VALUES ( '" .. ply:SteamID64() .. "', " .. startingBalance .. ", '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' )" ) -- {{ user_id | 25 }}
+            GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance`, `LastName` ) VALUES ( '" .. ply:SteamID64() .. "', '" .. startingBalance .. "', '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' )" ) -- {{ user_id | 25 }}
         end
     end )
 end )
@@ -21,7 +21,7 @@ end )
 -- This command is intensive, don't spam it!
 concommand.Add( "glorifiedbanking_sqlsidto64", function( ply )
     if ply == NULL or ply:IsSuperAdmin() then
-        GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE LEFT(`SteamID`, 5) = 'STEAM'", function( queryResult )
+        GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE LEFT( `SteamID`, 5 ) = 'STEAM'", function( queryResult )
             local isSQLite = GlorifiedBanking.SQL.GetType() == "sqlite"
             if isSQLite == "sqlite" then sql.Begin() end
             for k, v in pairs( queryResult ) do
