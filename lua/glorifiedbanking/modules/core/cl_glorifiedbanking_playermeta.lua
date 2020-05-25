@@ -4,7 +4,10 @@ function GlorifiedBanking.GetPlayerBalance()
 end
 
 function GlorifiedBanking.CanPlayerAfford( affordAmount )
-    return GlorifiedBanking.GetPlayerBalance() >= affordAmount
+    local numberedAffordAmount = tonumber( affordAmount )
+    if numberedAffordAmount != nil then
+        return GlorifiedBanking.GetPlayerBalance( ply ) >= numberedAffordAmount
+    end
 end
 
 local plyMeta = FindMetaTable( "Player" )

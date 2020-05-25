@@ -42,7 +42,7 @@ end
 
 function GlorifiedBanking.GetPlayerBalance( ply )
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
-    return ply.GlorifiedBanking.Balance or 0 -- Be sure to return zero if the "Balance" variable is nil.
+    return tonumber( ply.GlorifiedBanking.Balance ) or 0 -- Be sure to return zero if the "Balance" variable is nil.
 end
 
 function GlorifiedBanking.AddPlayerBalance( ply, addAmount )
@@ -59,7 +59,10 @@ function GlorifiedBanking.RemovePlayerBalance( ply, removeAmount )
 end
 
 function GlorifiedBanking.CanPlayerAfford( ply, affordAmount )
-    return GlorifiedBanking.GetPlayerBalance( ply ) >= affordAmount
+    local numberedAffordAmount = tonumber( affordAmount )
+    if numberedAffordAmount != nil then
+        return GlorifiedBanking.GetPlayerBalance( ply ) >= numberedAffordAmount
+    end
 end
 
 function GlorifiedBanking.WithdrawAmount( ply, withdrawAmount )
