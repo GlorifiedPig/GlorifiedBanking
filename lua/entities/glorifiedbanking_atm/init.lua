@@ -147,6 +147,9 @@ end
 function ENT:Withdraw(ply, amount)
     self.LastAction = CurTime()
 
+    amount = tonumber( amount )
+    if not amount then return end
+
     if amount <= 0 then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
@@ -199,6 +202,9 @@ end
 --Deposit method
 function ENT:Deposit(ply, amount)
     self.LastAction = CurTime()
+
+    amount = tonumber( amount )
+    if not amount then return end
 
     if amount <= 0 then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
@@ -265,6 +271,9 @@ end
 --Money transfer method
 function ENT:Transfer(ply, receiver, amount)
     self.LastAction = CurTime()
+
+    amount = tonumber( amount )
+    if not amount then return end
 
     if amount <= 0 then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbInvalidAmount"))
