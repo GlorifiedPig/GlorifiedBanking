@@ -20,7 +20,7 @@ function GlorifiedBanking.SQL.EscapeString( string )
     if GlorifiedBanking.SQL.Database then
         return GlorifiedBanking.SQL.Database:escape( string )
     else
-        return sql.SQLStr( string )
+        return sql.SQLStr( string, true )
     end
 end
 

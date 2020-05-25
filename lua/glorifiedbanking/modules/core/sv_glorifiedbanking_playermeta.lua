@@ -22,7 +22,7 @@ function GlorifiedBanking.SetPlayerBalance( ply, balance )
     balance = minClamp( balance, 0 ) -- Make sure the balance never goes below zero.
     if not ply.GlorifiedBanking then ply.GlorifiedBanking = {} end -- Initialize the player's GlorifiedBanking table if it doesn't already exist.
     hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- Args are ply, oldBalance and then newBalance. Documented in the markdown file.
-    GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. ply:SteamID64() .. "'" ) -- Update the player's SQL data.
+    GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = '" .. balance .. "' WHERE `SteamID` = '" .. ply:SteamID64() .. "'" ) -- Update the player's SQL data.
     ply.GlorifiedBanking.Balance = balance -- Cache the balance for easier usage elsewhere without the need to call another SQL query.
     ply:SetNW2Int( "GlorifiedBanking.Balance", balance ) -- Set the networked balance so we don't have to include it in the net messages later.
 end
@@ -32,11 +32,11 @@ function GlorifiedBanking.SetPlayerBalanceBySteamID( steamID, balance )
     balance = tonumber( balance )
     balance = math.Round( balance )
     balance = minClamp( balance, 0 )
-    local plyFromSteamID = player.GetBySteamID( steamID )
-    if plyFromSteamID then
-        GlorifiedBanking.SetPlayerBalance( plyFromSteamID, balance )
+    local plyFromSteamID64 = player.GetBySteamID64( steamID )
+    if plyFromSteamID64 then
+        GlorifiedBanking.SetPlayerBalance( plyFromSteamID64, balance )
     else
-        GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = " .. balance .. " WHERE `SteamID` = '" .. steamID .. "'" ) -- Update the player's SQL data.
+        GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = '" .. balance .. "' WHERE `SteamID` = '" .. steamID .. "'" ) -- Update the player's SQL data.
     end
 end
 

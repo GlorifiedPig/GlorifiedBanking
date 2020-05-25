@@ -3,7 +3,7 @@ GlorifiedBanking.SQL.Query( "CREATE TABLE IF NOT EXISTS `gb_logs` ( `Date` INT(3
 
 GlorifiedBanking.Logs = GlorifiedBanking.Logs or {}
 
-GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs`", function( queryResult ) GlorifiedBanking.Logs = queryResult end )
+GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs`", function( queryResult ) if queryResult then GlorifiedBanking.Logs = queryResult end end )
 
 function GlorifiedBanking.LogWithdrawal( ply, withdrawAmount )
     GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Withdrawal', '" .. ply:SteamID64() .. "', " .. withdrawAmount .. " )" )
