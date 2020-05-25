@@ -108,6 +108,8 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
 end
 
 ENT.Screens[3].drawFunction = function(self) --Present payment device screen
+    local hovering = false
+
     surface.SetDrawColor(theme.Data.Colors.readerBgCol)
     surface.DrawRect(0, 0, scrw, scrh)
 
@@ -131,6 +133,8 @@ ENT.Screens[3].drawFunction = function(self) --Present payment device screen
     surface.DrawTexturedRectRotated(60, scrh - 70, 45, 45, 180)
 
     draw.DrawText(i18n.GetPhrase("gbPleasePresent"), "GlorifiedBanking.ReaderEntity.PresentDevice", scrw * .5, scrh * .5 - 70, theme.Data.Colors.readerLoadingTextCol, TEXT_ALIGN_CENTER)
+
+    return hovering
 end
 
 ENT.Screens[4].drawFunction = function(self) --Loading screen
