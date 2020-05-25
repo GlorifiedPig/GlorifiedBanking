@@ -16,7 +16,13 @@ function ENT:Think()
     self.IsMerchant = self.LocalPlayer == self:GetMerchant()
 end
 
-function ENT:InsertCard() end
+function ENT:InsertCard()
+    if self:GetScreenID() != 3 then return end
+
+    net.Start("GlorifiedBanking.CardReader.PayMerchant")
+     net.WriteEntity(self)
+    net.SendToServer()
+end
 
 local scrw, scrh = 530, 702
 --Button press/submit button press method for amount entry
@@ -99,7 +105,33 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
     return hovering
 end
 
-ENT.Screens[3].drawFunction = function(self) --Loading screen
+ENT.Screens[3].drawFunction = function(self) --Present payment device screen
+    surface.SetDrawColor(theme.Data.Colors.readerBgCol)
+    surface.DrawRect(0, 0, scrw, scrh)
+
+    if imgui.IsHovering(scrw * .05, scrh - 110, scrw * .9, 80) then
+        hovering = true
+        draw.RoundedBox(12, scrw * .05, scrh - 110, scrw * .9, 80, theme.Data.Colors.readerBackBgHoverCol)
+
+        if imgui.IsPressed() then
+            net.Start("GlorifiedBanking.CardReader.BackToMenu")
+             net.WriteEntity(self)
+            net.SendToServer()
+        end
+    else
+        draw.RoundedBox(12, scrw * .05, scrh - 110, scrw * .9, 80, theme.Data.Colors.readerBackBgCol)
+    end
+
+    draw.SimpleText(i18n.GetPhrase("gbCancel"), "GlorifiedBanking.ReaderEntity.Back", scrw * .5, scrh - 72, theme.Data.Colors.readerBackTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    surface.SetDrawColor(theme.Data.Colors.readerBackIconCol)
+    surface.SetMaterial(theme.Data.Materials.chevron)
+    surface.DrawTexturedRectRotated(60, scrh - 70, 45, 45, 180)
+
+    draw.DrawText(i18n.GetPhrase("gbPleasePresent"), "GlorifiedBanking.ReaderEntity.PresentDevice", scrw * .5, scrh * .5 - 70, theme.Data.Colors.readerLoadingTextCol, TEXT_ALIGN_CENTER)
+end
+
+ENT.Screens[4].drawFunction = function(self) --Loading screen
     surface.SetDrawColor(theme.Data.Colors.readerBgCol)
     surface.DrawRect(0, 0, scrw, scrh)
 

@@ -30,5 +30,6 @@ end
 ENT.Screens = {
     [1] = {}, --Amount entry screen
     [2] = {}, --Payment screen
-    [3] = {} --Loading screen
+    [3] = {}, --Present payment device screen
+    [4] = {} --Loading screen
 }

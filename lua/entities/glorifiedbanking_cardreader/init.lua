@@ -47,7 +47,7 @@ function ENT:Transfer(sender)
     GlorifiedBanking.RemovePlayerBalance(sender, fee)
     hook.Run("GlorifiedBanking.FeeTaken", sender, fee)
 
-    self:SetScreenID(3)
+    self:SetScreenID(4)
 
     timer.Simple(3, function() --Wait while we contact the server
         if not IsValid(self) then return end

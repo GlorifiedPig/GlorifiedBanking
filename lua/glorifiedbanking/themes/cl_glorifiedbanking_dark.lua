@@ -389,6 +389,12 @@ GlorifiedBanking.Themes.Register( "Dark", i18n.GetPhrase("gbDarkTheme"), {
             weight = 700,
             antialias = true
         },
+        ["ReaderEntity.PresentDevice"] = {
+            font = "Montserrat",
+            size = 55,
+            weight = 700,
+            antialias = true
+        },
         ["ReaderEntity.Loading"] = {
             font = "Montserrat",
             size = 70,

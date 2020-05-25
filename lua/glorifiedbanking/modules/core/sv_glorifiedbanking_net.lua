@@ -31,6 +31,7 @@ util.AddNetworkString( "GlorifiedBanking.CardDesigner.OpenCardDesigner" )
 util.AddNetworkString( "GlorifiedBanking.CardReader.StartTransaction" )
 util.AddNetworkString( "GlorifiedBanking.CardReader.BackToMenu" )
 util.AddNetworkString( "GlorifiedBanking.CardReader.ConfirmTransaction" )
+util.AddNetworkString( "GlorifiedBanking.CardReader.PayMerchant" )
 
 
 local function PlayerAuthChecks( ply )
@@ -174,6 +175,19 @@ net.Receive( "GlorifiedBanking.CardReader.ConfirmTransaction", function( len, pl
 
     if not ATMDistanceChecks( ply, readerEntity ) then return end
     if readerEntity:GetClass() != "glorifiedbanking_cardreader" then return end
+    if ply != readerEntity:GetMerchant() then return end
+
+    readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Normal")
+
+    readerEntity:SetScreenID( 3 )
+end )
+
+net.Receive( "GlorifiedBanking.CardReader.PayMerchant", function( len, ply )
+    local readerEntity = net.ReadEntity()
+
+    if not ATMDistanceChecks( ply, readerEntity ) then return end
+    if readerEntity:GetClass() != "glorifiedbanking_cardreader" then return end
+    if readerEntity:GetScreenID() != 3 then return end
 
     if ply:GetActiveWeapon():GetClass() != "glorifiedbanking_card" and not (GlorifiedBanking.Config.SUPPORT_GSMARTWATCH and ply:IsUsingSmartWatch()) then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbNeedCard"))

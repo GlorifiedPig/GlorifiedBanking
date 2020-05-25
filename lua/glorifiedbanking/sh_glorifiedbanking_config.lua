@@ -2,6 +2,7 @@
 --[[ Addon Integrations ]]--
     GlorifiedBanking.Config.SUPPORT_ZEROS_ADDONS = false -- If you have any of Zero's addons on your server, you can choose for your income to go to your bank with this option.
     GlorifiedBanking.Config.SUPPORT_BLOGS = false -- Set this to true if you'd like to log withdrawals, deposits and transfers via bLogs.
+    GlorifiedBanking.Config.SUPPORT_GSMARTWATCH = false -- Set this to true if you'd like to allow payment by smart watch.
 --[[ End Addon Integrations ]]--
 
 --[[ Interest Settings ]]--
