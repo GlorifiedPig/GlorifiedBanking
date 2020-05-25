@@ -169,13 +169,13 @@ net.Receive( "GlorifiedBanking.CardReader.BackToMenu", function( len, ply )
     readerEntity:SetScreenID( 1 )
 end )
 
-net.Receive("GlorifiedBanking.CardReader.ConfirmTransaction", function( len, ply )
+net.Receive( "GlorifiedBanking.CardReader.ConfirmTransaction", function( len, ply )
     local readerEntity = net.ReadEntity()
 
     if not ATMDistanceChecks( ply, readerEntity ) then return end
     if readerEntity:GetClass() != "glorifiedbanking_cardreader" then return end
 
-    if ply:GetActiveWeapon():GetClass() != "glorifiedbanking_card" then
+    if ply:GetActiveWeapon():GetClass() != "glorifiedbanking_card" and not (GlorifiedBanking.Config.SUPPORT_GSMARTWATCH and ply:IsUsingSmartWatch()) then
         GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, i18n.GetPhrase("gbNeedCard"))
         return
     end
