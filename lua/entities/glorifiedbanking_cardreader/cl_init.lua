@@ -22,6 +22,8 @@ function ENT:InsertCard()
     net.Start("GlorifiedBanking.CardReader.PayMerchant")
      net.WriteEntity(self)
     net.SendToServer()
+
+    return GlorifiedBanking.CanPlayerAfford(self:GetTransactionAmount())
 end
 
 local scrw, scrh = 530, 702
