@@ -111,6 +111,7 @@ local function IncludeGBFiles()
     gbIncludeFolder( "glorifiedbanking/themes/" )
     gbIncludeFolder( "glorifiedbanking/modules/sql/" )
     gbIncludeFolder( "glorifiedbanking/modules/" )
+    hook.Run( "GlorifiedBanking.FinishedLoading" )
 end
 
 hook.Add( GlorifiedBanking.HookRunName, "GlorifiedBanking.AutoIncluder.IncludeGBFiles", IncludeGBFiles )
