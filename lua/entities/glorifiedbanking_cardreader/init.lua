@@ -25,7 +25,10 @@ function ENT:SetMerchant(ply)
     self:CPPISetOwner(ply)
 end
 
---Transer money method, the main function of the card reader
+--OnTransfer can be overriden to get data about transfers when complete
+function ENT:OnTransfer(sender, merchant, amount) end
+
+--Transfer money method, the main function of the card reader
 function ENT:Transfer(sender)
     local merchant = self:GetMerchant()
     if not IsValid(merchant) then return end
@@ -40,7 +43,7 @@ function ENT:Transfer(sender)
     local fee = math.Clamp(math.floor(amount / 100 * GlorifiedBanking.Config.CARD_PAYMENT_FEE), 0, amount)
 
     if not GlorifiedBanking.CanPlayerAfford(sender, amount) then
-        GlorifiedBanking.Notify(sender, NOTIFY_ERROR, 5, i18n.GetPhrase( "gbCannotAfford"))
+        GlorifiedBanking.Notify(sender, NOTIFY_ERROR, 5, i18n.GetPhrase("gbCannotAfford"))
         return
     end
 
@@ -50,12 +53,15 @@ function ENT:Transfer(sender)
     self:SetScreenID(4)
 
     timer.Simple(3, function() --Wait while we contact the server
+        GlorifiedBanking.TransferAmount(sender, merchant, amount)
+
         if not IsValid(self) then return end
 
         self:SetTransactionAmount(0)
         self:SetScreenID(1)
 
-        GlorifiedBanking.TransferAmount(sender, merchant, amount)
+        self:OnTransfer(sender, merchant, amount)
+
         GlorifiedBanking.Notify(sender, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbPaidByCard", merchant:Name(), GlorifiedBanking.FormatMoney(amount)))
         GlorifiedBanking.Notify(merchant, NOTIFY_GENERIC, 5, i18n.GetPhrase("gbPaidByCardReceive", sender:Name(), GlorifiedBanking.FormatMoney(amount)))
     end)

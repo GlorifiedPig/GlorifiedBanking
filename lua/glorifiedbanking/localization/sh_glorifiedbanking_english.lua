@@ -114,5 +114,10 @@ i18n.RegisterPhrases( "en", {
     gbToolSnap = "Snap Amount:",
     gbToolSnapHelp = "The distance between each snapping point.",
     gbToolHeight = "Height Offset:",
-    gbToolHeightHelp = "The distance from the floor the ATM will be placed at."
+    gbToolHeightHelp = "The distance from the floor the ATM will be placed at.",
+    gbWireToolName = "Card Reader Controller",
+    gbWireToolDesc = "Spawn/link a card reader controller.",
+    gbWireToolStep1 = "Primary: Create card reader controller. Secondary: Link controller.",
+    gbWireToolStep2 = "Now select a card reader to link to.",
+    gbOnlyLinkReaders = "You can only link card readers to the controller."
 } )
