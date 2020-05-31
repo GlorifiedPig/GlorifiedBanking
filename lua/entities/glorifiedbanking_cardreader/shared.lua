@@ -20,10 +20,7 @@ end
 
 --Use entity ownership to get the merchant user
 function ENT:GetMerchant()
-    local owner = self:CPPIGetOwner()
-    if owner then return owner end
-
-    return self.Getowning_ent and self:Getowning_ent()
+    return GlorifiedBanking.GetEntOwner(self)
 end
 
 --Define all of our possible screens
