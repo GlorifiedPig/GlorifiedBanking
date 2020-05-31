@@ -30,7 +30,7 @@ function PANEL:Init()
 end
 
 function PANEL:Paint(w, h)
-    draw.SimpleText(i18n.GetPhrase("gbItemsPerPage"), "GlorifiedBanking.AdminMenu.PaginatorPerPage", w * .024, h * .48, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbItemsPerPage"), "GlorifiedBanking.AdminMenu.PaginatorPerPage", w * .024, h * .48, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
 
 function PANEL:OnPageSelected(pageNo, limit)
@@ -138,7 +138,7 @@ end
 
 function PANEL:PerformLayout(w, h)
     surface.SetFont("GlorifiedBanking.AdminMenu.PaginatorPerPage")
-    local dropx = surface.GetTextSize(i18n.GetPhrase("gbItemsPerPage"))
+    local dropx = surface.GetTextSize(gbi18n.GetPhrase("gbItemsPerPage"))
 
     self.ItemCountSelector:SetSize(10, h * .8)
     self.ItemCountSelector:SetPos(w * .024 + dropx + w * .008, h * .3)

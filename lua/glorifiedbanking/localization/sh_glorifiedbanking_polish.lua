@@ -1,5 +1,5 @@
 
-i18n.RegisterPhrases( "pl", {
+gbi18n.RegisterPhrases( "pl", {
     gbSystemName = "GlorifiedBanking",
     gbLoading = "ŁADOWANIE",
     gbEnterCard = "WŁÓŻ KARTĘ",

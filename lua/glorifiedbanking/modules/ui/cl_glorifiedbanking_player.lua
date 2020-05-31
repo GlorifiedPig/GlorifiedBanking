@@ -14,7 +14,7 @@ function PANEL:AddPlayer(ply, balance)
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.playersMenuSetButtonBackgroundHoverCol or self.Theme.Data.Colors.playersMenuSetButtonBackgroundCol)
 
         draw.RoundedBox(h * .22, 0, 0, w, h, s.Color)
-        draw.SimpleText(i18n.GetPhrase("gbSetBalance"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(gbi18n.GetPhrase("gbSetBalance"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.SetBalance.DoClick = function(s)
@@ -31,7 +31,7 @@ function PANEL:AddPlayer(ply, balance)
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.playersMenuResetButtonBackgroundHoverCol or self.Theme.Data.Colors.playersMenuResetButtonBackgroundCol)
 
         draw.RoundedBox(h * .22, 0, 0, w, h, s.Color)
-        draw.SimpleText(i18n.GetPhrase("gbResetBalance"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(gbi18n.GetPhrase("gbResetBalance"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.ResetBalance.DoClick = function(s)
@@ -48,7 +48,7 @@ function PANEL:AddPlayer(ply, balance)
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.playersMenuTransactionsButtonBackgroundHoverCol or self.Theme.Data.Colors.playersMenuTransactionsButtonBackgroundCol)
 
         draw.RoundedBox(h * .22, 0, 0, w, h, s.Color)
-        draw.SimpleText(i18n.GetPhrase("gbViewTransactions"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(gbi18n.GetPhrase("gbViewTransactions"), "GlorifiedBanking.AdminMenu.PlayerSetBalance", w / 2, h / 2, self.Theme.Data.Colors.playersMenuButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.ViewTransactions.DoClick = function(s)

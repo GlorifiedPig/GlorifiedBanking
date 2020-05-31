@@ -42,7 +42,7 @@ ENT.Screens[1].drawFunction = function(self) --Amount entry screen
 
     local keypadContent = self:GetKeypadContent()
     local entered = keypadContent > 0
-    draw.SimpleText(entered and GlorifiedBanking.FormatMoney(keypadContent) or i18n.GetPhrase("gbEnterAmount"), entered and "GlorifiedBanking.ReaderEntity.EnteredAmount" or "GlorifiedBanking.ReaderEntity.EnterAmount", scrw * .5, 180, entered and theme.Data.Colors.readerEntryEnterTextCol or theme.Data.Colors.readerEntryEnterEmptyTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(entered and GlorifiedBanking.FormatMoney(keypadContent) or gbi18n.GetPhrase("gbEnterAmount"), entered and "GlorifiedBanking.ReaderEntity.EnteredAmount" or "GlorifiedBanking.ReaderEntity.EnterAmount", scrw * .5, 180, entered and theme.Data.Colors.readerEntryEnterTextCol or theme.Data.Colors.readerEntryEnterEmptyTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     return self:DrawKeypad()
 end
@@ -63,20 +63,20 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
         draw.RoundedBox(12, scrw * .05, 140, scrw * .9, 80, theme.Data.Colors.readerBackBgCol)
     end
 
-    draw.SimpleText(i18n.GetPhrase("gbBack"), "GlorifiedBanking.ReaderEntity.Back", scrw * .5, 177, theme.Data.Colors.readerBackTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbBack"), "GlorifiedBanking.ReaderEntity.Back", scrw * .5, 177, theme.Data.Colors.readerBackTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     surface.SetDrawColor(theme.Data.Colors.readerBackIconCol)
     surface.SetMaterial(theme.Data.Materials.chevron)
     surface.DrawTexturedRectRotated(60, 180, 45, 45, 180)
 
-    draw.SimpleText(i18n.GetPhrase("gbPaymentOf"), "GlorifiedBanking.ReaderEntity.PaymentTo", scrw * .5, 290, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbPaymentOf"), "GlorifiedBanking.ReaderEntity.PaymentTo", scrw * .5, 290, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     draw.RoundedBoxEx(12, scrw * .05, 320, scrw * .9, 100, theme.Data.Colors.readerPayAmountBgCol, true, true)
     draw.RoundedBox(2, scrw * .05, 416, scrw * .9, 4, theme.Data.Colors.readerPayAmountUnderlineCol)
     draw.SimpleText(GlorifiedBanking.FormatMoney(self:GetTransactionAmount() or -1), "GlorifiedBanking.ReaderEntity.TransactionAmount", scrw * .5, 368, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     local merchant = self:GetMerchant()
-    draw.SimpleText(i18n.GetPhrase("gbToAccount", merchant and string.upper(merchant:Name()) or "N/a"), "GlorifiedBanking.ReaderEntity.PaymentRecipient", scrw * .5, 440, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbToAccount", merchant and string.upper(merchant:Name()) or "N/a"), "GlorifiedBanking.ReaderEntity.PaymentRecipient", scrw * .5, 440, theme.Data.Colors.readerPayAmountTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     draw.RoundedBox(12, scrw * .05, 540, scrw * .9, 140, theme.Data.Colors.readerConfirmOuterBgCol)
 
@@ -96,13 +96,13 @@ ENT.Screens[2].drawFunction = function(self) --Transaction confirm screen
     local iconsize = 55
 
     surface.SetFont("GlorifiedBanking.ReaderEntity.ConfirmTransaction")
-    local width = iconsize + 20 + surface.GetTextSize(i18n.GetPhrase("gbConfirm"))
+    local width = iconsize + 20 + surface.GetTextSize(gbi18n.GetPhrase("gbConfirm"))
 
     surface.SetDrawColor(theme.Data.Colors.readerBackIconCol)
     surface.SetMaterial(theme.Data.Materials.transfer)
     surface.DrawTexturedRect(scrw * .5 - width * .5, 585, iconsize, iconsize)
 
-    draw.SimpleText(i18n.GetPhrase("gbConfirm"), "GlorifiedBanking.ReaderEntity.ConfirmTransaction", scrw * .5 + width * .5, 610, theme.Data.Colors.readerConfirmTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbConfirm"), "GlorifiedBanking.ReaderEntity.ConfirmTransaction", scrw * .5 + width * .5, 610, theme.Data.Colors.readerConfirmTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
     return hovering
 end
@@ -126,13 +126,13 @@ ENT.Screens[3].drawFunction = function(self) --Present payment device screen
         draw.RoundedBox(12, scrw * .05, scrh - 110, scrw * .9, 80, theme.Data.Colors.readerBackBgCol)
     end
 
-    draw.SimpleText(i18n.GetPhrase("gbCancel"), "GlorifiedBanking.ReaderEntity.Back", scrw * .5, scrh - 72, theme.Data.Colors.readerBackTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbCancel"), "GlorifiedBanking.ReaderEntity.Back", scrw * .5, scrh - 72, theme.Data.Colors.readerBackTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     surface.SetDrawColor(theme.Data.Colors.readerBackIconCol)
     surface.SetMaterial(theme.Data.Materials.chevron)
     surface.DrawTexturedRectRotated(60, scrh - 70, 45, 45, 180)
 
-    draw.DrawText(i18n.GetPhrase("gbPleasePresent"), "GlorifiedBanking.ReaderEntity.PresentDevice", scrw * .5, scrh * .5 - 70, theme.Data.Colors.readerLoadingTextCol, TEXT_ALIGN_CENTER)
+    draw.DrawText(gbi18n.GetPhrase("gbPleasePresent"), "GlorifiedBanking.ReaderEntity.PresentDevice", scrw * .5, scrh * .5 - 70, theme.Data.Colors.readerLoadingTextCol, TEXT_ALIGN_CENTER)
 
     return hovering
 end
@@ -145,7 +145,7 @@ ENT.Screens[4].drawFunction = function(self) --Loading screen
     surface.SetMaterial(theme.Data.Materials.loading)
     surface.DrawTexturedRectRotated(scrw * .5, scrh * .5 - 50, 200, 200, -CurTime() * 100)
 
-    draw.SimpleText(i18n.GetPhrase("gbReaderLoading"), "GlorifiedBanking.ReaderEntity.Loading", scrw * .5, scrh * .5 + 100, theme.Data.Colors.readerLoadingTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbReaderLoading"), "GlorifiedBanking.ReaderEntity.Loading", scrw * .5, scrh * .5 + 100, theme.Data.Colors.readerLoadingTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function ENT:DrawTranslucent()
@@ -178,8 +178,8 @@ function ENT:DrawScreenBackground()
     draw.RoundedBox(12, scrw * .05, 28, scrw * .9, 100, theme.Data.Colors.readerHeaderBgCol)
     draw.RoundedBox(2, scrw * .05, 77, scrw * .9, 4, theme.Data.Colors.readerHeaderLineCol)
 
-    draw.SimpleText(i18n.GetPhrase("gbSystemNameCaps"), "GlorifiedBanking.ReaderEntity.HeaderTop", scrw * .5, 55, theme.Data.Colors.readerHeaderTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.SimpleText(i18n.GetPhrase("gbCardReader"), "GlorifiedBanking.ReaderEntity.HeaderBottom", scrw * .5, 100, theme.Data.Colors.readerHeaderTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbSystemNameCaps"), "GlorifiedBanking.ReaderEntity.HeaderTop", scrw * .5, 55, theme.Data.Colors.readerHeaderTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(gbi18n.GetPhrase("gbCardReader"), "GlorifiedBanking.ReaderEntity.HeaderBottom", scrw * .5, 100, theme.Data.Colors.readerHeaderTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 local keyx, keyy = 98, 235

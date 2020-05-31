@@ -1,6 +1,6 @@
 
 TOOL.Name = "#tool.gbatmplacer.name"
-TOOL.Category = i18n.GetPhrase("gbToolCategory")
+TOOL.Category = gbi18n.GetPhrase("gbToolCategory")
 TOOL.Desc = "#tool.gbatmplacer.desc"
 TOOL.Author = "Tom.bat"
 TOOL.ConfigName = ""
@@ -20,44 +20,44 @@ if CLIENT then
         {name = "reload"}
     }
 
-    language.Add("tool.gbatmplacer.name", i18n.GetPhrase("gbToolName")) -- {{ user_id | 25 }}
-    language.Add("tool.gbatmplacer.desc", i18n.GetPhrase("gbToolDescription"))
-    language.Add("tool.gbatmplacer.left", i18n.GetPhrase("gbToolLeftClick"))
-    language.Add("tool.gbatmplacer.right", i18n.GetPhrase("gbToolRightClick"))
-    language.Add("tool.gbatmplacer.reload", i18n.GetPhrase("gbToolReload"))
+    language.Add("tool.gbatmplacer.name", gbi18n.GetPhrase("gbToolName")) -- {{ user_id | 25 }}
+    language.Add("tool.gbatmplacer.desc", gbi18n.GetPhrase("gbToolDescription"))
+    language.Add("tool.gbatmplacer.left", gbi18n.GetPhrase("gbToolLeftClick"))
+    language.Add("tool.gbatmplacer.right", gbi18n.GetPhrase("gbToolRightClick"))
+    language.Add("tool.gbatmplacer.reload", gbi18n.GetPhrase("gbToolReload"))
 
     local backgroundCol = Color(20, 20, 20)
     function TOOL:DrawToolScreen(w, h)
         surface.SetDrawColor(backgroundCol)
         surface.DrawRect(0, 0, w, h)
 
-        draw.SimpleText(i18n.GetPhrase("gbToolCategory"), "GlorifiedBanking.ATMPlaceTool.Display", w / 2, h / 2 - 16, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        draw.SimpleText(i18n.GetPhrase("gbToolName"), "GlorifiedBanking.ATMPlaceTool.Display", w / 2, h / 2 + 16, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(gbi18n.GetPhrase("gbToolCategory"), "GlorifiedBanking.ATMPlaceTool.Display", w / 2, h / 2 - 16, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(gbi18n.GetPhrase("gbToolName"), "GlorifiedBanking.ATMPlaceTool.Display", w / 2, h / 2 + 16, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     function TOOL.BuildCPanel(panel)
-        panel:NumSlider(i18n.GetPhrase("gbToolSnap"), "gbatmplacer_snap", 0, 150, 2)
-        panel:ControlHelp(i18n.GetPhrase("gbToolSnapHelp"))
+        panel:NumSlider(gbi18n.GetPhrase("gbToolSnap"), "gbatmplacer_snap", 0, 150, 2)
+        panel:ControlHelp(gbi18n.GetPhrase("gbToolSnapHelp"))
         panel:Help("")
 
-        panel:NumSlider(i18n.GetPhrase("gbToolHeight"), "gbatmplacer_height", 0, 50, 2)
-        panel:ControlHelp(i18n.GetPhrase("gbToolHeightHelp"))
+        panel:NumSlider(gbi18n.GetPhrase("gbToolHeight"), "gbatmplacer_height", 0, 50, 2)
+        panel:ControlHelp(gbi18n.GetPhrase("gbToolHeightHelp"))
         panel:Help("")
 
-        panel:TextEntry(i18n.GetPhrase("gbToolSignText"), "gbatmplacer_signtext")
-        panel:ControlHelp(i18n.GetPhrase("gbToolSignTextHelp"))
+        panel:TextEntry(gbi18n.GetPhrase("gbToolSignText"), "gbatmplacer_signtext")
+        panel:ControlHelp(gbi18n.GetPhrase("gbToolSignTextHelp"))
         panel:Help("")
 
-        panel:NumSlider(i18n.GetPhrase("gbToolWithdrawalFee"), "gbatmplacer_withdrawalfee", 0, 99, 2)
-        panel:ControlHelp(i18n.GetPhrase("gbToolWithdrawalFeeHelp"))
+        panel:NumSlider(gbi18n.GetPhrase("gbToolWithdrawalFee"), "gbatmplacer_withdrawalfee", 0, 99, 2)
+        panel:ControlHelp(gbi18n.GetPhrase("gbToolWithdrawalFeeHelp"))
         panel:Help("")
 
-        panel:NumSlider(i18n.GetPhrase("gbToolDepositFee"), "gbatmplacer_depositfee", 0, 99, 2)
-        panel:ControlHelp(i18n.GetPhrase("gbToolDepositFeeHelp"))
+        panel:NumSlider(gbi18n.GetPhrase("gbToolDepositFee"), "gbatmplacer_depositfee", 0, 99, 2)
+        panel:ControlHelp(gbi18n.GetPhrase("gbToolDepositFeeHelp"))
         panel:Help("")
 
-        panel:NumSlider(i18n.GetPhrase("gbToolTransferFee"), "gbatmplacer_transferfee", 0, 99, 2)
-        panel:ControlHelp(i18n.GetPhrase("gbToolTransferFeeHelp"))
+        panel:NumSlider(gbi18n.GetPhrase("gbToolTransferFee"), "gbatmplacer_transferfee", 0, 99, 2)
+        panel:ControlHelp(gbi18n.GetPhrase("gbToolTransferFeeHelp"))
     end
 end
 

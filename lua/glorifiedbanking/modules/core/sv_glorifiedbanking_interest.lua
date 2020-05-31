@@ -19,7 +19,7 @@ function GlorifiedBanking.ApplyPlayerInterest( ply )
     if interestAmount <= 0 or not ply:IsValid() or not ply:IsPlayer() or ply:IsBot() then return end -- A few validation checks.
     interestAmount = math.Clamp( interestAmount, 0, GlorifiedBanking.Config.INTEREST_MAX ) -- Clamp to make sure it doesn't go below zero and doesn't go above the maximum interest amount.
     GlorifiedBanking.AddPlayerBalance( ply, interestAmount ) -- Add the actual interest amount to the player's balance.
-    GlorifiedBanking.Notify( ply, NOTIFY_GENERIC, 5, i18n.GetPhrase( "gbInterestReceived", GlorifiedBanking.FormatMoney( interestAmount ) ) ) -- Notify the player that they have received their interest.
+    GlorifiedBanking.Notify( ply, NOTIFY_GENERIC, 5, gbi18n.GetPhrase( "gbInterestReceived", GlorifiedBanking.FormatMoney( interestAmount ) ) ) -- Notify the player that they have received their interest.
     hook.Run( "GlorifiedBanking.PlayerInterestReceived", ply, interestAmount ) -- Calls upon interest received with the args ( ply, interestAmount ).
 end
 
