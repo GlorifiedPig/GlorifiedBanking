@@ -87,7 +87,7 @@ function PANEL:Init()
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.setBalanceButtonBackgroundHoverCol or self.Theme.Data.Colors.setBalanceButtonBackgroundCol)
 
         draw.RoundedBox(h * .08, 0, 0, w, h, s.Color)
-        draw.SimpleText(gbi18n.GetPhrase("gbSave"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbSave"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.Save.DoClick = function(s)
@@ -134,7 +134,7 @@ function PANEL:Init()
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.resetBalanceNoButtonBackgroundHoverCol or self.Theme.Data.Colors.resetBalanceNoButtonBackgroundCol)
 
         draw.RoundedBox(h * .08, 0, 0, w, h, s.Color)
-        draw.SimpleText(gbi18n.GetPhrase("gbResetDefaults"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbResetDefaults"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.Reset.DoClick = function(s)
@@ -180,8 +180,8 @@ function PANEL:Paint(w, h)
     draw.RoundedBox(6, 0, 0, w, h, self.Theme.Data.Colors.adminMenuBackgroundCol)
     draw.RoundedBoxEx(6, 0, 0, w, h * .06, self.Theme.Data.Colors.adminMenuNavbarBackgroundCol, true, true)
 
-    draw.SimpleText(gbi18n.GetPhrase("gbCardDesigner"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .013, h * .028, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.SimpleText(gbi18n.GetPhrase("gbEnterImgur"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .013, h * .07, self.Theme.Data.Colors.adminMenuNavbarItemCol)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbCardDesigner"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .013, h * .028, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbEnterImgur"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .013, h * .07, self.Theme.Data.Colors.adminMenuNavbarItemCol)
 end
 
 vgui.Register("GlorifiedBanking.CardDesigner", PANEL, "EditablePanel")

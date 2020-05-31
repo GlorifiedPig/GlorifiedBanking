@@ -27,15 +27,15 @@ function PANEL:Init()
     self.TopBar = vgui.Create("Panel", self)
     self.TopBar.Theme = self:GetParent().Theme
     self.TopBar.Paint = function(s, w, h)
-        draw.SimpleText(gbi18n.GetPhrase("gbTransactionType"), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbTransactionType"), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     self.TransactionTypeSelect = vgui.Create("GlorifiedBanking.Dropdown", self.TopBar)
 
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeAll"))
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeWithdrawals"))
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeDeposits"))
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeTransfers"))
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeAll"))
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeWithdrawals"))
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeDeposits"))
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeTransfers"))
     self.TransactionTypeSelect:ChooseOptionID(1)
 
     self.TransactionTypeSelect.OnSelect = function(s, index, value, data)
@@ -60,7 +60,7 @@ function PANEL:PerformLayout(w, h)
     self.TopBar:Dock(TOP)
 
     surface.SetFont("GlorifiedBanking.AdminMenu.TransactionTypeSelect")
-    local dropx = surface.GetTextSize(gbi18n.GetPhrase("gbTransactionType"))
+    local dropx = surface.GetTextSize(GlorifiedBanking.i18n.GetPhrase("gbTransactionType"))
 
     self.TransactionTypeSelect:SetSize(w * .1, h * .032)
     self.TransactionTypeSelect:SetPos(w * .024 + dropx + w * .01,  h * .011)

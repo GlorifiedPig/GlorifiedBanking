@@ -1,5 +1,5 @@
 
-gbi18n.RegisterPhrases( "en", {
+GlorifiedBanking.i18n.RegisterPhrases( "en", {
     gbSystemName = "GlorifiedBanking",
     gbSystemNameCaps = "GLORIFIEDBANKING",
     gbCardReader = "CARD READER",

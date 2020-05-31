@@ -1,8 +1,8 @@
 
-SWEP.PrintName = gbi18n.GetPhrase("gbCardName")
+SWEP.PrintName = GlorifiedBanking.i18n.GetPhrase("gbCardName")
 SWEP.Category = "GlorifiedBanking"
 SWEP.Author = "Tom.bat"
-SWEP.Instructions = gbi18n.GetPhrase("gbCardInstructions")
+SWEP.Instructions = GlorifiedBanking.i18n.GetPhrase("gbCardInstructions")
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
@@ -96,13 +96,13 @@ function SWEP:PrimaryAttack()
 
     local maxDist = GlorifiedBanking.Config.MAXIMUM_DISTANCE_FROM_ATM
     if tr.HitPos:DistToSqr(ply:GetPos()) > maxDist * maxDist then
-        GlorifiedBanking.Notify(NOTIFY_ERROR, 3, gbi18n.GetPhrase("gbCardTooFarAway"))
+        GlorifiedBanking.Notify(NOTIFY_ERROR, 3, GlorifiedBanking.i18n.GetPhrase("gbCardTooFarAway"))
         return
     end
 
     if not tr.Entity.InsertCard then
-        local cantInsertPhrase = gbi18n.GetPhrase("gbCardCantInsert")
-        if tr.Entity:GetClass() == "worldspawn" then cantInsertPhrase = gbi18n.GetPhrase("gbCardInsertAir") end
+        local cantInsertPhrase = GlorifiedBanking.i18n.GetPhrase("gbCardCantInsert")
+        if tr.Entity:GetClass() == "worldspawn" then cantInsertPhrase = GlorifiedBanking.i18n.GetPhrase("gbCardInsertAir") end
         GlorifiedBanking.Notify(NOTIFY_ERROR, 3, cantInsertPhrase)
 
         return

@@ -10,7 +10,7 @@ function PANEL:Init()
     self.TopBar = vgui.Create("Panel", self)
     self.TopBar.Theme = self:GetParent().Theme
     self.TopBar.Paint = function(s, w, h)
-        draw.SimpleText(gbi18n.GetPhrase("gbPlayersOnline", #self.Players), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbPlayersOnline", #self.Players), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     self.ScrollPanel = vgui.Create("GlorifiedBanking.ScrollPanel", self)

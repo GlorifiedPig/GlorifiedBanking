@@ -34,7 +34,7 @@ function PANEL:Init()
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.resetBalanceYesButtonBackgroundHoverCol or self.Theme.Data.Colors.resetBalanceYesButtonBackgroundCol)
 
         draw.RoundedBox(h * .1, 0, 0, w, h, s.Color)
-        draw.SimpleText(gbi18n.GetPhrase("gbYes"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbYes"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.Yes.DoClick = function(s)
@@ -59,7 +59,7 @@ function PANEL:Init()
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.resetBalanceNoButtonBackgroundHoverCol or self.Theme.Data.Colors.resetBalanceNoButtonBackgroundCol)
 
         draw.RoundedBox(h * .1, 0, 0, w, h, s.Color)
-        draw.SimpleText(gbi18n.GetPhrase("gbNo"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbNo"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.No.DoClick = function(s)
@@ -93,8 +93,8 @@ function PANEL:Paint(w, h)
     draw.RoundedBox(6, 0, 0, w, h, self.Theme.Data.Colors.adminMenuBackgroundCol)
     draw.RoundedBoxEx(6, 0, 0, w, h * .18, self.Theme.Data.Colors.adminMenuNavbarBackgroundCol, true, true)
 
-    draw.SimpleText(gbi18n.GetPhrase("gbConfirmation"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .021, h * .08, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.DrawText(gbi18n.GetPhrase("gbConfirmationBalance", self.Username and self.Username or self.SteamID or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbConfirmation"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .021, h * .08, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.DrawText(GlorifiedBanking.i18n.GetPhrase("gbConfirmationBalance", self.Username and self.Username or self.SteamID or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
 end
 
 vgui.Register("GlorifiedBanking.ConfirmationPopup", PANEL, "EditablePanel")

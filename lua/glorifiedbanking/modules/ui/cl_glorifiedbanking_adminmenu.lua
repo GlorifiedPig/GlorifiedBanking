@@ -30,8 +30,8 @@ function PANEL:Init()
         end)
     end
 
-    self.Navbar:AddItem(gbi18n.GetPhrase("gbAdminMenuPlayers"), LEFT, function(s) changePage("GlorifiedBanking.Players") end)
-    self.Navbar:AddItem(gbi18n.GetPhrase("gbAdminMenuLogs"), LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
+    self.Navbar:AddItem(GlorifiedBanking.i18n.GetPhrase("gbAdminMenuPlayers"), LEFT, function(s) changePage("GlorifiedBanking.Players") end)
+    self.Navbar:AddItem(GlorifiedBanking.i18n.GetPhrase("gbAdminMenuLogs"), LEFT, function(s) changePage("GlorifiedBanking.Logs") end)
 
     self.Navbar:AddItem("LOCK", LEFT, function(s)
         self.LockdownMode = not self.LockdownMode

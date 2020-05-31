@@ -8,23 +8,23 @@
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ]]--
 
-gbi18n = {}
+GlorifiedBanking.i18n = {}
 
 local language = GetConVar( "gmod_language" )
 local registeredPhrases = {}
 
-function gbi18n.RegisterPhrase( languageIdentifier, phraseId, text )
+function GlorifiedBanking.i18n.RegisterPhrase( languageIdentifier, phraseId, text )
     if not registeredPhrases[languageIdentifier] then registeredPhrases[languageIdentifier] = {} end
     registeredPhrases[languageIdentifier][phraseId] = text
 end
 
-function gbi18n.RegisterPhrases( languageIdentifier, phraseTbl )
+function GlorifiedBanking.i18n.RegisterPhrases( languageIdentifier, phraseTbl )
     for k, v in pairs( phraseTbl ) do
-        gbi18n.RegisterPhrase( languageIdentifier, k, v )
+        GlorifiedBanking.i18n.RegisterPhrase( languageIdentifier, k, v )
     end
 end
 
-function gbi18n.GetPhrase( phraseIdentifier, ... )
+function GlorifiedBanking.i18n.GetPhrase( phraseIdentifier, ... )
     local phraseLanguage = registeredPhrases[language:GetString()] or registeredPhrases["en"]
     local finalPhrase = registeredPhrases["en"][phraseIdentifier]
     if phraseLanguage[phraseIdentifier] then finalPhrase = phraseLanguage[phraseIdentifier] end

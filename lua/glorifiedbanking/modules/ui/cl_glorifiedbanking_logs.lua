@@ -7,15 +7,15 @@ function PANEL:Init()
     self.TopBar = vgui.Create("Panel", self)
     self.TopBar.Theme = self:GetParent().Theme
     self.TopBar.Paint = function(s, w, h)
-        draw.SimpleText(gbi18n.GetPhrase("gbTransactionType"), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", self.Back and w * .06 or w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbTransactionType"), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", self.Back and w * .06 or w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     self.TransactionTypeSelect = vgui.Create("GlorifiedBanking.Dropdown", self.TopBar)
 
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeAll"), "All")
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeWithdrawals"), "Withdrawal")
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeDeposits"), "Deposit")
-    self.TransactionTypeSelect:AddChoice(gbi18n.GetPhrase("gbTypeTransfers"), "Transfer")
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeAll"), "All")
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeWithdrawals"), "Withdrawal")
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeDeposits"), "Deposit")
+    self.TransactionTypeSelect:AddChoice(GlorifiedBanking.i18n.GetPhrase("gbTypeTransfers"), "Transfer")
     self.TransactionTypeSelect:ChooseOptionID(1)
 
     self.TransactionTypeSelect.OnSelect = function(s, index, value, data)
@@ -91,7 +91,7 @@ function PANEL:SetSteamID(steamid)
     local oldDraw = self.TopBar.Paint
     self.TopBar.Paint = function(s, w, h)
         oldDraw(s, w, h)
-        draw.SimpleText(gbi18n.GetPhrase("gbTransactionLogsFor", steamid), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w - w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbTransactionLogsFor", steamid), "GlorifiedBanking.AdminMenu.TransactionTypeSelect", w - w * .024, h * .46, self.Theme.Data.Colors.logsMenuTransactionTypeTextCol, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     end
 end
 
@@ -108,7 +108,7 @@ function PANEL:PerformLayout(w, h)
     end
 
     surface.SetFont("GlorifiedBanking.AdminMenu.TransactionTypeSelect")
-    topOffset = topOffset + surface.GetTextSize(gbi18n.GetPhrase("gbTransactionType"))
+    topOffset = topOffset + surface.GetTextSize(GlorifiedBanking.i18n.GetPhrase("gbTransactionType"))
 
     self.TransactionTypeSelect:SetSize(w * .1, h * .032)
     self.TransactionTypeSelect:SetPos(topOffset + w * .035,  h * .011)

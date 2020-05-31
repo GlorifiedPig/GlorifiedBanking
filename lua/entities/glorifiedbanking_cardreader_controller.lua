@@ -24,7 +24,7 @@ end
 
 function ENT:LinkEnt(CardReader)
     if not IsValid(CardReader) or CardReader:GetClass() != "glorifiedbanking_cardreader" then
-        return false, gbi18n.GetPhrase("gbOnlyLinkReaders")
+        return false, GlorifiedBanking.i18n.GetPhrase("gbOnlyLinkReaders")
     end
 
     CardReader.OnTransfer = function(s, sender, merchant, amount)

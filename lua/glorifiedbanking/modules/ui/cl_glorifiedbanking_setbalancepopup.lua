@@ -39,13 +39,13 @@ function PANEL:Init()
         s.Color = GlorifiedBanking.UI.LerpColor(FrameTime() * 10, s.Color, s:IsHovered() and self.Theme.Data.Colors.setBalanceButtonBackgroundHoverCol or self.Theme.Data.Colors.setBalanceButtonBackgroundCol)
 
         draw.RoundedBox(h * .1, 0, 0, w, h, s.Color)
-        draw.SimpleText(gbi18n.GetPhrase("gbEnter"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbEnter"), "GlorifiedBanking.AdminMenu.SetBalanceButton", w / 2, h * .43, self.Theme.Data.Colors.setBalanceButtonTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
     self.Enter.DoClick = function(s)
         if not self.SteamID then return end
         if tonumber(self.Entry:GetValue()) < 0 then
-            GlorifiedBanking.Notify(NOTIFY_ERROR, 3, gbi18n.GetPhrase("gbCantHaveNegative"))
+            GlorifiedBanking.Notify(NOTIFY_ERROR, 3, GlorifiedBanking.i18n.GetPhrase("gbCantHaveNegative"))
             return
         end
 
@@ -87,8 +87,8 @@ function PANEL:Paint(w, h)
     draw.RoundedBox(6, 0, 0, w, h, self.Theme.Data.Colors.adminMenuBackgroundCol)
     draw.RoundedBoxEx(6, 0, 0, w, h * .18, self.Theme.Data.Colors.adminMenuNavbarBackgroundCol, true, true)
 
-    draw.SimpleText(gbi18n.GetPhrase("gbSetBalance"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .021, h * .08, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.SimpleText(gbi18n.GetPhrase("gbEnterBalance", self.Username and self.Username or self.SteamID or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbSetBalance"), "GlorifiedBanking.AdminMenu.SetBalanceTitle", w * .021, h * .08, self.Theme.Data.Colors.adminMenuNavbarItemCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbEnterBalance", self.Username and self.Username or self.SteamID or "undefined"), "GlorifiedBanking.AdminMenu.SetBalanceDescription", w * .021, h * .23, self.Theme.Data.Colors.adminMenuNavbarItemCol)
 end
 
 vgui.Register("GlorifiedBanking.BalancePopup", PANEL, "EditablePanel")

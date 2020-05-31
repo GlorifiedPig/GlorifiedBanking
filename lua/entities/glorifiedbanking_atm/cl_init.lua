@@ -82,7 +82,7 @@ end
 --Insert card method, used by the SWEP for future card reading entities
 function ENT:InsertCard()
     if self:GetCurrentUser() != NULL then
-        GlorifiedBanking.Notify(NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbCardAtmInUse"))
+        GlorifiedBanking.Notify(NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbCardAtmInUse"))
         return
     end
 
@@ -173,7 +173,7 @@ function ENT:DrawScreenBackground(showExit, backPage)
         surface.DrawTexturedRect(scrw-95, 25, 70, 70)
     end
 
-    draw.SimpleText(string.upper(gbi18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 125, 110, theme.Data.Colors.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+    draw.SimpleText(string.upper(GlorifiedBanking.i18n.GetPhrase("gbSystemName")), "GlorifiedBanking.ATMEntity.Title", 125, 110, theme.Data.Colors.titleTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 
     draw.RoundedBox(6, 0, 120, scrw, 10, theme.Data.Colors.titleBarCol)
 
@@ -240,7 +240,7 @@ function ENT:DrawLoadingScreen()
     surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 - 20, centery - 60 + math.sin(animprog + .5) * 20, 40, 40)
     surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 + 40, centery - 60 + math.sin(animprog) * 20, 40, 40)
 
-    draw.SimpleText(self.ForcedLoad and self.ForcedLoadReason or gbi18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.ForcedLoad and self.ForcedLoadReason or GlorifiedBanking.i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     GlorifiedBanking.UI.EndCutOut()
 end
@@ -293,17 +293,17 @@ ENT.Screens[1].drawFunction = function(self, data) --Idle screen
 
     local linew, lineh = msgw * .8, 4
     local liney = windowy + windowh * .5 - 2
-    draw.SimpleText(gbi18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 55, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbEnterCard"), "GlorifiedBanking.ATMEntity.EnterCard", centerx, liney - 55, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
 
     draw.RoundedBox(2,  windowx + (windoww-linew) * .5, liney, linew, lineh, theme.Data.Colors.idleScreenSeperatorCol)
-    draw.SimpleText(gbi18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 8, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbToContinue"), "GlorifiedBanking.ATMEntity.EnterCardSmall", centerx, liney + 8, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER)
 end
 
 ENT.Screens[2].drawFunction = function(self, data) --Lockdown screen
     local msgw, msgh = windoww * .95, 100
     draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + 35, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
     draw.RoundedBox(2, windowx + (windoww-msgw) * .5, windowy + 35, msgw, 4, theme.Data.Colors.lockdownMessageLineCol)
-    draw.DrawText(gbi18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.lockdownTextCol, TEXT_ALIGN_CENTER)
+    draw.DrawText(GlorifiedBanking.i18n.GetPhrase("gbAtmDisabled"), "GlorifiedBanking.ATMEntity.Lockdown", centerx, windowy + 45, theme.Data.Colors.lockdownTextCol, TEXT_ALIGN_CENTER)
 
     msgh = 50
     draw.RoundedBoxEx(8, windowx + (windoww-msgw) * .5, windowy + windowh - 80, msgw, msgh, theme.Data.Colors.lockdownMessageBackgroundCol, false, false, true, true)
@@ -313,13 +313,13 @@ ENT.Screens[2].drawFunction = function(self, data) --Lockdown screen
 
     surface.SetFont("GlorifiedBanking.ATMEntity.LockdownSmall")
     local contenty = windowy + windowh - 73
-    local contentw = iconsize + 10 + surface.GetTextSize(gbi18n.GetPhrase("gbBackShortly"))
+    local contentw = iconsize + 10 + surface.GetTextSize(GlorifiedBanking.i18n.GetPhrase("gbBackShortly"))
 
     surface.SetDrawColor(theme.Data.Colors.lockdownWarningIconCol)
     surface.SetMaterial(theme.Data.Materials.warning)
     surface.DrawTexturedRect(centerx - contentw * .5, contenty + 5, iconsize, iconsize)
 
-    draw.SimpleText(gbi18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.lockdownTextCol, TEXT_ALIGN_RIGHT)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbBackShortly"), "GlorifiedBanking.ATMEntity.LockdownSmall", centerx + contentw * .5, contenty, theme.Data.Colors.lockdownTextCol, TEXT_ALIGN_RIGHT)
 
     iconsize = 400
     surface.SetDrawColor(theme.Data.Colors.lockdownIconCol)
@@ -329,7 +329,7 @@ end
 
 local menuButtons = {
     {
-        name = gbi18n.GetPhrase("gbMenuWithdraw"),
+        name = GlorifiedBanking.i18n.GetPhrase("gbMenuWithdraw"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
              net.WriteUInt(4, 4)
@@ -338,7 +338,7 @@ local menuButtons = {
         end
     },
     {
-        name = gbi18n.GetPhrase("gbMenuDeposit"),
+        name = GlorifiedBanking.i18n.GetPhrase("gbMenuDeposit"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
              net.WriteUInt(5, 4)
@@ -347,7 +347,7 @@ local menuButtons = {
         end
     },
     {
-        name = gbi18n.GetPhrase("gbMenuTransfer"),
+        name = GlorifiedBanking.i18n.GetPhrase("gbMenuTransfer"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
              net.WriteUInt(6, 4)
@@ -356,7 +356,7 @@ local menuButtons = {
         end
     },
     {
-        name = gbi18n.GetPhrase("gbMenuTransactions"),
+        name = GlorifiedBanking.i18n.GetPhrase("gbMenuTransactions"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
              net.WriteUInt(7, 4)
@@ -370,7 +370,7 @@ ENT.Screens[3].drawFunction = function(self, data) --Main Menu
     surface.SetFont("GlorifiedBanking.ATMEntity.WelcomeBack")
     local contenty = windowy + 150
     local iconsize = 32
-    local text = gbi18n.GetPhrase("gbWelcomeBack", string.upper(self.CurrentUsername))
+    local text = GlorifiedBanking.i18n.GetPhrase("gbWelcomeBack", string.upper(self.CurrentUsername))
     local contentw = iconsize + 6 + surface.GetTextSize(text)
 
     surface.SetDrawColor(theme.Data.Colors.menuUserIconCol)
@@ -416,9 +416,9 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
     local text
 
     if self:GetCurrentUser() != self.LocalPlayer then
-        text = gbi18n.GetPhrase("gbAccountBalance", gbi18n.GetPhrase("gbHidden"))
+        text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.i18n.GetPhrase("gbHidden"))
     else
-        text = gbi18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
+        text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
     end
 
     local contentw = iconsize + 12 + surface.GetTextSize(text)
@@ -500,7 +500,7 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
     msgw, msgh = windoww * .93, 60
     draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
 
-    draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or gbi18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or GlorifiedBanking.i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     return hovering
 end
@@ -518,11 +518,11 @@ end
 ENT.Screens[4].drawFunction = function(self, data) --Withdrawal screen
     return drawTypeAmountScreen(
         self,
-        gbi18n.GetPhrase("gbWithdrawAmount"),
-        gbi18n.GetPhrase("gbMenuWithdraw"),
+        GlorifiedBanking.i18n.GetPhrase("gbWithdrawAmount"),
+        GlorifiedBanking.i18n.GetPhrase("gbMenuWithdraw"),
         theme.Data.Materials.transaction,
-        self:GetWithdrawalFee() > 0 and gbi18n.GetPhrase("gbWithdrawalHasFee", self:GetWithdrawalFee()) or gbi18n.GetPhrase("gbWithdrawalFree"),
-        gbi18n.GetPhrase("gbWithdrawalDisclaimer"),
+        self:GetWithdrawalFee() > 0 and GlorifiedBanking.i18n.GetPhrase("gbWithdrawalHasFee", self:GetWithdrawalFee()) or GlorifiedBanking.i18n.GetPhrase("gbWithdrawalFree"),
+        GlorifiedBanking.i18n.GetPhrase("gbWithdrawalDisclaimer"),
         self.Screens[4].onEnterPressed
     )
 end
@@ -540,18 +540,18 @@ end
 ENT.Screens[5].drawFunction = function(self, data) --Deposit screen
     return drawTypeAmountScreen(
         self,
-        gbi18n.GetPhrase("gbDepositAmount"),
-        gbi18n.GetPhrase("gbMenuDeposit"),
+        GlorifiedBanking.i18n.GetPhrase("gbDepositAmount"),
+        GlorifiedBanking.i18n.GetPhrase("gbMenuDeposit"),
         theme.Data.Materials.transaction,
-        self:GetDepositFee() > 0 and gbi18n.GetPhrase("gbDepositHasFee", self:GetDepositFee()) or gbi18n.GetPhrase("gbDepositFree"),
-        gbi18n.GetPhrase("gbDepositDisclaimer"),
+        self:GetDepositFee() > 0 and GlorifiedBanking.i18n.GetPhrase("gbDepositHasFee", self:GetDepositFee()) or GlorifiedBanking.i18n.GetPhrase("gbDepositFree"),
+        GlorifiedBanking.i18n.GetPhrase("gbDepositDisclaimer"),
         self.Screens[5].onEnterPressed
     )
 end
 
 ENT.Screens[6].onEnterPressed = function(self, amount)
     if not IsValid(self.ScreenData.selected) then
-        GlorifiedBanking.Notify(NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbSelectPlayer"))
+        GlorifiedBanking.Notify(NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbSelectPlayer"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
@@ -570,9 +570,9 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     local text
 
     if self:GetCurrentUser() != self.LocalPlayer then
-        text = gbi18n.GetPhrase("gbAccountBalance", gbi18n.GetPhrase("gbHidden"))
+        text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.i18n.GetPhrase("gbHidden"))
     else
-        text = gbi18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
+        text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
     end
 
     local contentw = iconsize + 12 + surface.GetTextSize(text)
@@ -595,7 +595,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     iconsize = 25
 
     surface.SetFont("GlorifiedBanking.ATMEntity.TransactionFee")
-    local hintText = self:GetTransferFee() > 0 and gbi18n.GetPhrase("gbTransferHasFee", self:GetTransferFee()) or gbi18n.GetPhrase("gbTransferFree")
+    local hintText = self:GetTransferFee() > 0 and GlorifiedBanking.i18n.GetPhrase("gbTransferHasFee", self:GetTransferFee()) or GlorifiedBanking.i18n.GetPhrase("gbTransferFree")
     contentw = iconsize + 10 + surface.GetTextSize(hintText)
 
     surface.SetDrawColor(theme.Data.Colors.transactionWarningIconCol)
@@ -627,7 +627,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     iconsize = 38
 
     surface.SetFont("GlorifiedBanking.ATMEntity.TransactionButton")
-    local buttonText = gbi18n.GetPhrase("gbMenuTransfer")
+    local buttonText = GlorifiedBanking.i18n.GetPhrase("gbMenuTransfer")
     contentw = iconsize + 15 + surface.GetTextSize(buttonText)
 
     msgy = msgy + 14
@@ -641,7 +641,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     msgw, msgh = windoww * .93, 60
     draw.RoundedBox(6, centerx - msgw * .5, msgy, msgw, msgh, theme.Data.Colors.transactionEntryBackgroundCol)
 
-    draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or gbi18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(amount > 0 and GlorifiedBanking.FormatMoney(amount) or GlorifiedBanking.i18n.GetPhrase("gbTransactionTypeAmount"), "GlorifiedBanking.ATMEntity.TransactionEntry", centerx, msgy + msgh / 2 - 3, amount > 0 and theme.Data.Colors.transactionEntryTextPopulatedCol or theme.Data.Colors.transactionEntryTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     local listw, listh = windoww * .95, 505
     local listx, listy = centerx - listw * .5, windowy + 100
@@ -750,9 +750,9 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
     local text
 
     if self:GetCurrentUser() != self.LocalPlayer then
-        text = gbi18n.GetPhrase("gbAccountBalance", gbi18n.GetPhrase("gbHidden"))
+        text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.i18n.GetPhrase("gbHidden"))
     else
-        text = gbi18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
+        text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
     end
 
     local contentw = iconsize + 12 + surface.GetTextSize(text)
@@ -777,13 +777,13 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
     draw.RoundedBox(2, entryx, entryy + entryh - 4, entryw, 4, theme.Data.Colors.transactionListHeaderUnderlineCol)
 
     local texty = entryy + 2
-    draw.SimpleText(gbi18n.GetPhrase("gbTransactionsTime"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 10, texty, theme.Data.Colors.transactionListEntryTextCol)
-    draw.SimpleText(gbi18n.GetPhrase("gbTransactionsType"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 250, texty, theme.Data.Colors.transactionListEntryTextCol)
-    draw.SimpleText(gbi18n.GetPhrase("gbTransactionsUsers"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 500, texty, theme.Data.Colors.transactionListEntryTextCol)
-    draw.SimpleText(gbi18n.GetPhrase("gbTransactionsTotal"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 880, texty, theme.Data.Colors.transactionListEntryTextCol)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbTransactionsTime"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 10, texty, theme.Data.Colors.transactionListEntryTextCol)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbTransactionsType"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 250, texty, theme.Data.Colors.transactionListEntryTextCol)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbTransactionsUsers"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 500, texty, theme.Data.Colors.transactionListEntryTextCol)
+    draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbTransactionsTotal"), "GlorifiedBanking.ATMEntity.TransactionHeader", entryx + 880, texty, theme.Data.Colors.transactionListEntryTextCol)
 
     if not data.Transactions then
-        draw.SimpleText(gbi18n.GetPhrase("gbHidden"), "GlorifiedBanking.ATMEntity.TransactionHidden", listx + listw / 2, listy + listh / 2, theme.Data.Colors.transactionListHiddenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbHidden"), "GlorifiedBanking.ATMEntity.TransactionHidden", listx + listw / 2, listy + listh / 2, theme.Data.Colors.transactionListHiddenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         return
     end
 

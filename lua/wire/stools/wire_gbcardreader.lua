@@ -3,10 +3,10 @@ WireToolSetup.setCategory("Input, Output/Glorified Banking")
 WireToolSetup.open("gbcardreader", "Card Reader Controller", "glorifiedbanking_cardreader_controller", nil, "Card Reader Controller")
 
 if CLIENT then
-	language.Add("tool.wire_gbcardreader.name", gbi18n.GetPhrase("gbWireToolName"))
-	language.Add("tool.wire_gbcardreader.desc", gbi18n.GetPhrase("gbWireToolDesc"))
-	language.Add("tool.wire_gbcardreader.0", gbi18n.GetPhrase("gbWireToolStep1"))
-	language.Add("tool.wire_gbcardreader.1", gbi18n.GetPhrase("gbWireToolStep2"))
+	language.Add("tool.wire_gbcardreader.name", GlorifiedBanking.i18n.GetPhrase("gbWireToolName"))
+	language.Add("tool.wire_gbcardreader.desc", GlorifiedBanking.i18n.GetPhrase("gbWireToolDesc"))
+	language.Add("tool.wire_gbcardreader.0", GlorifiedBanking.i18n.GetPhrase("gbWireToolStep1"))
+	language.Add("tool.wire_gbcardreader.1", GlorifiedBanking.i18n.GetPhrase("gbWireToolStep2"))
 end
 
 WireToolSetup.BaseLang()

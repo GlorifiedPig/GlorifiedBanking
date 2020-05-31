@@ -30,9 +30,9 @@ function PANEL:AddData(data)
 
     local function drawInfo(containerw, infoy)
         surface.SetFont("GlorifiedBanking.AdminMenu.LogInfoBold")
-        local infow = surface.GetTextSize(gbi18n.GetPhrase("gbLogInfoType"))
-        infow = infow + surface.GetTextSize(gbi18n.GetPhrase("gbLogInfoTime"))
-        infow = infow + surface.GetTextSize(gbi18n.GetPhrase("gbLogInfoDate"))
+        local infow = surface.GetTextSize(GlorifiedBanking.i18n.GetPhrase("gbLogInfoType"))
+        infow = infow + surface.GetTextSize(GlorifiedBanking.i18n.GetPhrase("gbLogInfoTime"))
+        infow = infow + surface.GetTextSize(GlorifiedBanking.i18n.GetPhrase("gbLogInfoDate"))
 
         surface.SetFont("GlorifiedBanking.AdminMenu.LogInfo")
         infow = infow + surface.GetTextSize(self.Data.Type)
@@ -42,15 +42,15 @@ function PANEL:AddData(data)
         infow = infow + containerw * .03
 
         local infox = containerw / 2 - infow / 2
-        infox = infox + draw.SimpleText(gbi18n.GetPhrase("gbLogInfoType"), "GlorifiedBanking.AdminMenu.LogInfoBold", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        infox = infox + draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbLogInfoType"), "GlorifiedBanking.AdminMenu.LogInfoBold", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         infox = infox + draw.SimpleText(self.Data.Type, "GlorifiedBanking.AdminMenu.LogInfo", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         infox = infox + containerw * .015
 
-        infox = infox + draw.SimpleText(gbi18n.GetPhrase("gbLogInfoTime"), "GlorifiedBanking.AdminMenu.LogInfoBold", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        infox = infox + draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbLogInfoTime"), "GlorifiedBanking.AdminMenu.LogInfoBold", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         infox = infox + draw.SimpleText(self.Data.Time, "GlorifiedBanking.AdminMenu.LogInfo", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         infox = infox + containerw * .015
 
-        infox = infox + draw.SimpleText(gbi18n.GetPhrase("gbLogInfoDate"), "GlorifiedBanking.AdminMenu.LogInfoBold", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        infox = infox + draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbLogInfoDate"), "GlorifiedBanking.AdminMenu.LogInfoBold", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         infox = infox + draw.SimpleText(self.Data.Date, "GlorifiedBanking.AdminMenu.LogInfo", infox, infoy, self.Theme.Data.Colors.logsMenuLogInfoTextCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 

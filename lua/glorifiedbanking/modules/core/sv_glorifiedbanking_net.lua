@@ -148,7 +148,7 @@ net.Receive( "GlorifiedBanking.CardReader.StartTransaction", function( len, ply 
 
     if amount <= 0 then
         readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbInvalidAmount"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbInvalidAmount"))
         return
     end
 
@@ -167,13 +167,13 @@ net.Receive( "GlorifiedBanking.CardReader.BackToMenu", function( len, ply )
     if readerEntity:GetScreenID() == 3 then
         if (ply != readerEntity.Client and ply != readerEntity:GetMerchant()) then
             readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
-            GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbCantCancelOthers"))
+            GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbCantCancelOthers"))
             return
         end
     else
         if ply != readerEntity:GetMerchant() then
             readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
-            GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbOnlyMerchantCancel"))
+            GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbOnlyMerchantCancel"))
             return
         end
     end
@@ -191,7 +191,7 @@ net.Receive( "GlorifiedBanking.CardReader.ConfirmTransaction", function( len, pl
     if readerEntity:GetClass() != "glorifiedbanking_cardreader" then return end
     if ply == readerEntity:GetMerchant() then
         readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbCantPaySelf"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbCantPaySelf"))
         return
     end
 
@@ -210,13 +210,13 @@ net.Receive( "GlorifiedBanking.CardReader.PayMerchant", function( len, ply )
 
     if ply:GetActiveWeapon():GetClass() != "glorifiedbanking_card" and not (GlorifiedBanking.Config.SUPPORT_GSMARTWATCH and ply:IsUsingSmartWatch()) then
         readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbNeedCard"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbNeedCard"))
         return
     end
 
     if ply != readerEntity.Client then
         readerEntity:EmitSound("GlorifiedBanking.Beep_Reader_Error")
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbCantPayOther"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbCantPayOther"))
         return
     end
 

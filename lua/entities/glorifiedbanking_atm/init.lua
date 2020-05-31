@@ -68,7 +68,7 @@ function ENT:Think()
     self:SetCurrentUser(NULL)
     self:Logout()
 
-    GlorifiedBanking.Notify(self.OldUser, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbLoggedOutInactive"))
+    GlorifiedBanking.Notify(self.OldUser, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbLoggedOutInactive"))
 end
 
 --Pass the use event to the current withdraw/deposit process if any
@@ -151,7 +151,7 @@ function ENT:Withdraw(ply, amount)
     if not amount then return end
 
     if amount <= 0 then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbInvalidAmount"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbInvalidAmount"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
@@ -159,7 +159,7 @@ function ENT:Withdraw(ply, amount)
     local fee = self:CalculateFee(amount, self:GetWithdrawalFee())
 
     if not GlorifiedBanking.CanPlayerAfford(ply, amount + fee) then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase( "gbCannotAfford"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase( "gbCannotAfford"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
@@ -169,12 +169,12 @@ function ENT:Withdraw(ply, amount)
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
-    self:ForceLoad(gbi18n.GetPhrase("gbContactingServer"))
+    self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbContactingServer"))
 
     self:PlayGBAnim(GB_ANIM_MONEY_OUT)
 
     timer.Simple(7.1, function() --Wait for the money to pop out
-        self:ForceLoad(gbi18n.GetPhrase("gbTakeDispensed"))
+        self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbTakeDispensed"))
         self.WaitingToTakeMoney = amount
 
         timer.Simple(10, function() --Wait 10 seconds before forcing the user to take the money
@@ -196,7 +196,7 @@ function ENT:TakeMoney(ply)
     self:PlayGBAnim(GB_ANIM_IDLE)
 
     GlorifiedBanking.WithdrawAmount(ply, amount)
-    GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, gbi18n.GetPhrase("gbCashWithdrawn", GlorifiedBanking.FormatMoney(amount)))
+    GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashWithdrawn", GlorifiedBanking.FormatMoney(amount)))
 end
 
 --Deposit method
@@ -207,7 +207,7 @@ function ENT:Deposit(ply, amount)
     if not amount then return end
 
     if amount <= 0 then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbInvalidAmount"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbInvalidAmount"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
@@ -215,7 +215,7 @@ function ENT:Deposit(ply, amount)
     local fee = self:CalculateFee(amount, self:GetDepositFee())
 
     if not GlorifiedBanking.CanWalletAfford(ply, amount + fee) then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase( "gbCannotAfford"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase( "gbCannotAfford"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
@@ -227,13 +227,13 @@ function ENT:Deposit(ply, amount)
 
     self:EmitSound("GlorifiedBanking.Money_In_Start")
 
-    self:ForceLoad(gbi18n.GetPhrase("gbContactingServer"))
+    self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbContactingServer"))
 
     timer.Simple(3.4, function() --Wait for the money spinny boi thing to spin up
         self.MoneyInLoop = self:StartLoopingSound("GlorifiedBanking.Money_In_Loop")
         self.WaitingToGiveMoney = amount
 
-        self:ForceLoad(gbi18n.GetPhrase("gbInsertMoney"))
+        self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbInsertMoney"))
 
         timer.Simple(10, function() --Force the user to put the money in after 10 seconds
             if self.WaitingToGiveMoney then
@@ -255,15 +255,15 @@ function ENT:GiveMoney(ply)
 
     self:PlayGBAnim(GB_ANIM_MONEY_IN)
 
-    self:ForceLoad(gbi18n.GetPhrase("gbPleaseWait"))
+    self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbPleaseWait"))
 
     timer.Simple(3.8, function() --Wait for the money to go in
-        self:ForceLoad(gbi18n.GetPhrase("gbContactingServer"))
+        self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbContactingServer"))
 
         timer.Simple(1, function() --Contact the server for a second
             self:ForceLoad("")
             GlorifiedBanking.DepositAmount(ply, amount)
-            GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, gbi18n.GetPhrase("gbCashDeposited", GlorifiedBanking.FormatMoney(amount)))
+            GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashDeposited", GlorifiedBanking.FormatMoney(amount)))
         end)
     end)
 end
@@ -276,7 +276,7 @@ function ENT:Transfer(ply, receiver, amount)
     if not amount then return end
 
     if amount <= 0 then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbInvalidAmount"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbInvalidAmount"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
@@ -284,7 +284,7 @@ function ENT:Transfer(ply, receiver, amount)
     local fee = self:CalculateFee(amount, self:GetTransferFee())
 
     if not GlorifiedBanking.CanPlayerAfford(ply, amount) then
-        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, gbi18n.GetPhrase( "gbCannotAfford"))
+        GlorifiedBanking.Notify(ply, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase( "gbCannotAfford"))
         self:EmitSound("GlorifiedBanking.Beep_Error")
         return
     end
@@ -294,13 +294,13 @@ function ENT:Transfer(ply, receiver, amount)
 
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
-    self:ForceLoad(gbi18n.GetPhrase("gbContactingServer"))
+    self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbContactingServer"))
 
     timer.Simple(3, function() --Contact the server for a moment
         self:ForceLoad("")
         GlorifiedBanking.TransferAmount(ply, receiver, amount)
-        GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, gbi18n.GetPhrase("gbCashTransferred", GlorifiedBanking.FormatMoney(amount), receiver:Name()))
-        GlorifiedBanking.Notify(receiver, NOTIFY_GENERIC, 5, gbi18n.GetPhrase("gbCashTransferReceive", ply:Name(), GlorifiedBanking.FormatMoney(amount)))
+        GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashTransferred", GlorifiedBanking.FormatMoney(amount), receiver:Name()))
+        GlorifiedBanking.Notify(receiver, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashTransferReceive", ply:Name(), GlorifiedBanking.FormatMoney(amount)))
     end)
 end
 

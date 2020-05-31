@@ -33,14 +33,14 @@ function ENT:Transfer(sender)
 
     local amount = self:GetTransactionAmount(0)
     if amount <= 0 then
-        GlorifiedBanking.Notify(sender, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbInvalidAmount"))
+        GlorifiedBanking.Notify(sender, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbInvalidAmount"))
         return
     end
 
     local fee = math.Clamp(math.floor(amount / 100 * GlorifiedBanking.Config.CARD_PAYMENT_FEE), 0, amount)
 
     if not GlorifiedBanking.CanPlayerAfford(sender, amount) then
-        GlorifiedBanking.Notify(sender, NOTIFY_ERROR, 5, gbi18n.GetPhrase("gbCannotAfford"))
+        GlorifiedBanking.Notify(sender, NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbCannotAfford"))
         return
     end
 
@@ -59,7 +59,7 @@ function ENT:Transfer(sender)
 
         self:OnTransfer(sender, merchant, amount)
 
-        GlorifiedBanking.Notify(sender, NOTIFY_GENERIC, 5, gbi18n.GetPhrase("gbPaidByCard", merchant:Name(), GlorifiedBanking.FormatMoney(amount)))
-        GlorifiedBanking.Notify(merchant, NOTIFY_GENERIC, 5, gbi18n.GetPhrase("gbPaidByCardReceive", sender:Name(), GlorifiedBanking.FormatMoney(amount)))
+        GlorifiedBanking.Notify(sender, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbPaidByCard", merchant:Name(), GlorifiedBanking.FormatMoney(amount)))
+        GlorifiedBanking.Notify(merchant, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbPaidByCardReceive", sender:Name(), GlorifiedBanking.FormatMoney(amount)))
     end)
 end
