@@ -115,3 +115,10 @@ local function IncludeGBFiles()
 end
 
 hook.Add( GlorifiedBanking.HookRunName, "GlorifiedBanking.AutoIncluder.IncludeGBFiles", IncludeGBFiles )
+
+hook.Add("libgmodstore_init", "GlorifiedBanking.InitLibgmodstore",function()
+    libgmodstore:InitScript(7034, "GlorifiedBanking",{
+        version = "{{ script_version_name }}",
+        licensee = "{{ user_id }}"
+    })
+end)
