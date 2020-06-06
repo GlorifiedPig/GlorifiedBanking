@@ -1,4 +1,6 @@
 
+-- Edited version of GlorifiedPersistentEnts specifically for GlorifiedBanking.
+
 GlorifiedBanking.GlorifiedPersistentEnts = {
     TableName = "GlorifiedBanking",
     Identifier = "glorifiedbanking_", -- No spaces. For usage in concommands.
@@ -33,7 +35,7 @@ end
 
 function GlorifiedBanking.GlorifiedPersistentEnts.RemoveEntityFromDB( ent )
     if not GlorifiedBanking.GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then return end
-    if ent.EntID != nil then
+    if ent.EntID then
         print( "[GlorifiedBanking.GlorifiedPersistentEnts] Deleted Entity ID " .. ent.EntID .. " from table `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`" )
         sql.Query( "DELETE FROM `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. ent.EntID )
     end
@@ -76,9 +78,9 @@ hook.Add( "PhysgunDrop", GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. 
     end
 end )
 
-hook.Add( "OnEntityCreated", GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. ".GPE.OnEntityCreated", function( ent )
+hook.Add( "PlayerSpawnedSENT", GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. ".GPE.PlayerSpawnedSENT", function( ply, ent )
     if GlorifiedBanking.GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then
-        timer.Simple( 0, function() GlorifiedBanking.GlorifiedPersistentEnts.SaveEntityInfo( ent ) end )
+        GlorifiedBanking.GlorifiedPersistentEnts.SaveEntityInfo( ent )
     end
 end )
 
