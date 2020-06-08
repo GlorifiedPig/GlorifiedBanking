@@ -530,5 +530,3 @@ GlorifiedBanking.Themes.Register( "Dark", GlorifiedBanking.i18n.GetPhrase("gbDar
         }
     }
 } )
-
-GlorifiedBanking.Themes.Select("Dark")
