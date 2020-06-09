@@ -23,7 +23,7 @@ concommand.Add( "glorifiedbanking_sqlsidto64", function( ply )
     if ply == NULL or ply:IsSuperAdmin() then
         GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_players` WHERE LEFT( `SteamID`, 5 ) = 'STEAM'", function( queryResult )
             local isSQLite = GlorifiedBanking.SQL.GetType() == "sqlite"
-            if isSQLite == "sqlite" then sql.Begin() end
+            if isSQLite then sql.Begin() end
             for k, v in pairs( queryResult ) do
                 local plySteamID = v["SteamID"]
                 local plySteamID64 = util.SteamIDTo64( plySteamID )
@@ -37,7 +37,7 @@ concommand.Add( "glorifiedbanking_sqlsidto64", function( ply )
                 end )
             end
             GlorifiedBanking.SQL.Query( "DROP TABLE `gb_logs`" )
-            if isSQLite == "sqlite" then sql.Commit() end
+            if isSQLite then sql.Commit() end
             print( "[GlorifiedBanking] Database structure converted. Please restart your server." )
         end )
     end
