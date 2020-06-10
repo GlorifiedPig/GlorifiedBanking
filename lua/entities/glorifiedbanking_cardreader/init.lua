@@ -19,7 +19,7 @@ end
 
 --Merchant setter, use in a hook when buying entities if the merchant isn't setting
 function ENT:SetMerchant(ply)
-    return GlorifiedBanking.SetEntOwner(self)
+    return GlorifiedBanking.SetEntOwner(self, ply)
 end
 
 --OnTransfer can be overriden to get data about transfers when complete

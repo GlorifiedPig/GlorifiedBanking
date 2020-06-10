@@ -28,7 +28,7 @@ if SERVER then
         DarkRP.notify( ply, msgType, time, message )
     end
 
-    function GlorifiedBanking.SetEntOwner( ent )
+    function GlorifiedBanking.SetEntOwner( ent, ply )
         if ent.Setowning_ent then ent:Setowning_ent(ply) end
         ent:CPPISetOwner(ply)
     end
@@ -37,3 +37,7 @@ else
         notification.AddLegacy( message, msgType, time )
     end
 end
+
+hook.Add("playerBoughtCustomEntity", "GlorifiedBanking.Compatability.playerBoughtCustomEntity", function(ply, entTbl, ent, price)
+    if ent:GetClass() == "glorifiedbanking_cardreader" then ent:SetMerchant(ply) end
+end)
