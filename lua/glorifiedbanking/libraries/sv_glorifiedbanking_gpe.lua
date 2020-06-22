@@ -24,20 +24,21 @@ function GlorifiedBanking.GlorifiedPersistentEnts.SaveEntityInfo( ent )
         }
     }
     posInfoJSON = util.TableToJSON( posInfoJSON )
-    if ent.EntID != nil then
-        sql.Query( "UPDATE `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` SET `PosInfo` = '" .. posInfoJSON .. "' WHERE `RowID` = " .. ent.EntID )
+    if ent.GB_EntID != nil then
+        sql.Query( "UPDATE `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` SET `PosInfo` = '" .. posInfoJSON .. "' WHERE `RowID` = " .. ent.GB_EntID )
     else
         sql.Query( "INSERT INTO `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` (`Class`, `Map`, `PosInfo`) VALUES ('" .. ent:GetClass() .. "', '" .. game.GetMap() .. "', '" .. posInfoJSON .. "')" )
         local lastRowID = sql.Query( "SELECT last_insert_rowid() AS last_insert" )[1].last_insert -- {{ user_id sha256 key }}
-        ent.EntID = lastRowID
+        ent.GB_EntID = lastRowID
     end
 end
 
 function GlorifiedBanking.GlorifiedPersistentEnts.RemoveEntityFromDB( ent )
     if not GlorifiedBanking.GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then return end
-    if ent.EntID then
-        print( "[GlorifiedBanking.GlorifiedPersistentEnts] Deleted Entity ID " .. ent.EntID .. " from table `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`" )
-        sql.Query( "DELETE FROM `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. ent.EntID )
+    if ent.GB_EntID then
+        print( "[GlorifiedBanking.GlorifiedPersistentEnts] Deleted Entity ID " .. ent.GB_EntID .. " from table `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`" )
+        sql.Query( "DELETE FROM `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. ent.GB_EntID )
+        SafeRemoveEntity( ent )
     end
 end
 
@@ -58,7 +59,7 @@ function GlorifiedBanking.GlorifiedPersistentEnts.LoadEntities()
         if gpeEntity:GetPhysicsObject():IsValid() then
             gpeEntity:GetPhysicsObject():EnableMotion( false )
         end
-        gpeEntity.EntID = k
+        gpeEntity.GB_EntID = k
     end
 end
 
@@ -102,9 +103,7 @@ concommand.Add( GlorifiedBanking.GlorifiedPersistentEnts.Identifier .. "removeen
     if ply:IsSuperAdmin() then
         local lookingAtEnt = ply:GetEyeTrace().Entity
         if lookingAtEnt:IsValid() and GlorifiedBanking.GlorifiedPersistentEnts.EntClasses[lookingAtEnt:GetClass()] then
-            print( "[GlorifiedBanking.GlorifiedPersistentEnts] Deleted Entity ID " .. lookingAtEnt.EntID .. " from table `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "`" )
-            sql.Query( "DELETE FROM `" .. GlorifiedBanking.GlorifiedPersistentEnts.TableName .. "` WHERE `RowID` = " .. lookingAtEnt.EntID )
-            SafeRemoveEntity( lookingAtEnt )
+            GlorifiedBanking.GlorifiedPersistentEnts.RemoveEntityFromDB( lookingAtEnt )
         end
     end
 end )
