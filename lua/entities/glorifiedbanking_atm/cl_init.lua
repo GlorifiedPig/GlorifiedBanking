@@ -1012,6 +1012,8 @@ end
 --Animation networking
 net.Receive("GlorifiedBanking.SendAnimation", function()
     local ent = net.ReadEntity()
+    if not (IsValid(ent) and ent.PlayGBAnim) then return end
+
     ent:PlayGBAnim(net.ReadUInt(3))
     ent.RequiresAttention = false
 end)
