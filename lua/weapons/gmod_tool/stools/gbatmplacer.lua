@@ -140,7 +140,7 @@ function TOOL:RightClick( tr )
     local ent = tr.Entity
     if not tr.Hit or not IsValid( ent ) then return end
     if ent:GetClass() == "glorifiedbanking_atm" and GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
-        RunConsoleCommand( "gpe_removeent" )
+        self:GetOwner():ConCommand( "gpe_removeent" )
     end
 end
 
