@@ -289,18 +289,19 @@ function ENT:Transfer(ply, receiver, amount)
         return
     end
 
-    GlorifiedBanking.RemovePlayerBalance(ply, fee)
-    hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
-
     self:EmitSound("GlorifiedBanking.Beep_Normal")
 
     self:ForceLoad(GlorifiedBanking.i18n.GetPhrase("gbContactingServer"))
 
     timer.Simple(3, function() --Contact the server for a moment
         self:ForceLoad("")
-        GlorifiedBanking.TransferAmount(ply, receiver, amount)
-        GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashTransferred", GlorifiedBanking.FormatMoney(amount), receiver:Name()))
-        GlorifiedBanking.Notify(receiver, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashTransferReceive", ply:Name(), GlorifiedBanking.FormatMoney(amount)))
+        if receiver and ply then
+            GlorifiedBanking.RemovePlayerBalance(ply, fee)
+            hook.Run( "GlorifiedBanking.FeeTaken", ply, fee )
+            GlorifiedBanking.TransferAmount(ply, receiver, amount)
+            GlorifiedBanking.Notify(ply, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashTransferred", GlorifiedBanking.FormatMoney(amount), receiver:Name()))
+            GlorifiedBanking.Notify(receiver, NOTIFY_GENERIC, 5, GlorifiedBanking.i18n.GetPhrase("gbCashTransferReceive", ply:Name(), GlorifiedBanking.FormatMoney(amount)))
+        end
     end)
 end
 
