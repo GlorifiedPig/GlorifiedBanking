@@ -87,6 +87,7 @@ end
 
 function GlorifiedBanking.TransferAmount( ply, receiver, transferAmount )
     if not ValidationChecks( ply, transferAmount ) then return end -- Always validate before doing important functions to keep things secure.
+    if not receiver then return end
     if GlorifiedBanking.CanPlayerAfford( ply, transferAmount ) then
         GlorifiedBanking.RemovePlayerBalance( ply, transferAmount )
         GlorifiedBanking.AddPlayerBalance( receiver, transferAmount )
