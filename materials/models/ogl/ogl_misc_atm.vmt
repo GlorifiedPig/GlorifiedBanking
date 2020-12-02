@@ -1,7 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/ogl/ogl_misc_atm"
-	"$bumpMap" "models/ogl/ogl_misc_atm_nrm"
-	"$surfaceprop" "plastic"
-	$ambientocclusion 1
-}
