@@ -14,7 +14,7 @@ local GB_ANIM_CARD_OUT = 4
 GlorifiedBanking.ATMTable = {}
 
 function ENT:Initialize()
-    self:SetModel("models/ogl/ogl_main_atm.mdl")
+    self:SetModel("models/sterling/glorifiedpig_atm.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
