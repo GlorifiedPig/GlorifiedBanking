@@ -54,7 +54,7 @@ function ENT:Think()
     local currentUser = self:GetCurrentUser()
     local currentScreen = self.Screens[self:GetScreenID()]
 
-    if currentUser != NULL then
+    if currentUser ~= NULL then
         self.CurrentUsername = currentUser:Name()
     end
 
@@ -81,7 +81,7 @@ end
 
 --Insert card method, used by the SWEP for future card reading entities
 function ENT:InsertCard()
-    if self:GetCurrentUser() != NULL then
+    if self:GetCurrentUser() ~= NULL then
         GlorifiedBanking.Notify(NOTIFY_ERROR, 5, GlorifiedBanking.i18n.GetPhrase("gbCardAtmInUse"))
         return
     end
@@ -191,7 +191,7 @@ net.Receive("GlorifiedBanking.ForceLoad", function()
     local ent = net.ReadEntity()
     local reason = net.ReadString()
 
-    ent.ForcedLoad = reason != ""
+    ent.ForcedLoad = reason ~= ""
     ent.ForcedLoadReason = reason
 end)
 
@@ -415,7 +415,7 @@ local function drawTypeAmountScreen(self, topHint, buttonText, buttonIcon, botto
     local iconsize = 46
     local text
 
-    if self:GetCurrentUser() != self.LocalPlayer then
+    if self:GetCurrentUser() ~= self.LocalPlayer then
         text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.i18n.GetPhrase("gbHidden"))
     else
         text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
@@ -569,7 +569,7 @@ ENT.Screens[6].drawFunction = function(self, data) --Transfer screen
     local iconsize = 46
     local text
 
-    if self:GetCurrentUser() != self.LocalPlayer then
+    if self:GetCurrentUser() ~= self.LocalPlayer then
         text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.i18n.GetPhrase("gbHidden"))
     else
         text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
@@ -749,7 +749,7 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
     local iconsize = 46
     local text
 
-    if self:GetCurrentUser() != self.LocalPlayer then
+    if self:GetCurrentUser() ~= self.LocalPlayer then
         text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.i18n.GetPhrase("gbHidden"))
     else
         text = GlorifiedBanking.i18n.GetPhrase("gbAccountBalance", GlorifiedBanking.FormatMoney(GlorifiedBanking.GetPlayerBalance()))
@@ -843,7 +843,7 @@ end
 --Keypad management code
 ENT.KeyPadBuffer = ""
 function ENT:PressKey(key)
-    if self:GetCurrentUser() != self.LocalPlayer then return end
+    if self:GetCurrentUser() ~= self.LocalPlayer then return end
     self:EmitSound("GlorifiedBanking.Key_Press")
 
     if key == "*" then
@@ -887,12 +887,12 @@ local buttons = {
 }
 
 hook.Add("PlayerButtonDown", "GlorifiedBanking.ATMEntity.PlayerButtonDown", function(ply, btn)
-    if ply != LocalPlayer() then return end
+    if ply ~= LocalPlayer() then return end
     if not buttons[btn] then return end
 
     local tr = ply:GetEyeTraceNoCursor()
     if not tr.Hit then return end
-    if tr.Entity:GetClass() != "glorifiedbanking_atm" then return end
+    if tr.Entity:GetClass() ~= "glorifiedbanking_atm" then return end
 
     if not tr.Entity.IsHoveringKeypad then return end
     tr.Entity:PressKey(buttons[btn])
@@ -944,9 +944,9 @@ function ENT:DrawKeypad()
 end
 
 --Draw the sign above the ATM
-local signpos = Vector(-8.3, 14.5, 71.3)
-local signang = Angle(0, 270, 90)
-local signw, signh = 553, 162
+local signpos = Vector(4.6, -15.434, 44.9)
+local signang = Angle(0, 90, 90)
+local signw, signh = 618, 228
 function ENT:DrawSign()
     cam.Start3D2D(self:LocalToWorld(signpos), self:LocalToWorldAngles(signang), 0.05)
         surface.SetDrawColor(theme.Data.Colors.signBackgroundCol)
