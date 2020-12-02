@@ -60,6 +60,7 @@ local function isObstructed(eyepos, hitPos)
     local q = traceQueryTable
     q.start = eyepos
     q.endpos = hitPos
+    q.ignoreworld = gState.ignoreWorld
 
     if not q.filter then
         q.filter = {LocalPlayer()}
@@ -74,8 +75,9 @@ local function isObstructed(eyepos, hitPos)
     end
 end
 
-function imgui.Start3D2D(pos, angles, scale, distanceHide, distanceFadeStart)
+function imgui.Start3D2D(pos, angles, scale, distanceHide, distanceFadeStart, ignoreWorld)
     if gState.shutdown == true then return end
+    gState.ignoreWorld = ignoreWorld
 
     if gState.rendering == true then
         print("[IMGUI] Starting a new IMGUI context when previous one is still rendering. Shutting down rendering pipeline to prevent crashes..")

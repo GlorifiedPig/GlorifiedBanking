@@ -87,7 +87,7 @@ function ENT:InsertCard()
     end
 
     net.Start("GlorifiedBanking.CardInserted")
-     net.WriteEntity(self)
+    net.WriteEntity(self)
     net.SendToServer()
 end
 
@@ -143,8 +143,8 @@ function ENT:DrawScreenBackground(showExit, backPage)
 
             if imgui.IsPressed() then
                 net.Start("GlorifiedBanking.ChangeScreen")
-                 net.WriteUInt(3, 4)
-                 net.WriteEntity(self)
+                net.WriteUInt(3, 4)
+                net.WriteEntity(self)
                 net.SendToServer()
             end
         else
@@ -162,7 +162,7 @@ function ENT:DrawScreenBackground(showExit, backPage)
 
             if imgui.IsPressed() then
                 net.Start("GlorifiedBanking.Logout")
-                 net.WriteEntity(self)
+                net.WriteEntity(self)
                 net.SendToServer()
             end
         else
@@ -332,8 +332,8 @@ local menuButtons = {
         name = GlorifiedBanking.i18n.GetPhrase("gbMenuWithdraw"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
-             net.WriteUInt(4, 4)
-             net.WriteEntity(self)
+            net.WriteUInt(4, 4)
+            net.WriteEntity(self)
             net.SendToServer()
         end
     },
@@ -341,8 +341,8 @@ local menuButtons = {
         name = GlorifiedBanking.i18n.GetPhrase("gbMenuDeposit"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
-             net.WriteUInt(5, 4)
-             net.WriteEntity(self)
+            net.WriteUInt(5, 4)
+            net.WriteEntity(self)
             net.SendToServer()
         end
     },
@@ -350,8 +350,8 @@ local menuButtons = {
         name = GlorifiedBanking.i18n.GetPhrase("gbMenuTransfer"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
-             net.WriteUInt(6, 4)
-             net.WriteEntity(self)
+            net.WriteUInt(6, 4)
+            net.WriteEntity(self)
             net.SendToServer()
         end
     },
@@ -359,8 +359,8 @@ local menuButtons = {
         name = GlorifiedBanking.i18n.GetPhrase("gbMenuTransactions"),
         pressFunc = function(self)
             net.Start("GlorifiedBanking.ChangeScreen")
-             net.WriteUInt(7, 4)
-             net.WriteEntity(self)
+            net.WriteUInt(7, 4)
+            net.WriteEntity(self)
             net.SendToServer()
         end
     }
@@ -510,8 +510,8 @@ ENT.Screens[4].onEnterPressed = function(self, amount)
     self.KeyPadBuffer = ""
 
     net.Start("GlorifiedBanking.WithdrawalRequested")
-     net.WriteUInt(amount, 32)
-     net.WriteEntity(self)
+    net.WriteUInt(amount, 32)
+    net.WriteEntity(self)
     net.SendToServer()
 end
 
@@ -532,8 +532,8 @@ ENT.Screens[5].onEnterPressed = function(self, amount)
     self.KeyPadBuffer = ""
 
     net.Start("GlorifiedBanking.DepositRequested")
-     net.WriteUInt(amount, 32)
-     net.WriteEntity(self)
+    net.WriteUInt(amount, 32)
+    net.WriteEntity(self)
     net.SendToServer()
 end
 
@@ -817,7 +817,7 @@ end
 local screenpos = Vector(-8.6, -14.98, 24.9)
 local screenang = Angle(0, 90, 90)
 function ENT:DrawScreen()
-    if imgui.Entity3D2D(self, screenpos, screenang, 0.02329, 250, 200) then
+    if imgui.Entity3D2D(self, screenpos, screenang, 0.02329, 250, 200, true) then
         local screenID = self:GetScreenID()
         local currentScreen = self.Screens[screenID]
 
@@ -906,12 +906,12 @@ local padang = Angle(-35.5, 180, 0)
 function ENT:DrawKeypad()
     self.IsHoveringKeypad = false
 
-    if imgui.Entity3D2D(self, padpos, padang, 0.03, 150, 120) then
+    if imgui.Entity3D2D(self, padpos, padang, 0.03, 150, 120, true) then
         if imgui.IsHovering(0, 0, padw, padh) then
             self.IsHoveringKeypad = true
         else
-           imgui.End3D2D()
-           return
+        imgui.End3D2D()
+        return
         end
 
         for i = 1, 3 do
