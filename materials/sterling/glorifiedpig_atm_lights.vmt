@@ -1,0 +1,12 @@
+"UnlitGeneric"
+{
+	"$basetexture" "sterling/glorifiedpig_atm_lights"
+Proxies
+{
+	TextureScroll
+	{
+		texturescrollvar $BaseTextureTransform
+		texturescrollrate 0.1
+		texturescrollangle 0
+	}
+}

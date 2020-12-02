@@ -1,0 +1,15 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "sterling/glorifiedpig_cardreader_main"
+	"$bumpmap" "sterling/glorifiedpig_cardreader_norm"
+
+	"$envmap"			"env_cubemap"
+	"$normalmapalphaenvmapmask"	"1"
+	"$envmaptint"			"[0.05 0.05 0.05]"
+
+	"$phong" "1"
+	"$phongBoost" ".5"
+	"$phongexponent" "1.5"	
+	"$phongfresnelranges" "[0.8 0.8 0.8]"
+	
+}
