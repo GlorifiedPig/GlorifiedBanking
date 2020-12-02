@@ -17,7 +17,7 @@ function ENT:Think()
 end
 
 function ENT:InsertCard()
-    if self:GetScreenID() != 3 then return end
+    if self:GetScreenID() ~= 3 then return end
 
     net.Start("GlorifiedBanking.CardReader.PayMerchant")
      net.WriteEntity(self)
@@ -26,7 +26,7 @@ function ENT:InsertCard()
     return GlorifiedBanking.CanPlayerAfford(self:GetTransactionAmount())
 end
 
-local scrw, scrh = 530, 702
+local scrw, scrh = 623, 702
 --Button press/submit button press method for amount entry
 ENT.Screens[1].onEnterPressed = function(self, amount)
     self.KeyPadBuffer = ""
@@ -157,10 +157,10 @@ function ENT:DrawTranslucent()
     self:DrawScreen()
 end
 
-local screenpos = Vector(-2.65, 4.41, .69)
-local screenang = Angle(0, 0, 5.5)
+local screenpos = Vector(.44, -3.79, 7.31)
+local screenang = Angle(0, 90, 90)
 function ENT:DrawScreen()
-    if imgui.Entity3D2D(self, screenpos, screenang, 0.01, 150, 120) then
+    if imgui.Entity3D2D(self, screenpos, screenang, 0.01215, 150, 120) then
         local screenID = self:GetScreenID()
         local currentScreen = self.Screens[screenID]
 
@@ -182,7 +182,7 @@ function ENT:DrawScreenBackground()
     draw.SimpleText(GlorifiedBanking.i18n.GetPhrase("gbCardReader"), "GlorifiedBanking.ReaderEntity.HeaderBottom", scrw * .5, 100, theme.Data.Colors.readerHeaderTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
-local keyx, keyy = 98, 235
+local keyx, keyy = 144, 235
 local keyw, keyh = 98, 98
 local keyspacing = 20
 function ENT:DrawKeypad()
