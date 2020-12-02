@@ -814,10 +814,10 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
 end
 
 --Draw the current screen
-local screenpos = Vector(1.47, 13.46, 51.16)
-local screenang = Angle(0, 270, 90)
+local screenpos = Vector(-8.6, -14.98, 24.9)
+local screenang = Angle(0, 90, 90)
 function ENT:DrawScreen()
-    if imgui.Entity3D2D(self, screenpos, screenang, 0.02, 250, 200) then
+    if imgui.Entity3D2D(self, screenpos, screenang, 0.02329, 250, 200) then
         local screenID = self:GetScreenID()
         local currentScreen = self.Screens[screenID]
 
@@ -899,10 +899,10 @@ hook.Add("PlayerButtonDown", "GlorifiedBanking.ATMEntity.PlayerButtonDown", func
 end)
 
 --Draw the keypad button hover and cursor
-local padw, padh = 253, 204
-local keyw, keyh = 38, 37
-local padpos = Vector(-7.33, 6.94, 24.04)
-local padang = Angle(-28.6, 0, 0)
+local padw, padh = 218, 347
+local keyw, keyh = 55, 116
+local padpos = Vector(.9, -5.2, -7.64)
+local padang = Angle(-35.5, 180, 0)
 function ENT:DrawKeypad()
     self.IsHoveringKeypad = false
 
@@ -910,13 +910,13 @@ function ENT:DrawKeypad()
         if imgui.IsHovering(0, 0, padw, padh) then
             self.IsHoveringKeypad = true
         else
-            imgui.End3D2D()
-            return
+           imgui.End3D2D()
+           return
         end
 
         for i = 1, 3 do
             for j = 1, 4 do
-                local keyx, keyy = 183 - ((j - 1) * 51.25), 54 + ((i - 1) * 49.5)
+                local keyx, keyy = 165 - ((j - 1) * keyw), ((i - 1) * keyh)
 
                 if not imgui.IsHovering(keyx, keyy, keyw, keyh) then continue end
 
@@ -957,8 +957,8 @@ function ENT:DrawSign()
 end
 
 --Animation setup method
-local moneyinpos = Vector(-7, 4.5, 19.37)
-local moneyoutpos = Vector(-10, 4.5, 19.37)
+local moneyinpos = Vector(-1, -7, -12.3)
+local moneyoutpos = Vector(3.4, -7, -12.3)
 local moneyang = Angle(0, 270, 0)
 function ENT:PlayGBAnim(type, skipsound)
     if type == GB_ANIM_CARD_IN then
@@ -977,6 +977,8 @@ function ENT:PlayGBAnim(type, skipsound)
         if type == GB_ANIM_MONEY_IN then
             self.MoneyPos:Set(moneyoutpos)
         else
+            self.MoneyPos:Set(moneyinpos)
+
             if not skipsound then
                 self:EmitSound("GlorifiedBanking.Money_Out")
 
@@ -991,8 +993,6 @@ function ENT:PlayGBAnim(type, skipsound)
 
                 return
             end
-
-            self.MoneyPos:Set(moneyinpos)
         end
 
         if not IsValid(self.MoneyModel) then self.MoneyModel = ClientsideModel("models/props/cs_assault/Money.mdl") end
@@ -1026,8 +1026,8 @@ function ENT:OnRemove()
 end
 
 --Draw the playing animation
-local cardpos = Vector(-4, -10.45, 19.81)
-local cardang = Angle(0, 180, 0)
+local cardpos = Vector(-4, 12.45, -11.8)
+local cardang = Angle(0, 0, 0)
 function ENT:DrawAnimations()
     if self.AnimState == GB_ANIM_IDLE then return end
 
@@ -1059,12 +1059,12 @@ function ENT:DrawAnimations()
         self.MoneyModel:SetPos(self:LocalToWorld(self.MoneyPos))
 
         if self.AnimState == GB_ANIM_MONEY_IN then
-            self.MoneyPos[1] = self.MoneyPos[1] + FrameTime()
+            self.MoneyPos[1] = self.MoneyPos[1] - FrameTime()
         else
-            self.MoneyPos[1] = math.max(self.MoneyPos[1] - FrameTime() * 10, moneyoutpos[1])
+            self.MoneyPos[1] = math.min(self.MoneyPos[1] + FrameTime() * 10, moneyoutpos[1])
         end
 
-        if self.AnimState == GB_ANIM_MONEY_IN and self.MoneyPos[1] > moneyinpos[1] then
+        if self.AnimState == GB_ANIM_MONEY_IN and self.MoneyPos[1] < moneyinpos[1] then
             self:PlayGBAnim(GB_ANIM_IDLE)
         end
     end
