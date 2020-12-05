@@ -238,6 +238,8 @@ end)
 ENT.LoadingScreenX = -scrw
 ENT.LoadingScreenH = 300
 function ENT:DrawLoadingScreen()
+    DisableClipping(false)
+
     if self.ForcedLoad or not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
         self.LoadingScreenX = Lerp(FrameTime() * 8, self.LoadingScreenX, 30)
 
@@ -258,11 +260,6 @@ function ENT:DrawLoadingScreen()
         self.Screens[self.OldScreenID].drawFunction(self, self.OldScreenData)
     end
 
-    GlorifiedBanking.UI.StartCutOut(function()
-        surface.SetDrawColor(color_white)
-        surface.DrawRect(0, 0, scrw, scrh)
-    end)
-
     local y = centery - self.LoadingScreenH / 2
 
     surface.SetDrawColor(theme.Data.Colors.loadingScreenBackgroundCol)
@@ -281,21 +278,21 @@ function ENT:DrawLoadingScreen()
 
     draw.SimpleText(self.ForcedLoad and self.ForcedLoadReason or GlorifiedBanking.i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-    GlorifiedBanking.UI.EndCutOut()
+    DisableClipping(true)
 end
 
 --Manage the idle screen slideshow globally rather than per-entity
 local idleScreenSlideID = 1
-local idleScreenSlideScale = 1
+local idleScreenSlideTime = 1
 local idleScreenOldSlideAlpha = 0
 local idleScreenOldSlideID = 1
 hook.Add("PostRender", "GlorifiedBanking.ATMEntity.PostRender", function()
-    idleScreenSlideScale = idleScreenSlideScale + FrameTime() * .01
+    idleScreenSlideTime = idleScreenSlideTime + FrameTime() * .01
 
-    if idleScreenSlideScale > 1.15 then
+    if idleScreenSlideTime > 1.08 then
         idleScreenOldSlideID = idleScreenSlideID
         idleScreenSlideID = idleScreenSlideID == #theme.Data.Materials.idleSlideshow and 1 or idleScreenSlideID + 1
-        idleScreenSlideScale = 1
+        idleScreenSlideTime = 1
         idleScreenOldSlideAlpha = 255
     end
 
@@ -306,26 +303,17 @@ end)
 
 --Define all of our screen drawing functions
 ENT.Screens[1].drawFunction = function(self, data) --Idle screen
-    GlorifiedBanking.UI.StartCutOut(function()
-        surface.SetDrawColor(color_white)
-        surface.DrawRect(windowx, windowy + 4, windoww, windowh - 8)
-    end)
-
     surface.SetDrawColor(theme.Data.Colors.idleScreenSlideshowCol)
     surface.SetMaterial(theme.Data.Materials.idleSlideshow[idleScreenSlideID])
 
-    local slidew, slideh = windoww * idleScreenSlideScale, windowh * idleScreenSlideScale
+    local slidew, slideh = windoww, windowh - 8
     surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
 
     if idleScreenOldSlideAlpha > 0 then
         surface.SetDrawColor(ColorAlpha(theme.Data.Colors.idleScreenSlideshowCol, idleScreenOldSlideAlpha))
         surface.SetMaterial(theme.Data.Materials.idleSlideshow[idleScreenOldSlideID])
-
-        slidew, slideh = windoww * 1.15, windowh * 1.15
         surface.DrawTexturedRect(centerx - slidew * .5, centery - slideh * .5, slidew, slideh)
     end
-
-    GlorifiedBanking.UI.EndCutOut()
 
     local msgw, msgh = windoww * .6, windowh * .2
     draw.RoundedBox(12, windowx + (windoww-msgw) * .5, windowy + (windowh-msgh) * .5, msgw, msgh, theme.Data.Colors.idleScreenMessageBackgroundCol)
