@@ -40,10 +40,21 @@ end)
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
+function ENT:Initialize()
+    self.ScreenModel = ClientsideModel("models/sterling/glorifiedpig_atm_monitor.mdl")
+    self.ScreenModel:SetPos(self:GetPos())
+    self.ScreenModel:SetAngles(self:GetAngles())
+    self.ScreenModel:SetParent(self)
+    self.ScreenModel:SetNoDraw(true)
+end
+
 --Check for the required screen data here
 ENT.CurrentUsername = ""
 ENT.ScreenData = {}
 function ENT:Think()
+    self.ScreenModel:SetPos(self:GetPos())
+    self.ScreenModel:SetAngles(self:GetAngles())
+
     if not self.LocalPlayer then self.LocalPlayer = LocalPlayer() end
 
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
@@ -109,6 +120,7 @@ end
 --Main draw hook
 function ENT:DrawTranslucent()
     self:DrawModel()
+    self.ScreenModel:DrawModel()
 
     if not self.LocalPlayer then return end
     if self.LocalPlayer:GetPos():DistToSqr(self:GetPos()) > 1000 * 1000 then return end
@@ -1020,19 +1032,22 @@ end)
 
 --Cleanup money clientside ent
 function ENT:OnRemove()
-    if IsValid(self.MoneyModel) then
-        self.MoneyModel:Remove()
-    end
+    timer.Simple(0, function()
+        if IsValid(self) then return end
+
+        if IsValid(self.ScreenModel) then self.ScreenModel:Remove() end
+        if IsValid(self.MoneyModel) then self.MoneyModel:Remove() end
+    end)
 end
 
 --Draw the playing animation
-local cardpos = Vector(-4, 12.45, -11.8)
+local cardpos = Vector(-7, 13, -11.8)
 local cardang = Angle(0, 0, 0)
 function ENT:DrawAnimations()
     if self.AnimState == GB_ANIM_IDLE then return end
 
     if self.AnimState == GB_ANIM_CARD_IN or self.AnimState == GB_ANIM_CARD_OUT then
-        cam.Start3D2D(self:LocalToWorld(cardpos), self:LocalToWorldAngles(cardang), 0.07)
+        cam.Start3D2D(self:LocalToWorld(cardpos), self:LocalToWorldAngles(cardang), 0.1)
             surface.SetDrawColor(color_white)
             surface.SetMaterial(GlorifiedBanking.CardMaterial)
             surface.DrawTexturedRect(self.CardPos, 0, 70, 40)
