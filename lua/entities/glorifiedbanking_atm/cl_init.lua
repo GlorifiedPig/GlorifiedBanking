@@ -118,17 +118,44 @@ function ENT:OnScreenChange(name, old, new)
 end
 
 --Main draw hook
+local maskpos = Vector(2.73, -17.12, 30.34)
+local maskang = Angle(0, 90, 90)
 function ENT:DrawTranslucent()
     self:DrawModel()
-    self.ScreenModel:DrawModel()
+
+    render.ClearStencil()
+    render.SetStencilEnable(true)
+        render.SetStencilWriteMask(255)
+        render.SetStencilTestMask(255)
+        render.SetStencilReferenceValue(57)
+        render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_ALWAYS)
+        render.SetStencilPassOperation(STENCILOPERATION_REPLACE)
+
+        cam.Start3D2D(self:LocalToWorld(maskpos), self:LocalToWorldAngles(maskang), 0.1)
+            surface.SetDrawColor(255, 255, 255, 10)
+            surface.DrawRect(0, 0, 343, 460)
+        cam.End3D2D()
+
+        render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_EQUAL)
+        render.SuppressEngineLighting(true)
+
+        render.OverrideDepthEnable(true, false)
+
+        cam.IgnoreZ(true)
+            self.ScreenModel:DrawModel()
+            self:DrawScreen()
+            self:DrawKeypad()
+        cam.IgnoreZ(false)
+
+        render.SuppressEngineLighting(false)
+        render.OverrideDepthEnable(false, false)
+
+    render.SetStencilEnable(false)
 
     if not self.LocalPlayer then return end
     if self.LocalPlayer:GetPos():DistToSqr(self:GetPos()) > 1000 * 1000 then return end
 
-    self:DrawScreen()
-    self:DrawKeypad()
     self:DrawSign()
-
     self:DrawAnimations()
 end
 
