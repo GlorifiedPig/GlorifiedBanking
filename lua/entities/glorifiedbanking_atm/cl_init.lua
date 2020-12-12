@@ -1047,12 +1047,10 @@ end)
 
 --Cleanup money clientside ent
 function ENT:OnRemove()
-    timer.Simple(0, function()
-        if IsValid(self) then return end
+    if not IsValid( self ) then return end
 
-        if IsValid(self.ScreenModel) then self.ScreenModel:Remove() end
-        if IsValid(self.MoneyModel) then self.MoneyModel:Remove() end
-    end)
+    SafeRemoveEntity( self.ScreenModel )
+    SafeRemoveEntity( self.MoneyModel )
 end
 
 --Draw the playing animation
