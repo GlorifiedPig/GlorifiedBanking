@@ -140,6 +140,12 @@ if SERVER then
     resource.AddFile("models/sterling/glorifiedpig_atm.phy")
     resource.AddFile("models/sterling/glorifiedpig_atm.sw.vtx")
     resource.AddFile("models/sterling/glorifiedpig_atm.vvd")
+    resource.AddFile("models/sterling/glorifiedpig_cardreader.dx80.vtx")
+    resource.AddFile("models/sterling/glorifiedpig_cardreader.dx90.vtx")
+    resource.AddFile("models/sterling/glorifiedpig_cardreader.mdl")
+    resource.AddFile("models/sterling/glorifiedpig_cardreader.phy")
+    resource.AddFile("models/sterling/glorifiedpig_cardreader.sw.vtx")
+    resource.AddFile("models/sterling/glorifiedpig_cardreader.vvd")
 
     --Model Materials
     resource.AddFile("materials/sterling/glorifiedpig_atm_lightmask.vtf")
