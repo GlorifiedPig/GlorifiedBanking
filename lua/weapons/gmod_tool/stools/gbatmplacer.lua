@@ -85,7 +85,7 @@ local function getAtmPos(tr, heightOffset, snap)
         end
     end
 
-    return tr.HitPos - (tr.HitNormal * -9.6) - Vector(0, 0, distToFloor - heightOffset), angles
+    return tr.HitPos - (tr.HitNormal * -9.6) - Vector(0, 0, distToFloor - heightOffset) + Vector( 6.5, 0, 0 ), angles
 end
 
 function TOOL:UpdateGhost(ent, ply)
