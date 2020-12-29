@@ -4,12 +4,13 @@
     Read more @ https://github.com/GlorifiedPig/gpe
 ]]--
 
-local gpeVersion = 1.1
+local gpeVersion = 1.2
 
 if not GlorifiedPersistentEnts or GlorifiedPersistentEnts.Version < gpeVersion then
     GlorifiedPersistentEnts = {
         Version = giVersion,
-        EntClasses = {}
+        EntClasses = {},
+        ShutdownCalled = false
     }
 
     sql.Query( "CREATE TABLE IF NOT EXISTS `gpe` ( `Class` VARCHAR(48) NOT NULL , `Map` VARCHAR(64) NOT NULL , `PosInfo` JSON NOT NULL, `NetworkVars` JSON )" )
@@ -113,11 +114,22 @@ if not GlorifiedPersistentEnts or GlorifiedPersistentEnts.Version < gpeVersion t
     end )
 
     concommand.Add( "gpe_removeent", function( ply )
-        if ply:IsSuperAdmin() then
+        if IsValid( ply ) and ply:IsSuperAdmin() then
             local lookingAtEnt = ply:GetEyeTrace().Entity
-            if lookingAtEnt:IsValid() and GlorifiedPersistentEnts.EntClasses[lookingAtEnt:GetClass()] then
+            if IsValid( lookingAtEnt ) and GlorifiedPersistentEnts.EntClasses[lookingAtEnt:GetClass()] then
                 GlorifiedPersistentEnts.RemoveEntityFromDB( lookingAtEnt )
             end
+        end
+    end )
+
+    hook.Add( "ShutDown", "GlorifiedPersistentEnts.ServerShutdown", function()
+        GlorifiedPersistentEnts.ShutdownCalled = true
+    end )
+
+    hook.Add( "EntityRemoved", "GlorifiedPersistentEnts.EntityRemoved", function( ent )
+        if GlorifiedPersistentEnts.ShutdownCalled then return end
+        if IsValid( ent ) and GlorifiedPersistentEnts.EntClasses[ent:GetClass()] then
+            GlorifiedPersistentEnts.RemoveEntityFromDB( ent )
         end
     end )
 end

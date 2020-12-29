@@ -40,21 +40,10 @@ end)
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
-function ENT:Initialize()
-    self.ScreenModel = ClientsideModel("models/sterling/glorifiedpig_atm_monitor.mdl")
-    self.ScreenModel:SetPos(self:GetPos())
-    self.ScreenModel:SetAngles(self:GetAngles())
-    self.ScreenModel:SetParent(self)
-    self.ScreenModel:SetNoDraw(true)
-end
-
 --Check for the required screen data here
 ENT.CurrentUsername = ""
 ENT.ScreenData = {}
 function ENT:Think()
-    self.ScreenModel:SetPos(self:GetPos())
-    self.ScreenModel:SetAngles(self:GetAngles())
-
     if not self.LocalPlayer then self.LocalPlayer = LocalPlayer() end
 
     if self.RequiresAttention and (not self.LastAttentionBeep or CurTime() > self.LastAttentionBeep + 1.25) then
@@ -142,7 +131,6 @@ function ENT:DrawTranslucent()
         render.OverrideDepthEnable(true, false)
 
         cam.IgnoreZ(true)
-            self.ScreenModel:DrawModel()
             self:DrawScreen()
             self:DrawKeypad()
         cam.IgnoreZ(false)
@@ -238,7 +226,7 @@ end)
 ENT.LoadingScreenX = -scrw
 ENT.LoadingScreenH = 300
 function ENT:DrawLoadingScreen()
-    DisableClipping(false)
+    DisableClipping(true)
 
     if self.ForcedLoad or not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
         self.LoadingScreenX = Lerp(FrameTime() * 8, self.LoadingScreenX, 30)
@@ -278,7 +266,7 @@ function ENT:DrawLoadingScreen()
 
     draw.SimpleText(self.ForcedLoad and self.ForcedLoadReason or GlorifiedBanking.i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-    DisableClipping(true)
+    DisableClipping(false)
 end
 
 --Manage the idle screen slideshow globally rather than per-entity
@@ -928,7 +916,7 @@ end)
 --Draw the keypad button hover and cursor
 local padw, padh = 218, 347
 local keyw, keyh = 55, 116
-local padpos = Vector(.9, -5.2, -7.64)
+local padpos = Vector(0.9, -5.2, -10.4)
 local padang = Angle(-35.5, 180, 0)
 function ENT:DrawKeypad()
     self.IsHoveringKeypad = false
@@ -1049,7 +1037,6 @@ end)
 function ENT:OnRemove()
     if not IsValid( self ) then return end
 
-    SafeRemoveEntity( self.ScreenModel )
     SafeRemoveEntity( self.MoneyModel )
 end
 

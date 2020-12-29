@@ -7,7 +7,7 @@
 
 GlorifiedBanking = GlorifiedBanking or {
     Config = {},
-    Version = "2.5.12"
+    Version = "3.0.0"
 }
 
 print( "[GlorifiedBanking] This server is running version " .. GlorifiedBanking.Version .. "." )
