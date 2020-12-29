@@ -113,6 +113,8 @@ GlorifiedBanking.i18n.RegisterPhrases( "en", {
     gbToolTransferFeeHelp = "The transaction fee for all transfers made with this ATM in percent.",
     gbToolSnap = "Snap Amount:",
     gbToolSnapHelp = "The distance between each snapping point.",
+    gbToolWallOffset = "Wall Offset:",
+    gbToolWallOffsetHelp = "How far off the wall the ATM should go.",
     gbToolHeight = "Height Offset:",
     gbToolHeightHelp = "The distance from the floor the ATM will be placed at.",
     gbWireToolName = "Card Reader Controller",

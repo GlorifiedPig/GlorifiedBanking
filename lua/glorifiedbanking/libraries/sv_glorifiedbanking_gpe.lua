@@ -6,7 +6,7 @@
 
 local gpeVersion = 1.2
 
-if not GlorifiedPersistentEnts or GlorifiedPersistentEnts.Version < gpeVersion then
+if not GlorifiedPersistentEnts or not gpeVersion or not GlorifiedPersistentEnts.Version or GlorifiedPersistentEnts.Version < gpeVersion then
     GlorifiedPersistentEnts = {
         Version = giVersion,
         EntClasses = {},

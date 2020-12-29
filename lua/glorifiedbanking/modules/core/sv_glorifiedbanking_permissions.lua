@@ -1,6 +1,6 @@
 
 function GlorifiedBanking.HasPermission( ply, permission, callbackFunc )
-    return CAMI.PlayerHasAccess( ply, permission, callbackFunc )
+    return CAMI.PlayerHasAccess( ply, permission, callbackFunc ) or ply:IsSuperAdmin()
 end
 
 function GlorifiedBanking.RegisterPermission( permission, minAccess, description )
