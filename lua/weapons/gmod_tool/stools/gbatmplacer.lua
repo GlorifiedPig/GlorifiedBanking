@@ -5,7 +5,7 @@ TOOL.Desc = "#tool.gbatmplacer.desc"
 TOOL.Author = "Tom.bat"
 TOOL.ConfigName = ""
 
-TOOL.ClientConVar["height"] = 22
+TOOL.ClientConVar["height"] = 50
 TOOL.ClientConVar["snap"] = 0
 TOOL.ClientConVar["signtext"] = "ATM"
 TOOL.ClientConVar["withdrawalfee"] = 0
@@ -40,7 +40,7 @@ if CLIENT then
         panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolSnapHelp"))
         panel:Help("")
 
-        panel:NumSlider(GlorifiedBanking.i18n.GetPhrase("gbToolHeight"), "gbatmplacer_height", 0, 50, 2)
+        panel:NumSlider(GlorifiedBanking.i18n.GetPhrase("gbToolHeight"), "gbatmplacer_height", 0, 150, 2)
         panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolHeightHelp"))
         panel:Help("")
 
@@ -66,7 +66,6 @@ local function getAtmPos(tr, heightOffset, snap)
 
     local angles = tr.HitNormal:Angle() -- {{ user_id sha256 key }}
     if angles[1] != 0 then return false end
-    angles[2] = angles[2] + 180
 
     local floorTr = util.TraceLine({
         start = tr.HitPos,
@@ -110,7 +109,7 @@ function TOOL:Think()
 
     local ent = self.GhostEntity
     if not IsValid(ent) then
-        self:MakeGhostEntity("models/ogl/ogl_main_atm.mdl", vector_origin, Angle())
+        self:MakeGhostEntity("models/sterling/glorifiedpig_atm.mdl", vector_origin, Angle())
     end
 
     self:UpdateGhost(self.GhostEntity, self:GetOwner()) -- {{ user_id sha256 key }}

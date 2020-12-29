@@ -134,21 +134,25 @@ if SERVER then
     resource.AddFile("sound/glorified_banking/money_out.mp3")
 
     --Models
-    resource.AddFile("models/ogl/ogl_main_atm.mdl")
-    resource.AddFile("models/ogl/ogl_chip.mdl")
+    resource.AddFile("models/sterling/glorifiedpig_atm.dx80.vtx")
+    resource.AddFile("models/sterling/glorifiedpig_atm.dx90.vtx")
+    resource.AddFile("models/sterling/glorifiedpig_atm.mdl")
+    resource.AddFile("models/sterling/glorifiedpig_atm.phy")
+    resource.AddFile("models/sterling/glorifiedpig_atm.sw.vtx")
+    resource.AddFile("models/sterling/glorifiedpig_atm.vvd")
 
     --Model Materials
-    resource.AddFile("materials/models/ogl/ogl_main_atm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_main_atm_nrm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_msic_atm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_main_atm_nrm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_rgb_atm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_rgb_atm_color.vmt")
-    resource.AddFile("materials/models/ogl/ogl_rgb_atm_nrm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_sign_atm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_sign_atm_nrm.vmt")
-    resource.AddFile("materials/models/ogl/ogl_chip.vmt")
-    resource.AddFile("materials/models/ogl/ogl_chip_nrm.vmt")
+    resource.AddFile("materials/sterling/glorifiedpig_atm_lightmask.vtf")
+    resource.AddFile("materials/sterling/glorifiedpig_atm_lights.vmt")
+    resource.AddFile("materials/sterling/glorifiedpig_atm_lights.vtf")
+    resource.AddFile("materials/sterling/glorifiedpig_atm_main.vmt")
+    resource.AddFile("materials/sterling/glorifiedpig_atm_main.vtf")
+    resource.AddFile("materials/sterling/glorifiedpig_atm_norm.vtf")
+    resource.AddFile("materials/sterling/glorifiedpig_cardreader_main.vmt")
+    resource.AddFile("materials/sterling/glorifiedpig_cardreader_main.vtf")
+    resource.AddFile("materials/sterling/glorifiedpig_cardreader_norm.vtf")
+    resource.AddFile("materials/sterling/glorifiedpig_rgb_lights.vmt")
+    resource.AddFile("materials/sterling/glorifiedpig_rgb_lights.vtf")
 
     --UI Materials
     resource.AddFile("materials/glorified_banking/back.png")
