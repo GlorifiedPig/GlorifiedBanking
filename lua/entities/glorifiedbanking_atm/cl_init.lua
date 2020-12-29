@@ -914,10 +914,10 @@ hook.Add("PlayerButtonDown", "GlorifiedBanking.ATMEntity.PlayerButtonDown", func
 end)
 
 --Draw the keypad button hover and cursor
-local padw, padh = 218, 347
-local keyw, keyh = 55, 116
-local padpos = Vector(0.9, -5.2, -10.4)
-local padang = Angle(-35.5, 180, 0)
+local padw, padh = 221, 372
+local keyw, keyh = 52, 118
+local padpos = Vector(2.5, -5.3, -9.1)
+local padang = Angle(-55, 180, 0)
 function ENT:DrawKeypad()
     self.IsHoveringKeypad = false
 
