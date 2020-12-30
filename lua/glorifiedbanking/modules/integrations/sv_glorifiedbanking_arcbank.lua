@@ -65,7 +65,7 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		local data = accQuery:getData()
 		for _, account in ipairs(data) do
 			accounts[account.account] = account.money
-			owners[account.account] = {total = account.money, [account.owner] = account.money}
+			owners[account.account] = {[account.owner] = account.money}
 		end
 	end
 
@@ -95,6 +95,52 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 				notify(("WARNING! %s wasn't defined when searching group members!"):format(group.account))
 			else
 				owners[group.account][group.user] = 0
+			end
+		end
+	end
+
+	notify("Group Members Loaded, fetching log entries.")
+
+	query = ARCDB:query("SELECT COUNT(*) as `count` FROM arcbank_log")
+	query:start()
+	query:wait()
+	count = query:getData()[1].count
+	pages = math.ceil(count / perPage)
+	last = 0
+	notify(("Parsing %s pages"):format(pages))
+
+	for page = 0, pages do
+		local perc = math.ceil((page / pages) * 100)
+		if (perc ~= last) and (perc ~= 100 or page == pages) then
+			last = perc
+			notify(("Fetching Log: %s%%"):format(perc))
+		end
+
+		local logQuery = ARCDB:query("SELECT account1 as `account`, user1 as `user`, moneydiff as `diff` FROM arcbank_log ORDER BY transaction_id ASC LIMIT " .. perPage .. (page ~= 0 and (" OFFSET " .. (page * perPage)) or ""))
+		logQuery:start()
+		logQuery:wait()
+		local data = logQuery:getData()
+		for _, log in ipairs(data) do
+			accounts[log.account] = (accounts[log.account] ~= nil and accounts[log.account] or 0) + log.diff
+			if owners[log.account] == nil then
+				notify(("WARNING! %s wasn't defined when searching log!"):format(group.account))
+				owners[log.account] = {}
+			end
+
+			owners[log.account][log.user] = (owners[log.account][log.user] ~= nil and owners[log.account][log.user] or 0) + log.diff
+		end
+	end
+
+	for accountId, amt in pairs(accounts) do
+		if amt < 0 then
+			notify(("%s is overdrawn (%s)"):format(accountId, amt))
+		end
+	end
+
+	for accountid, data in pairs(owners) do
+		for steamid, amt in pairs(data) do
+			if amt < 0 then
+				notify(("%s withdrew more than they deposited (%s)"):format(steamid, amt))
 			end
 		end
 	end
