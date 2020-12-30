@@ -111,9 +111,13 @@ function ENT:DrawTranslucent()
     self:DrawModel()
 
     if not self.LocalPlayer then return end
-    if self.LocalPlayer:GetPos():DistToSqr(self:GetPos()) > 1000 * 1000 then return end
+    if self.LocalPlayer:GetPos():DistToSqr(self:GetPos()) > 1000000 then return end
 
+    local clipNormal = -self:GetRight()
+    local clipPos = self:LocalToWorld(self:OBBMins())
+    render.PushCustomClipPlane(clipNormal, clipNormal:Dot(clipPos))
     self:DrawScreen()
+    render.PopCustomClipPlane()
     self:DrawKeypad()
     self:DrawSign()
     self:DrawAnimations()
@@ -813,7 +817,6 @@ function ENT:DrawScreen()
 
         if not currentScreen.hideCursor and self.LocalPlayer == self:GetCurrentUser() and  not self.ForcedLoad and imgui.IsHovering(0, 0, scrw, scrh) then
             local mx, my = imgui.CursorPos()
-
             surface.SetDrawColor(color_white)
             surface.SetMaterial(hovering and theme.Data.Materials.cursorHover or theme.Data.Materials.cursor)
             surface.DrawTexturedRect(hovering and mx - 12 or mx, my, 45, 45)
