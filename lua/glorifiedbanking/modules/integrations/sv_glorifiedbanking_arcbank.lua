@@ -123,16 +123,14 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		logQuery:wait()
 		local data = logQuery:getData()
 		for _, log in ipairs(data) do
-			accounts[log.account] = (accounts[log.account] ~= nil and accounts[log.account] or 0) + log.diff
+			if accounts[log.account] ~= nil and owners[log.account] ~= nil then
+				accounts[log.account] = (accounts[log.account] ~= nil and accounts[log.account] or 0) + log.diff
 
-			if log.user ~= "__SYSTEM" and log.user ~= "__UNKNOWN" then
-				if owners[log.account] == nil then
-					notify(("WARNING! %s wasn't defined when searching log!"):format(log.account))
-					owners[log.account] = {}
-				end
+				if log.user ~= "__SYSTEM" and log.user ~= "__UNKNOWN" then
 
-				if owners[log.account][log.user] ~= nil then
-					owners[log.account][log.user] = owners[log.account][log.user] + log.diff
+					if owners[log.account][log.user] ~= nil then
+						owners[log.account][log.user] = owners[log.account][log.user] + log.diff
+					end
 				end
 			end
 		end
@@ -187,5 +185,7 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		end
 	end
 
+	print()
+	print()
 	PrintTable(newAccounts)
 end
