@@ -126,11 +126,8 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 			if accounts[log.account] ~= nil and owners[log.account] ~= nil then
 				accounts[log.account] = (accounts[log.account] ~= nil and accounts[log.account] or 0) + log.diff
 
-				if log.user ~= "__SYSTEM" and log.user ~= "__UNKNOWN" then
-
-					if owners[log.account][log.user] ~= nil then
-						owners[log.account][log.user] = owners[log.account][log.user] + log.diff
-					end
+				if owners[log.account][log.user] ~= nil then
+					owners[log.account][log.user] = owners[log.account][log.user] + log.diff
 				end
 			end
 		end
