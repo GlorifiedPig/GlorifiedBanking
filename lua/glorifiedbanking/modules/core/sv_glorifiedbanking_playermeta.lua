@@ -24,7 +24,7 @@ function GlorifiedBanking.SetPlayerBalance( ply, balance )
     hook.Run( "GlorifiedBanking.PlayerBalanceUpdated", ply, GlorifiedBanking.GetPlayerBalance( ply ), balance ) -- Args are ply, oldBalance and then newBalance. Documented in the markdown file.
     GlorifiedBanking.SQL.Query( "UPDATE `gb_players` SET `Balance` = '" .. balance .. "' WHERE `SteamID` = '" .. ply:SteamID64() .. "'" ) -- Update the player's SQL data.
     ply.GlorifiedBanking.Balance = balance -- Cache the balance for easier usage elsewhere without the need to call another SQL query.
-    ply:SetNW2Int( "GlorifiedBanking.Balance", balance ) -- Set the networked balance so we don't have to include it in the net messages later.
+    ply:SetNW2String( "GlorifiedBanking.Balance", tostring( balance ) ) -- Set the networked balance so we don't have to include it in the net messages later.
 end
 
 function GlorifiedBanking.SetPlayerBalanceBySteamID( steamID, balance )

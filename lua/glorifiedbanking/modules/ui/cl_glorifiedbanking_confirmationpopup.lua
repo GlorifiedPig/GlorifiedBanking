@@ -42,7 +42,7 @@ function PANEL:Init()
 
         net.Start("GlorifiedBanking.AdminPanel.SetPlayerBalance")
          net.WriteString(self.SteamID)
-         net.WriteUInt(0, 32)
+         net.WriteString("0")
         net.SendToServer()
 
         net.Start("GlorifiedBanking.AdminPanel.PlayerListOpened")
