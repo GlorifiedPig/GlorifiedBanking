@@ -4,7 +4,7 @@
     Read more @ https://github.com/GlorifiedPig/gpe
 ]]--
 
-local gpeVersion = 1.2
+local gpeVersion = 1.4
 
 if not GlorifiedPersistentEnts or not gpeVersion or not GlorifiedPersistentEnts.Version or GlorifiedPersistentEnts.Version < gpeVersion then
     GlorifiedPersistentEnts = {
@@ -118,6 +118,17 @@ if not GlorifiedPersistentEnts or not gpeVersion or not GlorifiedPersistentEnts.
             local lookingAtEnt = ply:GetEyeTrace().Entity
             if IsValid( lookingAtEnt ) and GlorifiedPersistentEnts.EntClasses[lookingAtEnt:GetClass()] then
                 GlorifiedPersistentEnts.RemoveEntityFromDB( lookingAtEnt )
+            end
+        end
+    end )
+
+    concommand.Add( "gpe_saveents", function( ply )
+        if ply == NULL or ply:IsSuperAdmin() then
+            print( "[GlorifiedPersistentEnts] Saved all GPE entities." )
+            for k, v in pairs( GlorifiedPersistentEnts.EntClasses ) do
+                for k2, v2 in pairs( ents.FindByClass( k ) ) do
+                    GlorifiedPersistentEnts.SaveEntityData( v2 )
+                end
             end
         end
     end )
