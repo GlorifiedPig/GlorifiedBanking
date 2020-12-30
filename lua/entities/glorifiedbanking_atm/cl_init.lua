@@ -226,8 +226,6 @@ end)
 ENT.LoadingScreenX = -scrw
 ENT.LoadingScreenH = 300
 function ENT:DrawLoadingScreen()
-    DisableClipping(true)
-
     if self.ForcedLoad or not self.ShouldDrawCurrentScreen or self.OldScreenID > 0 then
         self.LoadingScreenX = Lerp(FrameTime() * 8, self.LoadingScreenX, 30)
 
@@ -265,8 +263,6 @@ function ENT:DrawLoadingScreen()
     surface.DrawTexturedRect(self.LoadingScreenX + windoww / 2 + 40, centery - 60 + math.sin(animprog) * 20, 40, 40)
 
     draw.SimpleText(self.ForcedLoad and self.ForcedLoadReason or GlorifiedBanking.i18n.GetPhrase("gbLoading"), "GlorifiedBanking.ATMEntity.Loading", self.LoadingScreenX + windoww / 2, centery + 50, theme.Data.Colors.loadingScreenTextCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-
-    DisableClipping(false)
 end
 
 --Manage the idle screen slideshow globally rather than per-entity
@@ -829,7 +825,7 @@ ENT.Screens[7].drawFunction = function(self, data) --Transactions screen
 end
 
 --Draw the current screen
-local screenpos = Vector(-8.6, -14.98, 24.9)
+local screenpos = Vector(-3, -14.98, 24.9)
 local screenang = Angle(0, 90, 90)
 function ENT:DrawScreen()
     if imgui.Entity3D2D(self, screenpos, screenang, 0.02329, 250, 200, true) then
