@@ -21,7 +21,7 @@ function PANEL:AddPlayer(ply, balance)
         if IsValid(GlorifiedBanking.UI.BalancePopup) then return end
 
         GlorifiedBanking.UI.BalancePopup = vgui.Create("GlorifiedBanking.BalancePopup")
-        GlorifiedBanking.UI.BalancePopup.SteamID = self.Player:SteamID()
+        GlorifiedBanking.UI.BalancePopup.SteamID = self.Player:SteamID64()
     end
 
     self.ResetBalance = vgui.Create("DButton", self)
@@ -38,7 +38,7 @@ function PANEL:AddPlayer(ply, balance)
         if IsValid(GlorifiedBanking.UI.ConfirmationPopup) then return end
 
         GlorifiedBanking.UI.ConfirmationPopup = vgui.Create("GlorifiedBanking.ConfirmationPopup")
-        GlorifiedBanking.UI.ConfirmationPopup.SteamID = self.Player:SteamID()
+        GlorifiedBanking.UI.ConfirmationPopup.SteamID = self.Player:SteamID64()
     end
 
     self.ViewTransactions = vgui.Create("DButton", self)

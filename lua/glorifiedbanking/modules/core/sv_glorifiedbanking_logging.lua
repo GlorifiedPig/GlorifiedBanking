@@ -26,12 +26,12 @@ function GlorifiedBanking.LogDeposit( ply, depositAmount )
 end
 
 function GlorifiedBanking.LogTransfer( ply, receiver, transferAmount )
-    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `ReceiverSteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Transfer', '" .. ply:SteamID64() .. "', '" .. receiver:SteamID() .. "', " .. transferAmount .. " )" )
+    GlorifiedBanking.SQL.Query( "INSERT INTO `gb_logs`( `Date`, `Type`, `SteamID`, `ReceiverSteamID`, `Amount` ) VALUES ( " .. os.time() .. ", 'Transfer', '" .. ply:SteamID64() .. "', '" .. receiver:SteamID64() .. "', " .. transferAmount .. " )" )
     table.insert( GlorifiedBanking.Logs, {
         ["Date"] = os.time(),
         ["Type"] = "Transfer",
         ["SteamID"] = ply:SteamID64(),
-        ["ReceiverSteamID"] = receiver:SteamID(),
+        ["ReceiverSteamID"] = receiver:SteamID64(),
         ["Amount"] = transferAmount
     } )
 end

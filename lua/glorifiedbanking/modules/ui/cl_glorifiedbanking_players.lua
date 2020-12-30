@@ -52,17 +52,15 @@ end
 vgui.Register("GlorifiedBanking.Players", PANEL, "Panel")
 
 net.Receive("GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo", function()
-    local playersBals = util.JSONToTable(net.ReadLargeString())
+    local playersBals = net.ReadTableAsString()
     if not playersBals then return end
 
     local panel = GlorifiedBanking.UI.AdminMenu.Page
     if not panel.ResetPlayers then return end
 
-    local players = player.GetAll()
-
     panel:ResetPlayers()
 
-    for k,v in ipairs(players) do
-        panel:AddPlayer(v, playersBals[v:SteamID()] or -1)
+    for k, v in ipairs(player.GetAll()) do
+        panel:AddPlayer( v, playersBals[v:UserID()] or -1 )
     end
 end)

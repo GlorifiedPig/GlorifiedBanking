@@ -244,7 +244,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.PlayerListOpened", function( len, ply 
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_openadminpanel" ) then
         local playerList = {}
         for k, v in ipairs( player.GetAll() ) do
-            playerList[ v:SteamID() ] = GlorifiedBanking.GetPlayerBalance( v )
+            playerList[v:UserID()] = GlorifiedBanking.GetPlayerBalance( v )
         end
 
         net.Start( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
