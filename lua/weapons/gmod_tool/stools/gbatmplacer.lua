@@ -7,7 +7,7 @@ TOOL.ConfigName = ""
 
 TOOL.ClientConVar["xOffset"] = 0
 TOOL.ClientConVar["yOffset"] = 0
-TOOL.ClientConVar["zOffset"] = -50
+TOOL.ClientConVar["zOffset"] = 50
 TOOL.ClientConVar["snap"] = 0
 TOOL.ClientConVar["signtext"] = "ATM"
 TOOL.ClientConVar["withdrawalfee"] = 0
