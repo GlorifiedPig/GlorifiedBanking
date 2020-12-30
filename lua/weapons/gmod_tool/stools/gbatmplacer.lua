@@ -5,9 +5,10 @@ TOOL.Desc = "#tool.gbatmplacer.desc"
 TOOL.Author = "Tom.bat"
 TOOL.ConfigName = ""
 
-TOOL.ClientConVar["height"] = 50
+TOOL.ClientConVar["xOffset"] = 0
+TOOL.ClientConVar["yOffset"] = 0
+TOOL.ClientConVar["zOffset"] = -50
 TOOL.ClientConVar["snap"] = 0
-TOOL.ClientConVar["walloffset"] = 0
 TOOL.ClientConVar["signtext"] = "ATM"
 TOOL.ClientConVar["withdrawalfee"] = 0
 TOOL.ClientConVar["depositfee"] = 0
@@ -41,12 +42,16 @@ if CLIENT then
         panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolSnapHelp"))
         panel:Help("")
 
-        panel:NumSlider(GlorifiedBanking.i18n.GetPhrase("gbToolHeight"), "gbatmplacer_height", 0, 150, 2)
-        panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolHeightHelp"))
+        panel:NumSlider(GlorifiedBanking.i18n.GetPhrase("gbToolXOffset"), "gbatmplacer_xOffset", -150, 150, 2)
+        panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolXOffsetHelp"))
         panel:Help("")
 
-        panel:NumSlider(GlorifiedBanking.i18n.GetPhrase("gbToolWallOffset"), "gbatmplacer_walloffset", -150, 150, 2)
-        panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolWallOffsetHelp"))
+        panel:NumSlider(GlorifiedBanking.i18n.GetPhrase("gbToolYOffset"), "gbatmplacer_yOffset", -150, 150, 2)
+        panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolYOffsetHelp"))
+        panel:Help("")
+
+        panel:NumSlider(GlorifiedBanking.i18n.GetPhrase("gbToolZOffset"), "gbatmplacer_zOffset", -150, 150, 2)
+        panel:ControlHelp(GlorifiedBanking.i18n.GetPhrase("gbToolZOffsetHelp"))
         panel:Help("")
 
         panel:TextEntry(GlorifiedBanking.i18n.GetPhrase("gbToolSignText"), "gbatmplacer_signtext")
@@ -66,7 +71,7 @@ if CLIENT then
     end
 end
 
-local function getAtmPos(tr, wallOffset, heightOffset, snap)
+local function getAtmPos(tr, posOffset, snap)
     if not tr.Hit or IsValid(tr.Entity) then return false end
 
     local angles = tr.HitNormal:Angle() -- {{ user_id sha256 key }}
@@ -90,14 +95,14 @@ local function getAtmPos(tr, wallOffset, heightOffset, snap)
         end
     end
 
-    return tr.HitPos - (tr.HitNormal * -9.6) - Vector(0, 0, distToFloor - heightOffset) + Vector( wallOffset, 0, 0 ), angles
+    return tr.HitPos - (tr.HitNormal * -9.6) + Vector( posOffset.x, posOffset.y, -( distToFloor - posOffset.z ) ), angles
 end
 
 function TOOL:UpdateGhost(ent, ply)
     if not IsValid(ent) then return end
 
     local tr = ply:GetEyeTrace()
-    local ghostPos, ghostAngles = getAtmPos(tr, self:GetClientNumber("walloffset"), self:GetClientNumber("height"), self:GetClientNumber("snap"))
+    local ghostPos, ghostAngles = getAtmPos(tr, Vector( self:GetClientNumber("xOffset"), self:GetClientNumber("yOffset"), self:GetClientNumber("zOffset") ), self:GetClientNumber("snap"))
     if not ghostPos or not ghostAngles then
         ent:SetNoDraw(true)
         return
@@ -124,7 +129,7 @@ if CLIENT then return end
 
 function TOOL:LeftClick( tr )
     if GlorifiedBanking.HasPermission( self:GetOwner(), "glorifiedbanking_placeatms" ) then
-        local atmPos, atmAngles = getAtmPos( tr, self:GetClientNumber("walloffset"), self:GetClientNumber( "height" ), self:GetClientNumber( "snap" ) )
+        local atmPos, atmAngles = getAtmPos( tr, Vector( self:GetClientNumber("xOffset"), self:GetClientNumber("yOffset"), self:GetClientNumber("zOffset") ), self:GetClientNumber( "snap" ) )
         if not atmPos or not atmAngles then return end
 
         local createdATM = ents.Create( "glorifiedbanking_atm" )
