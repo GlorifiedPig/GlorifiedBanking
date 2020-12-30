@@ -107,42 +107,14 @@ function ENT:OnScreenChange(name, old, new)
 end
 
 --Main draw hook
-local maskpos = Vector(2.73, -17.12, 30.34)
-local maskang = Angle(0, 90, 90)
 function ENT:DrawTranslucent()
     self:DrawModel()
-
-    render.ClearStencil()
-    render.SetStencilEnable(true)
-        render.SetStencilWriteMask(255)
-        render.SetStencilTestMask(255)
-        render.SetStencilReferenceValue(57)
-        render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_ALWAYS)
-        render.SetStencilPassOperation(STENCILOPERATION_REPLACE)
-
-        cam.Start3D2D(self:LocalToWorld(maskpos), self:LocalToWorldAngles(maskang), 0.1)
-            surface.SetDrawColor(255, 255, 255, 10)
-            surface.DrawRect(0, 0, 343, 460)
-        cam.End3D2D()
-
-        render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_EQUAL)
-        render.SuppressEngineLighting(true)
-
-        render.OverrideDepthEnable(true, false)
-
-        cam.IgnoreZ(true)
-            self:DrawScreen()
-            self:DrawKeypad()
-        cam.IgnoreZ(false)
-
-        render.SuppressEngineLighting(false)
-        render.OverrideDepthEnable(false, false)
-
-    render.SetStencilEnable(false)
 
     if not self.LocalPlayer then return end
     if self.LocalPlayer:GetPos():DistToSqr(self:GetPos()) > 1000 * 1000 then return end
 
+    self:DrawScreen()
+    self:DrawKeypad()
     self:DrawSign()
     self:DrawAnimations()
 end
@@ -911,9 +883,9 @@ end)
 
 --Draw the keypad button hover and cursor
 local padw, padh = 221, 372
-local keyw, keyh = 52, 118
-local padpos = Vector(2.5, -5.3, -9.1)
-local padang = Angle(-55, 180, 0)
+local keyw, keyh = 50, 118
+local padpos = Vector(2.86, -5.3, -8.8)
+local padang = Angle(-54, 180, 0)
 function ENT:DrawKeypad()
     self.IsHoveringKeypad = false
 
@@ -921,8 +893,8 @@ function ENT:DrawKeypad()
         if imgui.IsHovering(0, 0, padw, padh) then
             self.IsHoveringKeypad = true
         else
-        imgui.End3D2D()
-        return
+            imgui.End3D2D()
+            return
         end
 
         for i = 1, 3 do
