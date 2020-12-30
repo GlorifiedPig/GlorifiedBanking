@@ -497,7 +497,7 @@ ENT.Screens[4].onEnterPressed = function(self, amount)
     self.KeyPadBuffer = ""
 
     net.Start("GlorifiedBanking.WithdrawalRequested")
-    net.WriteUInt(amount, 32)
+    net.WriteUInt(amount, 64)
     net.WriteEntity(self)
     net.SendToServer()
 end
@@ -519,7 +519,7 @@ ENT.Screens[5].onEnterPressed = function(self, amount)
     self.KeyPadBuffer = ""
 
     net.Start("GlorifiedBanking.DepositRequested")
-    net.WriteUInt(amount, 32)
+    net.WriteUInt(amount, 64)
     net.WriteEntity(self)
     net.SendToServer()
 end
@@ -544,7 +544,7 @@ ENT.Screens[6].onEnterPressed = function(self, amount)
     end
 
     net.Start("GlorifiedBanking.TransferRequested")
-        net.WriteUInt(amount, 32)
+        net.WriteUInt(amount, 64)
         net.WriteEntity(self)
         net.WriteEntity(self.ScreenData.selected)
     net.SendToServer()

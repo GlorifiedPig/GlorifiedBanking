@@ -130,7 +130,7 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
                 timer.Simple( .5, function()
                     net.Start( "GlorifiedBanking.ChangeScreen.SendLogs" )
                     net.WriteEntity( atmEntity )
-                    net.WriteLargeString( util.TableToJSON( queryResult ) )
+                    net.WriteTableAsString( queryResult )
                     net.Send( ply )
                 end )
             end )
@@ -248,7 +248,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.PlayerListOpened", function( len, ply 
         end
 
         net.Start( "GlorifiedBanking.AdminPanel.PlayerListOpened.SendInfo" )
-        net.WriteLargeString( util.TableToJSON( playerList ) )
+        net.WriteTableAsString( playerList )
         net.Send( ply )
     end
 end )
@@ -279,7 +279,7 @@ net.Receive( "GlorifiedBanking.AdminPanel.RequestLogUpdate", function( len, ply 
         GlorifiedBanking.SQL.Query( query, function( queryResult )
             GlorifiedBanking.SQL.Query( "SELECT COUNT(*) FROM gb_logs;", function( rowCount )
                 net.Start( "GlorifiedBanking.AdminPanel.RequestLogUpdate.SendInfo" )
-                net.WriteLargeString( util.TableToJSON( queryResult ) )
+                net.WriteTableAsString( queryResult )
                 net.WriteUInt(rowCount[1]["COUNT(*)"], 32)
                 net.Send( ply )
             end )

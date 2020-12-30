@@ -1,47 +1,28 @@
 
-if SERVER then
-    --[[local function chunkstring( str, number )
-        local output = {}
-        local strsize = string.len( str )
-        local chunksTaken = 0
-        local chunksToTake = math.ceil( strsize / number )
-        for i = 1, chunksToTake do
-            if chunksTaken == chunksToTake - 1 then
-                table.insert( output, string.sub( str, chunksTaken * number ) )
-            else
-                table.insert( output, string.sub( str, chunksTaken * number, i * number ) )
-            end
-            chunksTaken = chunksTaken + 1
-        end
-        return output
-    end
-
+if not net.WriteLargeString then
     function net.WriteLargeString( largeString )
-        local chunksToSend = math.ceil( string.len( largeString ) / 2000 )
-        local chunksTbl = chunkstring( largeString, 2000 )
-        net.WriteUInt( chunksToSend, 8 ) -- send how many chunks we are supposed to be receiving for an appropriate clientsided for loop {{ user_id sha256 key }}
-        for i = 1, chunksToSend do
-            net.WriteData( util.Compress( chunksTbl[i] ), 16008 ) -- 2000 max chars * 8 + 8 for bytecount
-        end
-    end]]--
-
-    function net.WriteLargeString( largeString )
-        local byteCount = ( string.len( largeString ) * 8 ) + 8
+        local compressedString = util.Compress( largeString )
+        local byteCount = string.len( compressedString )
         net.WriteUInt( byteCount, 16 )
-        net.WriteData( util.Compress( largeString ), byteCount )
+        net.WriteData( compressedString, byteCount )
     end
-else
-    --[[function net.ReadLargeString()
-        local largeString = ""
-        local chunksToReceive = net.ReadUInt( 8 )
-        for i = 1, chunksToReceive do
-            largeString = largeString .. util.Decompress( net.ReadData( 16008 ) )
-        end
-        return largeString
-    end]]--
+end
 
+if not net.WriteTableAsString then
+    function net.WriteTableAsString( tbl )
+        net.WriteLargeString( util.TableToJSON( tbl or {} ) )
+    end
+end
+
+if not net.ReadLargeString then
     function net.ReadLargeString()
         local byteCount = net.ReadUInt( 16 )
         return util.Decompress( net.ReadData( byteCount ) )
+    end
+end
+
+if not net.ReadTableAsString then
+    function net.ReadTableAsString()
+        return util.JSONToTable( net.ReadLargeString() )
     end
 end

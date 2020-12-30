@@ -32,7 +32,7 @@ ENT.Screens[1].onEnterPressed = function(self, amount)
     self.KeyPadBuffer = ""
 
     net.Start("GlorifiedBanking.CardReader.StartTransaction")
-     net.WriteUInt(amount, 32)
+     net.WriteUInt(amount, 64)
      net.WriteEntity(self)
     net.SendToServer()
 end

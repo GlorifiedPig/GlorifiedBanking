@@ -41,7 +41,7 @@ concommand.Add( "glorifiedbanking_logs", function( ply )
     if ply:IsSuperAdmin() or CAMI.PlayerHasAccess( "glorifiedbanking_openlogs" ) then
         GlorifiedBanking.SQL.Query( "SELECT * FROM `gb_logs` LIMIT 750", function( queryResult )
             net.Start( "GlorifiedBanking.PlayerOpenedLogs" )
-            net.WriteLargeString( util.TableToJSON( queryResult ) )
+            net.WriteTableAsString( queryResult )
             net.Send( ply )
         end )
     end
