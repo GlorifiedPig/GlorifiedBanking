@@ -181,4 +181,18 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 			end
 		end
 	end
+
+	for steamid, playerAccounts in pairs(newAccounts) do
+		local refund = 0
+		for accountId, amount in pairs(playerAccounts) do
+			refund = refund + amount
+		end
+
+		if refund <= 0 then
+			notify(("%s doesn't haved enough banked money for a new account (%s$)"):format(steamid, refund))
+		elseif steamid ~= "BOT" then
+			local sid = GlorifiedBanking.SQL.EscapeString(steamid)
+			GlorifiedBanking.SQL.Query("REPLACE INTO gb_players (`SteamID`, `Balance`) VALUES ('" .. sid .. "', " .. refund .. ")")
+		end
+	end
 end
