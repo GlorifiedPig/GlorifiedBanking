@@ -52,7 +52,8 @@ local function ValidationChecks( ply, balance, atmEntity )
     or balance == nil
     or balance < 0
     or not PlayerAuthChecks( ply )
-    or (atmEntity:GetClass() != "glorifiedbanking_atm" and atmEntity:GetClass() != "glorifiedbanking_cardreader")
+    or not IsValid( atmEntity )
+    or ( atmEntity:GetClass() != "glorifiedbanking_atm" and atmEntity:GetClass() != "glorifiedbanking_cardreader" )
     or atmEntity.ForcedLoad
     or not ATMDistanceChecks( ply, atmEntity ) )
 end
