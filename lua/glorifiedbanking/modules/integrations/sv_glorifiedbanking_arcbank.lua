@@ -156,7 +156,6 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 			group = tobool(groups[accountId] ~= nil and groups[accountId] or table.Count(owners[accountId]) ~= 1)
 		}
 
-		PrintTable(account)
 		if not account.group then
 			local owner
 			for own, _ in pairs(account.owners) do
@@ -182,8 +181,4 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 			end
 		end
 	end
-
-	print()
-	print()
-	PrintTable(newAccounts)
 end
