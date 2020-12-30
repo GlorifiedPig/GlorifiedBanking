@@ -194,7 +194,13 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		elseif steamid ~= "BOT" then
 			local sid = util.SteamIDTo64(steamid)
 			sid = GlorifiedBanking.SQL.EscapeString(sid)
-			GlorifiedBanking.SQL.Query("REPLACE INTO gb_players (`SteamID`, `Balance`) VALUES ('" .. sid .. "', " .. refund .. ")")
+			GlorifiedBanking.SQL.Query("REPLACE INTO gb_players (`SteamID`, `Balance`) VALUES ('" .. sid .. "', " .. refund .. ")", function()
+				local ply = player.GetBySteamID(steamid)
+				if IsValid(ply) and ply:IsPlayer() then
+		            ply.GlorifiedBanking.Balance = refund
+            		ply:SetNW2Int("GlorifiedBanking.Balance", refund)
+        		end
+			end)
 		end
 	end
 end
