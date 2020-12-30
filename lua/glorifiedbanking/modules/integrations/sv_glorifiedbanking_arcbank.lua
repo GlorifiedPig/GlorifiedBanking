@@ -41,7 +41,8 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 
 	local accounts = {}
 	local owners = {}
-	local perPage = 600
+	local groups = {}
+	local perPage = 2000
 
 	local query = ARCDB:query("SELECT COUNT(*) as `count` FROM ((SELECT account FROM `arcbank_accounts`) UNION (SELECT account FROM `arcbank_accounts_unused`)) AS `sq`")
 	query:start()
@@ -66,6 +67,7 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		for _, account in ipairs(data) do
 			accounts[account.account] = account.money
 			owners[account.account] = {[account.owner] = account.money}
+			groups[account.account] = account.group
 		end
 	end
 
@@ -123,13 +125,16 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		for _, log in ipairs(data) do
 			accounts[log.account] = (accounts[log.account] ~= nil and accounts[log.account] or 0) + log.diff
 
-			if log.user == "__SYSTEM" or log.user == "__UNKNOWN" then return end
-			if owners[log.account] == nil then
-				notify(("WARNING! %s wasn't defined when searching log!"):format(log.account))
-				owners[log.account] = {}
-			end
+			if log.user ~= "__SYSTEM" and log.user ~= "__UNKNOWN" then
+				if owners[log.account] == nil then
+					notify(("WARNING! %s wasn't defined when searching log!"):format(log.account))
+					owners[log.account] = {}
+				end
 
-			owners[log.account][log.user] = (owners[log.account][log.user] ~= nil and owners[log.account][log.user] or 0) + log.diff
+				if owners[log.account][log.user] ~= nil then
+					owners[log.account][log.user] = owners[log.account][log.user] + log.diff
+				end
+			end
 		end
 	end
 
@@ -147,6 +152,46 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		end
 	end
 
-	-- PrintTable(accounts)
-	-- PrintTable(owners)
+	local newAccounts = {}
+	local i = 0
+	for accountId, data in pairs(owners) do
+		local account = {
+			available = accounts[accountId] and accounts[accountId] or 0,
+			owners = owners[accountId] and owners[accountId] or {BOT = 0},
+			group = tobool(groups[accountId] ~= nil and groups[accountId] or table.Count(owners[accountId]) ~= 1)
+		}
+
+		PrintTable(account)
+		if not account.group then
+			local owner
+			for own, _ in pairs(account.owners) do
+				owner = own
+				break
+			end
+
+			newAccounts[owner] = newAccounts[owner] or {}
+			newAccounts[owner][accountId] = account.available
+		else
+			local allChanges = 0
+			for owner, change in pairs(account.owners) do
+				if change > 0 then
+					allChanges = allChanges + change
+				end
+			end
+			if allChanges ~= 0 then
+				for owner, change in pairs(account.owners) do
+					local perc = change / allChanges
+					newAccounts[owner] = newAccounts[owner] or {}
+					newAccounts[owner][accountId] = (account.available * perc)
+				end
+			end
+		end
+
+		i = i + 1
+		if i > 10 then
+			break
+		end
+	end
+
+	PrintTable(newAccounts)
 end
