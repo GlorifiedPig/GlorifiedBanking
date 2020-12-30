@@ -153,7 +153,6 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 	end
 
 	local newAccounts = {}
-	local i = 0
 	for accountId, data in pairs(owners) do
 		local account = {
 			available = accounts[accountId] and accounts[accountId] or 0,
@@ -185,11 +184,6 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 					newAccounts[owner][accountId] = (account.available * perc)
 				end
 			end
-		end
-
-		i = i + 1
-		if i > 10 then
-			break
 		end
 	end
 
