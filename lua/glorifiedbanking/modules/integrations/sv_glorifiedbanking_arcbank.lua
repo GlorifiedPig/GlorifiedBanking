@@ -172,7 +172,7 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 					allChanges = allChanges + change
 				end
 			end
-			if allChanges ~= 0 then
+			if allChanges ~= 0 and account.available > 0 then
 				for owner, change in pairs(account.owners) do
 					local perc = change / allChanges
 					newAccounts[owner] = newAccounts[owner] or {}
