@@ -187,6 +187,7 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		for accountId, amount in pairs(playerAccounts) do
 			refund = refund + amount
 		end
+		refund = math.floor(refund)
 
 		if refund <= 0 then
 			notify(("%s doesn't haved enough banked money for a new account (%s$)"):format(steamid, refund))
