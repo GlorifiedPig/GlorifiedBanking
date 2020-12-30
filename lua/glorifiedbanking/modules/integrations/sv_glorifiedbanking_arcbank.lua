@@ -123,7 +123,7 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		for _, log in ipairs(data) do
 			accounts[log.account] = (accounts[log.account] ~= nil and accounts[log.account] or 0) + log.diff
 			if owners[log.account] == nil then
-				notify(("WARNING! %s wasn't defined when searching log!"):format(group.account))
+				notify(("WARNING! %s wasn't defined when searching log!"):format(log.account))
 				owners[log.account] = {}
 			end
 
