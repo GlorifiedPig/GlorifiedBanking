@@ -59,7 +59,7 @@ local function ValidationChecks( ply, balance, atmEntity )
 end
 
 net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
-    local amount = math.max( 0, tonumber( net.ReadString() or "0" ) )
+    local amount = net.ReadDouble()
     local atmEntity = net.ReadEntity()
     if not ValidationChecks( ply, amount, atmEntity ) then return end
 
@@ -67,7 +67,7 @@ net.Receive( "GlorifiedBanking.WithdrawalRequested", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
-    local amount = math.max( 0, tonumber( net.ReadString() or "0" ) )
+    local amount = net.ReadDouble()
     local atmEntity = net.ReadEntity()
     if not ValidationChecks( ply, amount, atmEntity ) then return end
 
@@ -75,7 +75,7 @@ net.Receive( "GlorifiedBanking.DepositRequested", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking.TransferRequested", function( len, ply )
-    local amount = math.max( 0, tonumber( net.ReadString() or "0" ) )
+    local amount = net.ReadDouble()
     local atmEntity = net.ReadEntity()
     if not ValidationChecks( ply, amount, atmEntity ) then return end
     local receiver = net.ReadEntity()
@@ -140,7 +140,7 @@ net.Receive( "GlorifiedBanking.ChangeScreen", function( len, ply )
 end )
 
 net.Receive( "GlorifiedBanking.CardReader.StartTransaction", function( len, ply )
-    local amount = math.max( 0, tonumber( net.ReadString() or "0" ) )
+    local amount = net.ReadDouble()
     local readerEntity = net.ReadEntity()
 
     if not ValidationChecks( ply, amount, readerEntity ) then return end
@@ -229,7 +229,7 @@ end)
 net.Receive( "GlorifiedBanking.AdminPanel.SetPlayerBalance", function( len, ply )
     if GlorifiedBanking.HasPermission( ply, "glorifiedbanking_setplayerbalance" ) then
         local plySteamID = net.ReadString()
-        local newBalance = math.max( 0, tonumber( net.ReadString() or "0" ) )
+        local newBalance = net.ReadDouble()
         GlorifiedBanking.SetPlayerBalanceBySteamID( plySteamID, newBalance )
     end
 end )
