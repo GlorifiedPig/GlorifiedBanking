@@ -133,19 +133,20 @@ function GlorifiedBanking.ARCBank.ImportFromSQL(notify)
 		end
 	end
 
-	for accountId, amt in pairs(accounts) do
-		if amt < 0 then
-			notify(("%s is overdrawn (%s)"):format(accountId, amt))
-		end
-	end
+	-- We don't need to know overdrawn status.
+	-- for accountId, amt in pairs(accounts) do
+	-- 	if amt < 0 then
+	-- 		notify(("%s is overdrawn (%s)"):format(accountId, amt))
+	-- 	end
+	-- end
 
-	for accountid, data in pairs(owners) do
-		for steamid, amt in pairs(data) do
-			if amt < 0 then
-				notify(("%s withdrew more than they deposited (%s)"):format(steamid, amt))
-			end
-		end
-	end
+	-- for accountid, data in pairs(owners) do
+	-- 	for steamid, amt in pairs(data) do
+	-- 		if amt < 0 then
+	-- 			notify(("%s withdrew more than they deposited (%s)"):format(steamid, amt))
+	-- 		end
+	-- 	end
+	-- end
 
 	local newAccounts = {}
 	for accountId, data in pairs(owners) do
