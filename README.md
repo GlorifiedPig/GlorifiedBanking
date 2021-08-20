@@ -7,7 +7,9 @@
 
 Please do not contact me for support. I will not assist you. This is open source with an issues section for a reason.
 
-## Installation
+## Installation & Usage
+
+### Guide
 
 - Download the latest version.
 - Open the zip file using WinRar or 7-Zip.
@@ -16,15 +18,15 @@ Please do not contact me for support. I will not assist you. This is open source
 - Add `glorifiedbanking_card` to your DarkRP loadout.
 - Add [this](https://steamcommunity.com/sharedfiles/filedetails/?id=2101502704) workshop link to your server's collection.
 
-## Spawning ATMs
+### Spawning ATMs
 
 If you would like to spawn and configure ATMs, open the spawn menu and select the ATM Placer toolgun. You can configure everything on the right, such as the withdrawal, deposit and transfer fees. Left click to place an ATM, right click to remove one and reload to update an existing ATM's settings.
 
-## Using the Admin Panel
+### Using the Admin Panel
 
 Type `glorifiedbanking_admin` in your console if you would like to access the panel.
 
-## Restoring Backups
+### Restoring Backups
 
 - Go to your server's `data` folder.
 - Open the `glorifiedbanking_backups` folder.
@@ -32,7 +34,7 @@ Type `glorifiedbanking_admin` in your console if you would like to access the pa
 - Type `glorifiedbanking_restorebackup timestamp` in your server's console.
 - Restart your server.
 
-## Importing Blue's ATM Data
+### Importing Blue's ATM Data
 
 - Make sure your SQL config is set up in GlorifiedBanking.
 - Make sure Blue's ATM is on your server and the SQL is set up correctly.
