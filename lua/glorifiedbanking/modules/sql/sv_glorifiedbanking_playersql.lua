@@ -13,7 +13,7 @@ hook.Add( "PlayerInitialSpawn", "GlorifiedBanking.SQLPlayer.PlayerInitialSpawn",
         else
             ply.GlorifiedBanking.Balance = startingBalance
             ply:SetNW2String( "GlorifiedBanking.Balance", tostring( startingBalance ) )
-            GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance`, `LastName` ) VALUES ( '" .. ply:SteamID64() .. "', '" .. startingBalance .. "', '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' )" ) -- {{ user_id | 25 }}
+            GlorifiedBanking.SQL.Query( "INSERT INTO `gb_players`( `SteamID`, `Balance`, `LastName` ) VALUES ( '" .. ply:SteamID64() .. "', '" .. startingBalance .. "', '" .. GlorifiedBanking.SQL.EscapeString( ply:Nick() ) .. "' )" )
         end
     end )
 end )

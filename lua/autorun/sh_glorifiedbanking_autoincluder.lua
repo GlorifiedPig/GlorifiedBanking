@@ -1,17 +1,10 @@
 
---[[
-    Script Ownership:
-    {{ user_id }}
-    Version: {{ script_version_name }}
-]]--
-
 GlorifiedBanking = GlorifiedBanking or {
     Config = {},
-    Version = "3.2.1"
+    Version = "3.2.2"
 }
 
 print( "[GlorifiedBanking] This server is running version " .. GlorifiedBanking.Version .. "." )
-local IsAddon = true -- Set this to 'true' if you're running from an addon, set to 'false' if you're running from a gamemode.
 
 --[[
     GlorifiedInclude - A library for including files & folders with ease.
@@ -24,10 +17,9 @@ local IsAddon = true -- Set this to 'true' if you're running from an addon, set 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ]]--
 
-local giVersion = 1.2
+local giVersion = 1.4
 
 if not GlorifiedInclude or GlorifiedInclude.Version < giVersion then
-
     GlorifiedInclude = {
         Version = giVersion,
         Realm = {
@@ -37,60 +29,59 @@ if not GlorifiedInclude or GlorifiedInclude.Version < giVersion then
         }
     }
 
-    local _include = include
-    local _AddCSLuaFile = AddCSLuaFile
-    local _SERVER = SERVER
+    local isAddon = debug.getinfo( 1, "S" ).short_src[1] == "a"
+    local include = include
+    local AddCSLuaFile = AddCSLuaFile
+    local SERVER = SERVER
 
-    local _GlorifiedInclude_Realm = GlorifiedInclude.Realm
+    local GlorifiedInclude_Realm = GlorifiedInclude.Realm
 
     local includedFiles = {}
+
     function GlorifiedInclude.IncludeFile( fileName, realm, forceInclude, calledFromFolder, printName )
-        if IsAddon == false and not calledFromFolder then fileName = GM.FolderName .. "/gamemode/" .. fileName end
+        if isAddon == false and not calledFromFolder then fileName = GM.FolderName .. "/gamemode/" .. fileName end
         if not forceInclude and includedFiles[fileName] then return end
         includedFiles[fileName] = true
 
-        if realm == _GlorifiedInclude_Realm.Shared or fileName:find( "sh_" ) then
-            if _SERVER then _AddCSLuaFile( fileName ) end
-            _include( fileName )
+        if realm == GlorifiedInclude_Realm.Shared or fileName:find( "sh_" ) then
             if printName then
-                print( printName .. " > Included SH file '" .. fileName .. "'" )
+                print( printName .. " > Including SH file '" .. fileName .. "'" )
             end
-        elseif realm == _GlorifiedInclude_Realm.Server or ( _SERVER and fileName:find( "sv_" ) ) then
-            _include( fileName )
+            if SERVER then AddCSLuaFile( fileName ) end
+            include( fileName )
+        elseif realm == GlorifiedInclude_Realm.Server or ( SERVER and fileName:find( "sv_" ) ) then
             if printName then
-                print( printName .. " > Included SV file '" .. fileName .. "'" )
+                print( printName .. " > Including SV file '" .. fileName .. "'" )
             end
-        elseif realm == _GlorifiedInclude_Realm.Client or fileName:find( "cl_" ) then
-            if _SERVER then _AddCSLuaFile( fileName )
-            else _include( fileName ) end
+            include( fileName )
+        elseif realm == GlorifiedInclude_Realm.Client or fileName:find( "cl_" ) then
             if printName then
-                print( printName .. " > Included CL file '" .. fileName .. "'" )
+                print( printName .. " > Including CL file '" .. fileName .. "'" )
             end
+            if SERVER then AddCSLuaFile( fileName )
+            else include( fileName ) end
         end
     end
 
     function GlorifiedInclude.IncludeFolder( folderName, ignoreFiles, ignoreFolders, forceInclude, printName )
-        if IsAddon == false then folderName = GM.FolderName .. "/gamemode/" .. folderName end
+        if not isAddon then folderName = GM.FolderName .. "/gamemode/" .. folderName end
 
-        if string.Right( folderName, 1 ) != "/" then folderName = folderName .. "/" end
+        if string.Right( folderName, 1 ) ~= "/" then folderName = folderName .. "/" end
 
         local filesInFolder, foldersInFolder = file.Find( folderName .. "*", "LUA" )
 
-        if forceInclude == nil then forceInclude = false end
-
-        if ignoreFiles != true then
-            for k, v in ipairs( filesInFolder ) do
+        if ignoreFiles ~= true then
+            for _, v in ipairs( filesInFolder ) do
                 GlorifiedInclude.IncludeFile( folderName .. v, nil, forceInclude, true, printName )
             end
         end
 
-        if ignoreFolders != true then
-            for k, v in ipairs( foldersInFolder ) do
+        if ignoreFolders ~= true then
+            for _, v in ipairs( foldersInFolder ) do
                 GlorifiedInclude.IncludeFolder( folderName .. v .. "/", ignoreFiles, ignoreFolders, forceInclude, printName )
             end
         end
     end
-
 end
 
 --[[
@@ -99,6 +90,7 @@ end
         GlorifiedInclude.IncludeFile( "sh_config.lua" )
     -- Remember that files load in the order you include them in.
 ]]--
+
 local function gbIncludeFile( fileName ) GlorifiedInclude.IncludeFile( fileName, nil, nil, nil, "GlorifiedBanking" ) end
 local function gbIncludeFolder( folderName ) GlorifiedInclude.IncludeFolder( folderName, nil, nil, nil, "GlorifiedBanking" ) end
 gbIncludeFile( "glorifiedbanking/sh_glorifiedbanking_compatibility.lua" )
@@ -115,10 +107,3 @@ local function IncludeGBFiles()
 end
 
 hook.Add( GlorifiedBanking.HookRunName, "GlorifiedBanking.AutoIncluder.IncludeGBFiles", IncludeGBFiles )
-
-hook.Add("libgmodstore_init", "GlorifiedBanking.AutoIncluder.InitLibGModStore",function()
-    libgmodstore:InitScript( 7140, "GlorifiedBanking", {
-        version = "{{ script_version_name }}",
-        licensee = "{{ user_id }}"
-    } )
-end)

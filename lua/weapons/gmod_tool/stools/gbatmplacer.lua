@@ -22,7 +22,7 @@ if CLIENT then
         {name = "reload"}
     }
 
-    language.Add("tool.gbatmplacer.name", GlorifiedBanking.i18n.GetPhrase("gbToolName")) -- {{ user_id | 25 }}
+    language.Add("tool.gbatmplacer.name", GlorifiedBanking.i18n.GetPhrase("gbToolName"))
     language.Add("tool.gbatmplacer.desc", GlorifiedBanking.i18n.GetPhrase("gbToolDescription"))
     language.Add("tool.gbatmplacer.left", GlorifiedBanking.i18n.GetPhrase("gbToolLeftClick"))
     language.Add("tool.gbatmplacer.right", GlorifiedBanking.i18n.GetPhrase("gbToolRightClick"))
@@ -74,7 +74,7 @@ end
 local function getAtmPos(tr, posOffset, snap)
     if not tr.Hit or IsValid(tr.Entity) then return false end
 
-    local angles = tr.HitNormal:Angle() -- {{ user_id sha256 key }}
+    local angles = tr.HitNormal:Angle()
     if angles[1] != 0 then return false end
 
     local floorTr = util.TraceLine({
@@ -122,7 +122,7 @@ function TOOL:Think()
         self:MakeGhostEntity("models/sterling/glorifiedpig_atm.mdl", vector_origin, Angle())
     end
 
-    self:UpdateGhost(self.GhostEntity, self:GetOwner()) -- {{ user_id sha256 key }}
+    self:UpdateGhost(self.GhostEntity, self:GetOwner())
 end
 
 if CLIENT then return end
