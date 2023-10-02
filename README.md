@@ -3,8 +3,6 @@
 
 # GlorifiedBanking
 
-<a href="https://discord.gg/glorifiedstudios"><img src="https://img.shields.io/discord/329643791063449600?label=discord"></a>
-
 Please do not contact me for support. I will not assist you. This is open source with an issues section for a reason.
 
 ## Installation & Usage
